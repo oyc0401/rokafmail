@@ -1,3 +1,12 @@
+## repl.it 깃허브 설정방법
+
+깃허브로 가져오기.
+
+> npm install axios
+
+run 버튼 클릭
+
+-------------------------
 Welcome to the NextJS base template bootstrapped using the `create-next-app`. This template supports TypeScript, but you can use normal JavaScript as well.
 
 ## Getting Started
