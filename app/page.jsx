@@ -69,16 +69,21 @@ export default function HomePage() {
   return (
     <>
       <div>
-        <input minLength="1" name="senderName" id="senderName" type="text" placeholder='이름' required style={{"margin-right": "10px"}}
+        <input minLength="1" name="senderName" id="senderName" type="text" placeholder='이름' 
+          required style={{"margin-right": "10px"}}
           onChange={(e) => { senderNameRef.current = e.target.value; }}></input>
-        <input minLength="1" name="relationship" id="relationship" type="text" placeholder='관계' required
-          onChange={(e) => { relationshipRef.current = e.target.value; }}></input><br/>
-        <input minLength="1" name="title" id="title" type="text" placeholder='제목' required style={{"width": "235px"}}
-          onChange={(e) => { titleRef.current = e.target.value; }}></input><br/>
-
+        <input minLength="1" name="relationship" id="relationship" type="text" placeholder='관계' 
+          required
+          onChange={(e) => { relationshipRef.current = e.target.value; }}></input>
+        <br/>
+        <input minLength="1" name="title" id="title" type="text" placeholder='제목' 
+          required style={{"width": "235px"}}
+          onChange={(e) => { titleRef.current = e.target.value; }}></input>
+        <br/>
         <textarea placeholder='편지 내용' rows="5" cols="33"
           onChange={(e) => { contentsRef.current = e.target.value; }}>
-        </textarea><br/>
+        </textarea>
+        <br/>
         <input minLength="4" name="password" id="password" type="text" placeholder="비밀번호" required style={{"margin-right": "10px"}}
         onChange={(e) => { passwordRef.current = e.target.value; }}/>
         <button onClick={handleSubmit}>

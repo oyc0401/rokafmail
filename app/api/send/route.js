@@ -25,25 +25,25 @@ export async function POST(request) {
   data.append('letterSeq', '');
   data.append('memberSeq', '');
   data.append('memberSeqVal', '341457192');
-  data.append('sodaeVal', '4132');
+  data.append('sodaeVal', '413');
 
   var config = {
     method: 'post',
     url: 'https://atc.airforce.mil.kr:444/user/emailPicSaveEmail.action',
-    headers: { 
-      'Cookie': 'JSESSIONID=pVmoG5hmwpHCRsLqdiV1hegWfRiH9418N4YZ3AW5cUo7pcXvxER8Lbk0XIljcEOa.AF1303_servlet_CONT31', 
+    headers: {
+      'Cookie': 'JSESSIONID=pVmoG5hmwpHCRsLqdiV1hegWfRiH9418N4YZ3AW5cUo7pcXvxER8Lbk0XIljcEOa.AF1303_servlet_CONT31',
       ...data.getHeaders()
     },
-    data : data
+    data: data
   };
 
   axios(config)
-  .then(function (response) {
-    // return new Response(200);
-  })
-  .catch(function (error) {
-    return new Response("error");
-  });
+    .then(function(response) {
+      // return new Response(200);
+    })
+    .catch(function(error) {
+      return new Response("error");
+    });
 
 
   return new Response(200);

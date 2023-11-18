@@ -1,0 +1,48 @@
+교육생 : 곽희근
+생년월일 : 1995.08.24
+
+원본: 
+siteId: last2
+parent: %2Fuser%2FindexSub.action%3FcodyMenuSeq%3D156893223%26siteId%3Dlast2%26dum%3Ddum%26command2%3DwriteEmail%26page%3D2%26memberSeqVal%3D347938631%26sodaeVal%3D3117
+page: 2
+command2: writeEmail
+searchCate: 
+searchVal: 
+letterSeq: 
+memberSeq: 
+memberSeqVal: 347938631
+sodaeVal: 3117
+senderZipcode: 06252
+senderAddr1: 서울특별시 강남구 강남대로 328
+senderAddr2: 역삼동
+senderName: 오빠 나야
+relationship: 전애인
+title: 잘 지내...?
+contents: 오빠 보고싶어서 잠 못자..
+password: 3333
+
+테스트용
+
+번역본
+parent: /user/indexSub.action?codyMenuSeq=156893223&siteId=last2&dum=dum&command2=writeEmail&page=2&memberSeqVal=347938631&sodaeVal=3117
+
+해석:
+parent: /user/indexSub.action
+?codyMenuSeq=156893223
+&siteId=last2
+&dum=dum
+&command2=writeEmail
+&page=2
+&memberSeqVal=347938631
+&sodaeVal=3117
+
+
+신병 2대대 3중대 1소대 312호실 17번
+
+codyMenuSeq=156893223
+sodaeVal: 3117
+
+
+
+
+senderZipcode= 우편번호
