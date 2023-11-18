@@ -14,7 +14,23 @@ export default function make() {
   const date = useRef("");
   
   const handleSubmit = async () => {
-    alert("이름: "+name.current);
+    // const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=${name.current}&searchBirth=${year.current}${month.current}${date.current}`;
+   // alert(url);
+
+   
+    axios.get(`/api/profile`,).then(
+  //  axios.post(`/api/profile?searchName=${name}?searchBirth=${year.current}${month.current}${date.current}`,).then(
+      (res) => {
+        if (res.data === 200) {
+          alert("ok");
+         // router.push("/res?sc=200");
+        } else {
+         // router.push("/res?sc=e");
+          alert(res.data);
+        }
+      }
+    )
+    
   }
     return (
       <>

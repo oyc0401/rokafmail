@@ -3,6 +3,7 @@
 깃허브로 가져오기.
 
 > npm install axios
+> npm install cheerio
 
 run 버튼 클릭
 

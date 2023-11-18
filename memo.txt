@@ -1,7 +1,10 @@
+교육생 : 장세진
+생년월일 : 2003.04.09
+
 교육생 : 곽희근
 생년월일 : 1995.08.24
 
-원본: 
+곽희근 원본: 
 siteId: last2
 parent: %2Fuser%2FindexSub.action%3FcodyMenuSeq%3D156893223%26siteId%3Dlast2%26dum%3Ddum%26command2%3DwriteEmail%26page%3D2%26memberSeqVal%3D347938631%26sodaeVal%3D3117
 page: 2
