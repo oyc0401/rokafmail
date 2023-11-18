@@ -18,10 +18,10 @@ sodaeVal: 3117
 senderZipcode: 06252
 senderAddr1: 서울특별시 강남구 강남대로 328
 senderAddr2: 역삼동
-senderName: 오빠 나야
-relationship: 전애인
+senderName: 나야나
+relationship: 친구
 title: 잘 지내...?
-contents: 오빠 보고싶어서 잠 못자..
+contents: 훈련소 많이 힘들지..? 화이팅해
 password: 3333
 
 테스트용
@@ -42,7 +42,7 @@ parent: /user/indexSub.action
 
 신병 2대대 3중대 1소대 312호실 17번
 
-codyMenuSeq=156893223
+memberSeqVal=347938631
 sodaeVal: 3117
 
 

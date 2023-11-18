@@ -4,6 +4,7 @@
 
 > npm install axios
 > npm install cheerio
+> npm install --save node-html-parser
 
 run 버튼 클릭
 

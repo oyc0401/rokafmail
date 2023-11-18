@@ -25,7 +25,7 @@ export async function POST(request) {
   data.append('letterSeq', '');
   data.append('memberSeq', '');
   data.append('memberSeqVal', '341457192');
-  data.append('sodaeVal', '413');
+  data.append('sodaeVal', '4132');
 
   var config = {
     method: 'post',
