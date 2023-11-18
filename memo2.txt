@@ -1,0 +1,52 @@
+siteId: last2
+parent: %2Fuser%2FindexSub.action%3FcodyMenuSeq%3D156893223%26siteId%3Dlast2%26dum%3Ddum%26command2%3DwriteEmail%26page%3D2%26memberSeqVal%3D347938631%26sodaeVal%3D3117
+page: 2
+command2: writeEmail
+searchCate: 
+searchVal: 
+letterSeq: 
+memberSeq: 
+memberSeqVal: 347938631
+sodaeVal: 3117
+senderZipcode: 06252
+senderAddr1: 서울특별시 강남구 강남대로 328
+senderAddr2: 역삼동
+senderName: 오빠 나야
+relationship: 전애인
+title: 잘 지내...?
+contents: 오빠 보고싶어서 잠 못자..
+password: 3333
+
+
+
+
+/** export default async function profile() {
+//export default async function profile(req, res) {
+   // const query = req.query;
+  //  const { searchName, searchBirth } = query;
+
+  // const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=${searchName}&searchBirth=${searchBirth}`;
+    const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=%EA%B3%BD%ED%9D%AC%EA%B7%BC&searchBirth=19950824`;
+
+
+  console.log(url)
+  const response = await axios.get(url);
+  const html = response.data;
+    console.log(html);
+
+
+
+
+
+    // use the information from the query to get the products
+    // then send the data back to the client
+
+   return new Response(200).json({ddd:"@@@RRR"});
+}
+*/
+
+import { NextApiRequest, NextApiResponse } from 'next';
+
+export default function GET(req: NextApiRequest, res: NextApiResponse) {
+  res.status(200).json({ name: 'api 요청 성공 예상' });
+}

@@ -27,11 +27,11 @@ function html2sodaeVal(html) {
 
   //console.log(`${대대}대대 ${중대}중대 ${소대}소대 ${호실}호실 ${번}번`);
 
-  
+
   if (번 < 10) {
     번 = `0${번}`;
   }
-  
+
   return `${중대}${소대}${번}`;
 
 }
@@ -48,29 +48,27 @@ export async function GET(request) {
   const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=${searchName}&searchBirth=${searchBirth}`;
   // const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=%EA%B3%BD%ED%9D%AC%EA%B7%BC&searchBirth=19950824`;
 
+  console.log("훈련병 찾는중...",url)
 
-  console.log(url)
-  const response = await axios.get(url);
-  const html = response.data;
-  //console.log(html);
+  try {
+    const response = await axios.get(url);
+    const html = response.data;
+    //console.log(html);
 
+    let memberSeqVal = html2memberSeqVal(html);
+    let sodaeVal = html2sodaeVal(html);
+    //console.log("memberSeqVal:", memberSeqVal);
 
- let memberSeqVal=html2memberSeqVal(html);
- let sodaeVal= html2sodaeVal(html);
+    //console.log("sodaeVal:",sodaeVal);
 
-
-  //console.log("memberSeqVal:", memberSeqVal);
-
-  //console.log("sodaeVal:",sodaeVal);
-
-  
-
-  let data = {
+    let data = {
       memberSeqVal: memberSeqVal,
       sodaeVal: sodaeVal
-  };
+    };
+    return Response.json(data);
+  } catch (e) {
+    return Response.error("해당하는 훈련병이 없거나 편지쓰기 가능 시간이 아닙니다.");
+  }
 
-  
-  return Response.json(data);
 }
 
