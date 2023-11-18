@@ -59,9 +59,9 @@ export async function GET(request) {
  let sodaeVal= html2sodaeVal(html);
 
 
-  console.log("memberSeqVal:", memberSeqVal);
+  //console.log("memberSeqVal:", memberSeqVal);
 
-  console.log("sodaeVal:",sodaeVal);
+  //console.log("sodaeVal:",sodaeVal);
 
   
 

@@ -1,65 +1,73 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from "axios";
 import { useRouter } from 'next/navigation'
 
 
 export default function make() {
   const router = useRouter();
-  
+
   const name = useRef("");
   const year = useRef("");
   const month = useRef("");
   const date = useRef("");
-  
-  const handleSubmit = async () => {
-    // const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=${name.current}&searchBirth=${year.current}${month.current}${date.current}`;
-   // alert(url);
+  const [mailLink, setMailLink] = useState("");
 
-   
-    axios.get(`/api/profile`,).then(
-  //  axios.post(`/api/profile?searchName=${name}?searchBirth=${year.current}${month.current}${date.current}`,).then(
-      (res) => {
-        if (res.data === 200) {
-          alert("ok");
-         // router.push("/res?sc=200");
-        } else {
-         // router.push("/res?sc=e");
-          alert(res.data);
-        }
+  const handleSubmit = async () => {
+    setMailLink("로딩중...");
+
+    axios.get('/api/profile', {
+      params: {
+        searchName: name.current,
+        searchBirth: `${year.current}${month.current}${date.current}`
       }
-    )
-    
+    })
+      .then(function(response) {
+        let data = response.data;
+
+        let link = `https://airforce-mail-maker/mail?searchName=${name.current}&memberSeqVal=${data.memberSeqVal}&sodaeVal=${data.sodaeVal}`;
+        setMailLink(link);
+      })
+      .catch(function(error) {
+        alert("오류:", error);
+      })
+      .finally(function() {
+        // 항상 실행되는 영역
+      });
+
   }
-    return (
-      <>
-     
-        <h1>링크 만들기</h1>
-        <p>전송 후 아래의 '편지 목록' 버튼을 눌러 편지가 잘 전달되었는 지 확인하시기 바랍니다.</p>
-        
-        <br />
-        <div>
-          <input minLength="1" name="name" id="name" type="text" placeholder='이름' 
-          required style={{"width": "235px"}}
+
+  return (
+    <>
+
+      <h1>링크 만들기</h1>
+      <p> 편지 링크를 만듭니다.</p>
+
+      <br />
+      <div>
+        <input minLength="1" name="name" id="name" type="text" placeholder='이름'
+          required style={{ "width": "235px" }}
           onChange={(e) => { name.current = e.target.value; }}></input>
-          <br/>
-          <input minLength="1" name="year" id="year" type="text" placeholder='년도' 
-          required style={{"width": "80px","margin-right": "10px"}}
+        <br />
+        <input minLength="1" name="year" id="year" type="text" placeholder='년도'
+          required style={{ "width": "80px", "margin-right": "10px" }}
           onChange={(e) => { year.current = e.target.value; }}></input>
-          <input minLength="1" name="month" id="month" type="text" placeholder='월' 
-          required style={{"width": "80px","margin-right": "10px"}}
+        <input minLength="1" name="month" id="month" type="text" placeholder='월'
+          required style={{ "width": "80px", "margin-right": "10px" }}
           onChange={(e) => { month.current = e.target.value; }}></input>
-          <input minLength="1" name="date" id="date" type="text" placeholder='일' 
-          required style={{"width": "80px"}}
+        <input minLength="1" name="date" id="date" type="text" placeholder='일'
+          required style={{ "width": "80px" }}
           onChange={(e) => { date.current = e.target.value; }}></input>
-          <br/>
-          <button onClick={handleSubmit}>
-            전송
-          </button>
-        </div>
-       
-       
-      </>
-    )
+        <br />
+        <h1>{mailLink}</h1>
+
+        <button onClick={handleSubmit}>
+          전송
+        </button>
+      </div>
+
+
+    </>
+  )
 }

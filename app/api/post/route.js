@@ -24,8 +24,8 @@ export async function POST(request) {
   data.append('searchVal', '');
   data.append('letterSeq', '');
   data.append('memberSeq', '');
-  data.append('memberSeqVal', body.memberSeqVal);
-  data.append('sodaeVal', body.sodaeVal);
+  data.append('memberSeqVal', '341457192');
+  data.append('sodaeVal', '4132');
 
   var config = {
     method: 'post',
