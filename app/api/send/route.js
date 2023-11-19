@@ -39,7 +39,7 @@ export async function POST(request) {
   };
 
   console.log("서버 보내기 시작")
-  axios(config)
+  await axios(config)
     .then(function(response) {
        console.log("성공")
       console.log("상태 코드:", response.status);
