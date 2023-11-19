@@ -27,8 +27,7 @@ export async function POST(request) {
   data.append('memberSeqVal', body.memberSeqVal);
   data.append('sodaeVal', body.sodaeVal);
 
-  console.log("append 다함")
-  
+ 
   var config = {
     method: 'post',
     url: 'https://atc.airforce.mil.kr:444/user/emailPicSaveEmail.action',
@@ -40,15 +39,17 @@ export async function POST(request) {
   };
 
   console.log("서버 보내기 시작")
-  await axios(config)
+  axios(config)
     .then(function(response) {
        console.log("성공")
-      console.log(response)
-      return new Response(200);
+      console.log("상태 코드:", response.status);
+      //console.log(response)
+      //return new Response(200);
     })
     .catch(function(error) {
       console.log("에러 발생")
-       console.log(error)
+      console.log("에러 상태 코드:", error.response.status);
+       //console.log(error)
       return new Response("error");
     });
 
