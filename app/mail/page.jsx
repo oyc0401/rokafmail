@@ -4,9 +4,10 @@ import React, { useRef, useEffect } from 'react';
 import axios from "axios";
 import { useRouter, useSearchParams } from 'next/navigation'
 import airForceTime from './time';
+import Error from './error';
 
 // /mail?generation=852&searchName=곽희근&searchBirth=19950824
-export default function validate() {
+export default function Mail() {
    const router = useRouter();
   
   const params = useSearchParams();

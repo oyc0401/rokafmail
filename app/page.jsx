@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation'
 
 
-export default function make() {
+export default function Make() {
   const router = useRouter();
 
   const name = useRef("");
