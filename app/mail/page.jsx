@@ -8,12 +8,12 @@ import Error from './error';
 
 // /mail?generation=852&searchName=곽희근&searchBirth=19950824
 export default function Mail() {
-   const router = useRouter();
-  
+  const router = useRouter();
+
   const params = useSearchParams();
   const searchName = params.get('searchName');
   const searchBirth = params.get('searchBirth');
-   const generation = params.get('generation');
+  const generation = params.get('generation');
 
   const [complete, setComplete] = React.useState(false);
   const [validate, setValidate] = React.useState(true);
@@ -56,7 +56,7 @@ export default function Mail() {
     function toStringByFormatting(source, delimiter = '.') {
       function leftPad(value) {
         if (value >= 10) {
-            return value;
+          return value;
         }
 
         return `0${value}`;
@@ -69,7 +69,7 @@ export default function Mail() {
       return [year, month, day].join(delimiter);
     }
 
-    let [idayStr,sdayStr, jdayStr] = airForceTime(generation);
+    let [idayStr, sdayStr, jdayStr] = airForceTime(generation);
 
     const today = new Date();
     const iday = new Date(idayStr); // 입대일
@@ -85,18 +85,18 @@ export default function Mail() {
       <div>
         <div>
           <h2>공군 {generation}기 훈련병 {searchName}</h2>
-          <p style={{"margin": "0px"}}>{toStringByFormatting(iday)} ~ {toStringByFormatting(sday)}</p>
-          <p style={{"margin": "0px"}}> 훈련소 수료까지 {suryo}일</p>
+          <p style={{ "margin": "0px" }}>{toStringByFormatting(iday)} ~ {toStringByFormatting(sday)}</p>
+          <p style={{ "margin": "0px" }}> 훈련소 수료까지 {suryo}일</p>
           {/* <p style={{"margin": "0px"}}>전역까지 {jeonyeok}일</p>
           <p style={{"margin": "0px"}}>지금까지 {percent}%</p> */}
-          <br/>
+          <br />
         </div>
       </div>
     )
   }
 
   /// 편지 컴포넌트
-  function Write(){
+  function Write() {
     const senderNameRef = useRef("");
     const relationshipRef = useRef("");
     const titleRef = useRef("");
@@ -146,7 +146,8 @@ export default function Mail() {
         password: passwordRef.current,
         sodaeVal: sodaeVal.current,
         memberSeqVal: memberSeqVal.current
-      }).then(
+      })
+        .then(
         (res) => {
           if (res.data === 200) {
             router.push(`/res?sc=200&generation=${generation}&searchName=${searchName}&searchBirth=${searchBirth}&memberSeqVal=${memberSeqVal.current}`);
@@ -154,43 +155,46 @@ export default function Mail() {
             router.push(`/res?sc=e&generation=${generation}&searchName=${searchName}&searchBirth=${searchBirth}&memberSeqVal=${memberSeqVal.current}`);
           }
         }
-      );
-      
+      )
+        .catch(function(error) {
+          router.push(`/res?sc=e&generation=${generation}&searchName=${searchName}&searchBirth=${searchBirth}&memberSeqVal=${memberSeqVal.current}`);
+        });
+
     }
 
-    return(
-     <>
-     <div>
-       <input minLength="1" name="senderName" id="senderName" type="text" placeholder='이름' 
-         required style={{"marginRight": "10px"}}
-         onChange={(e) => { senderNameRef.current = e.target.value; }}></input>
-       <input minLength="1" name="relationship" id="relationship" type="text" placeholder='관계' 
-         required
-         onChange={(e) => { relationshipRef.current = e.target.value; }}></input>
-       <br/>
-       <input minLength="1" name="title" id="title" type="text" placeholder='제목' 
-         required style={{"width": "235px"}}
-         onChange={(e) => { titleRef.current = e.target.value; }}></input>
-       <br/>
-       <textarea placeholder='편지 내용' rows="5" cols="33"
-         onChange={(e) => { contentsRef.current = e.target.value; }}>
-       </textarea>
-       <br/>
-       <input minLength="4" name="password" id="password" type="text" placeholder="비밀번호" required style={{"marginRight": "10px"}}
-       onChange={(e) => { passwordRef.current = e.target.value; }}/>
-       <button onClick={handleSubmit}>
-         전송
-       </button>
-     </div>
-       <a target="_blank" href={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${searchName}&searchBirth=${searchBirth}&memberSeq=${memberSeqVal.current}`}>
+    return (
+      <>
+        <div>
+          <input minLength="1" name="senderName" id="senderName" type="text" placeholder='이름'
+            required style={{ "marginRight": "10px" }}
+            onChange={(e) => { senderNameRef.current = e.target.value; }}></input>
+          <input minLength="1" name="relationship" id="relationship" type="text" placeholder='관계'
+            required
+            onChange={(e) => { relationshipRef.current = e.target.value; }}></input>
+          <br />
+          <input minLength="1" name="title" id="title" type="text" placeholder='제목'
+            required style={{ "width": "235px" }}
+            onChange={(e) => { titleRef.current = e.target.value; }}></input>
+          <br />
+          <textarea placeholder='편지 내용' rows="5" cols="33"
+            onChange={(e) => { contentsRef.current = e.target.value; }}>
+          </textarea>
+          <br />
+          <input minLength="4" name="password" id="password" type="text" placeholder="비밀번호" required style={{ "marginRight": "10px" }}
+            onChange={(e) => { passwordRef.current = e.target.value; }} />
+          <button onClick={handleSubmit}>
+            전송
+          </button>
+        </div>
+        <a target="_blank" href={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${searchName}&searchBirth=${searchBirth}&memberSeq=${memberSeqVal.current}`}>
           편지 목록
         </a>
-     </>
+      </>
     )
   }
 
 
- 
+
 
   // 로딩화면
   if (!complete) {
@@ -202,12 +206,12 @@ export default function Mail() {
   // 편지쓰기 화면
   if (validate) {
     return (
-    <> 
-      <Timer></Timer>
-      <Write></Write>
-    </>
+      <>
+        <Timer></Timer>
+        <Write></Write>
+      </>
     );
-  } 
+  }
   // 오류 화면
   else {
     return (
