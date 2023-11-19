@@ -8,13 +8,14 @@ export default function make() {
   const router = useRouter();
 
   const name = useRef("");
+  const generation  = useRef("");
   const year = useRef("");
   const month = useRef("");
   const date = useRef("");
   const [mailLink, setMailLink] = useState("");
 
   const handleSubmit = async () => {
-    let link = `/mail?searchName=${name.current}&searchBirth=${year.current}${month.current}${date.current}`;
+    let link = `/mail?generation=${generation.current}&searchName=${name.current}&searchBirth=${year.current}${month.current}${date.current}`;
     setMailLink(link);
 
   }
@@ -30,6 +31,10 @@ export default function make() {
         <input minLength="1" name="name" id="name" type="text" placeholder='이름'
           required style={{ "width": "235px" }}
           onChange={(e) => { name.current = e.target.value; }}></input>
+        <br />
+        <input minLength="1" name="generation" id="generation" type="text" placeholder='기수'
+        required style={{ "width": "235px" }}
+        onChange={(e) => { generation.current = e.target.value; }}></input>
         <br />
         <input minLength="1" name="year" id="year" type="text" placeholder='년도'
           required style={{ "width": "80px", "margin-right": "10px" }}

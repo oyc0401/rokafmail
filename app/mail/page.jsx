@@ -5,11 +5,12 @@ import axios from "axios";
 import { useRouter, useSearchParams } from 'next/navigation'
 import Write from './write';
 
-// /mail?searchName=곽희근&searchBirth=19950824
+// /mail?generation=852&searchName=곽희근&searchBirth=19950824
 export default function validate() {
   const params = useSearchParams();
   const searchName = params.get('searchName');
   const searchBirth = params.get('searchBirth');
+   const generation = params.get('generation');
 
   const [complete, setComplete] = React.useState(false);
   const [validate, setValidate] = React.useState(true);
@@ -44,6 +45,13 @@ export default function validate() {
       })
   }
 
+
+
+
+  
+
+
+  
   if (!complete) {
     return (
       <h1>로딩중</h1>
@@ -52,7 +60,7 @@ export default function validate() {
   
   if (validate) {
     return (
-      <Write memberSeqVal={memberSeqVal} sodaeVal={sodaeVal} searchName={searchName}></Write>
+      <Write memberSeqVal={memberSeqVal.current} sodaeVal={sodaeVal.current} searchName={searchName} generation={generation}></Write>
     );
   } else {
     return (

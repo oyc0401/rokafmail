@@ -18,10 +18,10 @@ sodaeVal: 3117
 senderZipcode: 06252
 senderAddr1: 서울특별시 강남구 강남대로 328
 senderAddr2: 역삼동
-senderName: 나야나
+senderName: 하이
 relationship: 친구
-title: 잘 지내...?
-contents: 훈련소 많이 힘들지..? 화이팅해
+title: 잘 지내냐
+contents: 훈련소 많이 힘들지?? 그래도 좀만버티면 특학가고 자대가니깐 열심히 해라 화이팅!!
 password: 3333
 
 테스트용

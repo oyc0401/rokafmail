@@ -8,9 +8,9 @@ export async function POST(request) {
   // return new Response(200);
 
   var data = new FormData();
-  data.append('senderZipcode', '22212');
-  data.append('senderAddr1', '인천광역시 미추홀구 인하로 100');
-  data.append('senderAddr2', '인하대학교');
+  data.append('senderZipcode', '06252');
+  data.append('senderAddr1', '서울특별시 강남구 강남대로 328');
+  data.append('senderAddr2', '역삼동');
   data.append('senderName', body.senderName);
   data.append('relationship', body.relationship);
   data.append('title', body.title);
