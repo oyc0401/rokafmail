@@ -5,8 +5,6 @@ export async function POST(request) {
   const body = await request.json();
   console.log(body);
 
-  // return new Response(200);
-
   var data = new FormData();
   data.append('senderZipcode', '06252');
   data.append('senderAddr1', '서울특별시 강남구 강남대로 328');
