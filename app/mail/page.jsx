@@ -8,6 +8,7 @@ import Error from './error';
 
 // /mail?generation=852&searchName=곽희근&searchBirth=19950824
 //https://airforce-mail--oyc0401.repl.co/mail?generation=852&searchName=%EA%B3%BD%ED%9D%AC%EA%B7%BC&searchBirth=19950824
+
 export default function Mail() {
   const router = useRouter();
 
