@@ -96,7 +96,7 @@ export default function Mail() {
   }
 
   /// 편지 컴포넌트
-  function Write(props){
+  function Write(){
     const senderNameRef = useRef("");
     const relationshipRef = useRef("");
     const titleRef = useRef("");
@@ -154,9 +154,8 @@ export default function Mail() {
             router.push(`/res?sc=e&generation=${generation}&searchName=${searchName}&searchBirth=${searchBirth}&memberSeqVal=${memberSeqVal.current}`);
           }
         }
-      )
-
-     router.push(`/res?sc=200&generation=${generation}&searchName=${searchName}&searchBirth=${searchBirth}&memberSeqVal=${memberSeqVal.current}`);
+      );
+      
     }
 
     return(
