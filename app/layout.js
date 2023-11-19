@@ -3,8 +3,8 @@ import '../styles/globals.css';
 import Timer from './timer';
 
 export const metadata = {
-  title: '오유찬 인편',
-  description: '공군 훈련병 오유찬 화이팅',
+  title: '인편 지기',
+  description: '공군 훈련병 인편 보내주기',
 }
 
 export default function RootLayout({ children }) {

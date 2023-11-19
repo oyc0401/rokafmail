@@ -15,7 +15,9 @@ export default function Make() {
   const [mailLink, setMailLink] = useState("");
 
   const handleSubmit = async () => {
-    let link = `/mail?generation=${generation.current}&searchName=${name.current}&searchBirth=${year.current}${month.current}${date.current}`;
+
+     console.log(router)
+    let link = `https://airforce-mail.vercel.app/mail?generation=${generation.current}&searchName=${name.current}&searchBirth=${year.current}${month.current}${date.current}`;
     setMailLink(link);
 
   }
@@ -49,7 +51,7 @@ export default function Make() {
         <h1>{mailLink}</h1>
 
         <button onClick={handleSubmit}>
-          전송
+          링크 만들기
         </button>
       </div>
 
