@@ -5,8 +5,8 @@
 생년월일 : 1995.08.24
 
 곽희근 원본: 
-siteId: last2하
-parent: %2Fuser%2FindexSub.action%3FcodyMenuSeq%3D156893223%26siteId%3Dlast2%26dum%3Ddum%26command2%3DwriteEmail%26page%3D2%26memberSeqVal%3D347938631%26sodaeVal%3D3117
+siteId: last2
+parent: 
 page: 2
 command2: writeEmail
 searchCate: 
@@ -21,7 +21,7 @@ senderAddr2: 역삼동
 senderName: 하이
 relationship: 친구
 title: 잘 지내냐
-contents: 훈련소 많이 힘들지?? 그래도 좀만버티면 특학가고 자대가니깐 열심히 해라 화이팅!!
+contents: 훈련소 많이 힘들지?? 그래도 좀만버티면 특학가고 자대가니깐 열심히 하자 화이팅!!
 password: 3333
 
 테스트용

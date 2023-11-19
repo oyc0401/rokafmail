@@ -37,9 +37,11 @@ export async function POST(request) {
     data: data
   };
 
+
   axios(config)
     .then(function(response) {
-      // return new Response(200);
+      console.log(response)
+      return new Response(200);
     })
     .catch(function(error) {
       return new Response("error");
