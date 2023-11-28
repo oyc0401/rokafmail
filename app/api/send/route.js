@@ -1,4 +1,3 @@
-'use server';
 import axios from "axios";
 import FormData from "form-data";
 
@@ -41,17 +40,17 @@ export async function POST(request) {
   await axios(config)
     .then(function(response) {
        console.log("성공")
-      console.log("상태 코드:", response.status);
+      //console.log("상태 코드:", response.status);
       //console.log(response)
       //return new Response(200);
     })
     .catch(function(error) {
       console.log("에러 발생")
-      console.log("에러 상태 코드:", error.response.status);
-       //console.log(error)
+     // console.log("에러 상태 코드:", error.response.status);
+       console.log(error)
       return new Response("error");
     });
 
-   console.log("여길 왜와")
+   console.log("200 보내기")
   return new Response(200);
 }

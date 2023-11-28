@@ -65,6 +65,7 @@ export async function GET(request) {
       memberSeqVal: memberSeqVal,
       sodaeVal: sodaeVal
     };
+    console.log(data)
     return Response.json(data);
   } catch (e) {
     return Response.error("해당하는 훈련병이 없거나 편지쓰기 가능 시간이 아닙니다.");
