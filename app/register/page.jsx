@@ -12,6 +12,8 @@ export default function Register() {
   const year = useRef("");
   const month = useRef("");
   const date = useRef("");
+  const username = useRef("");
+  const password = useRef("");
   const [mailLink, setMailLink] = useState("");
 
 
@@ -19,8 +21,8 @@ export default function Register() {
 
 
     axios.post('/api/register', {
-      username: "aaaa",
-      password: "pwaaa",
+      username: username.current,
+      password: password.current,
       name: name.current,
       birth: `${year.current}${month.current}${date.current}`,
       generation: generation.current
@@ -73,6 +75,14 @@ export default function Register() {
         <input minLength="1" name="date" id="date" type="text" placeholder='일'
           required style={{ "width": "80px" }}
           onChange={(e) => { date.current = e.target.value; }}></input>
+        <br />
+        <input minLength="1" name="name" id="name" type="text" placeholder='아이디'
+          required style={{ "width": "235px" }}
+          onChange={(e) => { username.current = e.target.value; }}></input>
+        <br />
+        <input minLength="1" name="name" id="name" type="text" placeholder='비번'
+          required style={{ "width": "235px" }}
+          onChange={(e) => { password.current = e.target.value; }}></input>
         <br />
         <h1>{mailLink}</h1>
 
