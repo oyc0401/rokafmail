@@ -1,4 +1,6 @@
 import { getProfile } from './parser';
+import { reconnect } from './reconnect';
+
 
 const knex = require("knex")({
   // We are using PostgreSQL
@@ -20,7 +22,7 @@ export async function POST(request) {
   const searchBirth = body.birth;
 
   let data = await getProfile(searchName, searchBirth);
-  
+
   console.log("good!")
   console.log(data);
 
@@ -41,13 +43,16 @@ export async function POST(request) {
 
 
   console.log("성공!")
+
+  reconnect();
+
   return new Response('Hello, Next.js!', {
     status: 200
   })
 
 
 
-    // 테이블 만들때 실행
+  // 테이블 만들때 실행
 
   if (! await knex.schema.hasTable('users')) {
     await knex.schema.createTable('users', (table) => {
