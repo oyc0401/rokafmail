@@ -1,28 +1,26 @@
 import sender from "./sender.js";
 
+// knex
 const knex = require("knex")({
-  // We are using PostgreSQL
   client: "postgres",
-  // Use the `DATABASE_URL` environment variable we provide to connect to the Database
-  // It is included in your Replit environment automatically (no need to set it up)
   connection: process.env.DATABASE_URL,
-
-  // Optionally, you can use connection pools to increase query performance
   pool: { min: 0, max: 80 },
 });
 
+
 export default async function repost() {
 
+  
   const unposteds = await knex('post')
     .where('posted', false);
 
-  console.log(unposteds);
+  console.log("repost: 편지 보내기 시작, 미발송 편지 수:", unposteds.length)
 
   for (const post of unposteds) {
 
     let user = await knex('users')
       .where('id', post.user_id).first();
-    console.log(user)
+   // console.log(user)
 
     if (user.connect) {
 
@@ -35,20 +33,19 @@ export default async function repost() {
         sodaeVal: user.sodae,
         memberSeqVal: user.memberSeq
       })
-      console.log("Status:", status);
+    
       if (status) {
-        console.log("다시 보내기 성공!")
+        // console.log("다시 보내기 성공!")
 
         await knex("post")
           .where("id", post.id)
           .update({
             posted: true,
             post_at: new Date(),
-
           });
 
       } else {
-        console.log("다시 보내기 실패ㅜㅜ")
+        console.log("repost: 다시 보내기 실패ㅜㅜ")
         return;
       }
 
@@ -89,5 +86,5 @@ export default async function repost() {
 
   }
 
-
+  console.log("repost: 모든 편지를 보냈습니다.")
 }

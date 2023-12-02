@@ -35,15 +35,15 @@ export default async function sender(body) {
     data: data
   };
 
-  console.log(`서버 보내기 시작: ${body.memberSeqVal}`)
+  console.log(`sender: ${body.memberSeqVal} 편지 보내는중...`)
   await axios(config)
     .then(function(response) {
-      console.log("성공: ", response.status);
+      console.log(`sender: ${body.memberSeqVal} 편지 보내기 성공!:`);
       //console.log(response)
       //return new Response(200);
     })
     .catch(function(error) {
-      console.log("에러 발생", error.response.status);
+      console.log(`${body.memberSeqVal} 편지 오류:`, error.response.status);
       console.log(error)
 
       return false;

@@ -1,10 +1,13 @@
 'use client';
 
 import React, { useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation'
 import axios from "axios";
 
 
 export default function Write(props) {
+  const router = useRouter();
+
   const senderNameRef = useRef("");
   const relationshipRef = useRef("");
   const titleRef = useRef("");
@@ -55,18 +58,19 @@ export default function Write(props) {
       password: passwordRef.current,
 
     })
-    //   .then(
-    //   (res) => {
-    //     if (res.data === 200) {
-    //       router.push(`/res?sc=200&generation=${generation}&searchName=${searchName}&searchBirth=${searchBirth}&memberSeqVal=${memberSeqVal.current}`);
-    //     } else {
-    //       router.push(`/res?sc=e&generation=${generation}&searchName=${searchName}&searchBirth=${searchBirth}&memberSeqVal=${memberSeqVal.current}`);
-    //     }
-    //   }
-    // )
-    //   .catch(function(error) {
-    //     router.push(`/res?sc=error&generation=${generation}&searchName=${searchName}&searchBirth=${searchBirth}&memberSeqVal=${memberSeqVal.current}`);
-    //   });
+      .then(
+      (res) => {
+       // console.log("res:",res)
+        if (res.status === 200) {
+          router.push(`/res?sc=200`);
+        } else {
+          router.push(`/res?sc=e`);
+        }
+      }
+    )
+      .catch(function(error) {
+        router.push(`/res?sc=error`);
+      });
 
 
 
