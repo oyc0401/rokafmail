@@ -44,12 +44,12 @@ export default function Register() {
 
   const handleSubmit = async () => {
 
-    fetchData();
+    // fetchData();
 
 
-    console.log(router)
-    let link = `https://oyc0401.site/write/${username.current}`;
-    setMailLink(link);
+    // console.log(router)
+    // let link = `https://oyc0401.site/write/${username.current}`;
+    // setMailLink(link);
 
   }
 
