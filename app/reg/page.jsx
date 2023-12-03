@@ -11,9 +11,46 @@ export default function Register() {
   const generation = useRef("");
   const birth = useRef("");
 
-  const [mailLink, setMailLink] = useState("");
+
+  function validationName(){
+    if (senderNameRef.current === "") {
+      return false;
+    }
+  }
 
 
+  const validation = () => {
+    if (senderNameRef.current === "") {
+      alert("이름을 입력해주세요.");
+      return false;
+    }
+    if (relationshipRef.current === "") {
+      alert("관계를 입력해주세요.");
+      return false;
+    }
+    if (titleRef.current === "") {
+      alert("제목을 입력해주세요.");
+      return false;
+    }
+    if (contentsRef.current === "") {
+      if (contentsRef.current.length > 1200) {
+        alert("편지 내용은 1200자 이내로 작성해주세요.");
+      } else {
+        alert("편지 내용을 입력해주세요.");
+      }
+      return false;
+    }
+    if (passwordRef.current === "" || passwordRef.current.length < 4) {
+      alert("비밀번호를 4자리 이상 입력해주세요.");
+      return false;
+    }
+
+    return true;
+  }
+
+
+
+  
   return (
     <>
       <div className='flex' style={{
@@ -35,9 +72,9 @@ export default function Register() {
 
 
 
-        <p className='inputTitle'>기수</p>
+        <p className='inputTitle'>기수</p> 
         <div style={{ height: 2 }}></div>
-        <input className='titledInput' minLength="1" name="generation" id="generation" type="text"
+        <input className='titledInput' minLength="1" name="generation" id="generation" type="text" onFocus={console.log("!")}
           placeholder='기수를 입력해주세요'
           onChange={(e) => { generation.current = e.target.value; }}></input>
         <div style={{ height: 2 }}></div>

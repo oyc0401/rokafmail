@@ -6,9 +6,10 @@
   --secondary: #0CEDDB;
   --red: #ff0000;
   --background: white;
-  --light-background: white;
+  --dark-background: #E5E5E5;
   --font-color: #191919;
-  --light-font: #aabbc3;
+  --medium-font: #808080;
+  --light-font: #ababab;
   --font-family: 'Noto Sans KR', sans-serif;
  
 }
@@ -37,7 +38,7 @@ padding:0;
 }
 /* 메인화면에 나오는 글씨  */
 h1{
-  color: #191919;
+  color: var(--font-color);
   text-align: center;
   font-size: 42px;
   font-weight: 700;
@@ -45,16 +46,16 @@ h1{
 }
 
 h2{
-   color: #191919;
+   color: var(--font-color);
   text-align: center;
   font-size: 24px;
-  font-weight: 500;
+  font-weight:600;
    height:35px;
 
 }
 
 h3{
-  color: #191919;
+  color: var(--font-color);
   text-align: center;
  
   font-size: 22px;
@@ -65,10 +66,9 @@ h3{
 
 /* 기본 버튼 */
 .submit{
-  padding-top: 14px;
-  padding-bottom: 14px;
+  padding: 14px 0;
   border-radius: 50px;
-  background: #39F;
+  background: var(--primary);
    border: none;
   width: 100%;
   color: white;
@@ -80,7 +80,13 @@ h3{
   line-height: normal;
   letter-spacing: 1.32px;
 }
+/* 버튼 비활성화 */
+.submit.disable{
+  background: var(--dark-background);
+  color: var(--light-font);
+}
 
+ /* 버튼 미디어 쿼리 */
 @media ( min-width: 480px ) {
   .submit{
     width:440px;
@@ -95,9 +101,10 @@ h3{
    background-color: var(--light-accent);
 }
 
+/* 회원가입 입력 제목  */
 p.inputTitle{
   width: 100%;
-  color: #191919;
+  color: var(--font-color);
  
   font-size: 16px;
   font-weight: 400;
@@ -106,9 +113,10 @@ height:23px;
   
 }
 
+/* 회원가입할 때 알림 글씨 */
 p.inputHint{
   width: 100%;
-  color: #808080;
+  color: var(--medium-font);
 
   font-size: 12px;
   font-weight: 400;
@@ -117,15 +125,13 @@ p.inputHint{
    transition: 0.2s;
 }
 
+/* 화원가입 입력 폼 */
 input.titledInput{
-  border-left-width:0; 
-  border-right-width:0; 
-  border-top-width:0; 
-  border-bottom-width:1;
+   border-width: 0 0 1px;
   background-color: transparent;
   outline: none;
-  color: #191919;
- 
+  color: var(--font-color);
+ border-color:var(--font-color);
   font-size: 24px;
   font-style: normal;
   font-weight: 400;
@@ -134,11 +140,18 @@ input.titledInput{
   text-align: left;
   height:34px;
 }
+
+/* 입력폼 힌트 메시지 */
 input.titledInput::placeholder {
-  color: #ABABAB;
+  color: var(--light-font);
   font-size: 20px;
   font-weight: 400;
 }
+
+input.titledInput:focus {
+   border-color: var(--dark-accent);
+}
+
 
 
 @media ( min-width: 480px ) {
@@ -153,7 +166,7 @@ input.titledInput::placeholder {
   }
 }
 
-
+/* 김뱅크 */
 strong { 
   font-weight: bold; 
   color: var(--light-accent);
@@ -194,9 +207,7 @@ input[type=text],input[type=password] {
   /* margin-right: 10px; */
 }
 
-input[type=text]:focus,input[type=password]:focus {
-  border-color: var(--dark-accent);
-}
+
 
 .red {
   font-weight: bold;
