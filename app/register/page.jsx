@@ -45,7 +45,7 @@ export default function Register() {
 
 
     console.log(router)
-    let link = `https://airforce-mail.vercel.app/mail?generation=${generation.current}&searchName=${name.current}&searchBirth=${year.current}${month.current}${date.current}`;
+    let link = `https://oyc0401.site/write/${username.current}`;
     setMailLink(link);
 
   }
@@ -67,10 +67,10 @@ export default function Register() {
           onChange={(e) => { generation.current = e.target.value; }}></input>
         <br />
         <input minLength="1" name="year" id="year" type="text" placeholder='년도'
-          required style={{ "width": "80px", "margin-right": "10px" }}
+          required style={{ "width": "80px", "marginRight": "10px" }}
           onChange={(e) => { year.current = e.target.value; }}></input>
         <input minLength="1" name="month" id="month" type="text" placeholder='월'
-          required style={{ "width": "80px", "margin-right": "10px" }}
+          required style={{ "width": "80px", "marginRight": "10px" }}
           onChange={(e) => { month.current = e.target.value; }}></input>
         <input minLength="1" name="date" id="date" type="text" placeholder='일'
           required style={{ "width": "80px" }}

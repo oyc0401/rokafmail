@@ -1,8 +1,11 @@
 'use client';
+import styles from './main.module.css'
 
 import React, { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation'
 import axios from "axios";
+
+import Logo from './assets/logo.svg';
 
 export default function Register() {
   const router = useRouter();
@@ -50,46 +53,39 @@ export default function Register() {
 
   }
 
+
+
+
   return (
     <>
+      <div className='flex' style={{
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingLeft: '20px',
+        paddingRight: '20px',
+       
+      }}>
+        
+        <div style={{ flex: 80 }}></div>
+        <Logo style={{
+            width: '171px', height: '171px'
+          }} ></Logo>
+       
+        <div style={{ flex: 146 }}></div>
+        <h1>공군 인편지기</h1>
+        <div style={{ height: 13 }}></div>
+        <h2>입대전에 인편 링크를</h2>
+        <h2>만들고 공유하세요!</h2>
+        <div style={{ flex: 69 }}></div>
 
-      <h1>링크 만들기!!!!!</h1>
-      <p> 편지 링크를 만듭니다.</p>
+        <div className='submit' onClick={handleSubmit}>시작하기</div>
 
-      <br />
-      <div>
-        <input minLength="1" name="name" id="name" type="text" placeholder='이름'
-          required style={{ "width": "235px" }}
-          onChange={(e) => { name.current = e.target.value; }}></input>
-        <br />
-        <input minLength="1" name="generation" id="generation" type="text" placeholder='기수'
-          required style={{ "width": "235px" }}
-          onChange={(e) => { generation.current = e.target.value; }}></input>
-        <br />
-        <input minLength="1" name="year" id="year" type="text" placeholder='년도'
-          required style={{ "width": "80px", "marginRight": "10px" }}
-          onChange={(e) => { year.current = e.target.value; }}></input>
-        <input minLength="1" name="month" id="month" type="text" placeholder='월'
-          required style={{ "width": "80px", "marginRight": "10px" }}
-          onChange={(e) => { month.current = e.target.value; }}></input>
-        <input minLength="1" name="date" id="date" type="text" placeholder='일'
-          required style={{ "width": "80px" }}
-          onChange={(e) => { date.current = e.target.value; }}></input>
-        <br />
-        <input minLength="1" name="name" id="name" type="text" placeholder='아이디'
-          required style={{ "width": "235px" }}
-          onChange={(e) => { username.current = e.target.value; }}></input>
-        <br />
-        <input minLength="1" name="name" id="name" type="text" placeholder='비번'
-          required style={{ "width": "235px" }}
-          onChange={(e) => { password.current = e.target.value; }}></input>
-        <br />
-        <h1>{mailLink}</h1>
-
-        <button onClick={handleSubmit}>
-          링크 만들기
-        </button>
+        <div style={{ height: 11 }}></div>
+        <div className={styles.helper}>도움말</div>
+        <div style={{ height: 23 }}></div>
       </div>
+
 
 
     </>

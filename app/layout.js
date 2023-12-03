@@ -1,6 +1,15 @@
 import '../styles/globals.css';
-
+import { Noto_Sans_KR } from 'next/font/google'; // @next/font will be removed in next14
+import { ReactNode } from 'react';
 import Timer from './timer';
+
+const notoSansKr  = Noto_Sans_KR({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+})
+
+
 
 export const metadata = {
   title: '인편 지기',
@@ -9,7 +18,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ko-KR">
+    <html lang="ko-KR" className={notoSansKr.className}>
       <body>
         {/* <Timer /> */}
         {children}

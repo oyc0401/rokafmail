@@ -1,29 +1,85 @@
- @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800&display=swap');
 
  :root {
-  --primary: #0ced6a;
+  --primary: #39F;
   --light-accent: #68d696;
-  --dark-accent: #08a449;
+  --dark-accent: #2491ff;
   --secondary: #0CEDDB;
   --red: #ff0000;
-  --background: #121212;
-  --light-background: #2b2a2a;
-  --font-color: white;
+  --background: white;
+  --light-background: white;
+  --font-color: #191919;
   --light-font: #aabbc3;
+  --font-family: 'Noto Sans KR', sans-serif;
+ 
 }
 
-#hello{
-  color:red
-} 
+*{
+  margin:0;
+  padding:0;
+}
 
+/* html, body{
+   height: 100%;
+} */
 body {
-  padding: 0;
-  background-color: var(--background);
+padding:0;
   scroll-behavior: smooth;
   color: var(--font-color);
   text-align: center;
-  font-family: 'Open Sans', sans-serif;
 }
+
+/* 플렉스 */
+.flex{
+  display: flex;
+  height: 100vh;
+  /* width:100vw;
+   boxSizing: border-box; */
+}
+/* 메인화면에 나오는 글씨  */
+h1{
+  color: #191919;
+  text-align: center;
+  font-size: 42px;
+  font-weight: 700;
+  height:60px;
+}
+
+h2{
+  color: #191919;
+  text-align: center;
+  font-family: Noto Sans KR;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+   height:32px;
+}
+
+
+/* 기본 버튼 */
+.submit{
+  padding-top: 14px;
+  padding-bottom: 14px;
+  border-radius: 50px;
+  background: #39F;
+   border: none;
+  width: 100%;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 1.32px;
+}
+
+.submit:hover{
+   background-color: var(--dark-accent);
+}
+
+
+
 
 strong { 
   font-weight: bold; 
@@ -47,26 +103,7 @@ a {
   /* margin-top: 100px; */
 }
 
-a:hover {
-  background-color: var(--dark-accent);
-}
 
-button,input[type=submit] {
-  padding: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-  border-radius: 15px;
-  background-color: green;
-  color: var(--font-color);
-  cursor: pointer;
-  border: 2px solid var(--primary);
-  transition: 0.2s;
-  font-size: 17px;
-}
-
-button:hover,input[type=submit]:hover {
-  background-color: var(--dark-accent);
-}
 
 input[type=text],input[type=password] {
   padding: 10px;
