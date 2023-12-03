@@ -75,15 +75,15 @@ export default function Register() {
         <div style={{ flex: 146 }}></div>
         <h1>공군 인편지기</h1>
         <div style={{ height: 13 }}></div>
-        <h2>입대전에 인편 링크를</h2>
-        <h2>만들고 공유하세요!</h2>
+        <h3>입대전에 인편 링크를</h3>
+        <h3>만들고 공유하세요!</h3>
         <div style={{ flex: 69 }}></div>
 
         <div className='submit' onClick={handleSubmit}>시작하기</div>
 
         <div style={{ height: 11 }}></div>
         <div className={styles.helper}>도움말</div>
-        <div style={{ height: 23 }}></div>
+        <div style={{ height: 19 }}></div>
       </div>
 
 
