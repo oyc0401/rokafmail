@@ -33,22 +33,25 @@ padding:0;
 .flex{
   display: flex;
   height: 100%;
-  /* width:100vw;
-   boxSizing: border-box; */
 }
+
 /* 메인화면에 나오는 글씨  */
 h1{
   color: var(--font-color);
   text-align: center;
   font-size: 42px;
+   letter-spacing: 1.68px;
   font-weight: 700;
   height:60px;
+ 
 }
 
+/* 입력폼 글씨 */
 h2{
    color: var(--font-color);
   text-align: center;
   font-size: 24px;
+  letter-spacing: 0.96px;
   font-weight:600;
    height:35px;
 
@@ -59,8 +62,10 @@ h3{
   text-align: center;
  
   font-size: 22px;
+   letter-spacing: 0.88px;
   font-weight: 400;
    height:32px;
+ 
 }
 
 
@@ -75,6 +80,7 @@ h3{
   cursor: pointer;
   transition: 0.2s;
   font-size: 22px;
+  letter-spacing: 0.88px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -114,13 +120,25 @@ height:23px;
 }
 
 /* 회원가입할 때 알림 글씨 */
-p.inputHint{
+p.inputHelp{
   width: 100%;
   color: var(--medium-font);
-
   font-size: 12px;
   font-weight: 400;
    text-align: left;
+  height:17px;
+   transition: 0.2s;
+}
+
+p.warn{
+  color:red;
+}
+
+.helpIcon{
+  width: 100%;
+  color: var(--primary);
+   font-size: 18px !important;
+   text-align: right;
   height:17px;
    transition: 0.2s;
 }
@@ -158,7 +176,7 @@ input.titledInput:focus {
   p.inputTitle{
     width:440px;
   }
-  p.inputHint{
+  p.inputHelp,.helpIcon{
      width:440px;
   }
   input.titledInput{

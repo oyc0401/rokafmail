@@ -7,50 +7,69 @@ import { useRouter } from 'next/navigation'
 export default function Register() {
   const router = useRouter();
 
-  const name = useRef("");
   const generation = useRef("");
+  const name = useRef("");
   const birth = useRef("");
 
+  const [validGeneration, setValidGeneration] = useState(false);
+  const [validName, setValidName] = useState(false);
+  const [validBirth, setValidBirth] = useState(false);
 
-  function validationName(){
-    if (senderNameRef.current === "") {
-      return false;
+  const [generationHelp, setGenerationHelp] = useState("");
+  const [nameHelp, setNameHelp] = useState("");
+  const [birthHelp, setBirthHelp] = useState("");
+
+  const generationChanged = useRef(false);
+  const nameChanged = useRef(false);
+  const birthChanged = useRef(false);
+
+
+
+  function editGeneration(text) {
+    generation.current = text;
+    generationChanged.current = true;
+    if (generation.current == "") {
+      setValidGeneration(false);
+      setGenerationHelp("기수를 입력해주세요");
+    } else {
+      setValidGeneration(true);
     }
   }
 
-
-  const validation = () => {
-    if (senderNameRef.current === "") {
-      alert("이름을 입력해주세요.");
-      return false;
+  function editName(text) {
+    name.current = text;
+    nameChanged.current = true;
+    if (name.current == "") {
+      setValidName(false);
+      setNameHelp("이름을 입력해주세요");
+    } else {
+      setValidName(true);
     }
-    if (relationshipRef.current === "") {
-      alert("관계를 입력해주세요.");
-      return false;
-    }
-    if (titleRef.current === "") {
-      alert("제목을 입력해주세요.");
-      return false;
-    }
-    if (contentsRef.current === "") {
-      if (contentsRef.current.length > 1200) {
-        alert("편지 내용은 1200자 이내로 작성해주세요.");
-      } else {
-        alert("편지 내용을 입력해주세요.");
-      }
-      return false;
-    }
-    if (passwordRef.current === "" || passwordRef.current.length < 4) {
-      alert("비밀번호를 4자리 이상 입력해주세요.");
-      return false;
-    }
-
-    return true;
   }
 
+  function editBirth(text) {
+    birth.current = text;
+    birthChanged.current = true;
+    if (birth.current == "") {
+      setValidBirth(false);
+      setBirthHelp("생년월일을 입력해주세요");
+    }
+    else if (!/^\d+$/.test(text)) {
+      setValidBirth(false);
+      setBirthHelp("숫자만 입력해주세요.");
+    } else if (birth.current.length != 8) {
+      setValidBirth(false);
+      setBirthHelp("생년월일 8자리를 입력해주세요. 예시) 20030401");
+    } else {
+      // 성공
+      setValidBirth(true);
+    }
+  }
 
+  function canSubmit() {
+    return validGeneration && validName && validBirth;
+  }
 
-  
   return (
     <>
       <div className='flex' style={{
@@ -72,40 +91,43 @@ export default function Register() {
 
 
 
-        <p className='inputTitle'>기수</p> 
+        <p className='inputTitle'>기수</p>
         <div style={{ height: 2 }}></div>
-        <input className='titledInput' minLength="1" name="generation" id="generation" type="text" onFocus={console.log("!")}
-          placeholder='기수를 입력해주세요'
-          onChange={(e) => { generation.current = e.target.value; }}></input>
+        <input className='titledInput' minLength="1" name="generation" id="generation" type="text"
+          placeholder='기수를 입력해주세요 예시) 850'
+          onChange={(e) => { editGeneration(e.target.value) }}></input>
         <div style={{ height: 2 }}></div>
-        <p className='inputHint'>예시) 850</p>
-        
+        {validGeneration || !generationChanged.current
+          ? <p className='inputHelp' >예시) 850 </p>
+          : <p className='inputHelp warn' >{generationHelp}</p>}
+
         <div style={{ height: 16 }}></div>
 
         <p className='inputTitle'>이름</p>
         <div style={{ height: 2 }}></div>
         <input className='titledInput' minLength="1" name="name" id="name" type="text"
           placeholder='이름을 입력해주세요'
-          onChange={(e) => { name.current = e.target.value; }}></input>
+          onChange={(e) => { editName(e.target.value) }}></input>
         <div style={{ height: 2 }}></div>
-        <p className='inputHint'></p>
-        
+
+        {validName || !nameChanged.current
+          ? <p className='inputHelp' ></p>
+          : <p className='inputHelp warn' >{nameHelp}</p>}
+
         <div style={{ height: 16 }}></div>
 
         <p className='inputTitle'>생년월일</p>
         <div style={{ height: 2 }}></div>
         <input className='titledInput' minLength="1" name="birth" id="birth" type="text"
           placeholder='생년월일 8자리를 입력해주세요'
-          onChange={(e) => { birth.current = e.target.value; }}></input>
+          onChange={(e) => { editBirth(e.target.value) }}></input>
         <div style={{ height: 2 }}></div>
-        <p className='inputHint'>예시) 20030401</p>
-        
-        <div style={{ height: 16 }}></div>
-        
-        
-        <div style={{ flex: 138 }}></div>
-        <div className='submit'>다음</div>
+        {validBirth || !birthChanged.current
+          ? <p className='inputHelp' >예시) 20030401</p>
+          : <p className='inputHelp warn' >{birthHelp}</p>}
 
+        <div style={{ flex: 138 }}></div>
+        <button className={canSubmit() ? 'submit' : 'submit disable'}>다음</button>
         <div style={{ height: 37 }}></div>
       </div>
 
