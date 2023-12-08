@@ -11,7 +11,6 @@
   --medium-font: #808080;
   --light-font: #ababab;
   --font-family: 'Noto Sans KR', sans-serif;
- 
 }
 
 *{
@@ -46,16 +45,7 @@ h1{
  
 }
 
-/* 입력폼 글씨 */
-h2{
-   color: var(--font-color);
-  text-align: center;
-  font-size: 24px;
-  letter-spacing: 0.96px;
-  font-weight:600;
-   height:35px;
 
-}
 
 h3{
   color: var(--font-color);
@@ -86,103 +76,32 @@ h3{
   line-height: normal;
   letter-spacing: 1.32px;
 }
-/* 버튼 비활성화 */
+.submit:hover{
+   background-color: var(--light-accent);
+}
 .submit.disable{
   background: var(--dark-background);
   color: var(--light-font);
 }
-
- /* 버튼 미디어 쿼리 */
+.submit:hover{
+  background: var(--dark-background)
+}
 @media ( min-width: 480px ) {
   .submit{
     width:440px;
   }
-  
-}
-@media ( min-width: 1024px ) {
-  
 }
 
-.submit:hover{
-   background-color: var(--light-accent);
-}
-
-/* 회원가입 입력 제목  */
-p.inputTitle{
-  width: 100%;
-  color: var(--font-color);
- 
-  font-size: 16px;
-  font-weight: 400;
-   text-align: left;
-height:23px;
-  
-}
-
-/* 회원가입할 때 알림 글씨 */
-p.inputHelp{
-  width: 100%;
-  color: var(--medium-font);
-  font-size: 12px;
-  font-weight: 400;
-   text-align: left;
-  height:17px;
-   transition: 0.2s;
-}
-
-p.warn{
+/* 경고 색 */
+.warn{
   color:red;
 }
-
-.helpIcon{
-  width: 100%;
-  color: var(--primary);
-   font-size: 18px !important;
-   text-align: right;
-  height:17px;
-   transition: 0.2s;
-}
-
-/* 화원가입 입력 폼 */
-input.titledInput{
-   border-width: 0 0 1px;
-  background-color: transparent;
-  outline: none;
-  color: var(--font-color);
- border-color:var(--font-color);
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  transition: 0.2s;
-  width: 100%;
-  text-align: left;
-  height:34px;
-}
-
-/* 입력폼 힌트 메시지 */
-input.titledInput::placeholder {
-  color: var(--light-font);
-  font-size: 20px;
-  font-weight: 400;
-}
-
-input.titledInput:focus {
-   border-color: var(--dark-accent);
+.great{
+  color:green;
 }
 
 
 
-@media ( min-width: 480px ) {
-  p.inputTitle{
-    width:440px;
-  }
-  p.inputHelp,.helpIcon{
-     width:440px;
-  }
-  input.titledInput{
-     width:440px;
-  }
-}
 
 /* 김뱅크 */
 strong { 
