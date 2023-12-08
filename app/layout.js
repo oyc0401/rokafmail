@@ -1,12 +1,11 @@
 import '../styles/globals.css';
 import { Noto_Sans_KR } from 'next/font/google';
-import { ReactNode } from 'react';
-import Timer from './timer';
 
 const notoSansKr = Noto_Sans_KR({
   weight: ['400', '500', '600', '700', '800'],
   preload: false,
-  display: 'swap',
+ // display: 'auto',
+  fallback: ['system-ui', 'sans-serif']
 })
 
 

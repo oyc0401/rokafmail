@@ -122,9 +122,8 @@ export default function Account(props) {
       >
         <div style={{ flex: 100 }}></div>
 
-        <h2 className={styles.title}>
-          편지 주소를 확인하기 위해 이름과 생년월일이 필요해요
-        </h2>
+        <h2 className={styles.title}>편지 주소를 확인하기 위해</h2>
+        <h2 className={styles.title}>이름과 생년월일이 필요해요</h2>
 
         <div style={{ flex: 49 }}></div>
 

@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
+import styles from "./register.module.css";
 
 export default function Information(props) {
   const generation = useRef("");
@@ -83,7 +84,7 @@ export default function Information(props) {
 
     // 빈칸일 때
     if (text == "") {
-        setValidBirth(false);
+      setValidBirth(false);
       setBirthHelp({
         text: "예시) 20020101",
       });
@@ -100,13 +101,13 @@ export default function Information(props) {
     }
     // 8자리 미만
     if (text.length < 8) {
-        setValidBirth(false);
+      setValidBirth(false);
       setBirthHelp({
         text: "예시) 20020101",
       });
       return;
     }
-    
+
     // 8자리 초과
     if (text.length > 8) {
       setValidBirth(false);
@@ -123,7 +124,6 @@ export default function Information(props) {
       text: "잘했어요!",
       color: "great",
     });
-     
   }
 
   function canSubmit() {
@@ -133,8 +133,9 @@ export default function Information(props) {
   return (
     <>
       <div
-        className="flex"
         style={{
+          display: "flex",
+          height: "100%",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "flex-start",
@@ -144,7 +145,8 @@ export default function Information(props) {
       >
         <div style={{ flex: 100 }}></div>
 
-         <h2 className={styles.title}>편지 주소를 확인하기 위해 이름과 생년월일이 필요해요</h2>
+        <h2 className={styles.title}>편지 주소를 확인하기 위해</h2>
+        <h2 className={styles.title}>이름과 생년월일이 필요해요</h2>
         <div style={{ flex: 49 }}></div>
 
         <p className={styles.formTitle}>기수</p>
@@ -183,10 +185,8 @@ export default function Information(props) {
         <div style={{ height: 2 }}></div>
         <p className={`${styles.help} ${nameHelp.color}`}>{nameHelp.text}</p>
 
-        
         <div style={{ height: 16 }}></div>
 
-        
         <p className={styles.formTitle}>생년월일</p>
         <div style={{ height: 2 }}></div>
         <input
@@ -202,8 +202,6 @@ export default function Information(props) {
         ></input>
         <div style={{ height: 2 }}></div>
         <p className={`${styles.help} ${birthHelp.color}`}>{birthHelp.text}</p>
-
-      
 
         <div style={{ flex: 138 }}></div>
         <button
