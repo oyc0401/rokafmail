@@ -5,7 +5,7 @@
   font-size: 42px;
    letter-spacing: 0.04em;
   font-weight: 700;
-  height:60px;
+
 }
 
 .substring{
@@ -14,7 +14,7 @@
   font-size: 22px;
    letter-spacing: 0.04em;
   font-weight: 400;
-   height:32px;
+
 }
 
 .help{
@@ -29,6 +29,9 @@
   line-height: normal;
   text-decoration-line: underline;
   cursor: pointer;
+}
+.help:hover{
+  color: var(--dark-accent);
 }
 
 

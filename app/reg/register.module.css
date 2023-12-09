@@ -5,7 +5,6 @@
   font-size: 24px;
   letter-spacing: 0.96px;
   font-weight:600;
-   height:35px;
 }
 
 /* 입력 폼 제목  */
@@ -51,7 +50,10 @@
   height:34px;
 }
 .username{
-  max-width:349px;
+  max-width:343px;
+}
+.introduction{
+  
 }
 
 @media ( min-width: 480px ) {
@@ -91,8 +93,18 @@
    letter-spacing: 0.04em;
   font-weight: 400;
    cursor: pointer;
+  margin-left:6px;
 }
 .dupButton:hover{
   background:#e3e3e3;
 }
 
+/* 설명글 */
+.intro{
+  color: #939393;
+  max-width: 440px;
+  text-align:left;
+  font-size: 12px;
+  font-weight: 400;
+   letter-spacing: 0.04em;
+}

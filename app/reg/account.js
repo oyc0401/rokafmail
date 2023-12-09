@@ -17,22 +17,34 @@ export default function Account(props) {
   const [passwordHelp, setPasswordHelp] = useState({
     text: "",
   });
-  const [repasswordHelp, setBirthRepassword] = useState({
+  const [repasswordHelp, setRepasswordHelp] = useState({
     text: "",
   });
 
+  const clickUsernameDup = useRef(false);
+
   function editUsername(text) {
     username.current = text;
+    clickUsernameDup.current=false;
     setValidUsername(false);
+    setUsernameHelp({ text: "" });
   }
 
   function checkUsername() {
+    clickUsernameDup.current =true;
     // 통과
     setValidUsername(true);
     setUsernameHelp({
-      text: "잘했어요!",
+      text: "사용할 수 있는 아이디입니다",
       color: "great",
     });
+
+
+    // setValidUsername(false);
+    // setUsernameHelp({
+    //   text: "이미 사용중인 아이디 입니다",
+    //   color: "warn",
+    // });
   }
 
   function editPassword(text) {
@@ -42,7 +54,7 @@ export default function Account(props) {
     // 비밀번호 재확인 메시지를 초기화
     if (repassword.current.length != 0 && text != repassword.current) {
       setValidRepassword(false);
-      setBirthRepassword({
+      setRepasswordHelp({
         text: "비밀번호가 같지 않습니다.",
         color: "warn",
       });
@@ -61,10 +73,19 @@ export default function Account(props) {
     if (text.length < 4) {
       setValidPassword(false);
       setPasswordHelp({
-        text: "비밀번호는 4자리 이상이여야 합니다.",
+        text: "비밀번호는 4자리 이상이여야 합니다",
         color: "warn",
       });
       return;
+    }
+
+    // 변경한 비밀번호가 재확인 번호와 같을때
+    if (repassword.current.length != 0 && text == repassword.current) {
+      setValidRepassword(true);
+      setRepasswordHelp({
+        text: "잘했어요!",
+        color: "great",
+      });
     }
 
     // 통과
@@ -81,7 +102,7 @@ export default function Account(props) {
     // 빈칸일 때
     if (text == "") {
       setValidRepassword(false);
-      setBirthRepassword({
+      setRepasswordHelp({
         text: "",
       });
       return;
@@ -89,8 +110,8 @@ export default function Account(props) {
     // 비밀번호가 같지 않음
     if (text != password.current) {
       setValidRepassword(false);
-      setBirthRepassword({
-        text: "비밀번호가 같지 않습니다.",
+      setRepasswordHelp({
+        text: "비밀번호가 같지 않습니다",
         color: "warn",
       });
       return;
@@ -98,7 +119,7 @@ export default function Account(props) {
 
     // 통과
     setValidRepassword(true);
-    setBirthRepassword({
+    setRepasswordHelp({
       text: "잘했어요!",
       color: "great",
     });
@@ -106,6 +127,45 @@ export default function Account(props) {
 
   function canSubmit() {
     return validUsername && validPassword && validRepassword;
+  }
+
+  function click() {
+    if (canSubmit()) {
+      props.click();
+    } else {
+      if (!validUsername) {
+        if (username.current.length != 0 && !clickUsernameDup.current) {
+          setUsernameHelp({
+            text: "아이디 중복확인을 해주세요",
+            color: "warn",
+          });
+        }else if(username.current.length != 0 && clickUsernameDup.current){
+          setUsernameHelp({
+            text: "이미 사용중인 아이디 입니다",
+            color: "warn",
+          });
+        } 
+        else {
+          setUsernameHelp({
+            text: "아이디를 입력해주세요",
+            color: "warn",
+          });
+        }
+      }
+
+      if (!validPassword) {
+        setPasswordHelp({
+          text: "비밀번호를 입력해주세요",
+          color: "warn",
+        });
+      }
+      if (!validRepassword) {
+        setRepasswordHelp({
+          text: "비밀번호를 다시 입력해주세요",
+          color: "warn",
+        });
+      }
+    }
   }
 
   return (
@@ -122,8 +182,11 @@ export default function Account(props) {
       >
         <div style={{ flex: 100 }}></div>
 
-        <h2 className={styles.title}>편지 주소를 확인하기 위해</h2>
-        <h2 className={styles.title}>이름과 생년월일이 필요해요</h2>
+        <h2 className={styles.title}>
+          편지 주소를 확인하기 위해
+          <br />
+          이름과 생년월일이 필요해요
+        </h2>
 
         <div style={{ flex: 49 }}></div>
 
@@ -202,7 +265,7 @@ export default function Account(props) {
         <div style={{ flex: 138 }}></div>
         <button
           className={canSubmit() ? "submit" : "submit disable"}
-          onClick={props.click}
+          onClick={click}
         >
           다음
         </button>

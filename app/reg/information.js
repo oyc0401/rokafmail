@@ -21,6 +21,9 @@ export default function Information(props) {
     text: "예시) 20020101",
   });
 
+  let minGeneration=840;
+  let maxGeneration=1000;
+
   function editGeneration(text) {
     generation.current = text;
 
@@ -41,8 +44,25 @@ export default function Information(props) {
       });
       return;
     }
-    // 830 ~ 1000 밖의 기수일 때
-    if (1000 < text) {
+    // 작성중
+    if ( text<100) {
+      setValidGeneration(false);
+      setGenerationHelp({
+        text: "예시) 850",
+      });
+      return;
+    }
+    
+    // minGeneration ~ maxGeneration 밖의 기수일 때
+    if ( text<minGeneration) {
+      setValidGeneration(false);
+      setGenerationHelp({
+        text: "이미 전역한 기수예요",
+        color: "warn",
+      });
+      return;
+    }
+    if (maxGeneration < text) {
       setValidGeneration(false);
       setGenerationHelp({
         text: "숫자가 너무 커요",
@@ -112,7 +132,7 @@ export default function Information(props) {
     if (text.length > 8) {
       setValidBirth(false);
       setBirthHelp({
-        text: "생년월일 8자리를 입력해주세요.",
+        text: "생년월일 8자리를 입력해주세요",
         color: "warn",
       });
       return;
@@ -130,6 +150,31 @@ export default function Information(props) {
     return validGeneration && validName && validBirth;
   }
 
+  function click() {
+    if (canSubmit()) {
+      props.click();
+    } else {
+      if (!validGeneration) {
+        setGenerationHelp({
+          text: "기수를 입력해주세요 예시) 850",
+          color: "warn",
+        });
+      }
+      if (!validName) {
+        setNameHelp({
+          text: "이름을 입력해주세요",
+          color: "warn",
+        });
+      }
+      if (!validBirth) {
+        setBirthHelp({
+          text: "생년월일 8자리를 입력해주세요",
+          color: "warn",
+        });
+      }
+    }
+  }
+
   return (
     <>
       <div
@@ -145,8 +190,8 @@ export default function Information(props) {
       >
         <div style={{ flex: 100 }}></div>
 
-        <h2 className={styles.title}>편지 주소를 확인하기 위해</h2>
-        <h2 className={styles.title}>이름과 생년월일이 필요해요</h2>
+        <h2 className={styles.title}>편지 주소를 확인하기 위해<br/>이름과 생년월일이 필요해요</h2>
+      
         <div style={{ flex: 49 }}></div>
 
         <p className={styles.formTitle}>기수</p>
@@ -206,7 +251,7 @@ export default function Information(props) {
         <div style={{ flex: 138 }}></div>
         <button
           className={canSubmit() ? "submit" : "submit disable"}
-          onClick={props.click}
+          onClick={click}
         >
           다음
         </button>

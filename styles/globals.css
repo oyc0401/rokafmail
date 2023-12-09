@@ -61,9 +61,7 @@ padding:0;
   background: var(--dark-background);
   color: var(--light-font);
 }
-.submit:hover{
-  background: var(--dark-background)
-}
+
 
 /* 경고 색 */
 .warn{
