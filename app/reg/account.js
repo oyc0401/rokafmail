@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
+import {avaliableUsername} from "./server/avaliableUsername";
 
 export default function Account(props) {
   const username = useRef("");
@@ -25,26 +26,30 @@ export default function Account(props) {
 
   function editUsername(text) {
     username.current = text;
-    clickUsernameDup.current=false;
+    clickUsernameDup.current = false;
     setValidUsername(false);
     setUsernameHelp({ text: "" });
   }
 
-  function checkUsername() {
-    clickUsernameDup.current =true;
-    // 통과
-    setValidUsername(true);
-    setUsernameHelp({
-      text: "사용할 수 있는 아이디입니다",
-      color: "great",
-    });
+  async function checkUsername() {
+    clickUsernameDup.current = true;
 
-
-    // setValidUsername(false);
-    // setUsernameHelp({
-    //   text: "이미 사용중인 아이디 입니다",
-    //   color: "warn",
-    // });
+    let result = await avaliableUsername(username.current);
+    
+    if (result) {
+      // 통과
+      setValidUsername(true);
+      setUsernameHelp({
+        text: "사용할 수 있는 아이디입니다",
+        color: "great",
+      });
+    } else {
+      setValidUsername(false);
+      setUsernameHelp({
+        text: "이미 사용중인 아이디 입니다",
+        color: "warn",
+      });
+    }
   }
 
   function editPassword(text) {
@@ -139,13 +144,12 @@ export default function Account(props) {
             text: "아이디 중복확인을 해주세요",
             color: "warn",
           });
-        }else if(username.current.length != 0 && clickUsernameDup.current){
+        } else if (username.current.length != 0 && clickUsernameDup.current) {
           setUsernameHelp({
             text: "이미 사용중인 아이디 입니다",
             color: "warn",
           });
-        } 
-        else {
+        } else {
           setUsernameHelp({
             text: "아이디를 입력해주세요",
             color: "warn",
