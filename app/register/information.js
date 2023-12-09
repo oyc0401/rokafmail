@@ -3,9 +3,9 @@ import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
 
 export default function Information(props) {
-  const generation = useRef("");
-  const name = useRef("");
-  const birth = useRef("");
+  const generation = props.generation;
+  const name = props.name;
+  const birth = props.birth;
 
   const [validGeneration, setValidGeneration] = useState(false);
   const [validName, setValidName] = useState(false);

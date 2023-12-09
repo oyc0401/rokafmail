@@ -2,8 +2,8 @@
 import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
 
-export default function Introduction(props) {
-  const intro = useRef("");
+export default function Substring(props) {
+  const substring = props.substring;
 
   const [validIntro, setValidIntro] = useState(false);
 
@@ -12,7 +12,7 @@ export default function Introduction(props) {
   });
 
   function editGeneration(text) {
-    intro.current = text;
+    substring.current = text;
 
     // 빈칸일 때
     if (text == "") {
@@ -44,9 +44,10 @@ export default function Introduction(props) {
     return validIntro;
   }
 
-  function click() {
+  async function click() {
     if (canSubmit()) {
       props.click();
+      props.send();
     } else {
       if (!validIntro) {
         setIntroHelp({

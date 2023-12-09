@@ -4,9 +4,9 @@ import styles from "./register.module.css";
 import {avaliableUsername} from "./server/avaliableUsername";
 
 export default function Account(props) {
-  const username = useRef("");
-  const password = useRef("");
-  const repassword = useRef("");
+  const username = props.username;
+  const password = props.password;
+  const repassword =props.repassword;
 
   const [validUsername, setValidUsername] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
