@@ -16,9 +16,9 @@ export default function Register() {
   const password = useRef("");
   const repassword = useRef("");
   const substring = useRef("");
-  
+
   async function send() {
-    
+
     await axios
       .post("/api/register", {
         username:username.current,
