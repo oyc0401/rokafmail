@@ -1,6 +1,14 @@
+"use client";
 import styles from "./link.module.css";
 
 export default async function Link({ params }) {
+
+  function copy() {
+
+     navigator.clipboard.writeText(`https://airforce-mail--oyc0401.repl.co/write/${params.username}`);
+    alert("복사돠었습니다!")
+  }
+  
   return (
     <>
       <div
@@ -29,7 +37,8 @@ export default async function Link({ params }) {
           편지를 받으세요!
         </h2>
         <div style={{ height: 35 }}></div>
-        <button className={"submit"}>링크 복사</button>
+        {/* <div id="link">{`http://dsadsadas`}</div> */}
+        <button className={"submit"} onClick={copy}>링크 복사</button>
         <div style={{ height: 32 }}></div>
       </div>
     </>

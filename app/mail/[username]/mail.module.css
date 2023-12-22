@@ -1,0 +1,125 @@
+.icon{
+  color:var(--primary);
+  font-size:129px !important;
+}
+
+
+.title{
+  font-weight: 600;
+  font-size: 24px;
+   letter-spacing: 0.04em;
+  text-align:left;
+   max-width:440px;
+  width: 100%;
+}
+.highlight{
+  color:var(--primary);
+}
+
+.subtitle{
+  color: #ABABAB;
+  font-weight: 500;
+  font-size:14px;
+   letter-spacing: 0.04em;
+  text-align:left;
+   max-width:440px;
+   width: 100%;
+}
+
+.subtext{
+  font-weight: 600;
+  font-size:16px;
+   letter-spacing: 0.04em;
+  text-align:left;
+   max-width:440px;
+   width: 100%;
+}
+
+
+/* 화원가입 입력 폼 */
+.form{
+   border-width: 0 0 1px;
+  background-color: transparent;
+  outline: none;
+  color: var(--font-color);
+ border-color:var(--font-color);
+   font-weight: 500;
+  font-size: 20px;
+   letter-spacing: 0.04em;
+  font-style: normal;
+  transition: 0.2s;
+  width: 100%;
+  max-width:440px;
+  text-align: left;
+  height:34px;
+}
+
+.username{
+  max-width:203px;
+}
+
+@media ( min-width: 480px ) {
+  .username{
+    width:349px;
+  }
+}
+
+.contentForm{
+   border-width: 0 0 1px;
+    background-color: transparent;
+  font-family:var(--font-family) !important;
+    outline: none;
+    color: var(--font-color);
+   border-color:var(--font-color);
+     font-weight: 500;
+    font-size: 20px;
+     letter-spacing: 0.04em;
+    font-style: normal;
+    transition: 0.2s;
+    width: 100%;
+    max-width:440px;
+    text-align: left;
+    min-height:193px;
+  overflow:hidden;
+  resize:none;
+}
+
+/* 입력폼 힌트 메시지 */
+.form::placeholder {
+  color: var(--light-font);
+  font-size: 18px;
+   letter-spacing: 0.04em;
+   font-weight: 500;
+}
+
+.contentForm::placeholder {
+  font-family:var(--font-family) !important;
+  color: var(--light-font);
+  font-size: 18px;
+   letter-spacing: 0.04em;
+   font-weight: 500;
+}
+
+.form:focus {
+   border-color: var(--dark-accent);
+}
+
+.description{
+   color: var(--light-font);
+  font-weight: 400;
+  font-size:10px;
+   letter-spacing: 0.04em;
+  text-align:left;
+   max-width:440px;
+   width: 100%;
+}
+
+.formHint{
+  color: #808080;
+  font-weight: 500;
+  font-size:12px;
+   letter-spacing: 0.04em;
+  text-align:left;
+   max-width:440px;
+   width: 100%;
+}
