@@ -1,17 +1,14 @@
 import { getProfile } from "./parser";
 
-const knex = require("knex")({
-  // We are using PostgreSQL
-  client: "postgres",
-  // Use the `DATABASE_URL` environment variable we provide to connect to the Database
-  // It is included in your Replit environment automatically (no need to set it up)
-  connection: process.env.DATABASE_URL,
 
-  // Optionally, you can use connection pools to increase query performance
-  pool: { min: 0, max: 80 },
-});
 
 export async function POST(request) {
+  const knex = require("knex")({
+    client: "postgres",
+    connection: process.env.DATABASE_URL,
+    pool: { min: 0, max: 80 },
+  });
+  
   console.log("회원가입 중...");
   const body = await request.json();
 

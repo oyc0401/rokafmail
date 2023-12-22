@@ -54,5 +54,7 @@ export default function Register() {
     4:"dsad"
   };
 
+    pages[1]=pages[2];
+
   return <>{pages[page]}</>;
 }

@@ -1,12 +1,12 @@
 "use client";
 import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
-import {avaliableUsername} from "./server/avaliableUsername";
+import { avaliableUsername } from "./server/avaliableUsername";
 
 export default function Account(props) {
   const username = props.username;
   const password = props.password;
-  const repassword =props.repassword;
+  const repassword = props.repassword;
 
   const [validUsername, setValidUsername] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
@@ -31,11 +31,17 @@ export default function Account(props) {
     setUsernameHelp({ text: "" });
   }
 
+  let [loading, setLoading] = useState(false);
+
   async function checkUsername() {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     clickUsernameDup.current = true;
 
     let result = await avaliableUsername(username.current);
-    
+
     if (result) {
       // 통과
       setValidUsername(true);
@@ -50,8 +56,11 @@ export default function Account(props) {
         color: "warn",
       });
     }
+
+    setLoading(false);
   }
 
+  // 비밀번호 작성
   function editPassword(text) {
     password.current = text;
 
@@ -216,8 +225,23 @@ export default function Account(props) {
               editUsername(e.target.value);
             }}
           ></input>
-          <button className={styles.dupButton} onClick={checkUsername}>
-            중복확인
+          <button
+            className={
+              loading
+                ? `${styles.dupButton} ${styles.loading}`
+                : styles.dupButton
+            }
+            onClick={checkUsername}
+          >
+            <div
+              style={{
+                display: "flex",
+                textAlign: "center",
+                justifyContent: "center",
+              }}
+            >
+              {loading ? <p className={styles.animation} /> : "중복확인"}
+            </div>
           </button>
         </div>
 

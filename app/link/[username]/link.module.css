@@ -1,0 +1,16 @@
+.icon{
+  color:var(--primary);
+  font-size:129px !important;
+}
+
+
+.title{
+  font-size:28px;
+  font-weight: 700;
+   letter-spacing: 0.04em;
+}
+
+.subtitle{
+  font-size:22px;
+   letter-spacing: 0.04em;
+}

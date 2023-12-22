@@ -1,15 +1,17 @@
 import Write from "./write"
 import Timer from "./timer"
 
-// knex
-const knex = require("knex")({
-  client: "postgres",
-  connection: process.env.DATABASE_URL,
-  pool: { min: 0, max: 80 },
-});
+
 
 
 export default async function Page({ params }) {
+  // knex
+  const knex = require("knex")({
+    client: "postgres",
+    connection: process.env.DATABASE_URL,
+    pool: { min: 0, max: 80 },
+  });
+  
   const user = await knex('users')
     .where('username', params.username)
     .first();

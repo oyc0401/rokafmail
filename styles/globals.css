@@ -52,7 +52,7 @@ padding:0;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  letter-spacing: 1.32px;
+  letter-spacing: 0.02em;
 }
 .submit:hover{
    background-color: var(--light-accent);
