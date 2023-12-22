@@ -21,8 +21,8 @@ export default function Information(props) {
     text: "예시) 20020101",
   });
 
-  let minGeneration=840;
-  let maxGeneration=1000;
+  let minGeneration = 840;
+  let maxGeneration = 1000;
 
   function editGeneration(text) {
     generation.current = text;
@@ -45,16 +45,16 @@ export default function Information(props) {
       return;
     }
     // 작성중
-    if ( text<100) {
+    if (text < 100) {
       setValidGeneration(false);
       setGenerationHelp({
         text: "예시) 850",
       });
       return;
     }
-    
+
     // minGeneration ~ maxGeneration 밖의 기수일 때
-    if ( text<minGeneration) {
+    if (text < minGeneration) {
       setValidGeneration(false);
       setGenerationHelp({
         text: "이미 전역한 기수예요",
@@ -177,21 +177,15 @@ export default function Information(props) {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          height: "100%",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          paddingLeft: "20px",
-          paddingRight: "20px",
-        }}
-      >
+      <div className="screen">
         <div style={{ flex: 100 }}></div>
 
-        <h2 className={styles.title}>편지 주소를 확인하기 위해<br/>이름과 생년월일이 필요해요</h2>
-      
+        <h2 className={styles.title}>
+          편지 주소를 확인하기 위해
+          <br />
+          이름과 생년월일이 필요해요
+        </h2>
+
         <div style={{ flex: 49 }}></div>
 
         <p className={styles.formTitle}>기수</p>

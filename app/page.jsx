@@ -7,16 +7,7 @@ import Image from "next/image";
 export default function Register() {
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          height: "100%",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          padding: "0 20px",
-        }}
-      >
+      <div className="screen">
         <div style={{ flex: 80 }}></div>
         <Image
           src={Logo}
@@ -26,7 +17,11 @@ export default function Register() {
         <div style={{ flex: 146 }}></div>
         <h1 className={styles.title}>공군 인편지기</h1>
         <div style={{ height: 13 }}></div>
-        <h3 className={styles.substring}> 입대전에 인편 링크를<br/> </h3>
+        <h3 className={styles.substring}>
+          {" "}
+          입대전에 인편 링크를
+          <br />{" "}
+        </h3>
         <h3 className={styles.substring}> 만들고 공유하세요!</h3>
 
         <div style={{ flex: 69 }}></div>

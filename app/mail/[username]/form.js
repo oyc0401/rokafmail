@@ -13,8 +13,7 @@ export function Form(){
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "flex-start",
-      paddingLeft: "20px",
-      paddingRight: "20px",
+   
     }}
   >
     <div

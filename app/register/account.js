@@ -184,14 +184,7 @@ export default function Account(props) {
   return (
     <>
       <div
-        className="flex"
-        style={{
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          paddingLeft: "20px",
-          paddingRight: "20px",
-        }}
+        className="screen"
       >
         <div style={{ flex: 100 }}></div>
 
@@ -210,11 +203,12 @@ export default function Account(props) {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
+            width:'100%',
             justifyContent: "flex-start",
           }}
         >
           <input
-            className={`${styles.form} ${styles.username}`}
+            className={styles.form}
             minLength="1"
             name="username"
             id="username"

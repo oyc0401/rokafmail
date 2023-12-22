@@ -45,21 +45,8 @@
   font-weight: 400;
   transition: 0.2s;
   width: 100%;
-  max-width:440px;
   text-align: left;
   height:34px;
-}
-.username{
-  max-width:343px;
-}
-.introduction{
-  
-}
-
-@media ( min-width: 480px ) {
-  .username{
-    width:349px;
-  }
 }
 
 
