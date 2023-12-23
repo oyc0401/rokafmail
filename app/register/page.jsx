@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 import Information from "./information";
 import Account from "./account";
@@ -16,17 +17,16 @@ export default function Register() {
   const password = useRef("");
   const repassword = useRef("");
   const substring = useRef("");
-
+  
   async function send() {
-
-    await axios
+    axios
       .post("/api/register", {
-        username:username.current,
+        username: username.current,
         password: password.current,
         name: name.current,
         birth: birth.current,
         generation: generation.current,
-        substring:substring.current
+        substring: substring.current,
       })
       .then(function (response) {
         console.log(response);
@@ -36,25 +36,40 @@ export default function Register() {
         // setValidate(false);
       })
       .finally(function () {
-        // setComplete(true);
+        
       });
   }
-
-  // let pages = {
-  //   1: <Introduction click={() => setPage(4)} send={send} />,
-  //   2: <Account click={() => setPage(3)} />,
-  //   3: <Introduction click={() => setPage(4)} send={send} />,
-  //   4: "dsad",
-  // };
-
+  const router = useRouter();
+  function push(){
+  
+     router.push(`/link/${username.current}`)
+  }
   let pages = {
-    1: <Information click={() => setPage(2)} generation={generation} name={name} birth={birth}/>,
-    2: <Account click={() => setPage(3)} username={username} password={password} repassword={repassword} />,
-    3:<Introduction click={() => setPage(4)}  send={send} substring={substring}/>,
-    4:"dsad"
+    1: (
+      <Information
+        click={() => setPage(2)}
+        generation={generation}
+        name={name}
+        birth={birth}
+      />
+    ),
+    2: (
+      <Account
+        click={() => setPage(3)}
+        username={username}
+        password={password}
+        repassword={repassword}
+      />
+    ),
+    3: (
+      <Introduction
+        click={() => push()}
+        send={send}
+        substring={substring}
+      />
+    ),
   };
 
-    pages[1]=pages[2];
-
+  // pages[1]=pages[3];
   return <>{pages[page]}</>;
 }

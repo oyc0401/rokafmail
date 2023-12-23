@@ -1,4 +1,5 @@
-import sender from "./sender.js";
+import Rokaf from '../rokaf/rokaf'
+
 
 // knex
 const knex = require("knex")({
@@ -24,7 +25,7 @@ export default async function repost() {
 
     if (user.connect) {
 
-      let status = await sender({
+      let status = await Rokaf.postMail({
         senderName: post.name,
         relationship: post.relationship,
         title: post.title,

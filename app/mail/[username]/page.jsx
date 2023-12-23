@@ -38,7 +38,7 @@ export default async function Mail({ params }) {
         <div style={{ height: 10 }}></div>
         <h2 className={styles.subtext}>{substring}</h2>
         <div style={{ height: 30 }}></div>
-        <Form></Form>
+        <Form username={params.username}></Form>
       </div>
     </>
   );

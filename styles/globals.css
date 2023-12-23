@@ -17,17 +17,20 @@
   margin:0;
   padding:0;
   font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: 0.02em !important;
 }
 
 html, body{
    height: 100%;
 }
 body {
-padding:0;
+  padding:0;
   scroll-behavior: smooth;
   color: var(--font-color);
   text-align: center;
 }
+
+/* 너비 440px 화면 레이아웃 */
 .screen{
   max-width:440px;
   margin-left: auto;
@@ -51,6 +54,10 @@ h1,h2,h3{
   color: var(--font-color);
 }
 
+a{
+  text-decoration: none;
+}
+
 /* 기본 버튼 */
 .submit{
   padding: 14px 0;
@@ -58,7 +65,6 @@ h1,h2,h3{
   background: var(--primary);
    border: none;
   width: 100%;
-  max-width:440px;
   color: white;
   cursor: pointer;
   transition: 0.2s;
@@ -67,7 +73,6 @@ h1,h2,h3{
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  letter-spacing: 0.02em;
 }
 .submit:hover{
    background-color: var(--light-accent);

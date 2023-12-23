@@ -183,9 +183,7 @@ export default function Account(props) {
 
   return (
     <>
-      <div
-        className="screen"
-      >
+      <div className="screen">
         <div style={{ flex: 100 }}></div>
 
         <h2 className={styles.title}>
@@ -203,7 +201,7 @@ export default function Account(props) {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            width:'100%',
+            width: "100%",
             justifyContent: "flex-start",
           }}
         >

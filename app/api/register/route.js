@@ -1,5 +1,5 @@
-import { getProfile } from "./parser";
 
+import Rokaf from '../rokaf/rokaf'
 
 
 export async function POST(request) {
@@ -17,7 +17,7 @@ export async function POST(request) {
   const searchBirth = body.birth;
 
   // 유저가 존재하는지 확인
-  let data = await getProfile(searchName, searchBirth);
+  let data = await Rokaf.getProfile(searchName, searchBirth);
 
   // user table에 사용자 추가
   let user = {
@@ -59,41 +59,4 @@ export async function POST(request) {
   return new Response("회원가입 성공!", {
     status: 200,
   });
-
-  // 이 코드에 쓰인 테이블 정보입니다!
-
-  return; // return 뒤에있어서 실행 X
-
-  // users table
-  if (!(await knex.schema.hasTable("users"))) {
-    await knex.schema.createTable("users", (table) => {
-      table.increments("id").primary();
-      table.string("username");
-      table.string("password");
-      table.string("name");
-      table.string("birth");
-      table.string("generation");
-      table.string("substring");
-      table.string("memberSeq").nullable();
-      table.string("sodae").nullable();
-      table.boolean("connect").defaultTo(false);
-    });
-  }
-
-  // users_queue table
-  if (!(await knex.schema.hasTable("users_queue"))) {
-    await knex.schema.createTable("users_queue", (table) => {
-      table.increments("id").primary();
-      table
-        .integer("user_id")
-        .unsigned()
-        .references("id")
-        .inTable("users")
-        .onDelete("CASCADE");
-      table.string("name");
-      table.string("birth");
-    });
-  }
-
-  // end
 }

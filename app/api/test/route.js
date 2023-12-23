@@ -1,35 +1,41 @@
-const knex = require("knex")({
-  // We are using PostgreSQL
-  client: "postgres",
-  // Use the `DATABASE_URL` environment variable we provide to connect to the Database
-  // It is included in your Replit environment automatically (no need to set it up)
-  connection: process.env.DATABASE_URL,
+import axios from "axios";
 
-  // Optionally, you can use connection pools to increase query performance
-  pool: { min: 0, max: 80 },
-});
+export async function GET(request) {
+  let data = await axios.post(
+    "https://airforce-mail.oyc0401.repl.co/api/mail",
+    {
+      username: 'oyc0401',
+      name: "안녕",
+      relationship: "친구",
+      title: "반가워용",
+      contents: "잘다녀와",
+      password: "3333",
+    },
+  );
 
-export async function  GET(request) {
-  console.log("코드 실행!");
+  // const knex = require("knex")({
+  //   client: "postgres",
+  //   connection: process.env.DATABASE_URL,
+  //   pool: { min: 0, max: 80 },
+  // });
 
-  // 열 추가
-  await knex.schema.table('users_queue', function (table) {
-    table.string("name");
-    table.string("birth");
-  })
+  // console.log("코드 실행!");
 
+  // console.log("post 업로드 중...");
+  // let mail = {
+  //   user_id: 33,
+  //   name: "body.name",
+  //   relationship: "body.relationship",
+  //   title: "body.title",
+  //   contents: "body.contents",
+  //   password: "body.password",
+  // };
+  // // add mail
+  // let post_id = await knex("post").returning("id").insert(mail);
+  // console.log("post 업로드 성공!");
+  // console.log(post_id);
+  // console.log(post_id[0].id);
 
-  
-  // 테이블 만들때 실행
-
-  // if (!(await knex.schema.hasTable("users_queue"))) {
-  //   await knex.schema.createTable("users_queue", (table) => {
-  //     table.increments("id").primary();
-  //     table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE');
-  //   });
-  // }
-
-
-   knex.destroy();
-  return new Response(200);
+  // knex.destroy();
+  return new Response(data.data);
 }

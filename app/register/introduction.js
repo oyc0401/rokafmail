@@ -46,8 +46,9 @@ export default function Substring(props) {
 
   async function click() {
     if (canSubmit()) {
+      setProgress(true);
+      await props.send();
       props.click();
-      props.send();
     } else {
       if (!validIntro) {
         setIntroHelp({
@@ -58,19 +59,19 @@ export default function Substring(props) {
     }
   }
 
+  const [progress, setProgress] = useState(false);
+
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          height: "100%",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          paddingLeft: "20px",
-          paddingRight: "20px",
-        }}
-      >
+      <div className="screen">
+        <div
+          className={styles.registerLoad}
+          style={{
+            display: progress ? "flex" : "none",
+          }}
+        >
+          <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
+        </div>
         <div style={{ flex: 100 }}></div>
         <h2 className={styles.title}>
           편지지에 보여질
