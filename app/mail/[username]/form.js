@@ -2,8 +2,9 @@
 import TextareaAutosize from "react-textarea-autosize";
 import styles from "./mail.module.css";
 import axios from "axios";
-import { useRef } from "react";
-import { useRouter } from 'next/navigation'
+import { useRef,useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 export function Form(params) {
   const name = useRef();
@@ -13,24 +14,29 @@ export function Form(params) {
   const password = useRef();
 
 
-   const router = useRouter();
-  async function send() {
-     await axios.post(
-      "https://airforce-mail.oyc0401.repl.co/api/mail",
-      {
-        username:params.username,
-        name: name.current,
-        relationship: relationship.current,
-        title: title.current,
-        contents: contents.current,
-        password: password.current,
-      },
-    );
-    alert("편지 전송 성공!");
-
-     router.push(`/res?sc=200`);
+  async function click() {
+    await params.click();
   }
 
+  const router = useRouter();
+
+  async function click() {
+    setProgress(true);
+    await axios.post("https://airforce-mail.oyc0401.repl.co/api/mail", {
+      username: params.username,
+      name: name.current,
+      relationship: relationship.current,
+      title: title.current,
+      contents: contents.current,
+      password: password.current,
+    });
+    alert("편지 전송 성공!");
+
+    router.push(`/res?sc=200`);
+  }
+  const [progress, setProgress] = useState(false);
+
+  
   return (
     <>
       <div
@@ -42,6 +48,14 @@ export function Form(params) {
           justifyContent: "flex-start",
         }}
       >
+        <div
+          className={styles.registerLoad}
+          style={{
+            display: progress ? "flex" : "none",
+          }}
+        >
+          <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
+        </div>
         <div
           style={{
             display: "flex",
@@ -119,7 +133,7 @@ export function Form(params) {
         </div>
 
         <div style={{ height: 24 }}></div>
-        <button className={"submit"} onClick={send}>
+        <button className={"submit"} onClick={click}>
           전송하기
         </button>
         <div style={{ height: 32 }}></div>

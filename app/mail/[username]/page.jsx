@@ -12,6 +12,8 @@ export default async function Mail({ params }) {
   let [start, end] = airForceTime(user.generation);
   let substring = user.substring;
 
+  
+
   return (
     <>
       <div
