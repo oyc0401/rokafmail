@@ -22,17 +22,23 @@ export function Form(params) {
 
   async function click() {
     setProgress(true);
-    await axios.post("https://airforce-mail.oyc0401.repl.co/api/mail", {
-      username: params.username,
-      name: name.current,
-      relationship: relationship.current,
-      title: title.current,
-      contents: contents.current,
-      password: password.current,
-    });
-    alert("편지 전송 성공!");
+    try{
+      await axios.post("https://airforce-mail.oyc0401.repl.co/api/mail", {
+        username: params.username,
+        name: name.current,
+        relationship: relationship.current,
+        title: title.current,
+        contents: contents.current,
+        password: password.current,
+      });
+      alert("편지 전송 성공!");
 
-    router.push(`/res?sc=200`);
+      router.push(`/res?sc=200`);
+    }catch(e){
+      alert(e);
+      setProgress(false);
+    }
+    
   }
   const [progress, setProgress] = useState(false);
 

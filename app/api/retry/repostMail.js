@@ -1,6 +1,6 @@
 import Rokaf from "../rokaf/rokaf";
 
-export async function reconnect() {
+export async function repostMail() {
   // knex
   const knex = require("knex")({
     client: "postgres",
@@ -13,7 +13,7 @@ export async function reconnect() {
     .select("users_queue.*", "users.name", "users.birth")
     .innerJoin("users", "users_queue.user_id", "users.id");
 
-  console.log(result);
+  console.log(unconnected);
 
   console.log("reconnect: 유저 인증 시작, 미인증 유저 수:", unconnected.length);
 
@@ -23,6 +23,7 @@ export async function reconnect() {
     if (data.connect) {
       await knex("users").where("id", user.user_id).update(data);
       await knex("users_queue").where("id", user.id).del();
+
     }
   }
 
