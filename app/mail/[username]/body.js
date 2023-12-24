@@ -2,9 +2,8 @@
 import TextareaAutosize from "react-textarea-autosize";
 import styles from "./mail.module.css";
 import axios from "axios";
-import { useRef,useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-
 
 export function Body(params) {
   const name = useRef();
@@ -13,16 +12,18 @@ export function Body(params) {
   const contents = useRef();
   const password = useRef();
 
-
   async function click() {
     await params.click();
   }
 
   const router = useRouter();
 
+  const [progress, setProgress] = useState(false);
+
+  
   async function click() {
     setProgress(true);
-    try{
+    try {
       await axios.post("https://airforce-mail.oyc0401.repl.co/api/mail", {
         username: params.username,
         name: name.current,
@@ -34,14 +35,11 @@ export function Body(params) {
       alert("편지 전송 성공!");
 
       router.push(`/res?sc=200`);
-    }catch(e){
+    } catch (e) {
       alert(e);
       setProgress(false);
     }
-    
   }
-  const [progress, setProgress] = useState(false);
-
   
   return (
     <>
@@ -54,6 +52,27 @@ export function Body(params) {
           justifyContent: "flex-start",
         }}
       >
+        <div className={styles.footer}>
+          <div style={{ paddingLeft: 20, paddingRight: 20 }}>
+            <div style={{ height: 12 }}></div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "flex-start",
+              }}
+            >
+              <button className={`submit ${styles.postsBtn}`}>편지함</button>
+              <div style={{ width: 12 }}></div>
+              <button className={"submit"} onClick={click}>
+                전송하기
+              </button>
+            </div>
+
+          </div>
+        </div>
         <div
           className={styles.registerLoad}
           style={{
@@ -71,7 +90,7 @@ export function Body(params) {
           }}
         >
           <input
-            className={`${styles.form} ${styles.username}`}
+            className={`${styles.form}`}
             minLength="1"
             name="username"
             id="username"
@@ -79,12 +98,12 @@ export function Body(params) {
             style={{ flex: "1" }}
             placeholder="보내는사람"
             onChange={(e) => {
-              name.current=e.target.value;
+              name.current = e.target.value;
             }}
           ></input>
           <div style={{ width: 34 }}></div>
           <input
-            className={`${styles.form} ${styles.username}`}
+            className={`${styles.form}`}
             minLength="1"
             name="username"
             id="username"
@@ -92,31 +111,31 @@ export function Body(params) {
             style={{ flex: "1" }}
             placeholder="관계"
             onChange={(e) => {
-              relationship.current=e.target.value;
+              relationship.current = e.target.value;
             }}
           ></input>
         </div>
 
-        <div style={{ height: 26 }}></div>
+        <div style={{ height: 42 }}></div>
         <input
           className={styles.form}
           minLength="1"
           type="text"
           placeholder="제목"
           onChange={(e) => {
-            title.current=e.target.value;
+            title.current = e.target.value;
           }}
         ></input>
-        <div style={{ height: 26 }}></div>
+        <div style={{ height: 42 }}></div>
         <TextareaAutosize
           className={styles.contentForm}
           placeholder="내용"
           onChange={(e) => {
-            contents.current=e.target.value;
+            contents.current = e.target.value;
           }}
         ></TextareaAutosize>
 
-        <div style={{ height: 24 }}></div>
+        <div style={{ height: 36 }}></div>
         <div className={styles.description}>
           편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
           <br />
@@ -130,19 +149,17 @@ export function Body(params) {
           type="password"
           placeholder="비밀번호"
           onChange={(e) => {
-            password.current=e.target.value;
+            password.current = e.target.value;
           }}
         ></input>
         <div style={{ height: 2 }}></div>
         <div className={styles.formHint}>
           수정 및 삭제를 위한 비밀번호를 작성해주세요
         </div>
+        <div style={{ height: 10 }}></div>
+        <div style={{ height: 104 }}></div>
 
-        <div style={{ height: 24 }}></div>
-        <button className={"submit"} onClick={click}>
-          전송하기
-        </button>
-        <div style={{ height: 32 }}></div>
+        
       </div>
     </>
   );

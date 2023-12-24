@@ -46,8 +46,6 @@ export async function POST(request) {
 
     let userqueueData = {
       user_id: userId,
-      birth: body.birth,
-      name: body.name,
     };
     await knex("users_queue").insert(userqueueData);
     console.log("users_queue 추가");

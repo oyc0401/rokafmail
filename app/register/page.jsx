@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -9,6 +9,16 @@ import Introduction from "./introduction";
 
 export default function Register() {
   let [page, setPage] = useState(1);
+
+  useEffect(() => {
+    // 새로고침 막기(조건 부여 가능)
+    window.onbeforeunload = function () {
+      return true;
+    };
+    return () => {
+      window.onbeforeunload = null;
+    };
+  }, [])
 
   const generation = useRef("");
   const name = useRef("");
