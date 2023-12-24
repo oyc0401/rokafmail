@@ -114,11 +114,11 @@ export function Body(params) {
       return;
     }
     // 900자 이상
-    if (text.length>900) {
+    if (text.length > 900) {
       setValidContents(false);
       setContentsHelp({
         text: "900자 이상을 입력할 수 없습니다.",
-         color: "warn",
+        color: "warn",
       });
       return;
     }
@@ -322,7 +322,7 @@ export function Body(params) {
         <div style={{ height: 24 }}></div>
 
         <TextareaAutosize
-          className={styles.contentForm}
+          className={`${styles.form} ${styles.contentForm}`}
           placeholder="내용"
           onChange={(e) => {
             editContents(e.target.value);
