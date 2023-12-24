@@ -9,8 +9,16 @@ export default async function Users() {
   });
 
   const unconnected = await knex("unconnected_post")
-    .select("unconnected_post.*", "post.title", "post.created_at")
-    .innerJoin("post", "unconnected_post.post_id", "post.id");
+    .select(
+      "unconnected_post.*",
+       "users.username",
+       "users.connect",
+      "post.title",
+      "post.created_at",
+     
+    )
+    .innerJoin("post", "unconnected_post.post_id", "post.id")
+    .innerJoin("users", "unconnected_post.user_id", "users.id");
 
   const data = unconnected;
   knex.destroy();

@@ -1,4 +1,4 @@
-import {Table} from'../table'
+import { Table } from "../table";
 import Link from "next/link";
 
 export default async function Users() {
@@ -8,14 +8,23 @@ export default async function Users() {
     pool: { min: 0, max: 80 },
   });
 
-  const users = await knex("users");
-  
+  const users = await knex("users").select(
+    "id",
+    "username",
+    "name",
+    "birth",
+    "generation",
+    "memberSeq",
+    "sodae",
+    "connect",
+    "substring",
+  );
+
   const data = users;
   knex.destroy();
   return (
     <>
       <div className=" mx-auto p-4">
-       
         <div className="flex space-x-4 mb-4">
           <Link
             href="/admin/users"
@@ -52,5 +61,4 @@ export default async function Users() {
       </div>
     </>
   );
-
-};
+}

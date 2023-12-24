@@ -9,7 +9,7 @@ export default async function Users() {
   });
 
   const unconnected = await knex("users_queue")
-    .select("users_queue.*", "users.name", "users.birth")
+    .select("users_queue.*","users.username", "users.name")
     .innerJoin("users", "users_queue.user_id", "users.id");
 
   const data = unconnected;
