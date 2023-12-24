@@ -3,8 +3,14 @@ import styles from "./link.module.css";
 
 export default async function Link({ params }) {
   function copy() {
+    let local="https://airforce-mail--oyc0401.repl.co";
+    let production="https://oyc0401.site";
+    
+    // navigator.clipboard.writeText(
+    //   `${local}/mail/${params.username}`,
+    // );
     navigator.clipboard.writeText(
-      `https://airforce-mail--oyc0401.repl.co/mail/${params.username}`,
+      `${production}/mail/${params.username}`,
     );
     alert("복사돠었습니다!");
   }

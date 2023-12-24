@@ -100,5 +100,5 @@ export async function GET(request) {
   }
   
   // knex.destroy();
-  return new Response(data.data);
+  return new Response(200);
 }
