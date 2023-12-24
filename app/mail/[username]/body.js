@@ -6,7 +6,7 @@ import { useRef,useState } from "react";
 import { useRouter } from "next/navigation";
 
 
-export function Form(params) {
+export function Body(params) {
   const name = useRef();
   const relationship = useRef();
   const title = useRef();

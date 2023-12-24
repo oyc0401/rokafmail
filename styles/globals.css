@@ -44,6 +44,19 @@ body {
   padding-right: 20px;
 }
 
+.scrollable{
+  max-width:440px;
+  margin-left: auto;
+  margin-right: auto;
+  display:flex;
+  /* height: 100%; */
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 /* 플렉스 */
 .flex{
   display: flex;
