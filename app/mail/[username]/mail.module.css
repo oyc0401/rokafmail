@@ -1,9 +1,4 @@
-.icon{
-  color:var(--primary);
-  font-size:129px !important;
-}
-
-
+/* header.js */
 .title{
   font-weight: 600;
   font-size: 24px;
@@ -32,8 +27,9 @@
    width: 100%;
 }
 
+/* body.js */
 
-/* 화원가입 입력 폼 */
+/* 입력 폼 */
 .form{
    border-width: 0 0 1px;
   background-color: transparent;
@@ -109,7 +105,7 @@
 
 
 
-
+/* 로딩창 */
  .animation {
    width: 12px;
    height: 12px;
@@ -147,7 +143,7 @@
 
 
 
-
+/* 전송 버튼 */
 .footer{
   height: 104px;
   position : fixed;
@@ -158,7 +154,7 @@
 }
 
 .postsBtn{
-  max-width: 116px;
+  max-width: 126px;
   color: white;
   background: #191919;
 }

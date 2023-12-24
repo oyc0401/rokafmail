@@ -12,6 +12,7 @@ export async function Header(params) {
   let substring = user.substring;
   return (
     <>
+      <div className="text-4xl">dsadsadsa</div>
       <h2 className={styles.title}>
         <span className={styles.highlight}>{name}</span> 훈련병에게
         <br />
