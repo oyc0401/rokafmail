@@ -16,6 +16,11 @@
   --font-family: 'Noto Sans KR', sans-serif;
 }
 
+.material-symbols-outlined.md-128 { 
+  color:var(--primary);
+  font-size:128px ;
+}
+
 *{
   margin:0;
   padding:0;
