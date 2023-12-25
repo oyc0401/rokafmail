@@ -84,9 +84,9 @@ export default function Account() {
         <div style={{ flex: 100 }}></div>
 
         <h2 className={styles.title}>
-          편지 주소를 확인하기 위해
+          수료 후 편지함 확인을 위해
           <br />
-          이름과 생년월일이 필요해요
+          비밀번호를 설정해주세요
         </h2>
 
         <div style={{ flex: 49 }}></div>
