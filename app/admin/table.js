@@ -1,16 +1,20 @@
 import Link from "next/link";
 export function Table(props) {
   const data = props.data;
-  const columns = Object.keys(data[0]);
+  // console.log(data);
+  if (data.length == 0) {
+    return <>요소가 없습니다.</>;
+  }
+  let columns = Object.keys(data[0]);
 
   function renderCellValue(value) {
-    if (typeof value === 'boolean') {
-      return value ? 'T' : 'F';
+    if (typeof value === "boolean") {
+      return value ? "T" : "F";
     } else {
       return value;
     }
   }
-  
+
   return (
     <>
       <table className="w-full border-collapse mt-4">
