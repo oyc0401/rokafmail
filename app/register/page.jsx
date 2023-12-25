@@ -15,7 +15,7 @@ export default function Register() {
       window.onbeforeunload = null;
     };
   }, []);
-
+  
   const page = useStore.use.page();
 
   let pages = {

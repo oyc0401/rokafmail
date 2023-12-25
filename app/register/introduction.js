@@ -1,21 +1,21 @@
 "use client";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import styles from "./register.module.css";
-import { useStore } from "./model";
+import { useStore, useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
 export default function Substring() {
-  const generation = useStore.use.generation();
-  const name = useStore.use.name();
-  const birth = useStore.use.birth();
-  const username = useStore.use.username();
-  const password = useStore.use.password();
-
-  const substring = useStore.use.substring();
-
-  const setSubstring = useStore.use.setSubstring();
-  const prev = useStore.use.prev();
+  const {
+    generation,
+    name,
+    birth,
+    username,
+    password,
+    substring,
+    setSubstring,
+    prev,
+  } = useStoreBase();
 
   const [progress, setProgress] = useState(false);
 

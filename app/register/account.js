@@ -2,19 +2,19 @@
 import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
 import { avaliableUsername } from "./server/avaliableUsername";
-import { useStore } from "./model";
+import { useStore, useStoreBase } from "./model";
 
 export default function Account() {
-  const username = useStore.use.username();
-  const password = useStore.use.password();
-  const repassword = useStore.use.repassword();
-
-  const setUsername = useStore.use.setUsername();
-  const setPassword = useStore.use.setPassword();
-  const setRepassword = useStore.use.setRepassword();
-
-  const next = useStore.use.next();
-  const prev = useStore.use.prev();
+  const {
+    username,
+    password,
+    repassword,
+    setUsername,
+    setPassword,
+    setRepassword,
+    next,
+    prev,
+  } = useStoreBase();
 
   const clickUsernameDup = useRef(false);
   const [validUser, setValidUser] = useState(false);
@@ -45,16 +45,11 @@ export default function Account() {
   }
 
   function validP() {
-    // 수정한 비밀번호가 재확인 비밀번호와 같지 않을 때
-    // 비밀번호 재확인 메시지를 초기화
-    if (repassword.length != 0 && password != repassword)
-      return { text: "비밀번호가 같지 않습니다.", color: "warn", valid: false };
-
     // 빈칸일 때
-    if (repassword == "") return { text: "", valid: false };
+    if (password == "") return { text: "", valid: false };
 
     // 짧을 때
-    if (repassword.length < 4)
+    if (password.length < 4)
       return {
         text: "비밀번호는 4자리 이상이여야 합니다",
         color: "warn",

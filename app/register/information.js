@@ -3,15 +3,8 @@ import styles from "./register.module.css";
 import { useStore, useStoreBase } from "./model";
 
 export default function Information() {
-  const generation = useStore.use.generation();
-  const name = useStore.use.name();
-  const birth = useStore.use.birth();
-
-  const setGeneration = useStore.use.setGeneration();
-  const setName = useStore.use.setName();
-  const setBirth = useStore.use.setBirth();
-
-  const next = useStore.use.next();
+  const { generation, name, birth, setGeneration, setName, setBirth, next } =
+    useStoreBase();
 
   const minGeneration = 840;
   const maxGeneration = 1000;
@@ -59,11 +52,7 @@ export default function Information() {
 
     // 8자리 초과
     if (birth.length > 8)
-      return {
-        text: "생년월일 8자리를 입력해주세요",
-        color: "warn",
-        valid: false,
-      };
+       return {text: "생년월일 8자리를 입력해주세요", color: "warn", valid: false};
 
     // 통과
     return { text: "잘했어요!", color: "great", valid: true };
