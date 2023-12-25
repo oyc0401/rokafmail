@@ -165,8 +165,7 @@ export function Body(params) {
     setProgress(true);
     try {
 
-      // await axios.post("https://oyc0401.site/api/mail", {
-      await axios.post("https://airforce-mail.oyc0401.repl.co/api/mail", {
+      await axios.post("/api/mail", {
         username: params.username,
         name: name.current,
         relationship: relationship.current,

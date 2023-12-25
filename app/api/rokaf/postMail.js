@@ -34,19 +34,26 @@ export async function postMail(body) {
         "JSESSIONID=pVmoG5hmwpHCRsLqdiV1hegWfRiH9418N4YZ3AW5cUo7pcXvxER8Lbk0XIljcEOa.AF1303_servlet_CONT31",
       ...data.getHeaders(),
     },
-    timeout: 10000,
+    timeout: 30000,
     data: data,
   };
 
   console.log(`[postMail] ${body.memberSeq} 편지 보내는 중...`);
-  
+
   try {
     await axios(config);
     console.log(`[postMail] ${body.memberSeq} 편지 보내기 성공!`);
     return true;
   } catch (error) {
-    console.log(`${body.memberSeq} 편지 오류`);
-    console.log(`${body.memberSeq} 편지 오류:`, error);
+    if (error.response) {
+      console.log(
+        `${body.memberSeq} 편지 오류:`,
+        error.message,
+        error.response.status,
+      );
+    } else {
+      console.log(`${body.memberSeq} 편지 오류:`, error.message);
+    }
     return false;
   }
 }

@@ -47,8 +47,8 @@ export default function Substring(props) {
   async function click() {
     if (canSubmit()) {
       setProgress(true);
-      await props.send();
-      props.click();
+      await props.click();
+      setProgress(false);
     } else {
       if (!validIntro) {
         setIntroHelp({

@@ -1,6 +1,8 @@
-export default function airForceTime(generation) {
+export default function airForceTime(
+  generation: number,
+): [string, string, string] {
   // [입대일, 수료일, 전역일]
-  let store = {
+  const store: { [key: number]: [string, string, string] } = {
     830: ["21.09.06", "21.10.08", "23.06.05"],
     831: ["21.10.12", "21.11.13", "23.07.11"],
     832: ["21.11.08", "21.12.10", "23.08.07"],
@@ -37,6 +39,10 @@ export default function airForceTime(generation) {
     863: ["24.11.18", "24.12.20", "26.08.17"],
     864: ["24.12.23", "25.01.24", "26.09.22"],
   };
+
+  if (store[generation] == null) {
+    return ["2x.xx.xx", "2x.xx.xx", "2x.xx.xx"];
+  }
 
   return store[generation];
 }

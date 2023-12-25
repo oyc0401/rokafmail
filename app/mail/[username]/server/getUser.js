@@ -11,5 +11,6 @@ export async function getUser(username) {
     .where("username", username)
     .first();
 
+ 
   return result;
 }

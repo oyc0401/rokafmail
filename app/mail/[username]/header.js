@@ -1,10 +1,13 @@
 import airForceTime from "./time";
-import styles from "./mail.module.css";
 import { getUser } from "./server/getUser";
+import { notFound } from 'next/navigation'
 
 export async function Header(params) {
   let user = await getUser(params.username);
 
+  if(!user){
+     notFound();
+  }
   // console.log(user);
 
   let name = user.name;

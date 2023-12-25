@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState,useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -18,7 +18,7 @@ export default function Register() {
     return () => {
       window.onbeforeunload = null;
     };
-  }, [])
+  }, []);
 
   const generation = useRef("");
   const name = useRef("");
@@ -27,33 +27,25 @@ export default function Register() {
   const password = useRef("");
   const repassword = useRef("");
   const substring = useRef("");
-  
+
   async function send() {
-    axios
-      .post("/api/register", {
+    try {
+      await axios.post("/api/register", {
         username: username.current,
         password: password.current,
         name: name.current,
         birth: birth.current,
         generation: generation.current,
         substring: substring.current,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log("오류:", error);
-        // setValidate(false);
-      })
-      .finally(function () {
-        
       });
+      router.push(`/link/${username.current}`);
+    } catch (error) {
+      console.log("오류:", error);
+      alert("오류:", error);
+    }
   }
   const router = useRouter();
-  function push(){
-  
-     router.push(`/link/${username.current}`)
-  }
+
   let pages = {
     1: (
       <Information
@@ -71,13 +63,7 @@ export default function Register() {
         repassword={repassword}
       />
     ),
-    3: (
-      <Introduction
-        click={() => push()}
-        send={send}
-        substring={substring}
-      />
-    ),
+    3: <Introduction click={send} substring={substring} />,
   };
 
   // pages[1]=pages[3];

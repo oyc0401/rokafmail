@@ -2,7 +2,6 @@
 import styles from "./mail.module.css";
 import { Body } from "./body";
 import { Header } from "./header";
-import { Test } from "./test";
 export default async function Mail({ params }) {
   return (
     <>
