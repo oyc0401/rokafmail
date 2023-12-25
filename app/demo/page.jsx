@@ -1,26 +1,45 @@
 "use client";
 import React from "react";
-import CounterModel, { CounterContext } from "./model";
+import { useState, useContext, createContext } from "react";
+// import CounterModel, { CounterContext } from "./model";
+
+const context = createContext();
 
 
 export default function Register() {
-  const model = new CounterModel();
+  let counterModel = {
+    counterState: useState(1),
+    getCounter() {
+      return this.counterState[0];
+    },
+
+    plus() {
+      const [counter, setCounter] = this.counterState;
+      setCounter(counter + 1);
+    },
+  };
+
+
+  
   return (
     <>
-      <CounterContext.Provider value={model}>
+      <context.Provider value={counterModel}>
         <Value />
         <Button />
-      </CounterContext.Provider>
+      </context.Provider>
     </>
   );
 }
 
 function Value() {
-  const [counter] = CounterModel.use().counterState;
+  const [counter] = useContext(context).counterState;
   return <h2>{counter}</h2>;
 }
 
 function Button() {
-  const [counter, setCounter] = CounterModel.use().counterState;
-  return <button onClick={() => setCounter(counter + 1)}>+</button>;
+  const [counter, setCounter] = useContext(context).counterState;
+  function plus() {
+    useContext(context).plus()
+  }
+  return <button onClick={plus}>+</button>;
 }
