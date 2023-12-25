@@ -10,7 +10,7 @@ export default async function Post() {
 
   const data = await knex("post");
 
-  console.log(data);
+  // console.log(data);
 
   knex.destroy();
 

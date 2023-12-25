@@ -23,7 +23,7 @@ export async function verifyUser() {
     // 서버가 통신이 끊기면 바로 종료
     if (!data.serverOn) {
       knex.destroy();
-      console.log("verifyUser stopped!");
+      console.log("verifyUser Stopped!");
       return;
     }
     if (data.connect) {

@@ -1,32 +1,65 @@
 import Rokaf from "../rokaf/rokaf";
 
+// knex
+const knex = require("knex")({
+  client: "postgres",
+  connection: process.env.DATABASE_URL,
+  pool: { min: 0, max: 80 },
+});
+
 export async function repostMail() {
-  // knex
-  const knex = require("knex")({
-    client: "postgres",
-    connection: process.env.DATABASE_URL,
-    pool: { min: 0, max: 80 },
-  });
+  console.log("repostMail...");
+  
+  const unposted = await knex("post_queue")
+    .select(
+      "post_queue.*",
+      "users.username",
+      "users.memberSeq",
+      "users.sodae",
+      "post.name",
+      "post.relationship",
+      "post.title",
+      "post.contents",
+      "post.password",
+    )
+    .innerJoin("users", "post_queue.user_id", "users.id")
+    .innerJoin("post", "post_queue.post_id", "post.id");
 
-  // 미인증 유저들
-  const unconnected = await knex("users_queue")
-    .select("users_queue.*", "users.name", "users.birth")
-    .innerJoin("users", "users_queue.user_id", "users.id");
+  console.log("repost: 편지 보내기 시작, 미발송 편지 수:", unposted.length);
 
-  console.log(unconnected);
-
-  console.log("reconnect: 유저 인증 시작, 미인증 유저 수:", unconnected.length);
-
-  for (const user of unconnected) {
-    let data = await Rokaf.getProfile(user.name, user.birth);
-
-    if (data.connect) {
-      await knex("users").where("id", user.user_id).update(data);
-      await knex("users_queue").where("id", user.id).del();
-
+  for (const post of unposted) {
+    console.log(post);
+    let postComplete = await Rokaf.postMail({
+      name: post.name,
+      relationship: post.relationship,
+      title: post.title,
+      contents: post.password,
+      password: post.password,
+      memberSeq: post.memberSeq,
+      sodae: post.sodae,
+    }); // 국방서버에 보내는 요청
+    if (postComplete.complete) {
+      console.log("성공!!", post.post_id, post.username);
+      await updatePost(post.post_id);
+      await deletePostQueue(post.post_id);
+    } else {
+      console.log("실패ㅜ");
+      console.log("repostMail Stopped!");
+      knex.destroy();
+      return;
     }
   }
 
   knex.destroy();
-  console.log("reconnect: 모든 인증 완료.");
+  console.log("repostMail Complete!");
+}
+
+async function updatePost(postId) {
+  await knex("post").where("id", postId).update({
+    posted: true,
+    post_at: new Date(),
+  });
+}
+async function deletePostQueue(postId) {
+  await knex("post_queue").where("post_id", postId).del();
 }

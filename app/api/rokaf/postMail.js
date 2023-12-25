@@ -43,7 +43,10 @@ export async function postMail(body) {
   try {
     await axios(config);
     console.log(`[postMail] ${body.memberSeq} 편지 보내기 성공!`);
-    return true;
+    return{
+      complete:true,
+      serverOn:true,
+    };
   } catch (error) {
     if (error.response) {
       console.log(
@@ -53,7 +56,11 @@ export async function postMail(body) {
       );
     } else {
       console.log(`${body.memberSeq} 편지 오류:`, error.message);
+      
     }
-    return false;
+    return{
+      complete:false,
+      serverOn:false,
+    };
   }
 }
