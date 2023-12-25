@@ -69,15 +69,11 @@ export default function Information() {
     return { text: "잘했어요!", color: "great", valid: true };
   }
 
-  function canSubmit() {
-    return validG().valid && validN().valid && validB().valid;
-  }
+  const canSubmit = () => validG().valid && validN().valid && validB().valid;
 
-  function click() {
-    if (canSubmit()) {
-      next();
-    }
-  }
+  const click = () => {
+    if (canSubmit()) next();
+  };
 
   return (
     <>

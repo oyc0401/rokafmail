@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, {  useState } from "react";
 import styles from "./register.module.css";
 import { useStore } from "./model";
 import { useRouter } from "next/navigation";
@@ -33,9 +33,7 @@ export default function Substring() {
     return { text: "잘했어요!", color: "great", valid: true };
   }
 
-  function canSubmit() {
-    return validS().valid;
-  }
+  const canSubmit = () => validS().valid;
 
   async function send() {
     try {
@@ -62,7 +60,6 @@ export default function Substring() {
     }
   }
 
-  
   return (
     <>
       <div className="screen">

@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import Information from "./information";
 import Account from "./account";
 import Introduction from "./introduction";
@@ -19,9 +19,9 @@ export default function Register() {
   const page = useStore.use.page();
 
   let pages = {
-    1: <Information />,
-    2: <Account />,
-    3: <Introduction />,
+    0: <Information />,
+    1: <Account />,
+    2: <Introduction />,
   };
 
   return <>{pages[page]}</>;

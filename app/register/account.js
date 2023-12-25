@@ -19,17 +19,16 @@ export default function Account() {
   const clickUsernameDup = useRef(false);
   const [validUser, setValidUser] = useState(false);
 
+  let [loading, setLoading] = useState(false);
+
   function editUsername(text) {
     setUsername(text);
     clickUsernameDup.current = false;
   }
 
-  let [loading, setLoading] = useState(false);
-
   async function checkUsername() {
-    if (loading) {
-      return;
-    }
+    if (loading) return;
+
     setLoading(true);
 
     setValidUser(await avaliableUsername(username));
@@ -40,19 +39,9 @@ export default function Account() {
   function validU() {
     if (!clickUsernameDup.current) return { text: "", valid: false };
 
-    if (validUser) {
-      return {
-        text: "사용할 수 있는 아이디입니다",
-        color: "great",
-        valid: true,
-      };
-    } else {
-      return {
-        text: "이미 사용중인 아이디 입니다",
-        color: "warn",
-        valid: false,
-      };
-    }
+    return validUser
+      ? { text: "사용할 수 있는 아이디입니다,", color: "great", valid: true }
+      : { text: "이미 사용중인 아이디 입니다", color: "warn", valid: false };
   }
 
   function validP() {
@@ -71,7 +60,7 @@ export default function Account() {
         color: "warn",
         valid: false,
       };
-    
+
     // 통과
     return { text: "잘했어요!", color: "great", valid: true };
   }
@@ -88,15 +77,11 @@ export default function Account() {
     return { text: "잘했어요!", color: "great", valid: true };
   }
 
-  function canSubmit() {
-    return validUser && validP().valid && validR().valid;
-  }
+  const canSubmit = () => validUser && validP().valid && validR().valid;
 
-  function click() {
-    if (canSubmit()) {
-      next();
-    }
-  }
+  const click = () => {
+    if (canSubmit()) next();
+  };
 
   return (
     <>
