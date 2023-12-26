@@ -1,15 +1,15 @@
 "use client";
 import styles from "./link.module.css";
 
-export default async function Link({ params }) {
+export default function Link({ params }) {
   function copy() {
     let local = "https://airforce-mail--oyc0401.repl.co";
     let production = "https://oyc0401.site";
 
-    navigator.clipboard.writeText(`${local}/mail/${params.username}`);
-    // navigator.clipboard.writeText(
-    //   `${production}/mail/${params.username}`,
-    // );
+    // navigator.clipboard.writeText(`${local}/mail/${params.username}`);
+    navigator.clipboard.writeText(
+      `${production}/mail/${params.username}`,
+    );
 
     alert("복사되었습니다!");
   }

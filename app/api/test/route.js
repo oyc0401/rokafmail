@@ -1,16 +1,16 @@
 import axios from "axios";
 
 export async function GET(request) {
-  let data = await axios.post(
-    "https://airforce-mail.oyc0401.repl.co/api/mail",
-    {
-      username: 'oyc0401',
-      name: "안녕",
-      relationship: "친구",
-      title: "반가워용",
-      contents: "잘다녀와",
-      password: "3333",
-    },
+  // let data = await axios.post(
+  //   "https://airforce-mail.oyc0401.repl.co/api/mail",
+  //   {
+  //     username: 'oyc0401',
+  //     name: "안녕",
+  //     relationship: "친구",
+  //     title: "반가워용",
+  //     contents: "잘다녀와",
+  //     password: "3333",
+  //   },
   );
 
   // const knex = require("knex")({
@@ -37,5 +37,5 @@ export async function GET(request) {
   // console.log(post_id[0].id);
 
   // knex.destroy();
-  return new Response(data.data);
+  return new Response(200);
 }
