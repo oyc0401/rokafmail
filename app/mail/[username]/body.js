@@ -168,7 +168,7 @@ export function Body(params) {
   async function postMail() {
     setProgress(true);
     try {
-      await axios.post("/api/mail", {
+      let data=await axios.post("/api/mail", {
         username: params.username,
         name: name.current,
         relationship: relationship.current,
@@ -176,6 +176,7 @@ export function Body(params) {
         contents: contents.current,
         password: password.current,
       });
+      //console.log(data);
       alert("편지 전송 성공!");
 
       router.push(`/res?sc=200`);
