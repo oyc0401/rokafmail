@@ -42,6 +42,8 @@ export function Body(params) {
     text: "수정 및 삭제를 위한 비밀번호를 작성해주세요",
   });
 
+  const [contentsLength, setContentsLength] = useState(0);
+
   function editName(text) {
     name.current = text;
 
@@ -56,7 +58,7 @@ export function Body(params) {
 
     // 통과
     setNameHelp({
-      text: "잘했어요!",
+      text: "",
       color: "great",
     });
     setValidName(true);
@@ -76,7 +78,7 @@ export function Body(params) {
 
     // 통과
     setRelationshipHelp({
-      text: "잘했어요!",
+      text: "",
       color: "great",
     });
     setValidRelationship(true);
@@ -96,7 +98,7 @@ export function Body(params) {
 
     // 통과
     setTitleHelp({
-      text: "잘했어요!",
+      text: "",
       color: "great",
     });
     setValidTitle(true);
@@ -104,6 +106,8 @@ export function Body(params) {
 
   function editContents(text) {
     contents.current = text;
+    const byteLength=getByteLength(text)
+    setContentsLength(byteLength);
 
     // 빈칸일 때
     if (text == "") {
@@ -114,10 +118,10 @@ export function Body(params) {
       return;
     }
     // 900자 이상
-    if (text.length > 900) {
+    if (byteLength> 900) {
       setValidContents(false);
       setContentsHelp({
-        text: "900자 이상을 입력할 수 없습니다.",
+        text: "900바이트 이상을 입력할 수 없습니다.",
         color: "warn",
       });
       return;
@@ -125,7 +129,7 @@ export function Body(params) {
 
     // 통과
     setContentsHelp({
-      text: "잘했어요!",
+      text: "",
       color: "great",
     });
     setValidContents(true);
@@ -145,7 +149,7 @@ export function Body(params) {
 
     // 통과
     setPasswordHelp({
-      text: "잘했어요!",
+      text: "",
       color: "great",
     });
     setValidPassword(true);
@@ -164,7 +168,6 @@ export function Body(params) {
   async function postMail() {
     setProgress(true);
     try {
-
       await axios.post("/api/mail", {
         username: params.username,
         name: name.current,
@@ -318,7 +321,18 @@ export function Body(params) {
           }}
         ></input>
         <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${titleHelp.color}`}>{titleHelp.text}</p>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "flex-start",
+          }}
+        >
+          <p className={`${styles.help} ${titleHelp.color}`}>
+            {titleHelp.text}
+          </p>
+        </div>
 
         <div style={{ height: 24 }}></div>
 
@@ -330,9 +344,21 @@ export function Body(params) {
           }}
         ></TextareaAutosize>
         <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${contentsHelp.color}`}>
-          {contentsHelp.text}
-        </p>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "flex-start",
+          }}
+        >
+          <p className={`${styles.help} ${contentsHelp.color}`}>
+            {contentsHelp.text}
+          </p>
+          <div style={{ flex: 1 }}></div>
+          <p className={`${styles.help}`}>{`${contentsLength}/900`}</p>
+        </div>
+
         <div style={{ height: 18 }}></div>
         <div className={styles.description}>
           편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
@@ -351,12 +377,30 @@ export function Body(params) {
           }}
         ></input>
         <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${passwordHelp.color}`}>
-          {passwordHelp.text}
-        </p>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "flex-start",
+          }}
+        >
+          <p className={`${styles.help} ${passwordHelp.color}`}>
+            {passwordHelp.text}
+          </p>
+        </div>
+
         <div style={{ height: 10 }}></div>
         <div style={{ height: 104 }}></div>
       </div>
     </>
   );
 }
+
+const getByteLength = (str) => {
+  const stringByteLength = str.replace(
+    /[\0-\x7f]|([0-\u07ff]|(.))/g,
+    "$&$1$2",
+  ).length;
+  return stringByteLength;
+};

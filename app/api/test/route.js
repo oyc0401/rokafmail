@@ -11,7 +11,7 @@ export async function GET(request) {
   //     contents: "잘다녀와",
   //     password: "3333",
   //   },
-  );
+  // );
 
   // const knex = require("knex")({
   //   client: "postgres",
