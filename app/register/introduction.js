@@ -121,7 +121,7 @@ export default function Substring() {
             만들기
           </button>
         </div>
-        <div style={{ height: 37 }}></div>
+        <div style={{ height: 36 }}></div>
       </div>
     </>
   );

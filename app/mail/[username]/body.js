@@ -4,6 +4,7 @@ import styles from "./mail.module.css";
 import axios from "axios";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function Body(params) {
   const name = useRef();
@@ -106,7 +107,7 @@ export function Body(params) {
 
   function editContents(text) {
     contents.current = text;
-    const byteLength=getByteLength(text)
+    const byteLength = getByteLength(text);
     setContentsLength(byteLength);
 
     // 빈칸일 때
@@ -118,7 +119,7 @@ export function Body(params) {
       return;
     }
     // 900자 이상
-    if (byteLength> 900) {
+    if (byteLength > 900) {
       setValidContents(false);
       setContentsHelp({
         text: "900바이트 이상을 입력할 수 없습니다.",
@@ -168,7 +169,7 @@ export function Body(params) {
   async function postMail() {
     setProgress(true);
     try {
-      let data=await axios.post("/api/mail", {
+      let data = await axios.post("/api/mail", {
         username: params.username,
         name: name.current,
         relationship: relationship.current,
@@ -179,7 +180,7 @@ export function Body(params) {
       //console.log(data);
       alert("편지 전송 성공!");
 
-      router.push(`/res?sc=200`);
+      router.push(`/complete/${params}?sc=200`);
     } catch (e) {
       alert(e);
       setProgress(false);
@@ -223,48 +224,64 @@ export function Body(params) {
     }
   }
 
+  function Footer() {
+    return (
+      <div className={styles.footer}>
+        <div style={{ paddingLeft: 20, paddingRight: 20 }}>
+          <div style={{ height: 12 }}></div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Link
+              className={`submit ${styles.postsBtn}`}
+              href={`/mails/${params.username}`}
+            >
+              편지함
+            </Link>
+            <div style={{ width: 12 }}></div>
+            <button
+              className={canSubmit() ? "submit" : "submit disable"}
+              onClick={click}
+            >
+              전송하기
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function Loading() {
+    return (
+      <div
+        className={styles.registerLoad}
+        style={{
+          display: progress ? "flex" : "none",
+        }}
+      >
+        <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
+      </div>
+    );
+  }
+
   return (
     <>
+      <Footer></Footer>
+      <Loading></Loading>
       <div
         style={{
           display: "flex",
-          // height: "100%",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "flex-start",
         }}
       >
-        <div className={styles.footer}>
-          <div style={{ paddingLeft: 20, paddingRight: 20 }}>
-            <div style={{ height: 12 }}></div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                width: "100%",
-                justifyContent: "flex-start",
-              }}
-            >
-              <button className={`submit ${styles.postsBtn}`}>편지함</button>
-              <div style={{ width: 12 }}></div>
-              <button
-                className={canSubmit() ? "submit" : "submit disable"}
-                onClick={click}
-              >
-                전송하기
-              </button>
-            </div>
-          </div>
-        </div>
-        <div
-          className={styles.registerLoad}
-          style={{
-            display: progress ? "flex" : "none",
-          }}
-        >
-          <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
-        </div>
         <div
           style={{
             display: "flex",

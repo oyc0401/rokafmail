@@ -1,0 +1,9 @@
+.prev{
+  max-width: 116px;
+  color: white;
+  background: #191919;
+}
+
+.prev:hover{
+  background: #2e2e2e;
+}

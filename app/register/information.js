@@ -129,7 +129,7 @@ export default function Information() {
         >
           다음
         </button>
-        <div style={{ height: 37 }}></div>
+        <div style={{ height: 36 }}></div>
       </div>
     </>
   );
