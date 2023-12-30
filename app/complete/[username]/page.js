@@ -49,23 +49,19 @@ export default async function Complete({ searchParams, params }) {
   return (
     <>
       <div className="screen">
-        <h2>{message}</h2>
-        <h1>필독</h1>
-        <p>
-          전송 후 아래의 &apos;편지 목록&apos; 버튼을 눌러 편지가 잘 전달되었는
-          지 확인하시기 바랍니다.
+        <div style={{ flex: 130 }}></div>
+        <span className={`material-symbols-outlined md-128`}>check_circle</span>
+        <div style={{ height: 28 }}></div>
+        <h2 className="font-bold text-2xl">
+          편지가 <br /> 전송되었습니다!
+        </h2>
+        <div style={{ flex: 28 }}></div>
+        <p className="font-medium text-xl">
+          1일 이내에 오유찬 훈련병에게
+          <br />
+          편지가 전달됩니다!
         </p>
-        <p>
-          공식 편지 목록에 작성한 편지가 없다면 오류가 발생한 것으로 재작성
-          하셔야 합니다.
-        </p>
-        <p>오류가 지속된다면 인편지기에게 문의하시기 바랍니다.</p>
-        <p>
-          편지목록은 공군의 공식 편지 전송 페이지로 작성 당시 설정한 비밀번호로
-          수정 및 삭제가 가능합니다.
-        </p>
-        <br />
-        <div style={{ flex: 1 }}></div>
+        <div style={{ flex: 182 }}></div>
         <Footer />
         <div style={{ height: 36 }}></div>
       </div>
