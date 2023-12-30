@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getUser } from "../../server/getUser";
 import styles from "./mails.module.css";
 import { getUnconnectedPost } from "./server/getUnconnectedPost";
-
+import{getPost} from'./server/getPost'
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 export default async function Mails({ params }) {
   console.log(params.username);
@@ -41,9 +41,8 @@ export default async function Mails({ params }) {
   return (
     <>
       <div className="screen">
-        <h2>메일들!</h2>
-        <Unposted username={params.username}></Unposted>
-        <br />
+        <Unposted username={params.username}/>
+        <Posted username={params.username}/>
         <div style={{ flex: 1 }}></div>
         <Footer />
         <div style={{ height: 36 }}></div>
@@ -79,6 +78,39 @@ async function Unposted(parms) {
     <div className={styles.box}>
       <div style={{ height: 24 }}></div>
       <h2 className="text-2xl">전송 대기중</h2>
+      <div style={{ height: 24 }}></div>
+      <Inner></Inner>
+    </div>
+  );
+}
+
+async function Posted(parms) {
+  let posts = await getPost(parms.username);
+  if (posts.length == 0) {
+    return <>받은 편지가 없습니다.</>;
+  }
+
+  function Inner() {
+    return (
+      <>
+        {posts.map((post, index) => (
+          <div key={post.id}>
+            {index !== 0 && <div style={{ height: 4 }}></div>}
+            <Card
+              title={post.title}
+              name={post.username}
+              rel={post.relationship}
+              time={dateStr(post.created_at)}
+            />
+          </div>
+        ))}
+      </>
+    );
+  }
+  return (
+    <div className={styles.box}>
+      <div style={{ height: 24 }}></div>
+      <h2 className="text-2xl">받은 편지 목록</h2>
       <div style={{ height: 24 }}></div>
       <Inner></Inner>
     </div>
