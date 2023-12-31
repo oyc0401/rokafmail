@@ -81,7 +81,7 @@ a{
 
 /* 기본 버튼 */
 .submit{
-  padding: 14px 0;
+  padding: 14px 30px;
   border-radius: 50px;
   background: var(--primary);
    border: none;
@@ -94,13 +94,35 @@ a{
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  white-space:nowrap;
 }
-.submit:hover{
-   background-color: var(--light-accent);
-}
+
 .submit.disable{
   background: var(--dark-background);
   color: var(--light-font);
+}
+
+.submit.mini{
+  width:fit-content;
+  color: white;
+  background: #191919;
+}
+
+@media (hover: hover) {
+  .submit:hover{
+     background-color: var(--light-accent);
+  }
+  .submit.mini:hover{
+    background: #2e2e2e;
+  }
+}
+
+.row{
+  display: flex;
+  flexDirection: row;
+  alignItems: center;
+  width: 100%;
+  justifyContent: flex-start;
 }
 
 

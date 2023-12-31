@@ -127,14 +127,3 @@
    border-left-color: transparent;
    /* animation: Rotate 0.8s infinite linear; */
 }
-
-
-.prev{
-  max-width: 126px;
-  color: white;
-  background: #191919;
-}
-
-.prev:hover{
-  background: #2e2e2e;
-}

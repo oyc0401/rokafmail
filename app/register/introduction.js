@@ -4,7 +4,7 @@ import styles from "./register.module.css";
 import { useStore, useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import crypto from'crypto';
+import crypto from "crypto";
 export default function Substring() {
   const {
     generation,
@@ -36,7 +36,10 @@ export default function Substring() {
   const canSubmit = () => validS().valid;
 
   async function send() {
-    let encryptedPassword=crypto.createHash("sha256").update(password).digest('hex');
+    let encryptedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
     try {
       await axios.post("/api/register", {
         username: username,
@@ -102,16 +105,9 @@ export default function Substring() {
           따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로 발송됩니다.
         </p>
         <div style={{ height: 24 }}></div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-            justifyContent: "flex-start",
-          }}
-        >
-          <button className={`submit ${styles.prev}`} onClick={prev}>
+
+        <div className="row">
+          <button className={`submit mini`} onClick={prev}>
             이전
           </button>
           <div style={{ width: 12 }}></div>

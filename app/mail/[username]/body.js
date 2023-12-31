@@ -2,11 +2,32 @@
 import TextareaAutosize from "react-textarea-autosize";
 import styles from "./mail.module.css";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { throttle } from "lodash";
 
 export function Body(params) {
+  const handleScroll = throttle(() => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    setScroll(`${scrollHeight}, ${scrollTop} + ${clientHeight} + 1 = ${scrollTop + clientHeight+1}, offsetTop:${document.body.scrollTop}`)
+    if (scrollTop + clientHeight + 1+50 >= scrollHeight) {
+      console.log("끝!!!");
+      setEnd(true);
+    } else {
+      setEnd(false);
+    }
+  }, 300);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+  const [end, setEnd] = useState(false);
+  const [scroll, setScroll] = useState('');
+
   const name = useRef();
   const relationship = useRef();
   const title = useRef();
@@ -226,22 +247,17 @@ export function Body(params) {
 
   function Footer() {
     return (
-      <div className={styles.footer}>
-        <div style={{ paddingLeft: 20, paddingRight: 20 }}>
-          <div style={{ height: 12 }}></div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              width: "100%",
-              justifyContent: "flex-start",
-            }}
-          >
-            <Link
-              className={`submit ${styles.postsBtn}`}
-              href={`/mails/${params.username}`}
-            >
+      <div className={`${styles.footer} ${end ? "" : styles.end}`}>
+        <div
+          style={{
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 12,
+            paddingBottom: 36,
+          }}
+        >
+          <div className="row">
+            <Link className={`submit mini`} href={`/mails/${params.username}`}>
               편지함
             </Link>
             <div style={{ width: 12 }}></div>
@@ -376,7 +392,7 @@ export function Body(params) {
           <div style={{ flex: 1 }}></div>
           <p className={`${styles.help}`}>{`${contentsLength}/1200`}</p>
         </div>
-
+        {scroll}
         <div style={{ height: 18 }}></div>
         <div className={styles.description}>
           편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
@@ -407,6 +423,7 @@ export function Body(params) {
             {passwordHelp.text}
           </p>
         </div>
+        
 
         <div style={{ height: 10 }}></div>
         <div style={{ height: 104 }}></div>

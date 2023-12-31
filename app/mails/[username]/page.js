@@ -5,6 +5,7 @@ import { getUnconnectedPost } from "./server/getUnconnectedPost";
 import { getPost } from "./server/getPost";
 import { getPostQueue } from "./server/getPostQueue";
 import { dateToStr } from "./dateToStr";
+import { throttle } from 'lodash';
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 export default async function Mails({ params }) {
   console.log(params.username);
@@ -13,6 +14,10 @@ export default async function Mails({ params }) {
   if (!user) {
     notFound();
   }
+
+  
+  
+  
 
   function Footer() {
     return (
@@ -27,25 +32,17 @@ export default async function Mails({ params }) {
               paddingBottom: 36,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                width: "100%",
-                justifyContent: "flex-start",
-              }}
-            >
+            <div className="row">
               <Link
-                className={`submit ${styles.prev}`}
+                className={`submit mini`}
                 href={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`}
                 target="_blank"
               >
-                모든 편지
+                기훈단
               </Link>
               <div style={{ width: 12 }}></div>
               <Link className={"submit"} href={`/mail/${user.username}`}>
-                작성하기
+                편지 작성
               </Link>
             </div>
           </div>
@@ -174,7 +171,7 @@ function Card(params) {
 function NoPost() {
   return (
     <>
-      <div style={{height:24}}></div>
+      <div style={{ height: 24 }}></div>
       <h1 className="text-2xl font-medium">받은 편지가 없습니다.</h1>
     </>
   );

@@ -97,20 +97,11 @@
 
 /* 전송 버튼 */
 .footer{
-  height: 108px;
+ 
   position : fixed;
   bottom : 0;
   background: white;
   width: 100%;
   max-width:440px;
 }
-
-.postsBtn{
-  max-width: 126px;
-  color: white;
-  background: #191919;
-}
-
-.postsBtn:hover{
-  background: #2e2e2e;
-}
+.end{ border-top:solid 1px #dedede;}

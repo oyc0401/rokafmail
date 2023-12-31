@@ -6,18 +6,8 @@
 .card{
    width:100%;
      background: #F9F9F9;
-
   padding: 20px;
    padding-top:16px;
-}
-.prev{
-  max-width: 141px;
-  color: white;
-  background: #191919;
-}
-
-.prev:hover{
-  background: #2e2e2e;
 }
 
 .footer{

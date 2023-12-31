@@ -29,7 +29,7 @@ export default function Account() {
 
   async function checkUsername() {
     if (loading) return;
-  
+
     setLoading(true);
     setValidUser(await avaliableUsername(username));
     clickUsernameDup.current = true;
@@ -168,16 +168,8 @@ export default function Account() {
         <p className={`${styles.help} ${validR().color}`}>{validR().text}</p>
 
         <div style={{ flex: 138 }}></div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-            justifyContent: "flex-start",
-          }}
-        >
-          <button className={`submit ${styles.prev}`} onClick={prev}>
+        <div className="row">
+          <button className={`submit mini`} onClick={prev}>
             이전
           </button>
           <div style={{ width: 12 }}></div>
