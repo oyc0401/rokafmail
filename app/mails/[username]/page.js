@@ -9,7 +9,7 @@ import { Nav } from "../../components/Nav";
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 
 export default async function Mails({ params }) {
-  console.log(params.username);
+ // console.log(params.username);
   let user = await getUser(params.username);
 
   if (!user) {
@@ -53,8 +53,8 @@ async function Post(parms) {
   let posts = await getPost(parms.username);
   let queue = await getPostQueue(parms.username);
 
-  console.log(posts);
-  console.log(queue);
+  //console.log(posts);
+ //console.log(queue);
   if (posts.length == 0 && queue.length == 0) {
     return <NoPost />;
   }
@@ -114,7 +114,7 @@ async function Post(parms) {
 async function UnconnectedPost(parms) {
   let unconnected = await getUnconnectedPost(parms.username);
 
-  console.log(unconnected);
+  //console.log(unconnected);
   if (unconnected.length == 0) {
     return <NoPost />;
   }
