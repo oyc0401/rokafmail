@@ -239,7 +239,7 @@ export function Body(params) {
 
   return (
     <>
-      <Loading></Loading>
+      
       <div className="row">
         <div style={{ flex: "1" }}>
           <input
@@ -352,6 +352,7 @@ export function Body(params) {
           전송하기
         </button>
       </Nav>
+      <Loading></Loading>
     </>
   );
 }

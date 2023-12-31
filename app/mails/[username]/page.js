@@ -24,19 +24,27 @@ export default async function Mails({ params }) {
         ) : (
           <UnconnectedPost username={params.username} />
         )}
-        <Nav>
-          <Link
-            className={`submit mini`}
-            href={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`}
-            target="_blank"
-          >
-            기훈단
-          </Link>
-          <div style={{ width: 12 }}></div>
-          <Link className={"submit"} href={`/mail/${user.username}`}>
-            편지 작성
-          </Link>
-        </Nav>
+        {user.connect ? (
+          <Nav>
+            <Link
+              className={`submit mini`}
+              href={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`}
+              target="_blank"
+            >
+              기훈단
+            </Link>
+            <div style={{ width: 12 }}></div>
+            <Link className={"submit"} href={`/mail/${user.username}`}>
+              편지 작성
+            </Link>
+          </Nav>
+        ) : (
+          <Nav>
+            <Link className={"submit"} href={`/mail/${user.username}`}>
+              편지 작성
+            </Link>
+          </Nav>
+        )}
       </div>
     </>
   );
