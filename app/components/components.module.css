@@ -1,0 +1,11 @@
+
+.footer{
+
+  position : fixed;
+  bottom : 0;
+  background: white;
+  width: 100%;
+  max-width:440px;
+}
+
+.end{ border-top:solid 1px #dedede;}

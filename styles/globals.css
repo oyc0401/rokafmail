@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
  :root {
   --primary: #39F;
@@ -10,14 +13,19 @@
   --font-color: #191919;
   --medium-font: #808080;
   --light-font: #ababab;
-  --font-family: 'Noto Sans KR', sans-serif;
+  /* --font-family: 'Noto Sans KR', sans-serif; */
+}
+
+.material-symbols-outlined.md-128 { 
+  color:var(--primary);
+  font-size:128px ;
 }
 
 *{
   margin:0;
   padding:0;
-  font-family: 'Noto Sans KR', sans-serif;
-  letter-spacing: 0.02em !important;
+  /* font-family: 'Noto Sans KR', sans-serif; */
+  letter-spacing: 0.04em !important;
 }
 
 html, body{
@@ -44,6 +52,19 @@ body {
   padding-right: 20px;
 }
 
+.scrollable{
+  max-width:440px;
+  margin-left: auto;
+  margin-right: auto;
+  display:flex;
+  /* height: 100%; */
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 /* 플렉스 */
 .flex{
   display: flex;
@@ -60,7 +81,7 @@ a{
 
 /* 기본 버튼 */
 .submit{
-  padding: 14px 0;
+  padding: 14px 30px;
   border-radius: 50px;
   background: var(--primary);
    border: none;
@@ -73,13 +94,33 @@ a{
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  white-space:nowrap;
 }
-.submit:hover{
+.submit:active{
    background-color: var(--light-accent);
 }
 .submit.disable{
   background: var(--dark-background);
   color: var(--light-font);
+}
+
+.submit.mini{
+  width:fit-content;
+  color: white;
+  background: #191919;
+}
+
+.submit.mini:active{
+  background: #2e2e2e;
+}
+
+
+.row{
+  display: flex;
+  flexDirection: row;
+  alignItems: center;
+  width: 100%;
+  justifyContent: flex-start;
 }
 
 

@@ -2,184 +2,81 @@
 import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
 import { avaliableUsername } from "./server/avaliableUsername";
+import { useStore, useStoreBase } from "./model";
 
-export default function Account(props) {
-  const username = props.username;
-  const password = props.password;
-  const repassword = props.repassword;
-
-  const [validUsername, setValidUsername] = useState(false);
-  const [validPassword, setValidPassword] = useState(false);
-  const [validRepassword, setValidRepassword] = useState(false);
-
-  const [usernameHelp, setUsernameHelp] = useState({
-    text: "",
-  });
-  const [passwordHelp, setPasswordHelp] = useState({
-    text: "",
-  });
-  const [repasswordHelp, setRepasswordHelp] = useState({
-    text: "",
-  });
+export default function Account() {
+  const {
+    username,
+    password,
+    repassword,
+    setUsername,
+    setPassword,
+    setRepassword,
+    next,
+    prev,
+  } = useStoreBase();
 
   const clickUsernameDup = useRef(false);
-
-  function editUsername(text) {
-    username.current = text;
-    clickUsernameDup.current = false;
-    setValidUsername(false);
-    setUsernameHelp({ text: "" });
-  }
+  const [validUser, setValidUser] = useState(false);
 
   let [loading, setLoading] = useState(false);
 
+  function editUsername(text) {
+    setUsername(text);
+    clickUsernameDup.current = false;
+    setValidUser(false);
+  }
+
   async function checkUsername() {
-    if (loading) {
-      return;
-    }
+    if (loading) return;
+
     setLoading(true);
+    setValidUser(await avaliableUsername(username));
     clickUsernameDup.current = true;
-
-    let result = await avaliableUsername(username.current);
-
-    if (result) {
-      // 통과
-      setValidUsername(true);
-      setUsernameHelp({
-        text: "사용할 수 있는 아이디입니다",
-        color: "great",
-      });
-    } else {
-      setValidUsername(false);
-      setUsernameHelp({
-        text: "이미 사용중인 아이디 입니다",
-        color: "warn",
-      });
-    }
-
     setLoading(false);
   }
 
-  // 비밀번호 작성
-  function editPassword(text) {
-    password.current = text;
+  function validU() {
+    if (!clickUsernameDup.current) return { text: "", valid: false };
 
-    // 수정한 비밀번호가 재확인 비밀번호와 같지 않을 때
-    // 비밀번호 재확인 메시지를 초기화
-    if (repassword.current.length != 0 && text != repassword.current) {
-      setValidRepassword(false);
-      setRepasswordHelp({
-        text: "비밀번호가 같지 않습니다.",
-        color: "warn",
-      });
-    }
+    return validUser
+      ? { text: "사용할 수 있는 아이디입니다,", color: "great", valid: true }
+      : { text: "이미 사용중인 아이디 입니다", color: "warn", valid: false };
+  }
 
+  function validP() {
     // 빈칸일 때
-    if (text == "") {
-      setValidPassword(false);
-      setPasswordHelp({
-        text: "",
-      });
-      return;
-    }
+    if (password == "") return { text: "", valid: false };
 
     // 짧을 때
-    if (text.length < 4) {
-      setValidPassword(false);
-      setPasswordHelp({
+    if (password.length < 4)
+      return {
         text: "비밀번호는 4자리 이상이여야 합니다",
         color: "warn",
-      });
-      return;
-    }
-
-    // 변경한 비밀번호가 재확인 번호와 같을때
-    if (repassword.current.length != 0 && text == repassword.current) {
-      setValidRepassword(true);
-      setRepasswordHelp({
-        text: "잘했어요!",
-        color: "great",
-      });
-    }
+        valid: false,
+      };
 
     // 통과
-    setPasswordHelp({
-      text: "잘했어요!",
-      color: "great",
-    });
-    setValidPassword(true);
+    return { text: "잘했어요!", color: "great", valid: true };
   }
 
-  function editRepassword(text) {
-    repassword.current = text;
-
+  function validR() {
     // 빈칸일 때
-    if (text == "") {
-      setValidRepassword(false);
-      setRepasswordHelp({
-        text: "",
-      });
-      return;
-    }
+    if (repassword == "") return { text: "", valid: false };
+
     // 비밀번호가 같지 않음
-    if (text != password.current) {
-      setValidRepassword(false);
-      setRepasswordHelp({
-        text: "비밀번호가 같지 않습니다",
-        color: "warn",
-      });
-      return;
-    }
+    if (repassword != password)
+      return { text: "비밀번호가 같지 않습니다", color: "warn", valid: false };
 
     // 통과
-    setValidRepassword(true);
-    setRepasswordHelp({
-      text: "잘했어요!",
-      color: "great",
-    });
+    return { text: "잘했어요!", color: "great", valid: true };
   }
 
-  function canSubmit() {
-    return validUsername && validPassword && validRepassword;
-  }
+  const canSubmit = () => validUser && validP().valid && validR().valid;
 
-  function click() {
-    if (canSubmit()) {
-      props.click();
-    } else {
-      if (!validUsername) {
-        if (username.current.length != 0 && !clickUsernameDup.current) {
-          setUsernameHelp({
-            text: "아이디 중복확인을 해주세요",
-            color: "warn",
-          });
-        } else if (username.current.length != 0 && clickUsernameDup.current) {
-          setUsernameHelp({
-            text: "이미 사용중인 아이디 입니다",
-            color: "warn",
-          });
-        } else {
-          setUsernameHelp({
-            text: "아이디를 입력해주세요",
-            color: "warn",
-          });
-        }
-      }
-
-      if (!validPassword) {
-        setPasswordHelp({
-          text: "비밀번호를 입력해주세요",
-          color: "warn",
-        });
-      }
-      if (!validRepassword) {
-        setRepasswordHelp({
-          text: "비밀번호를 다시 입력해주세요",
-          color: "warn",
-        });
-      }
-    }
-  }
+  const click = () => {
+    if (canSubmit()) next();
+  };
 
   return (
     <>
@@ -187,9 +84,9 @@ export default function Account(props) {
         <div style={{ flex: 100 }}></div>
 
         <h2 className={styles.title}>
-          편지 주소를 확인하기 위해
+          수료 후 편지함 확인을 위해
           <br />
-          이름과 생년월일이 필요해요
+          비밀번호를 설정해주세요
         </h2>
 
         <div style={{ flex: 49 }}></div>
@@ -207,9 +104,7 @@ export default function Account(props) {
         >
           <input
             className={styles.form}
-            minLength="1"
-            name="username"
-            id="username"
+            value={username}
             type="text"
             style={{ flex: "1" }}
             placeholder="아이디를 입력해주세요"
@@ -238,9 +133,7 @@ export default function Account(props) {
         </div>
 
         <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${usernameHelp.color}`}>
-          {usernameHelp.text}
-        </p>
+        <p className={`${styles.help} ${validU().color}`}>{validU().text}</p>
 
         <div style={{ height: 16 }}></div>
 
@@ -248,19 +141,15 @@ export default function Account(props) {
         <div style={{ height: 2 }}></div>
         <input
           className={styles.form}
-          minLength="1"
-          name="password"
-          id="password"
+          value={password}
           type="password"
           placeholder="비밀번호를 입력해주세요"
           onChange={(e) => {
-            editPassword(e.target.value);
+            setPassword(e.target.value);
           }}
         ></input>
         <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${passwordHelp.color}`}>
-          {passwordHelp.text}
-        </p>
+        <p className={`${styles.help} ${validP().color}`}>{validP().text}</p>
 
         <div style={{ height: 16 }}></div>
 
@@ -268,28 +157,31 @@ export default function Account(props) {
         <div style={{ height: 2 }}></div>
         <input
           className={styles.form}
-          minLength="1"
-          name="repassword"
-          id="repassword"
+          value={repassword}
           type="password"
           placeholder="비밀번호를 다시 입력해주세요"
           onChange={(e) => {
-            editRepassword(e.target.value);
+            setRepassword(e.target.value);
           }}
         ></input>
         <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${repasswordHelp.color}`}>
-          {repasswordHelp.text}
-        </p>
+        <p className={`${styles.help} ${validR().color}`}>{validR().text}</p>
 
         <div style={{ flex: 138 }}></div>
-        <button
-          className={canSubmit() ? "submit" : "submit disable"}
-          onClick={click}
-        >
-          다음
-        </button>
-        <div style={{ height: 37 }}></div>
+        <div className="row">
+          <button className={`submit mini`} onClick={prev}>
+            이전
+          </button>
+          <div style={{ width: 12 }}></div>
+          <button
+            className={canSubmit() ? "submit" : "submit disable"}
+            onClick={click}
+          >
+            다음
+          </button>
+        </div>
+
+        <div style={{ height: 36 }}></div>
       </div>
     </>
   );

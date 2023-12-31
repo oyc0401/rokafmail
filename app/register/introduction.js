@@ -1,65 +1,68 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styles from "./register.module.css";
+import { useStore, useStoreBase } from "./model";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import crypto from "crypto";
+export default function Substring() {
+  const {
+    generation,
+    name,
+    birth,
+    username,
+    password,
+    substring,
+    setSubstring,
+    prev,
+  } = useStoreBase();
 
-export default function Substring(props) {
-  const substring = props.substring;
+  const [progress, setProgress] = useState(false);
 
-  const [validIntro, setValidIntro] = useState(false);
+  const router = useRouter();
 
-  const [introHelp, setIntroHelp] = useState({
-    text: "",
-  });
-
-  function editGeneration(text) {
-    substring.current = text;
-
+  function validS() {
     // 빈칸일 때
-    if (text == "") {
-      setValidIntro(false);
-      setIntroHelp({
-        text: "",
-      });
-      return;
-    }
+    if (substring == "") return { text: "", valid: false };
+
     // 너무 많을 때
-    if (50 < text.length) {
-      setValidIntro(false);
-      setIntroHelp({
-        text: "글이 너무 길어요",
-        color: "warn",
-      });
-      return;
-    }
+    if (50 < substring.length)
+      return { text: "글이 너무 길어요", color: "warn", valid: false };
 
     // 통과
-    setIntroHelp({
-      text: "잘했어요!",
-      color: "great",
-    });
-    setValidIntro(true);
+    return { text: "잘했어요!", color: "great", valid: true };
   }
 
-  function canSubmit() {
-    return validIntro;
+  const canSubmit = () => validS().valid;
+
+  async function send() {
+    let encryptedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
+    try {
+      await axios.post("/api/register", {
+        username: username,
+        password: encryptedPassword,
+        name: name,
+        birth: birth,
+        generation: generation,
+        substring: substring,
+      });
+      router.push(`/link/${username}`);
+    } catch (error) {
+      console.log("오류:", error);
+      alert("오류:", error);
+    }
   }
 
   async function click() {
     if (canSubmit()) {
       setProgress(true);
-      await props.send();
-      props.click();
-    } else {
-      if (!validIntro) {
-        setIntroHelp({
-          text: "한줄 글을 작성해주세요",
-          color: "warn",
-        });
-      }
+      await send();
+      setProgress(false);
     }
   }
-
-  const [progress, setProgress] = useState(false);
 
   return (
     <>
@@ -84,17 +87,15 @@ export default function Substring(props) {
         <div style={{ height: 2 }}></div>
         <input
           className={styles.form}
-          minLength="1"
-          name="generation"
-          id="generation"
+          value={substring}
           type="text"
           placeholder="한줄 글을 작성해주세요"
           onChange={(e) => {
-            editGeneration(e.target.value);
+            setSubstring(e.target.value);
           }}
         ></input>
         <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${introHelp.color}`}>{introHelp.text}</p>
+        <p className={`${styles.help} ${validS().color}`}>{validS().text}</p>
         <div style={{ flex: 253 }}></div>
 
         <p className={styles.intro}>
@@ -104,13 +105,20 @@ export default function Substring(props) {
           따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로 발송됩니다.
         </p>
         <div style={{ height: 24 }}></div>
-        <button
-          className={canSubmit() ? "submit" : "submit disable"}
-          onClick={click}
-        >
-          만들기
-        </button>
-        <div style={{ height: 37 }}></div>
+
+        <div className="row">
+          <button className={`submit mini`} onClick={prev}>
+            이전
+          </button>
+          <div style={{ width: 12 }}></div>
+          <button
+            className={canSubmit() ? "submit" : "submit disable"}
+            onClick={click}
+          >
+            만들기
+          </button>
+        </div>
+        <div style={{ height: 36 }}></div>
       </div>
     </>
   );

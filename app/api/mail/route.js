@@ -99,7 +99,7 @@ export async function POST(request) {
   }); // 국방서버에 보내는 요청
 
   // 국방서버에 보내졌으면 편지 DB에 저장하기
-  if (postComplete) {
+  if (postComplete.complete) {
    await uploadPost(
       {
         user_id: user.id,
