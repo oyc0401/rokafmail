@@ -15,7 +15,7 @@ export async function Header(params) {
   let substring = user.substring;
   return (
     <>
-      <h2 className="font-semibold text-2xl text-left w-full">
+      <h2 className="font-medium text-2xl text-left w-full">
         <span className="text-primary">{name}</span> 훈련병에게
         <br />
         편지를 보내주세요!
@@ -25,7 +25,7 @@ export async function Header(params) {
         {start} ~ {end}
       </h2>
       <div style={{ height: 10 }}></div>
-      <h2 className="font-semibold text-base text-left w-full">{substring}</h2>
+      <h2 className="font-normal text-base text-left w-full">{substring}</h2>
     </>
   );
 }

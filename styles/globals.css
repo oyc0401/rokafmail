@@ -13,7 +13,7 @@
   --font-color: #191919;
   --medium-font: #808080;
   --light-font: #ababab;
-  --font-family: 'Noto Sans KR', sans-serif;
+  /* --font-family: 'Noto Sans KR', sans-serif; */
 }
 
 .material-symbols-outlined.md-128 { 
@@ -24,8 +24,8 @@
 *{
   margin:0;
   padding:0;
-  font-family: 'Noto Sans KR', sans-serif;
-  letter-spacing: 0.02em !important;
+  /* font-family: 'Noto Sans KR', sans-serif; */
+  letter-spacing: 0.04em !important;
 }
 
 html, body{

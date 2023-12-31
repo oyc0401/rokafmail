@@ -107,8 +107,8 @@ export function Body(params) {
 
   function editContents(text) {
     contents.current = text;
-    const byteLength = getByteLength(text);
-    setContentsLength(byteLength);
+    const length = text.length;
+    setContentsLength(length);
 
     // 빈칸일 때
     if (text == "") {
@@ -118,11 +118,11 @@ export function Body(params) {
       });
       return;
     }
-    // 900자 이상
-    if (byteLength > 900) {
+    // 1200자 이상
+    if (length > 1200) {
       setValidContents(false);
       setContentsHelp({
-        text: "900바이트 이상을 입력할 수 없습니다.",
+        text: "1200자 이상을 입력할 수 없습니다.",
         color: "warn",
       });
       return;
@@ -374,7 +374,7 @@ export function Body(params) {
             {contentsHelp.text}
           </p>
           <div style={{ flex: 1 }}></div>
-          <p className={`${styles.help}`}>{`${contentsLength}/900`}</p>
+          <p className={`${styles.help}`}>{`${contentsLength}/1200`}</p>
         </div>
 
         <div style={{ height: 18 }}></div>
@@ -414,11 +414,3 @@ export function Body(params) {
     </>
   );
 }
-
-const getByteLength = (str) => {
-  const stringByteLength = str.replace(
-    /[\0-\x7f]|([0-\u07ff]|(.))/g,
-    "$&$1$2",
-  ).length;
-  return stringByteLength;
-};

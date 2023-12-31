@@ -19,3 +19,11 @@
 .prev:hover{
   background: #2e2e2e;
 }
+
+.footer{
+  position : fixed;
+  bottom : 0;
+  background: white;
+  width: 100%;
+  max-width:480px;
+}
