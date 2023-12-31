@@ -2,9 +2,10 @@
 
 깃허브로 가져오기.
 
-> npm install axios
-> npm install cheerio
-> npm install --save node-html-parser
+> npm install
+> pages 폴더 지우기
+> Home.module.css지우기
+> run!
 
 run 버튼 클릭
 

@@ -1,14 +1,11 @@
 import axios from "axios";
 
 export async function GET(request) {
-
-
   const knex = require("knex")({
     client: "postgres",
     connection: process.env.DATABASE_URL,
     pool: { min: 0, max: 80 },
   });
-
 
   // users table
   if (!(await knex.schema.hasTable("users"))) {
@@ -39,6 +36,26 @@ export async function GET(request) {
     });
   }
 
+  // 테이블 만들때 실행
+  if (!(await knex.schema.hasTable("post"))) {
+    await knex.schema.createTable("post", (table) => {
+      table.increments("id").primary();
+      table
+        .integer("user_id")
+        .unsigned()
+        .references("id")
+        .inTable("users")
+        .onDelete("CASCADE");
+      table.string("name");
+      table.string("relationship");
+      table.string("title");
+      table.string("contents");
+      table.string("password");
+      table.dateTime("created_at").defaultTo(knex.fn.now());
+      table.boolean("posted").defaultTo(false);
+      table.dateTime("post_at").nullable();
+    });
+  }
 
   // 인증안된 유저가 기다리고 있는 큐
   if (!(await knex.schema.hasTable("unconnected_post"))) {
@@ -78,27 +95,6 @@ export async function GET(request) {
     });
   }
 
-  // 테이블 만들때 실행
-  if (!(await knex.schema.hasTable("post"))) {
-    await knex.schema.createTable("post", (table) => {
-      table.increments("id").primary();
-      table
-        .integer("user_id")
-        .unsigned()
-        .references("id")
-        .inTable("users")
-        .onDelete("CASCADE");
-      table.string("name");
-      table.string("relationship");
-      table.string("title");
-      table.string("contents");
-      table.string("password");
-      table.dateTime("created_at").defaultTo(knex.fn.now());
-      table.boolean("posted").defaultTo(false);
-      table.dateTime("post_at").nullable();
-    });
-  }
-  
-  // knex.destroy();
+  knex.destroy();
   return new Response(200);
 }
