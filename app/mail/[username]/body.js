@@ -180,7 +180,7 @@ export function Body(params) {
       //console.log(data);
       alert("편지 전송 성공!");
 
-      router.push(`/complete/${params}?sc=200`);
+      router.push(`/complete/${params.username}?sc=200`);
     } catch (e) {
       alert(e);
       setProgress(false);
