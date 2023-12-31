@@ -14,7 +14,8 @@ export default async function Mails({ params }) {
   }
 
   function Footer() {
-    return (
+    return (<>
+      <div style={{height:108}}></div>
       <div className={styles.footer}>
         <div
           style={{
@@ -47,17 +48,16 @@ export default async function Mails({ params }) {
           </div>
         </div>
       </div>
+    </>
+     
     );
   }
 
   return (
     <>
-      <div className="screen">
+      <div className="scrollable">
         <Post username={params.username} />
-        <div style={{ flex: 1, minHeight: 32 }}></div>
-
         <Footer />
-        <div style={{ height: 36 }}></div>
       </div>
     </>
   );
