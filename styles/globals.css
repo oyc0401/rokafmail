@@ -96,7 +96,9 @@ a{
   line-height: normal;
   white-space:nowrap;
 }
-
+.submit:active{
+   background-color: var(--light-accent);
+}
 .submit.disable{
   background: var(--dark-background);
   color: var(--light-font);
@@ -108,14 +110,10 @@ a{
   background: #191919;
 }
 
-@media (hover: hover) {
-  .submit:hover{
-     background-color: var(--light-accent);
-  }
-  .submit.mini:hover{
-    background: #2e2e2e;
-  }
+.submit.mini:active{
+  background: #2e2e2e;
 }
+
 
 .row{
   display: flex;

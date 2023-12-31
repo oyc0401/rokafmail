@@ -5,29 +5,8 @@ import axios from "axios";
 import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { throttle } from "lodash";
-
+import { Nav } from "../../components/Nav";
 export function Body(params) {
-  const handleScroll = throttle(() => {
-    const scrollHeight = document.documentElement.scrollHeight;
-    const scrollTop = document.documentElement.scrollTop;
-    const clientHeight = document.documentElement.clientHeight;
-    setScroll(`${scrollHeight}, ${scrollTop} + ${clientHeight} + 1 = ${scrollTop + clientHeight+1}, offsetTop:${document.body.scrollTop}`)
-    if (scrollTop + clientHeight + 1+50 >= scrollHeight) {
-      console.log("끝!!!");
-      setEnd(true);
-    } else {
-      setEnd(false);
-    }
-  }, 300);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
-  const [end, setEnd] = useState(false);
-  const [scroll, setScroll] = useState('');
-
   const name = useRef();
   const relationship = useRef();
   const title = useRef();
@@ -245,34 +224,6 @@ export function Body(params) {
     }
   }
 
-  function Footer() {
-    return (
-      <div className={`${styles.footer} ${end ? "" : styles.end}`}>
-        <div
-          style={{
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 12,
-            paddingBottom: 36,
-          }}
-        >
-          <div className="row">
-            <Link className={`submit mini`} href={`/mails/${params.username}`}>
-              편지함
-            </Link>
-            <div style={{ width: 12 }}></div>
-            <button
-              className={canSubmit() ? "submit" : "submit disable"}
-              onClick={click}
-            >
-              전송하기
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   function Loading() {
     return (
       <div
@@ -288,146 +239,119 @@ export function Body(params) {
 
   return (
     <>
-      <Footer></Footer>
       <Loading></Loading>
+      <div className="row">
+        <div style={{ flex: "1" }}>
+          <input
+            className={`${styles.form}`}
+            type="text"
+            placeholder="보내는사람"
+            onChange={(e) => {
+              editName(e.target.value);
+            }}
+          ></input>
+          <div style={{ height: 2 }}></div>
+          <p className={`${styles.help} ${nameHelp.color}`}>{nameHelp.text}</p>
+        </div>
+        <div style={{ width: 34 }}></div>
+        <div style={{ flex: "1" }}>
+          <input
+            className={`${styles.form}`}
+            type="text"
+            style={{ flex: "1" }}
+            placeholder="관계"
+            onChange={(e) => {
+              editRelationship(e.target.value);
+            }}
+          ></input>
+          <div style={{ height: 2 }}></div>
+          <p className={`${styles.help} ${relationshipHelp.color}`}>
+            {relationshipHelp.text}
+          </p>
+        </div>
+      </div>
+
+      <div style={{ height: 18 }}></div>
+      <input
+        className={styles.form}
+        type="text"
+        placeholder="제목"
+        onChange={(e) => {
+          editTitle(e.target.value);
+        }}
+      ></input>
+      <div style={{ height: 2 }}></div>
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          flexDirection: "row",
+          width: "100%",
           justifyContent: "flex-start",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "flex-start",
-          }}
-        >
-          <div style={{ flex: "1" }}>
-            <input
-              className={`${styles.form}`}
-              minLength="1"
-              name="username"
-              id="username"
-              type="text"
-              placeholder="보내는사람"
-              onChange={(e) => {
-                editName(e.target.value);
-              }}
-            ></input>
-            <div style={{ height: 2 }}></div>
-            <p className={`${styles.help} ${nameHelp.color}`}>
-              {nameHelp.text}
-            </p>
-          </div>
-          <div style={{ width: 34 }}></div>
-          <div style={{ flex: "1" }}>
-            <input
-              className={`${styles.form}`}
-              minLength="1"
-              name="username"
-              id="username"
-              type="text"
-              style={{ flex: "1" }}
-              placeholder="관계"
-              onChange={(e) => {
-                editRelationship(e.target.value);
-              }}
-            ></input>
-            <div style={{ height: 2 }}></div>
-            <p className={`${styles.help} ${relationshipHelp.color}`}>
-              {relationshipHelp.text}
-            </p>
-          </div>
-        </div>
-
-        <div style={{ height: 24 }}></div>
-        <input
-          className={styles.form}
-          minLength="1"
-          type="text"
-          placeholder="제목"
-          onChange={(e) => {
-            editTitle(e.target.value);
-          }}
-        ></input>
-        <div style={{ height: 2 }}></div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "flex-start",
-          }}
-        >
-          <p className={`${styles.help} ${titleHelp.color}`}>
-            {titleHelp.text}
-          </p>
-        </div>
-
-        <div style={{ height: 24 }}></div>
-
-        <TextareaAutosize
-          className={`${styles.form} ${styles.contentForm}`}
-          placeholder="내용"
-          onChange={(e) => {
-            editContents(e.target.value);
-          }}
-        ></TextareaAutosize>
-        <div style={{ height: 2 }}></div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "flex-start",
-          }}
-        >
-          <p className={`${styles.help} ${contentsHelp.color}`}>
-            {contentsHelp.text}
-          </p>
-          <div style={{ flex: 1 }}></div>
-          <p className={`${styles.help}`}>{`${contentsLength}/1200`}</p>
-        </div>
-        {scroll}
-        <div style={{ height: 18 }}></div>
-        <div className={styles.description}>
-          편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
-          <br />
-          공군 기본군사훈련단은 훈련 3주차부터 인터넷편지 작성을 할 수 있습니다.
-          따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로 발송됩니다.
-        </div>
-        <div style={{ height: 24 }}></div>
-        <input
-          className={styles.form}
-          minLength="1"
-          type="password"
-          placeholder="비밀번호"
-          onChange={(e) => {
-            editPassword(e.target.value);
-          }}
-        ></input>
-        <div style={{ height: 2 }}></div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "flex-start",
-          }}
-        >
-          <p className={`${styles.help} ${passwordHelp.color}`}>
-            {passwordHelp.text}
-          </p>
-        </div>
-        
-
-        <div style={{ height: 10 }}></div>
-        <div style={{ height: 104 }}></div>
+        <p className={`${styles.help} ${titleHelp.color}`}>{titleHelp.text}</p>
       </div>
+
+      <div style={{ height: 18 }}></div>
+
+      <TextareaAutosize
+        className={`${styles.form} ${styles.contentForm}`}
+        placeholder="내용"
+        onChange={(e) => {
+          editContents(e.target.value);
+        }}
+      ></TextareaAutosize>
+      <div style={{ height: 2 }}></div>
+      <div className="row">
+        <p className={`${styles.help} ${contentsHelp.color}`}>
+          {contentsHelp.text}
+        </p>
+        <div style={{ flex: 1 }}></div>
+        <p className={`${styles.help}`}>{`${contentsLength}/1200`}</p>
+      </div>
+      <div style={{ height: 18 }}></div>
+      <div className={styles.description}>
+        편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
+        <br />
+        공군 기본군사훈련단은 훈련 3주차부터 인터넷편지 작성을 할 수 있습니다.
+        따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로 발송됩니다.
+      </div>
+      <div style={{ height: 18 }}></div>
+      <input
+        className={styles.form}
+        type="password"
+        placeholder="비밀번호"
+        onChange={(e) => {
+          editPassword(e.target.value);
+        }}
+      ></input>
+      <div style={{ height: 2 }}></div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          width: "100%",
+          justifyContent: "flex-start",
+        }}
+      >
+        <p className={`${styles.help} ${passwordHelp.color}`}>
+          {passwordHelp.text}
+        </p>
+      </div>
+
+      <div style={{ height: 10 }}></div>
+      <Nav>
+        <Link className={`submit mini`} href={`/mails/${params.username}`}>
+          편지함
+        </Link>
+        <div style={{ width: 12 }}></div>
+        <button
+          className={canSubmit() ? "submit" : "submit disable"}
+          onClick={click}
+        >
+          전송하기
+        </button>
+      </Nav>
     </>
   );
 }

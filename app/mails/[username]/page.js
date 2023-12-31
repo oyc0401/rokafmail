@@ -5,50 +5,15 @@ import { getUnconnectedPost } from "./server/getUnconnectedPost";
 import { getPost } from "./server/getPost";
 import { getPostQueue } from "./server/getPostQueue";
 import { dateToStr } from "./dateToStr";
-import { throttle } from 'lodash';
+import { Nav } from "../../components/Nav";
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
+
 export default async function Mails({ params }) {
   console.log(params.username);
   let user = await getUser(params.username);
 
   if (!user) {
     notFound();
-  }
-
-  
-  
-  
-
-  function Footer() {
-    return (
-      <>
-        <div style={{ height: 108 }}></div>
-        <div className={styles.footer}>
-          <div
-            style={{
-              paddingLeft: 20,
-              paddingRight: 20,
-              paddingTop: 12,
-              paddingBottom: 36,
-            }}
-          >
-            <div className="row">
-              <Link
-                className={`submit mini`}
-                href={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`}
-                target="_blank"
-              >
-                기훈단
-              </Link>
-              <div style={{ width: 12 }}></div>
-              <Link className={"submit"} href={`/mail/${user.username}`}>
-                편지 작성
-              </Link>
-            </div>
-          </div>
-        </div>
-      </>
-    );
   }
 
   return (
@@ -59,7 +24,19 @@ export default async function Mails({ params }) {
         ) : (
           <UnconnectedPost username={params.username} />
         )}
-        <Footer />
+        <Nav>
+          <Link
+            className={`submit mini`}
+            href={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`}
+            target="_blank"
+          >
+            기훈단
+          </Link>
+          <div style={{ width: 12 }}></div>
+          <Link className={"submit"} href={`/mail/${user.username}`}>
+            편지 작성
+          </Link>
+        </Nav>
       </div>
     </>
   );

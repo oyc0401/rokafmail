@@ -92,16 +92,3 @@
    border-left-color: transparent;
    /* animation: Rotate 0.8s infinite linear; */
 }
-
-
-
-/* 전송 버튼 */
-.footer{
- 
-  position : fixed;
-  bottom : 0;
-  background: white;
-  width: 100%;
-  max-width:440px;
-}
-.end{ border-top:solid 1px #dedede;}
