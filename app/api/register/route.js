@@ -1,6 +1,6 @@
 
 import Rokaf from '../rokaf/rokaf'
-import crypto from'crypto'
+
 
 export async function POST(request) {
   const knex = require("knex")({
@@ -20,11 +20,9 @@ export async function POST(request) {
   let data = await Rokaf.getProfile(searchName, searchBirth);
 
   // user table에 사용자 추가
-
-  let encryptedPassword=crypto.createHash("sha256").update(body.password).digest('hex');
   let user = {
     username: body.username,
-    password: encryptedPassword,
+    password: body.password,
     name: body.name,
     birth: body.birth,
     generation: body.generation,

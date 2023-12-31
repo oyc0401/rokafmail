@@ -24,13 +24,13 @@ export default function Account() {
   function editUsername(text) {
     setUsername(text);
     clickUsernameDup.current = false;
+    setValidUser(false);
   }
 
   async function checkUsername() {
     if (loading) return;
-
+  
     setLoading(true);
-
     setValidUser(await avaliableUsername(username));
     clickUsernameDup.current = true;
     setLoading(false);

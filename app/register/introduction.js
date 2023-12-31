@@ -4,7 +4,7 @@ import styles from "./register.module.css";
 import { useStore, useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-
+import crypto from'crypto';
 export default function Substring() {
   const {
     generation,
@@ -36,10 +36,11 @@ export default function Substring() {
   const canSubmit = () => validS().valid;
 
   async function send() {
+    let encryptedPassword=crypto.createHash("sha256").update(password).digest('hex');
     try {
       await axios.post("/api/register", {
         username: username,
-        password: password,
+        password: encryptedPassword,
         name: name,
         birth: birth,
         generation: generation,
