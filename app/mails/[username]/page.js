@@ -18,7 +18,7 @@ export default async function Mails({ params }) {
 
   return (
     <>
-      <div className="scrollable">
+      <div className="screen">
         {user.connect ? (
           <Post username={params.username} />
         ) : (
@@ -62,12 +62,12 @@ async function Post(parms) {
   function Unposted() {
     return (
       <div className={styles.box}>
-        <div style={{ height: 24 }}></div>
+        <div className="sized" style={{ height: 24 }}></div>
         <h2 className="text-2xl font-medium">전송 대기중</h2>
-        <div style={{ height: 24 }}></div>
+        <div className="sized" style={{ height: 24 }}></div>
         {queue.map((post, index) => (
           <div key={post.id}>
-            {index !== 0 && <div style={{ height: 4 }}></div>}
+            {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
             <Card
               title={post.title}
               name={post.username}
@@ -83,14 +83,14 @@ async function Post(parms) {
   function Posted() {
     return (
       <div className={styles.box}>
-        <div style={{ height: 24 }}></div>
+        <div className="sized" style={{ height: 24 }}></div>
 
         <h2 className="text-2xl font-medium">받은 편지 목록</h2>
 
-        <div style={{ height: 24 }}></div>
+        <div className="sized" style={{ height: 24 }}></div>
         {posts.map((post, index) => (
           <div key={post.id}>
-            {index !== 0 && <div style={{ height: 4 }}></div>}
+            {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
             <Card
               title={post.title}
               name={post.username}
@@ -121,12 +121,12 @@ async function UnconnectedPost(parms) {
 
   return (
     <div className={styles.box}>
-      <div style={{ height: 24 }}></div>
+      <div className="sized" style={{ height: 24 }}></div>
       <h2 className="text-2xl font-medium">전송 대기중</h2>
-      <div style={{ height: 24 }}></div>
+      <div className="sized" style={{ height: 24 }}></div>
       {unconnected.map((post, index) => (
         <div key={post.id}>
-          {index !== 0 && <div style={{ height: 4 }}></div>}
+          {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
           <Card
             title={post.title}
             name={post.username}
@@ -143,7 +143,7 @@ function Card(params) {
   return (
     <div className={styles.card}>
       <p className="text-left text-lg">{params.title}</p>
-      <div style={{ height: 4 }}></div>
+      <div className="sized" style={{ height: 4 }}></div>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <p>{`${params.name} | ${params.rel}`}</p>
         <div style={{ flex: 1 }}></div>
@@ -156,7 +156,7 @@ function Card(params) {
 function NoPost() {
   return (
     <>
-      <div style={{ height: 24 }}></div>
+      <div className="sized" style={{ height: 24 }}></div>
       <h1 className="text-2xl font-medium">받은 편지가 없습니다.</h1>
     </>
   );

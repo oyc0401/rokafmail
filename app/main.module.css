@@ -1,3 +1,8 @@
+.logo{
+   width: 173px;
+  height:173px;
+}
+
 /* 메인화면에 나오는 글씨  */
 .title{
   text-align: center;
@@ -11,11 +16,12 @@
   font-weight: 400;
 }
 
+
+
 .help{
   color: #191919;
   text-align: center;
   font-size: 18px;
-  height:30px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;

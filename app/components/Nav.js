@@ -31,7 +31,7 @@ export function Nav({ children }) {
 
   return (
     <>
-      <div style={{ height: 108 }}></div>
+      <div style={{ height: 108,minHeight:108,width:1 }}></div>
       <div className={`${styles.footer} ${end?"":styles.end}`}>
         <div
           style={{

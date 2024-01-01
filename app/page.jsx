@@ -3,34 +3,38 @@ import Link from "next/link";
 
 import Logo from "./assets/logo.png";
 import Image from "next/image";
+import { SizedBox } from "./components/SizedBox";
 
 export default function Register() {
   return (
     <>
-      <div className="screen">
-        <div style={{ flex: 80 }}></div>
-        <Image
-          src={Logo}
-          alt="로고"
-          style={{ width: "171px", height: "171px" }}
-        />
-        <div style={{ flex: 146 }}></div>
+      <div style={{ flex: 62 }}></div>
+      
+      <div className="p-5">
+        <Image className={styles.logo} src={Logo} alt="로고" />
+      </div>
+
+      <div style={{ flex: 116 }}></div>
+      
+      <div className="py-2 w-full">
         <h1 className={styles.title}>공군 인편지기</h1>
-        <div style={{ height: 13 }}></div>
+      </div>
+      
+      <div className="pt-1 pb-4 w-full">
         <h3 className={styles.substring}>
-         
           입대전에 인편 링크를
           <br />
           만들고 공유하세요!
         </h3>
-
-        <div style={{ flex: 69 }}></div>
-        <Link className="submit" href={{ pathname: "/register" }}>
-          시작하기
-        </Link>
-        <div style={{ height: 11 }}></div>
+      </div>
+      
+      <div style={{ flex: 61 }}></div>
+      
+      <Link className="submit" href={{ pathname: "/register" }}>
+        시작하기
+      </Link>
+      <div className="pt-2.5 pb-5 w-full">
         <div className={styles.help}>도움말</div>
-        <div style={{ height: 19 }}></div>
       </div>
     </>
   );

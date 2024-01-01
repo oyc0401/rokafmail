@@ -250,7 +250,7 @@ export function Body(params) {
               editName(e.target.value);
             }}
           ></input>
-          <div style={{ height: 2 }}></div>
+          <div className="sized" style={{ height: 2 }}></div>
           <p className={`${styles.help} ${nameHelp.color}`}>{nameHelp.text}</p>
         </div>
         <div style={{ width: 34 }}></div>
@@ -264,14 +264,14 @@ export function Body(params) {
               editRelationship(e.target.value);
             }}
           ></input>
-          <div style={{ height: 2 }}></div>
+          <div className="sized" style={{ height: 2 }}></div>
           <p className={`${styles.help} ${relationshipHelp.color}`}>
             {relationshipHelp.text}
           </p>
         </div>
       </div>
 
-      <div style={{ height: 18 }}></div>
+      <div className="sized" style={{ height: 18 }}></div>
       <input
         className={styles.form}
         type="text"
@@ -280,7 +280,7 @@ export function Body(params) {
           editTitle(e.target.value);
         }}
       ></input>
-      <div style={{ height: 2 }}></div>
+      <div className="sized" style={{ height: 2 }}></div>
       <div
         style={{
           display: "flex",
@@ -292,7 +292,7 @@ export function Body(params) {
         <p className={`${styles.help} ${titleHelp.color}`}>{titleHelp.text}</p>
       </div>
 
-      <div style={{ height: 18 }}></div>
+      <div className="sized" style={{ height: 18 }}></div>
 
       <TextareaAutosize
         className={`${styles.form} ${styles.contentForm}`}
@@ -301,7 +301,7 @@ export function Body(params) {
           editContents(e.target.value);
         }}
       ></TextareaAutosize>
-      <div style={{ height: 2 }}></div>
+      <div className="sized" style={{ height: 2 }}></div>
       <div className="row">
         <p className={`${styles.help} ${contentsHelp.color}`}>
           {contentsHelp.text}
@@ -309,14 +309,14 @@ export function Body(params) {
         <div style={{ flex: 1 }}></div>
         <p className={`${styles.help}`}>{`${contentsLength}/1200`}</p>
       </div>
-      <div style={{ height: 18 }}></div>
+      <div className="sized" style={{ height: 18 }}></div>
       <div className={styles.description}>
         편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
         <br />
         공군 기본군사훈련단은 훈련 3주차부터 인터넷편지 작성을 할 수 있습니다.
         따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로 발송됩니다.
       </div>
-      <div style={{ height: 18 }}></div>
+      <div className="sized" style={{ height: 18 }}></div>
       <input
         className={styles.form}
         type="password"
@@ -325,7 +325,7 @@ export function Body(params) {
           editPassword(e.target.value);
         }}
       ></input>
-      <div style={{ height: 2 }}></div>
+      <div className="sized" style={{ height: 2 }}></div>
       <div
         style={{
           display: "flex",
@@ -339,7 +339,8 @@ export function Body(params) {
         </p>
       </div>
 
-      <div style={{ height: 10 }}></div>
+      <div className="sized" style={{ height: 10 }}></div>
+      
       <Nav>
         <Link className={`submit mini`} href={`/mails/${params.username}`}>
           편지함
