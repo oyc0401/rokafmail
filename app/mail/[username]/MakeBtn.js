@@ -1,6 +1,7 @@
 "use client";
 import styles from "./page.module.css";
 import { useStore } from "./model";
+import Link from "next/link";
 export function MakeBtn() {
   const { click } = useStore();
   if (click) {
@@ -9,7 +10,9 @@ export function MakeBtn() {
 
   return (
     <div style={{ paddingTop: 18, paddingBottom: 8, width: "100%" }}>
-      <button className={`submit ${styles.btn}`}>인편 만들기</button>
+      <Link className={`submit ${styles.btn}`} href={{ pathname: "/" }}>
+        인편 만들기
+      </Link>
     </div>
   );
 }
