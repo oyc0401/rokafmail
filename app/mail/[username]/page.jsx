@@ -7,12 +7,12 @@ import { notFound } from "next/navigation";
 export default async function Mail({ params }) {
   return (
     <>
-      <div className="screen">
+   
         <div className="sized" style={{ height: 17 }}></div>
         <Header username={params.username}></Header>
         <div className="sized" style={{ height: 24 }}></div>
         <Body username={params.username}></Body>
-      </div>
+   
     </>
   );
 }
