@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Nav } from "../../components/Nav";
 import { useStore } from "./model";
 import { relative } from "path";
-import{ validN, validR, validC, validT, validP } from'./valid';
+import { validN, validR, validC, validT, validP } from "./valid";
 
 export function Body(params) {
   const { name, relationship, title, contents, password } = useStore();
@@ -110,12 +110,8 @@ function Post() {
       </div>
 
       <Title></Title>
-
-      <div className="sized" style={{ height: 18 }}></div>
       <Contents></Contents>
-      <div className="sized" style={{ height: 18 }}></div>
       <Name></Name>
-
       <Password></Password>
     </div>
   );
@@ -125,36 +121,32 @@ function Name() {
   const { name, relationship, setName, setRelationship } = useStore();
 
   return (
-    <div className="row">
-      <div style={{ flex: "1" }}>
-        <input
-          className={`${styles.form}`}
-          type="text"
-          placeholder="보내는사람"
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-        ></input>
-        <div className="sized" style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validN(name).color}`}>
-          {validN(name).text}
-        </p>
-      </div>
-      <div style={{ width: 34 }}></div>
-      <div style={{ flex: "1" }}>
-        <input
-          className={`${styles.form}`}
-          type="text"
-          style={{ flex: "1" }}
-          placeholder="관계"
-          onChange={(e) => {
-            setRelationship(e.target.value);
-          }}
-        ></input>
-        <div className="sized" style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validR(relationship).color}`}>
-          {validR(relationship).text}
-        </p>
+    <div className="pb-4">
+      <div className="row">
+        <h2 className="text-lg">보내는 사람</h2>
+
+        <div className="flex-1 pl-2.5">
+          <input
+            className={`${styles.form}`}
+            type="text"
+            placeholder="이름"
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+          ></input>
+        </div>
+
+        <div className="flex-1 pl-2.5">
+          <input
+            className={`${styles.form}`}
+            type="text"
+            style={{ flex: "1" }}
+            placeholder="관계"
+            onChange={(e) => {
+              setRelationship(e.target.value);
+            }}
+          ></input>
+        </div>
       </div>
     </div>
   );
@@ -163,7 +155,7 @@ function Name() {
 function Title() {
   const { title, setTitle } = useStore();
   return (
-    <>
+    <div className="pb-4">
       <input
         className={styles.form}
         type="text"
@@ -172,20 +164,7 @@ function Title() {
           setTitle(e.target.value);
         }}
       ></input>
-      <div className="sized" style={{ height: 2 }}></div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          width: "100%",
-          justifyContent: "flex-start",
-        }}
-      >
-        <p className={`${styles.help} ${validT(title).color}`}>
-          {validT(title).text}
-        </p>
-      </div>
-    </>
+    </div>
   );
 }
 
@@ -242,4 +221,3 @@ function Password() {
     </>
   );
 }
-

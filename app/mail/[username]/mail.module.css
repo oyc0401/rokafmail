@@ -5,18 +5,20 @@
   outline: none;
   color: var(--font-color);
  border-color:var(--font-color);
-   font-weight: 500;
-  font-size: 24px;
+   font-weight: 400;
+  font-size: 20px;
   font-style: normal;
   transition: 0.2s;
   width: 100%;
   text-align: left;
-  height:34px;
+ 
+  /* padding-bottom:2px; */
+
 }
 
 .contentForm{
   font-family:var(--font-family) !important;
-    min-height:193px;
+    min-height:80px;
   overflow:hidden;
   resize:none;
 }
