@@ -1,5 +1,7 @@
-import styles from "./mail.module.css";
-import { Body } from "./body";
+import styles from "./page.module.css";
+import { Submit } from "./submit";
+import { MakeBtn } from "./MakeBtn";
+import { Paper } from "./paper";
 import airForceTime from "./time";
 import { getUser } from "../../server/getUser";
 import { notFound } from "next/navigation";
@@ -7,12 +9,10 @@ import { notFound } from "next/navigation";
 export default async function Mail({ params }) {
   return (
     <>
-   
-        <div className="sized" style={{ height: 17 }}></div>
-        <Header username={params.username}></Header>
-        <div className="sized" style={{ height: 24 }}></div>
-        <Body username={params.username}></Body>
-   
+      <Header username={params.username}></Header>
+      <Paper></Paper>
+      <MakeBtn></MakeBtn>
+      <Submit username={params.username}></Submit>
     </>
   );
 }
@@ -29,18 +29,20 @@ async function Header(params) {
   let [start, end] = airForceTime(user.generation);
   let substring = user.substring;
   return (
-    <>
-      <h2 className="font-medium text-2xl text-left w-full">
+    <div className="pt-5 pb-3.5 w-full">
+      <h2 className={styles.title}>
         <span className="text-primary">{name}</span> 훈련병에게
         <br />
         편지를 보내주세요!
       </h2>
-      <div className="sized" style={{ height: 1 }}></div>
-      <h2 className="text-gray-500 font-medium text-sm text-left w-full">
-        {start} ~ {end}
-      </h2>
-      <div className="sized" style={{ height: 10 }}></div>
-      <h2 className="font-normal text-base text-left w-full" >{substring}</h2>
-    </>
+      <div className="pt-px w-full">
+        <h2 className={styles.time}>
+          {start} ~ {end}
+        </h2>
+      </div>
+      <div className="pt-2.5 w-full">
+        <h2 className={styles.substring}>{substring}</h2>
+      </div>
+    </div>
   );
 }

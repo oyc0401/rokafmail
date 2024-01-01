@@ -1,3 +1,10 @@
+.paper{
+  background: #FFFDF8;
+  padding:10px 20px;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.07);
+}
+
+
 /* 입력 폼 */
 .form{
    border-width: 0 0 1px;
@@ -13,20 +20,23 @@
   text-align: left;
 }
 
+.formTitle{
+   font-size: 20px;
+  font-weight:600;
+}
+
 .contentForm{
    display:block;
   font-family:var(--font-family) !important;
-  min-height:80px;
+  min-height:120px;
   overflow:hidden;
   resize:none;
-  margin:0;
-  padding:0;
-
+}
+.centerForm{
+  text-align:center
 }
 
-.formTitle{
-   font-size: 20px;
-}
+
 
 /* 입력폼 힌트 메시지 */
 .form::placeholder {
@@ -64,42 +74,4 @@
   font-size:12px;
   text-align:left;
   height:17px;
-}
-
-
-
-/* 로딩창 */
- .animation {
-   width: 12px;
-   height: 12px;
-   border-radius: 50%;
-   border: 2px solid #39F;
-   border-top-color: transparent;
-   border-left-color: transparent;
-   animation: Rotate 0.8s infinite linear;
-}
-
-@keyframes Rotate {
-  from {transform: rotate(0deg)}
-  to {transform: rotate(360deg)}
-}
-.registerLoad{
-  position: fixed  ;
-   display: none;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background:rgba(0, 0, 0, 0.15);
-  align-items: center;
-  justify-content: center;
-}
-
-.bigAnimation{
-  width:36px;
-  height:36px;
-   border: 4px solid #39F;
-  border-top-color: transparent;
-   border-left-color: transparent;
-   /* animation: Rotate 0.8s infinite linear; */
 }
