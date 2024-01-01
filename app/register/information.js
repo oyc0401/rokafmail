@@ -66,7 +66,7 @@ export default function Information() {
 
   return (
     <>
-      <div className="screen">
+
         <div style={{ flex: 100 }}></div>
         <h2 className={styles.title}>
           편지 주소를 확인하기 위해
@@ -130,7 +130,7 @@ export default function Information() {
           다음
         </button>
         <div style={{ height: 36 }}></div>
-      </div>
+    
     </>
   );
 }

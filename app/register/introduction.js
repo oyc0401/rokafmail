@@ -66,7 +66,7 @@ export default function Substring() {
 
   return (
     <>
-      <div className="screen">
+   
         <div
           className={styles.registerLoad}
           style={{
@@ -119,7 +119,7 @@ export default function Substring() {
           </button>
         </div>
         <div style={{ height: 36 }}></div>
-      </div>
+   
     </>
   );
 }

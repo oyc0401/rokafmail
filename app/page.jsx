@@ -1,25 +1,24 @@
 import styles from "./main.module.css";
 import Link from "next/link";
 
-import Logo from "./assets/logo.png";
+import {Logo} from "../public/assets/index";
 import Image from "next/image";
-import { SizedBox } from "./components/SizedBox";
 
 export default function Register() {
   return (
     <>
       <div style={{ flex: 62 }}></div>
-      
+
       <div className="p-5">
         <Image className={styles.logo} src={Logo} alt="로고" />
       </div>
 
       <div style={{ flex: 116 }}></div>
-      
+
       <div className="py-2 w-full">
         <h1 className={styles.title}>공군 인편지기</h1>
       </div>
-      
+
       <div className="pt-1 pb-4 w-full">
         <h3 className={styles.substring}>
           입대전에 인편 링크를
@@ -27,9 +26,9 @@ export default function Register() {
           만들고 공유하세요!
         </h3>
       </div>
-      
+
       <div style={{ flex: 61 }}></div>
-      
+
       <Link className="submit" href={{ pathname: "/register" }}>
         시작하기
       </Link>

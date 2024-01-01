@@ -80,7 +80,7 @@ export default function Account() {
 
   return (
     <>
-      <div className="screen">
+     
         <div style={{ flex: 100 }}></div>
 
         <h2 className={styles.title}>
@@ -182,7 +182,7 @@ export default function Account() {
         </div>
 
         <div style={{ height: 36 }}></div>
-      </div>
+
     </>
   );
 }
