@@ -172,7 +172,7 @@ function Contents() {
   const { contents, setContents } = useStore();
 
   return (
-    <>
+    <div className="pb-3">
       <TextareaAutosize
         className={`${styles.form} ${styles.contentForm}`}
         placeholder="내용"
@@ -180,15 +180,14 @@ function Contents() {
           setContents(e.target.value);
         }}
       ></TextareaAutosize>
-      <div className="sized" style={{ height: 2 }}></div>
-      <div className="row">
+      <div className="row pt-0.5">
         <p className={`${styles.help} ${validC(contents).color}`}>
           {validC(contents).text}
         </p>
         <div style={{ flex: 1 }}></div>
         <p className={`${styles.help}`}>{`${contents.length}/1200`}</p>
       </div>
-    </>
+    </div>
   );
 }
 

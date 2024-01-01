@@ -11,16 +11,16 @@
   transition: 0.2s;
   width: 100%;
   text-align: left;
- 
-  /* padding-bottom:2px; */
-
 }
 
 .contentForm{
+   display:block;
   font-family:var(--font-family) !important;
-    min-height:80px;
+  min-height:80px;
   overflow:hidden;
   resize:none;
+  margin:0;
+  padding:0;
 }
 
 /* 입력폼 힌트 메시지 */
@@ -34,7 +34,7 @@
   font-family:var(--font-family) !important;
   color: var(--light-font);
   font-size: 20px;
-   font-weight: 500;
+   font-weight: 400;
 }
 
 .form:focus {
