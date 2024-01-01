@@ -6,7 +6,7 @@
   color: var(--font-color);
  border-color:var(--font-color);
    font-weight: 400;
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   transition: 0.2s;
   width: 100%;
@@ -21,21 +21,30 @@
   resize:none;
   margin:0;
   padding:0;
+
+}
+
+.formTitle{
+   font-size: 20px;
 }
 
 /* 입력폼 힌트 메시지 */
 .form::placeholder {
   color: var(--light-font);
-  font-size: 20px;
    font-weight: 400;
 }
 
 .contentForm::placeholder {
   font-family:var(--font-family) !important;
   color: var(--light-font);
-  font-size: 20px;
    font-weight: 400;
 }
+
+
+.formTitle::placeholder{
+   font-size: 20px;
+}
+
 
 .form:focus {
    border-color: var(--dark-accent);

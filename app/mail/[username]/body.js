@@ -117,47 +117,14 @@ function Post() {
   );
 }
 
-function Name() {
-  const { name, relationship, setName, setRelationship } = useStore();
 
-  return (
-    <div className="pb-4">
-      <div className="row">
-        <h2 className="text-lg">보내는 사람</h2>
-
-        <div className="flex-1 pl-2.5">
-          <input
-            className={`${styles.form}`}
-            type="text"
-            placeholder="이름"
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          ></input>
-        </div>
-
-        <div className="flex-1 pl-2.5">
-          <input
-            className={`${styles.form}`}
-            type="text"
-            style={{ flex: "1" }}
-            placeholder="관계"
-            onChange={(e) => {
-              setRelationship(e.target.value);
-            }}
-          ></input>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function Title() {
   const { title, setTitle } = useStore();
   return (
     <div className="pb-4">
       <input
-        className={styles.form}
+        className={`${styles.form} ${styles.formTitle}`}
         type="text"
         placeholder="제목"
         onChange={(e) => {
@@ -186,6 +153,41 @@ function Contents() {
         </p>
         <div style={{ flex: 1 }}></div>
         <p className={`${styles.help}`}>{`${contents.length}/1200`}</p>
+      </div>
+    </div>
+  );
+}
+
+function Name() {
+  const { name, relationship, setName, setRelationship } = useStore();
+
+  return (
+    <div className="pb-6">
+      <div className="row">
+        <h2 className="text-lg" style={{color:'#37271A'}}>보내는 사람</h2>
+
+        <div className="flex-1 pl-2.5">
+          <input
+            className={`${styles.form}`}
+            type="text"
+            placeholder="이름"
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+          ></input>
+        </div>
+
+        <div className="flex-1 pl-2.5">
+          <input
+            className={`${styles.form}`}
+            type="text"
+            style={{ flex: "1" }}
+            placeholder="관계"
+            onChange={(e) => {
+              setRelationship(e.target.value);
+            }}
+          ></input>
+        </div>
       </div>
     </div>
   );
