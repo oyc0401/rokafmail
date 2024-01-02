@@ -47,7 +47,7 @@ export default function Message() {
         name: name,
         birth: birth,
         generation: generation,
-        substring: message,
+        message: message,
       });
       router.push(`/link/${username}`);
     } catch (error) {
@@ -66,60 +66,58 @@ export default function Message() {
 
   return (
     <>
-   
-        <div
-          className={styles.registerLoad}
-          style={{
-            display: progress ? "flex" : "none",
-          }}
+      <div
+        className={styles.registerLoad}
+        style={{
+          display: progress ? "flex" : "none",
+        }}
+      >
+        <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
+      </div>
+      <div style={{ flex: 100 }}></div>
+      <h2 className={styles.title}>
+        편지지에 보여질
+        <br />
+        한줄 글을 적어주세요
+      </h2>
+      <div style={{ flex: 49 }}></div>
+
+      <p className={styles.formTitle}>한줄 글</p>
+      <div style={{ height: 2 }}></div>
+      <input
+        className={styles.form}
+        value={message}
+        type="text"
+        placeholder="한줄 글을 작성해주세요"
+        onChange={(e) => {
+          setMessage(e.target.value);
+        }}
+      ></input>
+      <div style={{ height: 2 }}></div>
+      <p className={`${styles.help} ${validM().color}`}>{validM().text}</p>
+      <div style={{ flex: 253 }}></div>
+
+      <p className={styles.intro}>
+        편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
+        <br />
+        공군 기본군사훈련단은 훈련 3주차부터 인터넷편지 작성을 할 수 있습니다.
+        따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로 발송됩니다.
+      </p>
+      <div style={{ height: 24 }}></div>
+
+      <div className="row">
+        <button className={`submit mini`} onClick={prev}>
+          이전
+        </button>
+        <div style={{ width: 12 }}></div>
+        <button
+          className={canSubmit() ? "submit" : "submit disable"}
+          onClick={click}
         >
-          <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
-        </div>
-        <div style={{ flex: 100 }}></div>
-        <h2 className={styles.title}>
-          편지지에 보여질
-          <br />
-          한줄 글을 적어주세요
-        </h2>
-        <div style={{ flex: 49 }}></div>
-
-        <p className={styles.formTitle}>한줄 글</p>
-        <div style={{ height: 2 }}></div>
-        <input
-          className={styles.form}
-          value={message}
-          type="text"
-          placeholder="한줄 글을 작성해주세요"
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-        ></input>
-        <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validM().color}`}>{validM().text}</p>
-        <div style={{ flex: 253 }}></div>
-
-        <p className={styles.intro}>
-          편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
-          <br />
-          공군 기본군사훈련단은 훈련 3주차부터 인터넷편지 작성을 할 수 있습니다.
-          따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로 발송됩니다.
-        </p>
-        <div style={{ height: 24 }}></div>
-
-        <div className="row">
-          <button className={`submit mini`} onClick={prev}>
-            이전
-          </button>
-          <div style={{ width: 12 }}></div>
-          <button
-            className={canSubmit() ? "submit" : "submit disable"}
-            onClick={click}
-          >
-            만들기
-          </button>
-        </div>
-        <div style={{ height: 36 }}></div>
-   
+          만들기
+        </button>
+      </div>
+      <div style={{ height: 36 }}></div>
     </>
   );
 }

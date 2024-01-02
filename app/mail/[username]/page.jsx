@@ -41,7 +41,7 @@ async function Header(params) {
         </h2>
       </div>
       <div className="pt-2 w-full">
-        <h2 className={styles.substring}>{message}</h2>
+        <h2 className={styles.message}>{message}</h2>
       </div>
     </div>
   );
