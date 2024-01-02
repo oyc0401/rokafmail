@@ -2,14 +2,7 @@ import styles from "./page.module.css";
 import { Submit } from "./submit";
 import { MakeBtn } from "./MakeBtn";
 import { Paper } from "./paper";
-import {
-  airForceTime,
-  getPostStart,
-  getPostEnd,
-  canPostTime,
-  getEnterStr,
-  getCompletionStr,
-} from "./time";
+import { getEnterTime, getCompletionTime } from "./time";
 import { getUser } from "../../server/getUser";
 import { notFound } from "next/navigation";
 
@@ -34,9 +27,9 @@ async function Header(params) {
 
   let name = user.name;
   let message = user.message;
-  let startTime = getEnterStr(user.generation);
-  let compTime = getCompletionStr(user.generation);
-  
+  let startTime = getEnterTime(user.generation).format("YY.MM.DD");
+  let compTime = getCompletionTime(user.generation).format("YY.MM.DD");
+
   return (
     <div className="pt-4 pb-3.5 w-full">
       <h2 className={styles.title}>
