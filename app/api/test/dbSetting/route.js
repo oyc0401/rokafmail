@@ -7,6 +7,10 @@ export async function GET(request) {
     pool: { min: 0, max: 80 },
   });
 
+  knex.schema.alterTable("users", (table) => {
+    table.renameColumn("substring", "message");
+  });
+
   // users table
   if (!(await knex.schema.hasTable("users"))) {
     await knex.schema.createTable("users", (table) => {
@@ -16,7 +20,7 @@ export async function GET(request) {
       table.string("name");
       table.string("birth");
       table.string("generation");
-      table.string("substring");
+      table.string("message");
       table.string("memberSeq").nullable();
       table.string("sodae").nullable();
       table.boolean("connect").defaultTo(false);

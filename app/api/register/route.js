@@ -29,7 +29,7 @@ export async function POST(request) {
     memberSeq: data.memberSeq,
     sodae: data.sodae,
     connect: data.connect,
-    substring:body.substring,
+      message:body.message,
   };
   const userIdObj = await knex("users").returning("id").insert(user);
   const userId = userIdObj[0].id;

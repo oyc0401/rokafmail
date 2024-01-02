@@ -5,15 +5,15 @@ import { useStore, useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import crypto from "crypto";
-export default function Substring() {
+export default function Message() {
   const {
     generation,
     name,
     birth,
     username,
     password,
-    substring,
-    setSubstring,
+    message,
+    setMessage,
     prev,
   } = useStoreBase();
 
@@ -21,19 +21,19 @@ export default function Substring() {
 
   const router = useRouter();
 
-  function validS() {
+  function validM() {
     // 빈칸일 때
-    if (substring == "") return { text: "", valid: false };
+    if (message == "") return { text: "", valid: false };
 
     // 너무 많을 때
-    if (50 < substring.length)
+    if (50 < message.length)
       return { text: "글이 너무 길어요", color: "warn", valid: false };
 
     // 통과
     return { text: "잘했어요!", color: "great", valid: true };
   }
 
-  const canSubmit = () => validS().valid;
+  const canSubmit = () => validM().valid;
 
   async function send() {
     let encryptedPassword = crypto
@@ -47,7 +47,7 @@ export default function Substring() {
         name: name,
         birth: birth,
         generation: generation,
-        substring: substring,
+        substring: message,
       });
       router.push(`/link/${username}`);
     } catch (error) {
@@ -87,15 +87,15 @@ export default function Substring() {
         <div style={{ height: 2 }}></div>
         <input
           className={styles.form}
-          value={substring}
+          value={message}
           type="text"
           placeholder="한줄 글을 작성해주세요"
           onChange={(e) => {
-            setSubstring(e.target.value);
+            setMessage(e.target.value);
           }}
         ></input>
         <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validS().color}`}>{validS().text}</p>
+        <p className={`${styles.help} ${validM().color}`}>{validM().text}</p>
         <div style={{ flex: 253 }}></div>
 
         <p className={styles.intro}>

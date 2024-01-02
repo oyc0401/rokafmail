@@ -2,7 +2,7 @@
 import React, {  useEffect } from "react";
 import Information from "./information";
 import Account from "./account";
-import Introduction from "./introduction";
+import Message from "./message";
 import { useStore } from "./model";
 
 export default function Register() {
@@ -21,7 +21,7 @@ export default function Register() {
   let pages = {
     0: <Information />,
     1: <Account />,
-    2: <Introduction />,
+    2: <Message />,
   };
 
   return <>{pages[page]}</>;

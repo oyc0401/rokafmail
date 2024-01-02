@@ -27,7 +27,7 @@ async function Header(params) {
 
   let name = user.name;
   let [start, end] = airForceTime(user.generation);
-  let substring = user.substring;
+  let message = user.message;
   return (
     <div className="pt-4 pb-3.5 w-full">
       <h2 className={styles.title}>
@@ -41,7 +41,7 @@ async function Header(params) {
         </h2>
       </div>
       <div className="pt-2 w-full">
-        <h2 className={styles.substring}>{substring}</h2>
+        <h2 className={styles.substring}>{message}</h2>
       </div>
     </div>
   );

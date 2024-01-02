@@ -12,7 +12,7 @@ export const useStoreBase = create((set) => ({
   username: "",
   password: "",
   repassword: "",
-  substring: "",
+  message: "",
 
   setGeneration: (text) => set({ generation: text }),
   setName: (text) => set({ name: text }),
@@ -20,7 +20,7 @@ export const useStoreBase = create((set) => ({
   setUsername: (text) => set({ username: text }),
   setPassword: (text) => set({ password: text }),
   setRepassword: (text) => set({ repassword: text }),
-  setSubstring: (text) => set({ substring: text }),
+  setMessage: (text) => set({ message: text }),
 }));
 
 export const useStore = createSelectors(useStoreBase);
