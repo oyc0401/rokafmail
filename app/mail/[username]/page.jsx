@@ -2,7 +2,14 @@ import styles from "./page.module.css";
 import { Submit } from "./submit";
 import { MakeBtn } from "./MakeBtn";
 import { Paper } from "./paper";
-import airForceTime from "./time";
+import {
+  airForceTime,
+  getPostStart,
+  getPostEnd,
+  canPostTime,
+  getEnterStr,
+  getCompletionStr,
+} from "./time";
 import { getUser } from "../../server/getUser";
 import { notFound } from "next/navigation";
 
@@ -26,8 +33,10 @@ async function Header(params) {
   // console.log(user);
 
   let name = user.name;
-  let [start, end] = airForceTime(user.generation);
   let message = user.message;
+  let startTime = getEnterStr(user.generation);
+  let compTime = getCompletionStr(user.generation);
+  
   return (
     <div className="pt-4 pb-3.5 w-full">
       <h2 className={styles.title}>
@@ -37,7 +46,7 @@ async function Header(params) {
       </h2>
       <div className="pt-px w-full">
         <h2 className={styles.time}>
-          {start} ~ {end}
+          {startTime} ~ {compTime}
         </h2>
       </div>
       <div className="pt-2 w-full">

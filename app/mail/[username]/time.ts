@@ -1,6 +1,15 @@
-export default function airForceTime(
-  generation: number,
-): [string, string, string] {
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import isBetween from "dayjs/plugin/isBetween";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(isBetween);
+
+export function airForceTime(generation: number): [string, string, string] {
   // [입대일, 수료일, 전역일]
   const store: { [key: number]: [string, string, string] } = {
     830: ["21.09.06", "21.10.08", "23.06.05"],
@@ -45,4 +54,38 @@ export default function airForceTime(
   }
 
   return store[generation];
+}
+
+function getEnterTime(generation: number): dayjs.Dayjs {
+  let [start] = airForceTime(generation);
+  return dayjs(start, "YY.MM.DD");
+}
+
+function getEndTime(generation: number): dayjs.Dayjs {
+  let [,end] = airForceTime(generation);
+  return dayjs(end, "YY.MM.DD");
+}
+
+const getCompletionTime = (generation: number): dayjs.Dayjs =>
+  getEnterTime(generation).add(32, "day");
+
+export function getEnterStr(generation: number): string {
+  return getEnterTime(generation).format("YY.MM.DD");
+}
+
+export function getCompletionStr(generation: number): string {
+  return getCompletionTime(generation).format("YY.MM.DD");
+}
+
+export function getPostStart(generation: number): dayjs.Dayjs {
+  return getEnterTime(generation).add(14, "day").add(9, "hour");
+}
+
+export function getPostEnd(generation: number): dayjs.Dayjs {
+  return getEnterTime(generation).add(30, "day").add(17, "hour");
+}
+
+export function canPostTime(generation: number) {
+  const now = dayjs().tz("Asia/Seoul");
+  return now.isBetween(getPostStart(generation), getPostEnd(generation));
 }
