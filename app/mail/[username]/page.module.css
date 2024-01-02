@@ -21,6 +21,9 @@
   background: var(--font-color);
   color:white;
 }
+.btn:active{
+  background: #2e2e2e;
+}
 
 
 /* 로딩창 */

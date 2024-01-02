@@ -13,7 +13,10 @@ import rokafLogo from "../../../public/assets/rokaf.png";
 import Image from "next/image";
 export function Paper() {
   return (
-    <div className={styles.paper}>
+    <div
+      className={styles.paper}
+      style={{ flex: 1, display: "flex", flexDirection: "column" }}
+    >
       <div style={{ width: "100%", padding: 16 }}>
         <Image
           src={rokafLogo}
@@ -34,7 +37,7 @@ export function Paper() {
 }
 
 function Title() {
-  const { title, setTitle,setClick } = useStore();
+  const { setTitle, setClick } = useStore();
   return (
     <div className="pb-4">
       <input
@@ -51,18 +54,22 @@ function Title() {
 }
 
 function Contents() {
-  const { contents, setContents,setClick } = useStore();
+  const { contents, setContents, setClick } = useStore();
 
   return (
-    <div className="pb-3">
-      <TextareaAutosize
-        className={`${styles.form} ${styles.contentForm}`}
-        placeholder="내용"
-        onChange={(e) => {
-          setContents(e.target.value);
-          setClick(true);
-        }}
-      ></TextareaAutosize>
+    <div className="pb-3" style={{ flex: 1,display:'flex',flexDirection:'column' }}>
+      <div style={{ flex: 1 }}>
+        <textarea
+          className={`${styles.form} ${styles.contentForm}`}
+          style={{ height: "100%" }}
+          placeholder="내용"
+          onChange={(e) => {
+            setContents(e.target.value);
+            setClick(true);
+          }}
+        ></textarea>
+      </div>
+
       <div className="row pt-0.5">
         <p className={`${styles.help} ${validC(contents).color}`}>
           {validC(contents).text}
@@ -75,7 +82,7 @@ function Contents() {
 }
 
 function Name() {
-  const { name, relationship, setName, setRelationship } = useStore();
+  const { setName, setRelationship,setClick } = useStore();
 
   return (
     <div className="pb-6">
@@ -90,7 +97,7 @@ function Name() {
             type="text"
             placeholder="이름"
             onChange={(e) => {
-              setName(e.target.value);
+              setName(e.target.value);setClick(true);
             }}
           ></input>
         </div>
@@ -102,7 +109,7 @@ function Name() {
             style={{ flex: "1" }}
             placeholder="관계"
             onChange={(e) => {
-              setRelationship(e.target.value);
+              setRelationship(e.target.value);setClick(true);
             }}
           ></input>
         </div>
@@ -112,7 +119,7 @@ function Name() {
 }
 
 function Password() {
-  const { password, setPassword } = useStore();
+  const { setPassword,setClick } = useStore();
 
   return (
     <div className="pb-5">
@@ -130,7 +137,7 @@ function Password() {
             type="password"
             placeholder="비밀번호"
             onChange={(e) => {
-              setPassword(e.target.value);
+              setPassword(e.target.value);setClick(true);
             }}
           ></input>
         </div>

@@ -9,7 +9,7 @@ import { Nav } from "../../components/Nav";
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 
 export default async function Mails({ params }) {
- // console.log(params.username);
+  // console.log(params.username);
   let user = await getUser(params.username);
 
   if (!user) {
@@ -18,34 +18,32 @@ export default async function Mails({ params }) {
 
   return (
     <>
-      <div className="screen">
-        {user.connect ? (
-          <Post username={params.username} />
-        ) : (
-          <UnconnectedPost username={params.username} />
-        )}
-        {user.connect ? (
-          <Nav>
-            <Link
-              className={`submit mini`}
-              href={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`}
-              target="_blank"
-            >
-              기훈단
-            </Link>
-            <div style={{ width: 12 }}></div>
-            <Link className={"submit"} href={`/mail/${user.username}`}>
-              편지 작성
-            </Link>
-          </Nav>
-        ) : (
-          <Nav>
-            <Link className={"submit"} href={`/mail/${user.username}`}>
-              편지 작성
-            </Link>
-          </Nav>
-        )}
-      </div>
+      {user.connect ? (
+        <Post username={params.username} />
+      ) : (
+        <UnconnectedPost username={params.username} />
+      )}
+      {user.connect ? (
+        <Nav elevation={true}>
+          <Link
+            className={`submit mini`}
+            href={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`}
+            target="_blank"
+          >
+            기훈단
+          </Link>
+          <div style={{ width: 12 }}></div>
+          <Link className={"submit"} href={`/mail/${user.username}`}>
+            편지 작성
+          </Link>
+        </Nav>
+      ) : (
+        <Nav>
+          <Link className={"submit"} href={`/mail/${user.username}`}>
+            편지 작성
+          </Link>
+        </Nav>
+      )}
     </>
   );
 }
@@ -54,7 +52,7 @@ async function Post(parms) {
   let queue = await getPostQueue(parms.username);
 
   //console.log(posts);
- //console.log(queue);
+  //console.log(queue);
   if (posts.length == 0 && queue.length == 0) {
     return <NoPost />;
   }

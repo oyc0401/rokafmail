@@ -36,7 +36,7 @@ function validC(contents) {
   }
 
   // 통과
-  return { text: "잘했어요!", color: "great", valid: true };
+  return { text: "", color: "great", valid: true };
 }
 
 function validP(password) {

@@ -14,24 +14,26 @@
  border-color:var(--font-color);
    font-weight: 400;
   font-size: 18px;
-  font-style: normal;
   transition: 0.2s;
   width: 100%;
   text-align: left;
+  overflow: scroll;
 }
 
 .formTitle{
    font-size: 20px;
-  font-weight:600;
+  font-weight:500;
 }
 
 .contentForm{
    display:block;
   font-family:var(--font-family) !important;
-  min-height:120px;
-  overflow:hidden;
+  min-height:60;
   resize:none;
 }
+.contentForm::-webkit-scrollbar {
+   display: none;
+ }
 .centerForm{
   text-align:center
 }
@@ -56,9 +58,6 @@
 }
 
 
-.form:focus {
-   border-color: var(--dark-accent);
-}
 
 .description{
    color: var(--light-font);
