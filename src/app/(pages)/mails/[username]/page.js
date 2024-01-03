@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { getUser } from "app/server/getUser";
+import { getUser } from "src/server/getUser";
 import styles from "./mails.module.css";
 import { getUnconnectedPost } from "./server/getUnconnectedPost";
 import { getPost } from "./server/getPost";
 import { getPostQueue } from "./server/getPostQueue";
 import { dateToStr } from "./dateToStr";
-import { Nav } from "app/components/Nav";
+import { Nav } from "src/components/Nav";
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 
 export default async function Mails({ params }) {

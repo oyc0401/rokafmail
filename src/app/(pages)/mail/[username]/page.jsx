@@ -3,7 +3,7 @@ import { Submit } from "./submit";
 import { MakeBtn } from "./MakeBtn";
 import { Paper } from "./paper";
 import { getEnterTime, getCompletionTime } from "./time";
-import { getUser } from "app/server/getUser";
+import { getUser } from "src/server/getUser";
 import { notFound } from "next/navigation";
 
 export default async function Mail({ params }) {

@@ -1,7 +1,7 @@
 import styles from "./main.module.css";
 import Link from "next/link";
 
-import {Logo} from "../public/assets/index";
+import {Logo} from "public/assets/index";
 import Image from "next/image";
 
 export default function Register() {
