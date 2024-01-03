@@ -3,88 +3,58 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import isBetween from "dayjs/plugin/isBetween";
+import { timeDB, isEmpty, startGeneration } from "./DB";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(isBetween);
 
-function airForceTime(generation: number): [string, string] {
-  // [입대일, 수료일, 전역일]
-  const store: { [key: number]: [string, string] } = {
-    830: ["2021-09-06", "2023-06-05"],
-    831: ["2021-10-12", "2023-07-11"],
-    832: ["2021-11-08", "2023-08-07"],
-    833: ["2021-12-06", "2023-09-05"],
-    834: ["2022-01-10", "2023-10-09"],
-    835: ["2022-02-14", "2023-11-13"],
-    836: ["2022-03-21", "2023-12-20"],
-    837: ["2022-04-25", "2024-01-24"],
-    838: ["2022-05-30", "2024-02-29"],
-    839: ["2022-07-11", "2024-04-10"],
-    840: ["2022-08-22", "2024-05-21"],
-    841: ["2022-09-26", "2024-06-25"],
-    842: ["2022-10-31", "2024-07-30"],
-    843: ["2022-12-05", "2024-09-04"],
-    844: ["2023-01-09", "2024-10-08"],
-    845: ["2023-02-13", "2024-11-12"],
-    846: ["2023-03-20", "2024-12-19"],
-    847: ["2023-04-24", "2025-01-23"],
-    848: ["2023-05-30", "2025-02-28"],
-    849: ["2023-07-10", "2025-04-09"],
-    850: ["2023-08-14", "2025-05-13"],
-    851: ["2023-09-18", "2025-06-17"],
-    852: ["2023-10-30", "2025-07-29"],
-    853: ["2023-12-04", "2025-09-03"],
-    854: ["2024-01-08", "2025-10-07"],
-    855: ["2024-02-13", "2025-11-12"],
-    856: ["2024-03-18", "2025-12-17"],
-    857: ["2024-04-22", "2026-01-21"],
-    858: ["2024-05-27", "2026-02-26"],
-    859: ["2024-07-01", "2026-03-31"],
-    860: ["2024-08-05", "2026-05-04"],
-    861: ["2024-09-09", "2026-06-08"],
-    862: ["2024-10-14", "2026-07-13"],
-    863: ["2024-11-18", "2026-08-17"],
-    864: ["2024-12-23", "2026-09-22"],
-  };
-
-  if (store[generation] == null) {
-    return ["202x-xx-xx", "202x-xx-xx"];
-  }
-
-  return store[generation];
-}
-
 /** 포맷하고 싶으면 .format("YY.MM.DD") 붙이기 */
 
 // 입대
-export function getEnterTime(generation: number): dayjs.Dayjs {
-  let [start] = airForceTime(generation);
+export function getEnter(generation: number): dayjs.Dayjs {
+  let [start] = timeDB(generation);
   return dayjs(start);
 }
 
 // 편지 시작
 export function getMailStart(generation: number): dayjs.Dayjs {
-  return getEnterTime(generation).add(14, "day").add(9, "hour");
+  return getEnter(generation).add(14, "day").add(9, "hour");
 }
 
 // 편지 마감
 export function getMailEnd(generation: number): dayjs.Dayjs {
-  return getEnterTime(generation).add(30, "day").add(17, "hour");
+  return getEnter(generation).add(30, "day").add(17, "hour");
 }
 
 // 수료
-export const getCompletionTime = (generation: number): dayjs.Dayjs =>
-  getEnterTime(generation).add(32, "day");
+export function getCompletion(generation: number): dayjs.Dayjs {
+  return getEnter(generation).add(32, "day");
+}
 
 // 전역
-function getEndTime(generation: number): dayjs.Dayjs {
-  let [, end] = airForceTime(generation);
+export function getDischarge(generation: number): dayjs.Dayjs {
+  let [, end] = timeDB(generation);
   return dayjs(end);
 }
 
-export function canPostTime(generation: number) {
+// 기수의 입영일을 아는지
+export function isContain(generation: number) {
+  return !isEmpty(generation);
+}
+
+// 편지 보내는 기간인지
+export function canPost(generation: number): boolean {
   const now = dayjs().tz("Asia/Seoul");
   return now.isBetween(getMailStart(generation), getMailEnd(generation));
+}
+
+// 전역했는지
+export function isDischarged(generation: number): boolean {
+  if (generation < startGeneration) return true;
+  if (!isContain(generation)) return false;
+
+  const now = dayjs().tz("Asia/Seoul");
+  return getDischarge(generation).isBefore(now);
 }

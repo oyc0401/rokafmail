@@ -2,7 +2,7 @@ import styles from "./page.module.css";
 import { Submit } from "./submit";
 import { MakeBtn } from "./MakeBtn";
 import { Paper } from "./paper";
-import { getEnterTime, getCompletionTime } from "src/lib/time";
+import { getEnter, getCompletion, isContain } from "src/lib/time";
 import { getUser } from "src/server";
 import { notFound } from "next/navigation";
 
@@ -27,8 +27,16 @@ async function Header(params) {
 
   let name = user.name;
   let message = user.message;
-  let startTime = getEnterTime(user.generation).format("YY.MM.DD");
-  let compTime = getCompletionTime(user.generation).format("YY.MM.DD");
+
+  let startTime;
+  let compTime;
+  if (!isContain(user.generation)) {
+    startTime = "2x.xx.xx";
+    compTime = "2x.xx.xx";
+  } else {
+    startTime = getEnter(user.generation).format("YY.MM.DD");
+    compTime = getCompletion(user.generation).format("YY.MM.DD");
+  }
 
   return (
     <div className="pt-4 pb-3.5 w-full">

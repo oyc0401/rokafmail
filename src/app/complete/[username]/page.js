@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getUser } from "src/server/";
 import styles from "./complete.module.css";
 
+import {getMailStart,canPost} from 'src/lib/time'
+
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 export default async function Complete({ searchParams, params }) {
   const sc = searchParams.sc;
@@ -11,6 +13,8 @@ export default async function Complete({ searchParams, params }) {
   if (!user) {
     notFound();
   }
+
+  // 보낼 수 있는 기간이면 
 
   let message = "오류가 발생하였습니다.";
   if (sc === "200") {
