@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
-import { avaliableUsername } from "src/server/avaliableUsername";
+import { avaliableUsername } from "src/server";
 import { useStore, useStoreBase } from "./model";
 
 export default function Account() {

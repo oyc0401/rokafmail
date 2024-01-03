@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { getUser } from "src/server/getUser";
+import { getUser } from "src/server";
 import styles from "./mails.module.css";
-import { getUnconnectedPost } from "./server/getUnconnectedPost";
-import { getPost } from "./server/getPost";
-import { getPostQueue } from "./server/getPostQueue";
+import { getPost,getPostQueue,getUnconnectedPost } from "src/server";
 import { dateToStr } from "./dateToStr";
 import { Nav } from "src/components/Nav";
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631

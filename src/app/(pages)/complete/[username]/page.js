@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getUser } from "src/server/getUser";
+import { getUser } from "src/server/";
 import styles from "./complete.module.css";
 
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631

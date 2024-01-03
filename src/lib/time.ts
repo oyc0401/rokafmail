@@ -65,12 +65,12 @@ export function getEnterTime(generation: number): dayjs.Dayjs {
 }
 
 // 편지 시작
-export function getPostStart(generation: number): dayjs.Dayjs {
+export function getMailStart(generation: number): dayjs.Dayjs {
   return getEnterTime(generation).add(14, "day").add(9, "hour");
 }
 
 // 편지 마감
-export function getPostEnd(generation: number): dayjs.Dayjs {
+export function getMailEnd(generation: number): dayjs.Dayjs {
   return getEnterTime(generation).add(30, "day").add(17, "hour");
 }
 
@@ -86,5 +86,5 @@ function getEndTime(generation: number): dayjs.Dayjs {
 
 export function canPostTime(generation: number) {
   const now = dayjs().tz("Asia/Seoul");
-  return now.isBetween(getPostStart(generation), getPostEnd(generation));
+  return now.isBetween(getMailStart(generation), getMailEnd(generation));
 }

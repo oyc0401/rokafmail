@@ -11,7 +11,7 @@ const notoSansKr = Noto_Sans_KR({
 
 
 export const metadata = {
-  title: '인편 지기',
+  title: '공군인편',
   description: '공군 훈련병 인편 보내주기',
 }
 
