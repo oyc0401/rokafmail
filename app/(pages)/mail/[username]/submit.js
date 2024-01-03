@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Nav } from "../../components/Nav";
+import { Nav } from "app/components/Nav";
 import { useStore } from "./model";
 import { validN, validR, validC, validT, validP } from "./valid";
 

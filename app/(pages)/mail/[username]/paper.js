@@ -1,15 +1,8 @@
 "use client";
-import TextareaAutosize from "react-textarea-autosize";
 import styles from "./paper.module.css";
-import axios from "axios";
-import { useRef, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Nav } from "../../components/Nav";
 import { useStore } from "./model";
-import { relative } from "path";
-import { validN, validR, validC, validT, validP } from "./valid";
-import rokafLogo from "../../../public/assets/rokaf.png";
+import {  validC } from "./valid";
+import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 export function Paper() {
   return (
