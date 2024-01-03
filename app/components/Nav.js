@@ -1,18 +1,17 @@
 "use client";
 import styles from "./components.module.css";
-import Link from "next/link";
-import { throttle } from "lodash";
 import { useEffect, useState } from "react";
 
+// 바닥으로 내려가면 그림자가 사라지는 네비게이션 바
 export function Nav({ children, elevation = false }) {
   const handleScroll = () => {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
-    const clientHeight = document.documentElement.clientHeight;
+    const innerHeight = window.innerHeight;
     // console.log(`${scrollHeight} / ${clientHeight} / ${scrollTop}`);
-    setRender(`${scrollHeight} / ${clientHeight} / ${scrollTop}`);
 
-    if (scrollTop + clientHeight + 1 + 50 >= scrollHeight) {
+    // setLog(`${scrollHeight} / ${innerHeight} / ${scrollTop + innerHeight}`);
+    if (scrollTop + innerHeight + 1 >= scrollHeight) {
       setEnd(true);
     } else {
       setEnd(false);
@@ -21,12 +20,16 @@ export function Nav({ children, elevation = false }) {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
 
   const [end, setEnd] = useState(true);
-  const [, setRender] = useState("");
+  // const [log, setLog] = useState("");
 
   return (
     <>
@@ -36,6 +39,8 @@ export function Nav({ children, elevation = false }) {
           !elevation ? "" : end ? "" : styles.end
         }`}
       >
+        {/* <p style={{ height: 30 }}>{log}</p> */}
+
         <div
           style={{
             paddingLeft: 20,
