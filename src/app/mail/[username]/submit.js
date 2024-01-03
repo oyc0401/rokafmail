@@ -1,10 +1,12 @@
 "use client";
-import styles from "./page.module.css";
 import axios from "axios";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Nav } from "src/components/Nav";
+
+import { Nav } from "src/components";
+
+import styles from "./page.module.css";
 import { useStore } from "./model";
 import { validN, validR, validC, validT, validP } from "./valid";
 
@@ -65,7 +67,6 @@ export function Submit(params) {
 
   return (
     <>
-     
       <Nav>
         <Link className={`submit mini`} href={`/mails/${params.username}`}>
           편지함

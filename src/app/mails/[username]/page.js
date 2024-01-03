@@ -3,7 +3,7 @@ import { getUser } from "src/server";
 import styles from "./mails.module.css";
 import { getPost,getPostQueue,getUnconnectedPost } from "src/server";
 import { dateToStr } from "./dateToStr";
-import { Nav } from "src/components/Nav";
+import { Nav } from "src/components";
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 
 export default async function Mails({ params }) {
