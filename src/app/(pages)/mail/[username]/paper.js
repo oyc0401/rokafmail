@@ -13,6 +13,7 @@ export function Paper() {
       <div style={{ width: "100%", padding: 16 }}>
         <Image
           src={rokafLogo}
+          alt="airforce"
           style={{
             width: 63,
             height: 26,

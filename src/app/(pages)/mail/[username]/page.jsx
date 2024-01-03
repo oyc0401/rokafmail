@@ -2,7 +2,7 @@ import styles from "./page.module.css";
 import { Submit } from "./submit";
 import { MakeBtn } from "./MakeBtn";
 import { Paper } from "./paper";
-import { getEnterTime, getCompletionTime } from "./time";
+import { getEnterTime, getCompletionTime } from "src/lib/time";
 import { getUser } from "src/server/getUser";
 import { notFound } from "next/navigation";
 
