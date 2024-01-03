@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -57,4 +57,10 @@ export function isDischarged(generation: number): boolean {
 
   const now = dayjs().tz("Asia/Seoul");
   return getDischarge(generation).isBefore(now);
+}
+
+// 현재와 차이나는 날짜
+export function diffDay(date: dayjs.Dayjs) {
+  const now = dayjs().tz("Asia/Seoul");
+  return now.diff(date, "day");
 }

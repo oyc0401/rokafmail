@@ -1,4 +1,4 @@
-export {
+export{
   getEnter,
   getMailStart,
   getMailEnd,
@@ -7,4 +7,5 @@ export {
   canPost,
   isContain,
   isDischarged,
+  diffDay,
 } from "./time";
