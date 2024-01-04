@@ -9,7 +9,7 @@ export async function postMail({
   password,
   memberSeq,
   sodae,
-}) {
+}):  {
   let data = new FormData();
 
   data.append("senderZipcode", "06252");

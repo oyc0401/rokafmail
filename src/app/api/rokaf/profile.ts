@@ -2,7 +2,7 @@ import axios from "axios";
 import cheerio from "cheerio";
 import { parse } from "node-html-parser";
 
-function html2memberSeqVal(html) {
+function htmlToMemberSeq(html) {
   // 여기에서는 가져온 HTML을 파싱하거나 원하는 작업을 수행합니다.
   const root = parse(html);
   // 예제: 클래스가 "choice"인 요소를 찾아서 onclick 속성 값 추출
@@ -22,7 +22,7 @@ function html2memberSeqVal(html) {
   }
 }
 
-function html2sodaeVal(html) {
+function htmlToSodae(html) {
   const doc = cheerio.load(html);
   let sosok = doc(".first").find("dd").text();
   //console.log(sosok);
@@ -49,22 +49,19 @@ export async function getProfile(name: string, birth: string) {
   try {
     const response = await axios.get(url);
     const html = response.data;
-
-    let memberSeqVal = html2memberSeqVal(html);
-    let sodaeVal = html2sodaeVal(html);
-
-    let data = {
+    let memberSeq = htmlToMemberSeq(html);
+    let sodae = htmlToSodae(html);
+    return {
       connect: true,
-      memberSeq: memberSeqVal,
-      sodae: sodaeVal,
+      memberSeq: memberSeq,
+      sodae: sodae,
+      serverOn: true,
     };
-
-    return data;
   } catch (error) {
     let serverOn = true;
-    // Cannot 뜨면 유저가 그냥 없는거임
     if (error.message == "해당 유저가 없습니다.") {
       console.log("cannot find user.");
+      serverOn = true;
     } else {
       console.log(`유저 인증 오류:`, error.message);
       serverOn = false;
