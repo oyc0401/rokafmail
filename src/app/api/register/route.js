@@ -50,8 +50,6 @@ export async function POST(request) {
   }
 
   console.log("회원가입 성공!");
-
-  knex.destroy(); // knex 종료
   return new Response("회원가입 성공!", {
     status: 200,
   });

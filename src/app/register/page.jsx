@@ -24,5 +24,5 @@ export default function Register() {
     2: <Message />,
   };
 
-  return <>{pages[page]}</>;
+  return <div className="screen">{pages[page]}</div>;
 }

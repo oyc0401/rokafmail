@@ -1,7 +1,5 @@
 import Rokaf from "../rokaf/rokaf";
 import {getNow} from 'src/lib/time';
-
-// knex
 const knex = require("knex")({
   client: "postgres",
   connection: process.env.DATABASE_URL,
@@ -34,8 +32,6 @@ async function uploadPost(body, completed = false) {
   let postData = await knex("post").returning("id").insert(mail);
   let postId = postData[0].id;
   console.log("post 업로드 성공!");
-
-  knex.destroy();
   return postId;
 }
 
@@ -80,7 +76,6 @@ export async function POST(request) {
     await knex("unconnected_post").insert(unconnectedPost);
     console.log("unconnected_post 업로드 성공!");
 
-    knex.destroy();
     console.log(`${user.username} 편지 전송 완료`);
     return new Response("편지 전송 성공: 인증 안된 유저", {
       status: 200,

@@ -15,7 +15,7 @@ export default async function Mails({ params }) {
   }
 
   return (
-    <>
+    <div className="screen">
       {user.connect ? (
         <Post username={params.username} />
       ) : (
@@ -42,7 +42,7 @@ export default async function Mails({ params }) {
           </Link>
         </Nav>
       )}
-    </>
+    </div>
   );
 }
 async function Post(parms) {

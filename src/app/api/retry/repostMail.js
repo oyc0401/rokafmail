@@ -1,6 +1,5 @@
 import Rokaf from "../rokaf/rokaf";
 import {getNow} from 'src/lib/time';
-// knex
 const knex = require("knex")({
   client: "postgres",
   connection: process.env.DATABASE_URL,
@@ -45,12 +44,10 @@ export async function repostMail() {
     } else {
       console.log("실패ㅜ");
       console.log("repostMail Stopped!");
-      knex.destroy();
       return;
     }
   }
 
-  knex.destroy();
   console.log("repostMail Complete!");
 }
 

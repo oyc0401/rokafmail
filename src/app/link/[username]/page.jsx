@@ -14,7 +14,6 @@ export default function Link({ params }) {
   }
 
   return (
-    <>
       <div className="screen">
         <div style={{ flex: 151 }}></div>
         <span className={`material-symbols-outlined md-128`}>check_circle</span>
@@ -32,6 +31,5 @@ export default function Link({ params }) {
         </button>
         <div style={{ height: 32 }}></div>
       </div>
-    </>
   );
 }

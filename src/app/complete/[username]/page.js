@@ -41,7 +41,7 @@ export default async function Complete({ searchParams, params }) {
   
 
   return (
-    <>
+    <div className="screen">
       <div style={{ flex: 130 }}></div>
       <span className={`material-symbols-outlined md-128`}>check_circle</span>
       <div style={{ height: 28 }}></div>
@@ -64,7 +64,7 @@ export default async function Complete({ searchParams, params }) {
           다시 작성하기
         </Link>
       </Nav>
-    </>
+    </div>
   );
 }
 

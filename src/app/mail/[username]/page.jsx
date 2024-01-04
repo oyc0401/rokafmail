@@ -8,12 +8,12 @@ import { notFound } from "next/navigation";
 
 export default async function Mail({ params }) {
   return (
-    <>
+    <div className="screen">
       <Header username={params.username}></Header>
       <Paper></Paper>
       <MakeBtn></MakeBtn>
       <Submit username={params.username}></Submit>
-    </>
+    </div>
   );
 }
 
