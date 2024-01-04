@@ -1,11 +1,14 @@
-export{
-  getEnter,
-  getMailStart,
-  getMailEnd,
-  getCompletion,
-  getDischarge,
-  canPost,
-  isContain,
-  isDischarged,
-  diffDay,
-} from "./time";
+// export{
+//   getEnter,
+//   getMailStart,
+//   getMailEnd,
+//   getCompletion,
+//   getDischarge,
+//   canPost,
+//   isContain,
+//   isDischarged,
+//   diffDay,
+//   isbeforeNow,
+// } from "./time";
+
+export * from "./time";

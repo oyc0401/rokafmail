@@ -1,14 +1,12 @@
-
 import Rokaf from '../rokaf/rokaf'
 
+const knex = require("knex")({
+  client: "postgres",
+  connection: process.env.DATABASE_URL,
+  pool: { min: 0, max: 80 },
+});
 
 export async function POST(request) {
-  const knex = require("knex")({
-    client: "postgres",
-    connection: process.env.DATABASE_URL,
-    pool: { min: 0, max: 80 },
-  });
-  
   console.log("회원가입 중...");
   const body = await request.json();
 

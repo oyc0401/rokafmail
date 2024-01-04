@@ -1,4 +1,12 @@
 import Rokaf from "../rokaf/rokaf";
+import {getNow} from 'src/lib/time';
+
+// knex
+const knex = require("knex")({
+  client: "postgres",
+  connection: process.env.DATABASE_URL,
+  pool: { min: 0, max: 80 },
+});
 
 async function uploadPost(body, completed = false) {
   const knex = require("knex")({
@@ -19,7 +27,7 @@ async function uploadPost(body, completed = false) {
   // 성공시?
   if (completed) {
     mail.posted = true;
-    mail.post_at = new Date();
+    mail.post_at = getNow();
   }
 
   // add mail
@@ -32,13 +40,6 @@ async function uploadPost(body, completed = false) {
 }
 
 export async function POST(request) {
-  // knex
-  const knex = require("knex")({
-    client: "postgres",
-    connection: process.env.DATABASE_URL,
-    pool: { min: 0, max: 80 },
-  });
-
   const body = await request.json();
 
   // 유저인지 확인

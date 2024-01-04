@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { getUser } from "src/server/";
 import styles from "./complete.module.css";
+import { Nav } from "src/components";
 
-import { getMailStart, canPost, diffDay } from "src/lib/time";
+import { getMailStart, canPost, diffDay, isFuture } from "src/lib/time";
 
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 export default async function Complete({ searchParams, params }) {
@@ -23,23 +24,35 @@ export default async function Complete({ searchParams, params }) {
     message = "알 수 없는 에러가 발생하였습니다.";
   }
 
-  // 보낼 수 없는 기간이면 며칠 뒤 보내지는지
-  if (!canPost(user.generation)) {
+  // 전달 성공
+  // 국방서버이슈
+  // 유저x
+  //
+
+  let page = <Good name={user.name}></Good>;
+
+  // 편지 시작 이전에 보냄
+  if (isFuture(getMailStart(user.generation))) {
     const start = getMailStart(user.generation);
     let diff = diffDay(start);
+    page = <Later day={diff} name={user.name}></Later>;
   }
 
-  function Footer() {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          width: "100%",
-          justifyContent: "flex-start",
-        }}
-      >
+  
+
+  return (
+    <>
+      <div style={{ flex: 130 }}></div>
+      <span className={`material-symbols-outlined md-128`}>check_circle</span>
+      <div style={{ height: 28 }}></div>
+      <h2 className="font-bold text-2xl">
+        편지가 <br /> 전송되었습니다!
+      </h2>
+      <div style={{ flex: 28 }}></div>
+      {page}
+      <div style={{ flex: 182 }}></div>
+
+      <Nav>
         <Link
           className={`submit ${styles.prev}`}
           href={`/mails/${user.username}`}
@@ -50,25 +63,7 @@ export default async function Complete({ searchParams, params }) {
         <Link className={"submit"} href={`/mail/${user.username}`}>
           다시 작성하기
         </Link>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <div className="screen">
-        <div style={{ flex: 130 }}></div>
-        <span className={`material-symbols-outlined md-128`}>check_circle</span>
-        <div style={{ height: 28 }}></div>
-        <h2 className="font-bold text-2xl">
-          편지가 <br /> 전송되었습니다!
-        </h2>
-        <div style={{ flex: 28 }}></div>
-        <Good name={user.name}></Good>
-        <div style={{ flex: 182 }}></div>
-        <Footer />
-        <div style={{ height: 36 }}></div>
-      </div>
+      </Nav>
     </>
   );
 }
@@ -77,7 +72,18 @@ export default async function Complete({ searchParams, params }) {
 function Good(props) {
   return (
     <p className="font-medium text-xl">
-      1일 이내에 {props.name} 훈련병에게
+      1일 이내에 <span className={styles.name}>{props.name}</span> 훈련병에게
+      <br />
+      편지가 전달됩니다!
+    </p>
+  );
+}
+
+function Later(props) {
+  return (
+    <p className="font-medium text-xl">
+      {props.day}일 뒤에 <span className={styles.name}>{props.name}</span>{" "}
+      훈련병에게
       <br />
       편지가 전달됩니다!
     </p>

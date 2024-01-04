@@ -1,5 +1,5 @@
 import Rokaf from "../rokaf/rokaf";
-
+import {getNow} from 'src/lib/time';
 // knex
 const knex = require("knex")({
   client: "postgres",
@@ -57,7 +57,7 @@ export async function repostMail() {
 async function updatePost(postId) {
   await knex("post").where("id", postId).update({
     posted: true,
-    post_at: new Date(),
+    post_at: getNow(),
   });
 }
 async function deletePostQueue(postId) {

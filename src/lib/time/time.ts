@@ -12,6 +12,10 @@ dayjs.extend(isBetween);
 
 /** 포맷하고 싶으면 .format("YY.MM.DD") 붙이기 */
 
+// 시간
+
+// 입대예정 ---- 입대 -- 편지시작 --- 편지 끝 - 훈련소 수료 -------- 전역자 --- 민간인
+
 // 입대
 export function getEnter(generation: number): dayjs.Dayjs {
   let [start] = timeDB(generation);
@@ -60,7 +64,23 @@ export function isDischarged(generation: number): boolean {
 }
 
 // 현재와 차이나는 날짜
-export function diffDay(date: dayjs.Dayjs) {
+export function diffDay(date: dayjs.Dayjs): number {
   const now = dayjs().tz("Asia/Seoul");
-  return now.diff(date, "day");
+  return date.diff(now, "day");
+}
+
+// 해당 날짜가 과거인지
+export function isPast(date: dayjs.Dayjs): boolean {
+  const now = dayjs().tz("Asia/Seoul");
+  return date.isBefore(now);
+}
+
+// 해당 날짜가 미래인지
+export function isFuture(date: dayjs.Dayjs): boolean {
+  const now = dayjs().tz("Asia/Seoul");
+  return now.isBefore(date);
+}
+
+export function getNow(): Date {
+  return dayjs().tz("Asia/Seoul").toDate();
 }
