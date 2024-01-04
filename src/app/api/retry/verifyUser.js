@@ -35,12 +35,12 @@ export async function verifyUser() {
 }
 
 async function updateUser(userId, sodae, memberSeq) {
-  await knex("users").where("id", userId).update({
+  await knex("users").where({ id: userId }).update({
     connect: true,
     sodae: sodae,
     memberSeq: memberSeq,
   });
-  await knex("users_queue").where("id", userId).del();
+  await knex("users_queue").where({ id: userId }).del();
 }
 
 async function moveQueue(userId) {

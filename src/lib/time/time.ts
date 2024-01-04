@@ -81,6 +81,11 @@ export function isFuture(date: dayjs.Dayjs): boolean {
   return now.isBefore(date);
 }
 
+// 현재시각
 export function getNow(): Date {
   return dayjs().tz("Asia/Seoul").toDate();
+}
+
+export function mailStartIsFuture(generation: number): boolean{
+  return isFuture(getMailStart(generation));
 }

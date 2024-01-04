@@ -3,7 +3,7 @@ import { getUser } from "src/server/";
 import styles from "./complete.module.css";
 import { Nav } from "src/components";
 
-import { getMailStart, canPost, diffDay, isFuture } from "src/lib/time";
+import { mailStartIsFuture, canPost, diffDay } from "src/lib/time";
 
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 export default async function Complete({ searchParams, params }) {
@@ -32,7 +32,7 @@ export default async function Complete({ searchParams, params }) {
   let page = <Good name={user.name}></Good>;
 
   // 편지 시작 이전에 보냄
-  if (isFuture(getMailStart(user.generation))) {
+  if (mailStartIsFuture(user.generation)) {
     const start = getMailStart(user.generation);
     let diff = diffDay(start);
     page = <Later day={diff} name={user.name}></Later>;
