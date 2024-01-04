@@ -6,13 +6,20 @@ function html2memberSeqVal(html) {
   // 여기에서는 가져온 HTML을 파싱하거나 원하는 작업을 수행합니다.
   const root = parse(html);
   // 예제: 클래스가 "choice"인 요소를 찾아서 onclick 속성 값 추출
-  var buttonElement = root.querySelector(".choice");
-  var onclickAttributeValue = buttonElement.getAttribute("onclick");
-  var functionName = onclickAttributeValue
-    .replace("resultSelect('", "")
-    .replace("')", "");
-
-  return functionName;
+  let buttonElement = root.querySelector(".choice");
+  if (buttonElement == null) {
+    throw Error("서버가 이상합니다.");
+  } else {
+    let onclickAttributeValue = buttonElement.getAttribute("onclick");
+    if (onclickAttributeValue == null) {
+      throw Error("해당 유저가 없습니다.");
+    } else {
+      let functionName = onclickAttributeValue
+        .replace("resultSelect('", "")
+        .replace("')", "");
+      return functionName;
+    }
+  }
 }
 
 function html2sodaeVal(html) {
@@ -20,22 +27,21 @@ function html2sodaeVal(html) {
   let sosok = doc(".first").find("dd").text();
   //console.log(sosok);
 
-  var inputString = sosok;
-  var numbers = inputString.match(/\b\d{1,3}\b/g);
+  let inputString = sosok;
+  let numbers = inputString.match(/\b\d{1,3}\b/g);
 
-  numbers = numbers.map(Number); // 문자열을 숫자로 변환
-  var [대대, 중대, 소대, 호실, 번] = numbers;
+  let numberList = numbers!.map(Number); // 문자열을 숫자로 변환
+  let [대대, 중대, 소대, 호실, 번] = numberList;
 
   //console.log(`${대대}대대 ${중대}중대 ${소대}소대 ${호실}호실 ${번}번`);
 
-  if (번 < 10) {
-    번 = `0${번}`;
-  }
+  let strnum = `${번}`;
+  if (번 < 10) strnum = `0${번}`;
 
-  return `${중대}${소대}${번}`;
+  return `${중대}${소대}${strnum}`;
 }
 
-export async function getProfile(name, birth) {
+export async function getProfile(name: string, birth: string) {
   const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=${name}&searchBirth=${birth}`;
 
   console.log("훈련병 찾는중...", url);
@@ -57,9 +63,7 @@ export async function getProfile(name, birth) {
   } catch (error) {
     let serverOn = true;
     // Cannot 뜨면 유저가 그냥 없는거임
-    if (
-      error.message == "Cannot read properties of null (reading 'getAttribute')"
-    ) {
+    if (error.message == "해당 유저가 없습니다.") {
       console.log("cannot find user.");
     } else {
       console.log(`유저 인증 오류:`, error.message);
