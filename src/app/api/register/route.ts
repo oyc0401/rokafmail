@@ -19,24 +19,19 @@ export async function POST(request: Request) {
   const body = await request.json();
 
   // 인터넷 편지 사이트 프로필 가져오기
-  const name = body.name;
-  const birth = body.birth;
-  const generation = body.generation;
+  const { username, password, name, birth, generation, message } = body;
 
   console.log(typeof generation);
 
-  // user table에 사용자 추가
-  let user = {
-    username: body.username,
-    password: body.password,
-    name: body.name,
-    birth: body.birth,
-    generation: body.generation,
-    message: body.message,
-  };
-
-  const idObj = await knex("users").returning("id").insert(user);
-  const id = idObj[0].id;
+  const [idObj] = await knex("users").returning("id").insert({
+    username: username,
+    password: password,
+    name: name,
+    birth: birth,
+    generation: generation,
+    message: message,
+  });
+  const id = idObj.id;
 
   checkUser({ id: id, name: name, birth: birth, generation: generation });
 
@@ -51,12 +46,9 @@ async function checkUser({ id, name, birth, generation }) {
   }
 
   // 유저가 존재하는지 확인
-  let data = await Rokaf.getProfile(name, birth);
-
+  const { memberSeq, sodae, connect } = await Rokaf.getProfile(name, birth);
   // 유저인증이 안되면 인증 테이블에 저장
-  if (data.connect) {
-    const memberSeq = data.memberSeq;
-    const sodae = data.sodae;
+  if (connect) {
     console.log(`유저 인증 성공 memberSeq:${memberSeq}, sodae:${sodae}`);
     console.log("정보 업데이트 중...");
     await knex("users")

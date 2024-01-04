@@ -46,7 +46,7 @@ export default function Message() {
         password: encryptedPassword,
         name: name,
         birth: birth,
-        generation: generation,
+        generation: Number(generation),
         message: message,
       });
       router.push(`/link/${username}`);
