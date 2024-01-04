@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function Register() {
   return (
-    <>
+    <div className="screen">
       <div style={{ flex: 62 }}></div>
 
       <div className="p-5">
@@ -35,6 +35,6 @@ export default function Register() {
       <div className="pt-2.5 pb-5 w-full">
         <div className={styles.help}>도움말</div>
       </div>
-    </>
+    </div>
   );
 }

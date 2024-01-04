@@ -4,8 +4,8 @@ import { Noto_Sans_KR } from "next/font/google";
 const notoSansKr = Noto_Sans_KR({
   weight: ["400", "500", "600", "700", "800"],
   preload: false,
-  // display: 'auto',
-  fallback: ["system-ui", "sans-serif"],
+  display: 'fallback',
+  fallback: ['Noto Sans KR', "sans-serif"],
 });
 
 export const metadata = {

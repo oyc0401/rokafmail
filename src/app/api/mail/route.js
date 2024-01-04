@@ -7,12 +7,6 @@ const knex = require("knex")({
 });
 
 async function uploadPost(body, completed = false) {
-  const knex = require("knex")({
-    client: "postgres",
-    connection: process.env.DATABASE_URL,
-    pool: { min: 0, max: 80 },
-  });
-
   console.log("post 업로드 중...");
   let mail = {
     user_id: body.user_id,
