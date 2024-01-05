@@ -1,5 +1,5 @@
-.next/
-node_modules/
+.next
+node_modules
 .vercel
-src/app/(admin)/
-src/app/api/(admin)/
+
+src/app/(admin)/debug
