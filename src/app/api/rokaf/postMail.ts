@@ -9,7 +9,7 @@ export async function postMail({
   password,
   memberSeq,
   sodae,
-}):  {
+}) {
   let data = new FormData();
 
   data.append("senderZipcode", "06252");
@@ -58,7 +58,7 @@ export async function postMail({
   } catch (error) {
     if (error.response) {
       console.log(
-        `${body.memberSeq} 편지 오류:`,
+        `${memberSeq} 편지 오류:`,
         error.message,
         error.response.status,
       );
