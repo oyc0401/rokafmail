@@ -1,11 +1,10 @@
 "use client";
-import Link from "next/link";
 import Image from "next/image";
 
 import styles from "./link.module.css";
 import { CheckCircle } from "public/assets/index";
 
-export default function Link({ params }) {
+export default function LinkPag({ params }) {
   function copy() {
     let local = "https://airforce-mail--oyc0401.repl.co";
     let production = "https://oyc0401.site";

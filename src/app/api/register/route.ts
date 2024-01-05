@@ -20,9 +20,7 @@ export async function POST(request: Request) {
 
   // 인터넷 편지 사이트 프로필 가져오기
   const { username, password, name, birth, generation, message } = body;
-
-  console.log(typeof generation);
-
+  
   const [idObj] = await knex("users").returning("id").insert({
     username: username,
     password: password,

@@ -18,8 +18,21 @@ const knex = require("knex")({
 export async function POST(request: Request) {
   const body = await request.json();
 
-  const { user_id, username, name, relationship, title, contents, password } =
-    body;
+  const {
+    username,
+    name,
+    relationship,
+    title,
+    contents,
+    password,
+  }: {
+    username: String;
+    name: String;
+    relationship: String;
+    title: String;
+    contents: String;
+    password: String;
+  } = body;
 
   // 유저인지 확인
   const userList = await knex("users").where("username", username);
@@ -34,6 +47,7 @@ export async function POST(request: Request) {
 
   let [user] = userList;
   const { memberSeq, sodae, connect, generation } = user;
+  const user_id = user.id;
 
   console.log(`${username} 편지 업로드 중...`);
   console.log(`connect: ${connect}`);
