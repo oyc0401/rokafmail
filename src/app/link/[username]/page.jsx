@@ -1,5 +1,9 @@
 "use client";
+import Link from "next/link";
+import Image from "next/image";
+
 import styles from "./link.module.css";
+import { CheckCircle } from "public/assets/index";
 
 export default function Link({ params }) {
   function copy() {
@@ -16,7 +20,7 @@ export default function Link({ params }) {
   return (
       <div className="screen">
         <div style={{ flex: 151 }}></div>
-        <span className={`material-symbols-outlined md-128`}>check_circle</span>
+         <Image className={styles.icon} src={CheckCircle} alt="아이콘" />
         <div style={{ height: 28 }}></div>
         <h2 className={styles.title}>링크가 생성되었습니다!</h2>
         <div style={{ flex: 185 }}></div>

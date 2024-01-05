@@ -5,8 +5,8 @@ export async function GET() {
 
   console.log("반복 실행: retry");
   
-  await verifyUser();
-await repostMail();
+   verifyUser();
+ repostMail();
 
   return new Response(200);
 }

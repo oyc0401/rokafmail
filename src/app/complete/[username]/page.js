@@ -1,27 +1,21 @@
 import Link from "next/link";
+import Image from "next/image";
+
 import { getUser } from "src/server/";
 import styles from "./complete.module.css";
 import { Nav } from "src/components";
 
 import { mailStartIsFuture, canPost, diffDay } from "src/lib/time";
+import { CheckCircle } from "public/assets/index";
 
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 export default async function Complete({ searchParams, params }) {
-  const sc = searchParams.sc;
+  //const sc = searchParams.sc;
   console.log(params.username);
   let user = await getUser(params.username);
 
   if (!user) {
     notFound();
-  }
-
-  let message = "오류가 발생하였습니다.";
-  if (sc === "200") {
-    message = "전송이 성공적으로 완료되었습니다.";
-  } else if (sc === "401") {
-    message = "인증에 실패하여 전송되지 않았습니다.";
-  } else {
-    message = "알 수 없는 에러가 발생하였습니다.";
   }
 
   // 전달 성공
@@ -38,12 +32,12 @@ export default async function Complete({ searchParams, params }) {
     page = <Later day={diff} name={user.name}></Later>;
   }
 
-  
-
   return (
     <div className="screen">
       <div style={{ flex: 130 }}></div>
-      <span className={`material-symbols-outlined md-128`}>check_circle</span>
+
+      <Image className={styles.icon} src={CheckCircle} alt="아이콘" />
+
       <div style={{ height: 28 }}></div>
       <h2 className="font-bold text-2xl">
         편지가 <br /> 전송되었습니다!

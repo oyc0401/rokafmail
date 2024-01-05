@@ -51,6 +51,7 @@ export async function repostMail() {
   console.log("repostMail Complete!");
 }
 
+
 async function updatePost(postId) {
   await knex("post").where("id", postId).update({
     posted: true,

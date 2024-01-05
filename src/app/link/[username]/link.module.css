@@ -1,8 +1,7 @@
 .icon{
-  color:var(--primary);
-  font-size:129px !important;
+  width:128;
+  height:128;
 }
-
 
 .title{
   font-size:28px;
@@ -13,3 +12,4 @@
   font-weight:500;
   font-size:22px;
 }
+

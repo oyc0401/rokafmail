@@ -11,3 +11,7 @@
 .name{
   color:var(--primary);
 }
+.icon{
+  width:128;
+  height:128;
+}
