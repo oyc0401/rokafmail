@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getNow } from "src/lib/time";
+import { getNow, canPost, mailEnded } from "src/lib/time";
 import Rokaf from "../rokaf/rokaf";
 
 const knex = require("knex")({
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
   }
 
   let [user] = userList;
-  const { memberSeq, sodae, connect } = user;
+  const { memberSeq, sodae, connect, generation } = user;
 
   console.log(`${username} 편지 업로드 중...`);
   console.log(`connect: ${connect}`);
@@ -49,15 +49,16 @@ export async function POST(request: Request) {
   });
 
   let post_id = postObj.id;
-
-  console.log("post 업로드 성공!");
+  console.log("post 업로드 성공.");
 
   // 인증안된 유저면 인증안된 큐에 데이터 저장
   if (!connect) {
     insertUnconnected({
       post_id: post_id,
       user_id: user_id,
-      username: username,
+    }).then(() => {
+      console.log(`unconnected_post 업로드 성공.`);
+      console.log(`${username} 편지 전송 완료!`);
     });
   } else {
     sendMail({
@@ -71,20 +72,11 @@ export async function POST(request: Request) {
       password: password,
       memberSeq: memberSeq,
       sodae: sodae,
+      generation: generation,
     });
   }
 
   return NextResponse.json({ message: "편지 전송 성공!" }, { status: 200 });
-}
-
-async function insertUnconnected({ post_id, user_id, username }) {
-  console.log("unconnected_post 업로드 중...");
-  await knex("unconnected_post").insert({
-    post_id: post_id,
-    user_id: user_id,
-  });
-  console.log("unconnected_post 업로드 성공!");
-  console.log(`${username} 편지 전송 완료`);
 }
 
 async function sendMail({
@@ -98,35 +90,62 @@ async function sendMail({
   password,
   memberSeq,
   sodae,
+  generation,
 }) {
-  console.log("국방부 서버 보내는 중...");
-  // 인증된 유저면 국방부에 보내보기
-  const response = await Rokaf.postMail({
-    name: name,
-    relationship: relationship,
-    title: title,
-    contents: contents,
-    password: password,
-    memberSeq: memberSeq,
-    sodae: sodae,
-  });
+  // 만약 편지보내기 기간이 아직 안왔으면 안보내고 post_queue에만 저장하고
+  // 편지보내기 시간이 지났으면 posted를 true로 업데이트 하되, 국방부 서버에는 보내지 말기
 
-  // 국방서버에 보내졌으면 보내졌다고 업데이트
-  if (response.complete) {
-    console.log("국방부 서버 보내기 성공!");
-    await knex("post")
-      .where({ id: post_id })
-      .update({ posted: true, post_at: getNow() });
+  // 인증된 유저면 국방부에 보내보기
+
+  if (canPost(generation)) {
+    console.log("국방부 서버 보내는 중...");
+    const response = await Rokaf.postMail({
+      name: name,
+      relationship: relationship,
+      title: title,
+      contents: contents,
+      password: password,
+      memberSeq: memberSeq,
+      sodae: sodae,
+    });
+
+    // 국방서버에 보내졌으면 보내졌다고 업데이트
+    if (response.complete) {
+      console.log("국방부 서버 보내기 성공.");
+      await updatePosted(post_id);
+    } else {
+      // 안보내졌으면 편지큐에 저장
+      console.log("국방부 서버 보내기 실패.");
+      await enqueue({ post_id: post_id, user_id: user_id });
+    }
+  } else if (mailEnded(generation)) {
+    console.log("편지 쓰기 기간이 지났습니다.");
+    await updatePosted(post_id);
   } else {
     // 안보내졌으면 편지큐에 저장
-    console.log("국방부 서버 보내기 실패.");
-    console.log("post_queue 업로드 중...");
-    await knex("post_queue").insert({
-      post_id: post_id,
-      user_id: user_id,
-    });
-    console.log("post queue 업로드 성공!");
+    console.log("편지쓰기 기간 이전입니다.");
+    await enqueue({ post_id: post_id, user_id: user_id });
   }
 
-  console.log(`${username} 편지 전송 완료`);
+  console.log(`${username} 편지 전송 완료!`);
+}
+
+function updatePosted(post_id: number) {
+  return knex("post")
+    .where({ id: post_id })
+    .update({ posted: true, post_at: getNow() });
+}
+
+function enqueue({ post_id, user_id }) {
+  return knex("post_queue").insert({
+    post_id: post_id,
+    user_id: user_id,
+  });
+}
+
+async function insertUnconnected({ post_id, user_id }) {
+  return knex("unconnected_post").insert({
+    post_id: post_id,
+    user_id: user_id,
+  });
 }

@@ -5,7 +5,7 @@ import { getUser } from "src/server/";
 import styles from "./complete.module.css";
 import { Nav } from "src/components";
 
-import { mailStartIsFuture, canPost, diffDay } from "src/lib/time";
+import { mailStartIsFuture, canPost, diffDay ,getMailStart} from "src/lib/time";
 import { CheckCircle } from "public/assets/index";
 
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
@@ -48,7 +48,7 @@ export default async function Complete({ searchParams, params }) {
 
       <Nav>
         <Link
-          className={`submit ${styles.prev}`}
+          className={`submit mini`}
           href={`/mails/${user.username}`}
         >
           편지함

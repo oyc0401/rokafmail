@@ -86,6 +86,12 @@ export function getNow(): Date {
   return dayjs().tz("Asia/Seoul").toDate();
 }
 
+// 아직 메일쓰기 기간이 오지 않았을 때
 export function mailStartIsFuture(generation: number): boolean{
   return isFuture(getMailStart(generation));
+}
+
+// 아직 메일쓰기 기간이 끝났을 때
+export function mailEnded(generation: number): boolean{
+  return isPast(getMailStart(generation));
 }
