@@ -1,8 +1,7 @@
 "use server";
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
-
+const prisma = new PrismaClient();
 
 export async function getUser(username) {
   const result = await prisma.user.findUnique({
@@ -11,6 +10,5 @@ export async function getUser(username) {
     },
   });
 
-  
   return result;
 }
