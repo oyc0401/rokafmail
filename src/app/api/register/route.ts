@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
 import Rokaf from "../rokaf/rokaf";
 import { mailStartIsFuture } from "src/lib/time";
+import { PrismaClient } from "@prisma/client";
 
-const knex = require("knex")({
-  client: "postgres",
-  connection: process.env.DATABASE_URL,
-  pool: { min: 0, max: 80 },
-});
+const prisma = new PrismaClient();
 
 // 로그인을 하면 먼저 DB에 저장한다.
 // 편지쓰기 가능한 기간이면 국방부 사이트에서 존재하는지 확인하고, 아니면 그냥 둔다.
@@ -20,16 +17,22 @@ export async function POST(request: Request) {
 
   // 인터넷 편지 사이트 프로필 가져오기
   const { username, password, name, birth, generation, message } = body;
-  
-  const [idObj] = await knex("users").returning("id").insert({
-    username: username,
-    password: password,
-    name: name,
-    birth: birth,
-    generation: generation,
-    message: message,
+
+  const newUser = await prisma.user.create({
+    data: {
+      username,
+      password,
+      name,
+      birth,
+      generation,
+      message,
+    },
+    select: {
+      id: true,
+    },
   });
-  const id = idObj.id;
+
+  const id = newUser.id;
 
   checkUser({ id: id, name: name, birth: birth, generation: generation });
 
@@ -39,7 +42,11 @@ export async function POST(request: Request) {
 async function checkUser({ id, name, birth, generation }) {
   if (mailStartIsFuture(generation)) {
     console.log("입대 전 유저, 인증 큐에 저장하는 중...");
-    await knex("users_queue").insert({ user_id: id });
+    await prisma.usersQueue.create({
+      data: {
+        userId: id,
+      },
+    });
     return console.log(`id: ${id} 회원가입 성공!`);
   }
 
@@ -49,12 +56,23 @@ async function checkUser({ id, name, birth, generation }) {
   if (connect) {
     console.log(`유저 인증 성공 memberSeq:${memberSeq}, sodae:${sodae}`);
     console.log("정보 업데이트 중...");
-    await knex("users")
-      .where({ id: id })
-      .update({ memberSeq: memberSeq, sodae: sodae, connect: true });
+    await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        memberSeq,
+        sodae,
+        connect: true,
+      },
+    });
   } else {
     console.log("유저 인증 실패, 인증 큐에 저장하는 중...");
-    await knex("users_queue").insert({ user_id: id });
+    await prisma.usersQueue.create({
+      data: {
+        userId: id,
+      },
+    });
   }
 
   return console.log(`id: ${id} 회원가입 성공!`);

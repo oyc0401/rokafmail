@@ -1,13 +1,16 @@
 "use server";
-const knex = require("knex")({
-  client: "postgres",
-  connection: process.env.DATABASE_URL,
-  pool: { min: 0, max: 80 },
-});
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 
 export async function getUser(username) {
-  const result = await knex("users").where("username", username).first();
+  const result = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
+
   
   return result;
 }

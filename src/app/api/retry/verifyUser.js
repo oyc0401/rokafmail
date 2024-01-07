@@ -1,16 +1,27 @@
 import Rokaf from "../rokaf/rokaf";
-const knex = require("knex")({
-  client: "postgres",
-  connection: process.env.DATABASE_URL,
-  pool: { min: 0, max: 80 },
-});
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export async function verifyUser() {
   console.log("verifyUser...");
   // 미인증 유저들
-  const unconnected = await knex("users_queue")
-    .select("users_queue.*", "users.name", "users.birth")
-    .innerJoin("users", "users_queue.user_id", "users.id");
+  const unconnected = await prisma.usersQueue.findMany({
+    select: {
+      id: true,
+      userId: true,
+      user: {
+        select: {
+          name: true,
+          birth: true,
+        },
+      },
+    },
+    include: {
+      user: true,
+    },
+  });
+
 
   // console.log(unconnected);
 
@@ -35,24 +46,44 @@ export async function verifyUser() {
 }
 
 async function updateUser(userId, sodae, memberSeq) {
-  await knex("users").where({ id: userId }).update({
-    connect: true,
-    sodae: sodae,
-    memberSeq: memberSeq,
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      connect: true,
+      sodae,
+      memberSeq,
+    },
   });
-  await knex("users_queue").where({ id: userId }).del();
+
+  await prisma.usersQueue.delete({
+    where: {
+      id: userId,
+    },
+  });
 }
 
 async function moveQueue(userId) {
-  let posts = await knex("unconnected_post").where("user_id", userId);
+  let posts = await prisma.unconnectedPost.findMany({
+    where: {
+      userId,
+    },
+  });
   console.log(posts);
   for (const post of posts) {
-    await knex("post_queue").insert({
-      user_id: post.user_id,
-      post_id: post.post_id,
+    await prisma.postQueue.create({
+      data: {
+        userId: post.user_id,
+        postId: post.post_id,
+      },
     });
   }
 
   // delete all
-  await knex("unconnected_post").where("user_id", userId).del();
+  await prisma.unconnectedPost.deleteMany({
+    where: {
+      userId,
+    },
+  });
 }

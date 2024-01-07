@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
 import { getNow, canPost, mailEnded } from "src/lib/time";
 import Rokaf from "../rokaf/rokaf";
+import { PrismaClient } from '@prisma/client'
 
-const knex = require("knex")({
-  client: "postgres",
-  connection: process.env.DATABASE_URL,
-  pool: { min: 0, max: 80 },
-});
+const prisma = new PrismaClient()
 
 // 편지를 보내면 먼저 post에 저장한다.
 // 인증안된 유저면 unconnected에 추가
@@ -35,7 +32,12 @@ export async function POST(request: Request) {
   } = body;
 
   // 유저인지 확인
-  const userList = await knex("users").where("username", username);
+  const userList = await prisma.user.findMany({
+    where: {
+      username,
+    },
+  });
+
 
   // 유저가 아니면 400에러 ㄱㄱ
   if (userList.length == 0) {
@@ -53,16 +55,21 @@ export async function POST(request: Request) {
   console.log(`connect: ${connect}`);
 
   // 편지 저장
-  let [postObj] = await knex("post").returning("id").insert({
-    user_id: user_id,
-    name: name,
-    relationship: relationship,
-    title: title,
-    contents: contents,
-    password: password,
+  const newPost = await prisma.post.create({
+    data: {
+      userId: user_id,
+      name,
+      relationship,
+      title,
+      contents,
+      password,
+    },
+    select: {
+      id: true,
+    },
   });
 
-  let post_id = postObj.id;
+  const post_id = newPost.id;
   console.log("post 업로드 성공.");
 
   // 인증안된 유저면 인증안된 큐에 데이터 저장
@@ -145,21 +152,34 @@ async function sendMail({
 }
 
 function updatePosted(post_id: number) {
-  return knex("post")
-    .where({ id: post_id })
-    .update({ posted: true, post_at: getNow() });
+  await prisma.post.update({
+    where: {
+      id: post_id,
+    },
+    data: {
+      posted: true,
+      postAt: getNow(),
+    },
+  });
+
 }
 
 function enqueue({ post_id, user_id }) {
-  return knex("post_queue").insert({
-    post_id: post_id,
-    user_id: user_id,
+  return prisma.postQueue.create({
+    data: {
+      postId: post_id,
+      userId: user_id,
+    },
   });
+
 }
 
 async function insertUnconnected({ post_id, user_id }) {
-  return knex("unconnected_post").insert({
-    post_id: post_id,
-    user_id: user_id,
+  return prisma.unconnectedPost.create({
+    data: {
+      postId: post_id,
+      userId: user_id,
+    },
   });
+
 }

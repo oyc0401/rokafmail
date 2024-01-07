@@ -1,28 +1,35 @@
 import Rokaf from "../rokaf/rokaf";
 import {getNow} from 'src/lib/time';
-const knex = require("knex")({
-  client: "postgres",
-  connection: process.env.DATABASE_URL,
-  pool: { min: 0, max: 80 },
-});
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export async function repostMail() {
   console.log("repostMail...");
   
-  const unposted = await knex("post_queue")
-    .select(
-      "post_queue.*",
-      "users.username",
-      "users.memberSeq",
-      "users.sodae",
-      "post.name",
-      "post.relationship",
-      "post.title",
-      "post.contents",
-      "post.password",
-    )
-    .innerJoin("users", "post_queue.user_id", "users.id")
-    .innerJoin("post", "post_queue.post_id", "post.id");
+  const unposted = await prisma.postQueue.findMany({
+    select: {
+      id: true,
+      userId: true,
+      postId: true,
+      user: {
+        select: {
+          username: true,
+          memberSeq: true,
+          sodae: true,
+        },
+      },
+      post: {
+        select: {
+          name: true,
+          relationship: true,
+          title: true,
+          contents: true,
+          password: true,
+        },
+      },
+    },
+  });
 
   console.log("repost: 편지 보내기 시작, 미발송 편지 수:", unposted.length);
 
@@ -53,11 +60,21 @@ export async function repostMail() {
 
 
 async function updatePost(postId) {
-  await knex("post").where("id", postId).update({
-    posted: true,
-    post_at: getNow(),
+  await prisma.post.update({
+    where: {
+      id: postId,
+    },
+    data: {
+      posted: true,
+      postAt: getNow(),
+    },
   });
 }
 async function deletePostQueue(postId) {
-  await knex("post_queue").where("post_id", postId).del();
+  await prisma.postQueue.deleteMany({
+    where: {
+      postId,
+    },
+  });
+
 }
