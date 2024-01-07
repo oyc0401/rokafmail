@@ -41,7 +41,7 @@ export async function POST(request: Request) {
 
 async function checkUser({ id, name, birth, generation }) {
   if (mailStartIsFuture(generation)) {
-    console.log("입대 전 유저, 인증 큐에 저장하는 중...");
+    console.log("편지쓰기 전 유저, 인증 큐에 저장하는 중...");
     await prisma.usersQueue.create({
       data: {
         userId: id,
@@ -49,7 +49,7 @@ async function checkUser({ id, name, birth, generation }) {
     });
     return console.log(`id: ${id} 회원가입 성공!`);
   }
-
+   console.log("편지쓰기 이후 유저, 번호 찾기 시작.");
   // 유저가 존재하는지 확인
   const { memberSeq, sodae, connect } = await Rokaf.getProfile(name, birth);
   // 유저인증이 안되면 인증 테이블에 저장

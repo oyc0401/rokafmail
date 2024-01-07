@@ -152,7 +152,7 @@ async function sendMail({
 }
 
 function updatePosted(post_id: number) {
-  await prisma.post.update({
+  return prisma.post.update({
     where: {
       id: post_id,
     },
