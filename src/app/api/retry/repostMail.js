@@ -45,9 +45,9 @@ export async function repostMail() {
       sodae: post.sodae,
     }); // 국방서버에 보내는 요청
     if (postComplete.complete) {
-      console.log("성공!!", post.post_id, post.username);
-      await updatePost(post.post_id);
-      await deletePostQueue(post.post_id);
+      console.log("성공!!", post.postId, post.username);
+      await updatePost(post.postId);
+      await deletePostQueue(post.postId);
     } else {
       console.log("실패ㅜ");
       console.log("repostMail Stopped!");

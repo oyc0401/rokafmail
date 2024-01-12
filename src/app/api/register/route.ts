@@ -13,28 +13,23 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
   console.log("회원가입 중...");
 
-  const body = await request.json();
-
   // 인터넷 편지 사이트 프로필 가져오기
-  const { username, password, name, birth, generation, message } = body;
+  const { username, password, name, birth, generation, message } =
+    await request.json();
 
-  const newUser = await prisma.user.create({
-    data: {
-      username,
-      password,
-      name,
-      birth,
-      generation,
-      message,
-    },
-    select: {
-      id: true,
-    },
+  // 유저 만들기
+  const newUser = await createUser({
+    username,
+    password,
+    name,
+    birth,
+    generation,
+    message,
   });
 
   const id = newUser.id;
 
-  checkUser({ id: id, name: name, birth: birth, generation: generation });
+  checkUser({ id, name, birth, generation });
 
   return NextResponse.json({ message: "회원가입 성공" }, { status: 200 });
 }
@@ -49,7 +44,7 @@ async function checkUser({ id, name, birth, generation }) {
     });
     return console.log(`id: ${id} 회원가입 성공!`);
   }
-   console.log("편지쓰기 이후 유저, 번호 찾기 시작.");
+  console.log("편지쓰기 이후 유저, 번호 찾기 시작.");
   // 유저가 존재하는지 확인
   const { memberSeq, sodae, connect } = await Rokaf.getProfile(name, birth);
   // 유저인증이 안되면 인증 테이블에 저장
@@ -77,3 +72,14 @@ async function checkUser({ id, name, birth, generation }) {
 
   return console.log(`id: ${id} 회원가입 성공!`);
 }
+
+const createUser = async (data: {
+  username: string;
+  password: string;
+  name: string;
+  birth: string;
+  generation: number;
+  message: string;
+}) => {
+  return await prisma.user.create({ data });
+};

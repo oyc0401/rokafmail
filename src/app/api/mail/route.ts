@@ -23,12 +23,12 @@ export async function POST(request: Request) {
     contents,
     password,
   }: {
-    username: String;
-    name: String;
-    relationship: String;
-    title: String;
-    contents: String;
-    password: String;
+    username: string;
+    name: string;
+    relationship: string;
+    title: string;
+    contents: string;
+    password: string;
   } = body;
 
   // 유저인지 확인
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 
   let [user] = userList;
   const { memberSeq, sodae, connect, generation } = user;
-  const user_id = user.id;
+  const userId = user.id;
 
   console.log(`${username} 편지 업로드 중...`);
   console.log(`connect: ${connect}`);
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
   // 편지 저장
   const newPost = await prisma.post.create({
     data: {
-      userId: user_id,
+      userId: userId,
       name,
       relationship,
       title,
@@ -69,22 +69,22 @@ export async function POST(request: Request) {
     },
   });
 
-  const post_id = newPost.id;
+  const postId = newPost.id;
   console.log("post 업로드 성공.");
 
   // 인증안된 유저면 인증안된 큐에 데이터 저장
   if (!connect) {
     insertUnconnected({
-      post_id: post_id,
-      user_id: user_id,
+      postId: postId,
+      userId: userId,
     }).then(() => {
       console.log(`unconnected_post 업로드 성공.`);
       console.log(`${username} 편지 전송 완료!`);
     });
   } else {
     sendMail({
-      user_id: user_id,
-      post_id: post_id,
+      userId: userId,
+      postId: postId,
       username: username,
       name: name,
       relationship: relationship,
@@ -101,8 +101,8 @@ export async function POST(request: Request) {
 }
 
 async function sendMail({
-  user_id,
-  post_id,
+  userId,
+  postId,
   username,
   name,
   relationship,
@@ -133,28 +133,28 @@ async function sendMail({
     // 국방서버에 보내졌으면 보내졌다고 업데이트
     if (response.complete) {
       console.log("국방부 서버 보내기 성공.");
-      await updatePosted(post_id);
+      await updatePosted(postId);
     } else {
       // 안보내졌으면 편지큐에 저장
       console.log("국방부 서버 보내기 실패.");
-      await enqueue({ post_id: post_id, user_id: user_id });
+      await enqueue({ postId: postId, userId: userId });
     }
   } else if (mailEnded(generation)) {
     console.log("편지 쓰기 기간이 지났습니다.");
-    await updatePosted(post_id);
+    await updatePosted(postId);
   } else {
     // 안보내졌으면 편지큐에 저장
     console.log("편지쓰기 기간 이전입니다.");
-    await enqueue({ post_id: post_id, user_id: user_id });
+    await enqueue({ postId: postId, userId: userId });
   }
 
   console.log(`${username} 편지 전송 완료!`);
 }
 
-function updatePosted(post_id: number) {
+function updatePosted(postId: number) {
   return prisma.post.update({
     where: {
-      id: post_id,
+      id: postId,
     },
     data: {
       posted: true,
@@ -164,21 +164,21 @@ function updatePosted(post_id: number) {
 
 }
 
-function enqueue({ post_id, user_id }) {
+function enqueue({ postId, userId }) {
   return prisma.postQueue.create({
     data: {
-      postId: post_id,
-      userId: user_id,
+      postId: postId,
+      userId: userId,
     },
   });
 
 }
 
-async function insertUnconnected({ post_id, user_id }) {
+async function insertUnconnected({ postId, userId }) {
   return prisma.unconnectedPost.create({
     data: {
-      postId: post_id,
-      userId: user_id,
+      postId: postId,
+      userId: userId,
     },
   });
 

@@ -8,7 +8,7 @@ function htmlToMemberSeq(html) {
   // 예제: 클래스가 "choice"인 요소를 찾아서 onclick 속성 값 추출
   let buttonElement = root.querySelector(".choice");
   if (buttonElement == null) {
-    throw Error("서버가 이상합니다.");
+    throw Error("해당 교육생을 찾을 수 없습니다.");
   } else {
     let onclickAttributeValue = buttonElement.getAttribute("onclick");
     if (onclickAttributeValue == null) {

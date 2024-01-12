@@ -38,7 +38,7 @@ export async function verifyUser() {
     if (data.connect) {
       console.log(data);
       await updateUser(user.id, user.sodae, user.memberSeq);
-      await moveQueue(user.user_id);
+      await moveQueue(user.userId);
     }
   }
 
@@ -74,8 +74,8 @@ async function moveQueue(userId) {
   for (const post of posts) {
     await prisma.postQueue.create({
       data: {
-        userId: post.user_id,
-        postId: post.post_id,
+        userId: post.userId,
+        postId: post.postId,
       },
     });
   }
