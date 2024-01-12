@@ -4,6 +4,8 @@ import styles from "./mails.module.css";
 import { getPost,getPostQueue,getUnconnectedPost } from "src/server";
 import { dateToStr } from "./dateToStr";
 import { Nav } from "src/components";
+import { notFound } from 'next/navigation'
+
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 
 export default async function Mails({ params }) {
@@ -45,9 +47,9 @@ export default async function Mails({ params }) {
     </div>
   );
 }
-async function Post(parms) {
-  let posts = await getPost(parms.username);
-  let queue = await getPostQueue(parms.username);
+async function Post({username}) {
+  let posts = await getPost(username);
+  let queue = await getPostQueue(username);
 
   //console.log(posts);
   //console.log(queue);
@@ -65,10 +67,10 @@ async function Post(parms) {
           <div key={post.id}>
             {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
             <Card
-              title={post.title}
-              name={post.username}
-              rel={post.relationship}
-              time={dateToStr(post.created_at)}
+              title={post.post.title}
+              name={post.post.name}
+              rel={post.post.relationship}
+              time={dateToStr(post.post.createdAt)}
             />
           </div>
         ))}
@@ -89,9 +91,9 @@ async function Post(parms) {
             {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
             <Card
               title={post.title}
-              name={post.username}
+              name={post.name}
               rel={post.relationship}
-              time={dateToStr(post.created_at)}
+              time={dateToStr(post.createdAt)}
             />
           </div>
         ))}
@@ -124,10 +126,10 @@ async function UnconnectedPost(parms) {
         <div key={post.id}>
           {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
           <Card
-            title={post.title}
-            name={post.username}
-            rel={post.relationship}
-            time={dateToStr(post.created_at)}
+            title={post.post.title}
+            name={post.post.name}
+            rel={post.post.relationship}
+            time={dateToStr(post.post.createdAt)}
           />
         </div>
       ))}

@@ -1,4 +1,4 @@
-export function dateToStr(date:Date) {
+export function dateToStr(date: Date) {
   if (isToday(date)) {
     return toStringTime(date);
   } else {
@@ -7,7 +7,8 @@ export function dateToStr(date:Date) {
 }
 
 function isToday(date: Date) {
-  const today = new Date();
+  const today: Date = new Date();
+  console.log(date);
   return (
     date.getDate() === today.getDate() &&
     date.getMonth() === today.getMonth() &&
