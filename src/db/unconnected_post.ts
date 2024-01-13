@@ -3,13 +3,8 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export class UnconnectedPost {
-  static insert = ({ postId, userId }) =>
-    prisma.unconnectedPost.create({
-      data: {
-        postId: postId,
-        userId: userId,
-      },
-    });
+  static insert = (data: { postId: number; userId: number }) =>
+    prisma.unconnectedPost.create({ data });
 
   static findByUsername = (username: string) =>
     prisma.unconnectedPost.findMany({
@@ -29,17 +24,13 @@ export class UnconnectedPost {
       },
     });
 
-  static findByUserId = (userId:number) =>
+  static findByUserId = (userId: number) =>
     prisma.unconnectedPost.findMany({
-      where: {
-        userId,
-      },
+      where: { userId },
     });
 
   static deleteByUserId = (userId: number) =>
     prisma.unconnectedPost.deleteMany({
-      where: {
-        userId,
-      },
+      where: { userId },
     });
 }

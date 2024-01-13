@@ -3,13 +3,8 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export class PostQueue {
-  static insert = ({ postId, userId }) =>
-    prisma.postQueue.create({
-      data: {
-        postId,
-        userId,
-      },
-    });
+  static insert = (data: { postId: number; userId: number }) =>
+    prisma.postQueue.create({ data });
 
   static findAll = () =>
     prisma.postQueue.findMany({
@@ -42,12 +37,11 @@ export class PostQueue {
         },
       },
     });
-}
 
-export async function deletePostQueue(postId) {
-  await prisma.postQueue.deleteMany({
-    where: {
-      postId,
-    },
-  });
+  static deleteByPostId = (postId: number) =>
+    prisma.postQueue.deleteMany({
+      where: {
+        postId,
+      },
+    });
 }

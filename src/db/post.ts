@@ -3,16 +3,14 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export class Post {
-  static updatePostedTrue = (postId: number) =>
-    prisma.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        posted: true,
-        postAt: getNow(),
-      },
-    });
+  static insert = (data: {
+    userId: number;
+    name: string;
+    relationship: string;
+    title: string;
+    contents: string;
+    password: string;
+  }) => prisma.post.create({ data });
 
   static findByUsername = (username: string) =>
     prisma.post.findMany({
@@ -30,5 +28,19 @@ export class Post {
         },
         posted: true,
       },
+    });
+
+  static update = (
+    id: number,
+    data: {
+      posted: boolean;
+      postAt: Date;
+    },
+  ) =>
+    prisma.post.update({
+      where: {
+        id,
+      },
+      data,
     });
 }

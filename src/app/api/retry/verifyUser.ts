@@ -4,18 +4,7 @@ import { UnconnectedPost, Post, PostQueue, UserQueue, User } from "src/db";
 export async function verifyUser() {
   console.log("verifyUser...");
   // 미인증 유저들
-  const unconnected = await prisma.usersQueue.findMany({
-    include: {
-      user: {
-        select: {
-          name: true,
-          birth: true,
-          sodae: true,
-          memberSeq: true,
-        },
-      },
-    },
-  });
+  const unconnected = await UserQueue.findAll();
 
   // console.log(unconnected);
 
@@ -47,9 +36,9 @@ export async function verifyUser() {
 }
 
 async function updateUser(userId, sodae, memberSeq) {
-  await User.updateMember({ id: userId, connect: true, sodae, memberSeq });
+  await User.update(userId, { connect: true, sodae, memberSeq });
 
-  await UserQueue.deleteByUserId(uerId);
+  await UserQueue.deleteByUserId(userId);
 }
 
 async function moveQueue(userId) {

@@ -19,7 +19,14 @@ export class User {
       },
     });
 
-  static updateMember = ({ id, memberSeq, sodae, connect }) =>
+  static update = (
+    id: number,
+    {
+      memberSeq,
+      sodae,
+      connect,
+    }: { memberSeq: string; sodae: string; connect: boolean },
+  ) =>
     prisma.user.update({
       where: {
         id,
