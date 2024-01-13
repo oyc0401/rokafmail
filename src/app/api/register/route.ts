@@ -46,7 +46,11 @@ async function checkUser({ id, name, birth, generation }) {
   if (connect) {
     console.log(`유저 인증 성공 memberSeq:${memberSeq}, sodae:${sodae}`);
     console.log("정보 업데이트 중...");
-    await User.update(id, { memberSeq, sodae, connect: true });
+    await User.update(id, {
+      memberSeq: memberSeq || "",
+      sodae: sodae || "",
+      connect: true,
+    });
   } else {
     console.log("유저 인증 실패, 인증 큐에 저장하는 중...");
     await UserQueue.insert({ userId: id });
