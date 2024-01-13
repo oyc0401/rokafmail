@@ -12,7 +12,8 @@ import { CheckCircle } from "public/assets/index";
 export default async function Complete({ searchParams, params }) {
   //const sc = searchParams.sc;
   console.log(params.username);
-  let user = await getUser(params.username);
+  const {username} = params;
+  let user = await getUser(username);
 
   if (!user) {
     notFound();

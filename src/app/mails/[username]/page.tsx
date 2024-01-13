@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { getUser } from "src/server";
 import styles from "./mails.module.css";
-import { getPost,getPostQueue,getUnconnectedPost } from "src/server";
+import { getPost, getPostQueue, getUnconnectedPost,getUser } from "src/db";
 import { dateToStr } from "./dateToStr";
 import { Nav } from "src/components";
-import { notFound } from 'next/navigation'
+import { notFound } from "next/navigation";
 
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 
@@ -47,7 +46,7 @@ export default async function Mails({ params }) {
     </div>
   );
 }
-async function Post({username}) {
+async function Post({ username }) {
   let posts = await getPost(username);
   let queue = await getPostQueue(username);
 

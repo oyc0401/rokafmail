@@ -3,7 +3,7 @@ import { Submit } from "./submit";
 import { MakeBtn } from "./MakeBtn";
 import { Paper } from "./paper";
 import { getEnter, getCompletion, isContain } from "src/lib/time";
-import { getUser } from "src/server";
+import { getUser } from "src/db";
 import { notFound } from "next/navigation";
 
 export default async function Mail({ params }) {
@@ -18,6 +18,7 @@ export default async function Mail({ params }) {
 }
 
 async function Header(params) {
+  
   let user = await getUser(params.username);
 
   if (!user) {

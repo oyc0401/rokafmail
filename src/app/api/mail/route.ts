@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { getNow, canPost, mailEnded } from "src/lib/time";
 import Rokaf from "../rokaf/rokaf";
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import {
+  updatePostedTrue,
+  insertPostQueue,
+  insertUnconnectedPost,
+} from "src/db";
 
 // 편지를 보내면 먼저 post에 저장한다.
 // 인증안된 유저면 unconnected에 추가
@@ -13,8 +15,6 @@ const prisma = new PrismaClient()
 // 안보내지면 post_queue에 추가한다.
 
 export async function POST(request: Request) {
-  const body = await request.json();
-
   const {
     username,
     name,
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     title: string;
     contents: string;
     password: string;
-  } = body;
+  } = await request.json();
 
   // 유저인지 확인
   const userList = await prisma.user.findMany({
@@ -37,7 +37,6 @@ export async function POST(request: Request) {
       username,
     },
   });
-
 
   // 유저가 아니면 400에러 ㄱㄱ
   if (userList.length == 0) {
@@ -57,7 +56,7 @@ export async function POST(request: Request) {
   // 편지 저장
   const newPost = await prisma.post.create({
     data: {
-      userId: userId,
+      userId,
       name,
       relationship,
       title,
@@ -74,26 +73,26 @@ export async function POST(request: Request) {
 
   // 인증안된 유저면 인증안된 큐에 데이터 저장
   if (!connect) {
-    insertUnconnected({
-      postId: postId,
-      userId: userId,
+    insertUnconnectedPost({
+      postId,
+      userId,
     }).then(() => {
       console.log(`unconnected_post 업로드 성공.`);
       console.log(`${username} 편지 전송 완료!`);
     });
   } else {
     sendMail({
-      userId: userId,
-      postId: postId,
-      username: username,
-      name: name,
-      relationship: relationship,
-      title: title,
-      contents: contents,
-      password: password,
-      memberSeq: memberSeq,
-      sodae: sodae,
-      generation: generation,
+      userId,
+      postId,
+      username,
+      name,
+      relationship,
+      title,
+      contents,
+      password,
+      memberSeq,
+      sodae,
+      generation,
     });
   }
 
@@ -121,65 +120,32 @@ async function sendMail({
   if (canPost(generation)) {
     console.log("국방부 서버 보내는 중...");
     const response = await Rokaf.postMail({
-      name: name,
-      relationship: relationship,
-      title: title,
-      contents: contents,
-      password: password,
-      memberSeq: memberSeq,
-      sodae: sodae,
+      name,
+      relationship,
+      title,
+      contents,
+      password,
+      memberSeq,
+      sodae,
     });
 
     // 국방서버에 보내졌으면 보내졌다고 업데이트
     if (response.complete) {
       console.log("국방부 서버 보내기 성공.");
-      await updatePosted(postId);
+      await updatePostedTrue(postId);
     } else {
       // 안보내졌으면 편지큐에 저장
       console.log("국방부 서버 보내기 실패.");
-      await enqueue({ postId: postId, userId: userId });
+      await insertPostQueue({ postId, userId });
     }
   } else if (mailEnded(generation)) {
     console.log("편지 쓰기 기간이 지났습니다.");
-    await updatePosted(postId);
+    await updatePostedTrue(postId);
   } else {
     // 안보내졌으면 편지큐에 저장
     console.log("편지쓰기 기간 이전입니다.");
-    await enqueue({ postId: postId, userId: userId });
+    await insertPostQueue({ postId, userId });
   }
 
   console.log(`${username} 편지 전송 완료!`);
-}
-
-function updatePosted(postId: number) {
-  return prisma.post.update({
-    where: {
-      id: postId,
-    },
-    data: {
-      posted: true,
-      postAt: getNow(),
-    },
-  });
-
-}
-
-function enqueue({ postId, userId }) {
-  return prisma.postQueue.create({
-    data: {
-      postId: postId,
-      userId: userId,
-    },
-  });
-
-}
-
-async function insertUnconnected({ postId, userId }) {
-  return prisma.unconnectedPost.create({
-    data: {
-      postId: postId,
-      userId: userId,
-    },
-  });
-
 }
