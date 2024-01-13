@@ -8,7 +8,7 @@ export function dateToStr(date: Date) {
 
 function isToday(date: Date) {
   const today: Date = new Date();
-  console.log(date);
+  //console.log(date);
   return (
     date.getDate() === today.getDate() &&
     date.getMonth() === today.getMonth() &&

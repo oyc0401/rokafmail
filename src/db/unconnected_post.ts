@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from './_prisma'
 
 export class UnconnectedPost {
   static insert = (data: { postId: number; userId: number }) =>
