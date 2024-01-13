@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "./mails.module.css";
-import { getPost, getPostQueue, getUnconnectedPost,getUser } from "src/db";
+import { Post, PostQueue, UnconnectedPost, User } from "src/db";
 import { dateToStr } from "./dateToStr";
 import { Nav } from "src/components";
 import { notFound } from "next/navigation";
@@ -9,7 +9,7 @@ import { notFound } from "next/navigation";
 
 export default async function Mails({ params }) {
   // console.log(params.username);
-  let user = await getUser(params.username);
+  let user = await User.findByUsername(params.username);
 
   if (!user) {
     notFound();
@@ -18,9 +18,9 @@ export default async function Mails({ params }) {
   return (
     <div className="screen">
       {user.connect ? (
-        <Post username={params.username} />
+        <Mail username={params.username} />
       ) : (
-        <UnconnectedPost username={params.username} />
+        <UnconnectedMail username={params.username} />
       )}
       {user.connect ? (
         <Nav elevation={true}>
@@ -46,9 +46,9 @@ export default async function Mails({ params }) {
     </div>
   );
 }
-async function Post({ username }) {
-  let posts = await getPost(username);
-  let queue = await getPostQueue(username);
+async function Mail({ username }) {
+  let posts = await Post.findByUsername(username);
+  let queue = await PostQueue.findByUsername(username);
 
   //console.log(posts);
   //console.log(queue);
@@ -108,8 +108,8 @@ async function Post({ username }) {
   );
 }
 
-async function UnconnectedPost(parms) {
-  let unconnected = await getUnconnectedPost(parms.username);
+async function UnconnectedMail(parms) {
+  let unconnected = await UnconnectedPost.findByUsername(parms.username);
 
   //console.log(unconnected);
   if (unconnected.length == 0) {

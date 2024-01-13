@@ -1,32 +1,45 @@
-"use server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function insertUnconnectedPost({ postId, userId }) {
-  return prisma.unconnectedPost.create({
-    data: {
-      postId: postId,
-      userId: userId,
-    },
-  });
-}
+export class UnconnectedPost {
+  static insert = ({ postId, userId }) =>
+    prisma.unconnectedPost.create({
+      data: {
+        postId: postId,
+        userId: userId,
+      },
+    });
 
-export async function getUnconnectedPost(username: string) {
-  return await prisma.unconnectedPost.findMany({
-    include: {
-      user: {
-        select: {
-          username: true,
-          connect: true,
+  static findByUsername = (username: string) =>
+    prisma.unconnectedPost.findMany({
+      include: {
+        user: {
+          select: {
+            username: true,
+            connect: true,
+          },
+        },
+        post: true,
+      },
+      where: {
+        user: {
+          username,
         },
       },
-      post: true,
-    },
-    where: {
-      user: {
-        username,
+    });
+
+  static findByUserId = (userId:number) =>
+    prisma.unconnectedPost.findMany({
+      where: {
+        userId,
       },
-    },
-  });
+    });
+
+  static deleteByUserId = (userId: number) =>
+    prisma.unconnectedPost.deleteMany({
+      where: {
+        userId,
+      },
+    });
 }

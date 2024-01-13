@@ -1,12 +1,11 @@
 import Rokaf from "../rokaf/rokaf";
-import {getNow} from 'src/lib/time';
-import {getPostQueueAll,deletePostQueue,updatePostedTrue} from 'src/db'
-
+import { getNow } from "src/lib/time";
+import { PostQueue, deletePostQueue, Post } from "src/db";
 
 export async function repostMail() {
   console.log("repostMail...");
-  
-  const unposted = await getPostQueueAll();
+
+  const unposted = await PostQueue.findAll();
 
   console.log("repost: 편지 보내기 시작, 미발송 편지 수:", unposted.length);
 
@@ -23,7 +22,7 @@ export async function repostMail() {
     }); // 국방서버에 보내는 요청
     if (postComplete.complete) {
       console.log("성공!!", post.postId, post.username);
-      await updatePostedTrue(post.postId);
+      await Post.updatePostedTrue(post.postId);
       await deletePostQueue(post.postId);
     } else {
       console.log("실패ㅜ");
@@ -34,5 +33,3 @@ export async function repostMail() {
 
   console.log("repostMail Complete!");
 }
-
-

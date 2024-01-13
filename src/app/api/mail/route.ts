@@ -1,11 +1,7 @@
 import { NextResponse } from "next/server";
 import { getNow, canPost, mailEnded } from "src/lib/time";
 import Rokaf from "../rokaf/rokaf";
-import {
-  updatePostedTrue,
-  insertPostQueue,
-  insertUnconnectedPost,
-} from "src/db";
+import { Post, PostQueue, UnconnectedPost } from "src/db";
 
 // 편지를 보내면 먼저 post에 저장한다.
 // 인증안된 유저면 unconnected에 추가
@@ -73,7 +69,7 @@ export async function POST(request: Request) {
 
   // 인증안된 유저면 인증안된 큐에 데이터 저장
   if (!connect) {
-    insertUnconnectedPost({
+    UnconnectedPost.insert({
       postId,
       userId,
     }).then(() => {
@@ -132,19 +128,19 @@ async function sendMail({
     // 국방서버에 보내졌으면 보내졌다고 업데이트
     if (response.complete) {
       console.log("국방부 서버 보내기 성공.");
-      await updatePostedTrue(postId);
+      await Post.updatePostedTrue(postId);
     } else {
       // 안보내졌으면 편지큐에 저장
       console.log("국방부 서버 보내기 실패.");
-      await insertPostQueue({ postId, userId });
+      await PostQueue.insert({ postId, userId });
     }
   } else if (mailEnded(generation)) {
     console.log("편지 쓰기 기간이 지났습니다.");
-    await updatePostedTrue(postId);
+    await Post.updatePostedTrue(postId);
   } else {
     // 안보내졌으면 편지큐에 저장
     console.log("편지쓰기 기간 이전입니다.");
-    await insertPostQueue({ postId, userId });
+    await PostQueue.insert({ postId, userId });
   }
 
   console.log(`${username} 편지 전송 완료!`);

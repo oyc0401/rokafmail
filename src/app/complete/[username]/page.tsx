@@ -1,19 +1,24 @@
 import Link from "next/link";
 import Image from "next/image";
-
-import { getUser } from "src/server/";
+import { notFound } from "next/navigation";
+import { User } from "src/db";
 import styles from "./complete.module.css";
 import { Nav } from "src/components";
 
-import { mailStartIsFuture, canPost, diffDay ,getMailStart} from "src/lib/time";
+import {
+  mailStartIsFuture,
+  canPost,
+  diffDay,
+  getMailStart,
+} from "src/lib/time";
 import { CheckCircle } from "public/assets/index";
 
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 export default async function Complete({ searchParams, params }) {
   //const sc = searchParams.sc;
   console.log(params.username);
-  const {username} = params;
-  let user = await getUser(username);
+  const { username } = params;
+  let user = await User.findByUsername(username);
 
   if (!user) {
     notFound();
@@ -48,10 +53,7 @@ export default async function Complete({ searchParams, params }) {
       <div style={{ flex: 182 }}></div>
 
       <Nav>
-        <Link
-          className={`submit mini`}
-          href={`/mails/${user.username}`}
-        >
+        <Link className={`submit mini`} href={`/mails/${user.username}`}>
           편지함
         </Link>
         <div style={{ width: 12 }}></div>

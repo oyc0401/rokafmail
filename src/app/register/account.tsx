@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
-import { avaliableUsername } from "src/db";
+import { duplicateUsername } from "src/server";
 import { useStore, useStoreBase } from "./model";
 
 export default function Account() {
@@ -31,7 +31,7 @@ export default function Account() {
     if (loading) return;
 
     setLoading(true);
-    setValidUser(await avaliableUsername(username));
+    setValidUser(!await duplicateUsername(username));
     clickUsernameDup.current = true;
     setLoading(false);
   }
