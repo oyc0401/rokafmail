@@ -1,4 +1,4 @@
-import prisma from './_prisma'
+import prisma from "./_prisma";
 
 export class UserQueue {
   static insert = (data: { userId: number }) =>
@@ -19,7 +19,7 @@ export class UserQueue {
     });
 
   static deleteByUserId = (userId: number) =>
-    prisma.usersQueue.delete({
-      where: { userId },
+    prisma.usersQueue.deleteMany({
+      where: { userId: userId },
     });
 }

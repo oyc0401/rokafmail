@@ -14,6 +14,10 @@ export async function repostMail() {
     const { postId } = post;
     const { name, relationship, title, contents, password } = post.post;
     const { username, memberSeq, sodae } = post.user;
+    if (memberSeq == null || sodae == null) {
+      console.log("왜 여기에 null이 있는거야");
+      return;
+    }
 
     let postComplete = await Rokaf.postMail({
       name,
