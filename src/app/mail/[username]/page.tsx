@@ -28,16 +28,12 @@ async function Header(params) {
   let name = user.name;
   let message = user.message;
 
-  let startTime;
-  let compTime;
-  if (!isContain(user.generation)) {
-    startTime = "2x.xx.xx";
-    compTime = "2x.xx.xx";
-  } else {
+  let startTime = "2x.xx.xx";
+  let compTime = "2x.xx.xx";
+  if (isContain(user.generation)) {
     startTime = getEnter(user.generation).format("YY.MM.DD");
     compTime = getCompletion(user.generation).format("YY.MM.DD");
   }
-
   return (
     <div className="pt-4 pb-3.5 w-full">
       <h2 className={styles.title}>

@@ -10,12 +10,10 @@ import styles from "./page.module.css";
 import { useStore } from "./model";
 import { validN, validR, validC, validT, validP } from "./valid";
 
-export function Submit(params) {
+export function Submit({username}) {
+ 
   const { name, relationship, title, contents, password } = useStore();
 
-  async function click() {
-    await params.click();
-  }
   const router = useRouter();
 
   const [progress, setProgress] = useState(false);
@@ -31,7 +29,7 @@ export function Submit(params) {
     setProgress(true);
     try {
       let data = await axios.post("/api/mail", {
-        username: params.username,
+        username: username,
         name: name,
         relationship: relationship,
         title: title,
@@ -41,7 +39,7 @@ export function Submit(params) {
       //console.log(data);
       alert("편지 전송 성공!");
 
-      router.push(`/complete/${params.username}?sc=200`);
+      router.push(`/complete/${username}?sc=200`);
     } catch (e) {
       alert(e);
       setProgress(false);
@@ -68,7 +66,7 @@ export function Submit(params) {
   return (
     <>
       <Nav>
-        <Link className={`submit mini`} href={`/mails/${params.username}`}>
+        <Link className={`submit mini`} href={`/mails/${username}`}>
           편지함
         </Link>
         <div style={{ width: 12 }}></div>

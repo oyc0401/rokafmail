@@ -20,20 +20,29 @@ export default function Account() {
   const [validUser, setValidUser] = useState(false);
 
   let [loading, setLoading] = useState(false);
+  const load = useRef(false);
 
   function editUsername(text) {
+    load.current = false;
     setUsername(text);
     clickUsernameDup.current = false;
     setValidUser(false);
   }
 
   async function checkUsername() {
-    if (loading) return;
-
+    if (load.current) return;
     setLoading(true);
-    setValidUser(!await duplicateUsername(username));
-    clickUsernameDup.current = true;
+    load.current = true;
+    const val = await duplicateUsername(username);
+    // console.log(val)
+
+    if (load.current) {
+      setValidUser(true);
+      clickUsernameDup.current = true;
+      console.log("!");
+    }
     setLoading(false);
+    load.current = false;
   }
 
   function validU() {
@@ -80,109 +89,105 @@ export default function Account() {
 
   return (
     <>
-     
-        <div style={{ flex: 100 }}></div>
+      <div style={{ flex: 100 }}></div>
 
-        <h2 className={styles.title}>
-          수료 후 편지함 확인을 위해
-          <br />
-          비밀번호를 설정해주세요
-        </h2>
+      <h2 className={styles.title}>
+        수료 후 편지함 확인을 위해
+        <br />
+        비밀번호를 설정해주세요
+      </h2>
 
-        <div style={{ flex: 49 }}></div>
+      <div style={{ flex: 49 }}></div>
 
-        <p className={styles.formTitle}>아이디</p>
-        <div style={{ height: 2 }}></div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-            justifyContent: "flex-start",
+      <p className={styles.formTitle}>아이디</p>
+      <div style={{ height: 2 }}></div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          width: "100%",
+          justifyContent: "flex-start",
+        }}
+      >
+        <input
+          className={styles.form}
+          value={username}
+          type="text"
+          style={{ flex: "1" }}
+          placeholder="아이디를 입력해주세요"
+          onChange={(e) => {
+            editUsername(e.target.value);
           }}
+        ></input>
+        <button
+          className={
+            loading ? `${styles.dupButton} ${styles.loading}` : styles.dupButton
+          }
+          onClick={checkUsername}
         >
-          <input
-            className={styles.form}
-            value={username}
-            type="text"
-            style={{ flex: "1" }}
-            placeholder="아이디를 입력해주세요"
-            onChange={(e) => {
-              editUsername(e.target.value);
+          <div
+            style={{
+              display: "flex",
+              textAlign: "center",
+              justifyContent: "center",
             }}
-          ></input>
-          <button
-            className={
-              loading
-                ? `${styles.dupButton} ${styles.loading}`
-                : styles.dupButton
-            }
-            onClick={checkUsername}
           >
-            <div
-              style={{
-                display: "flex",
-                textAlign: "center",
-                justifyContent: "center",
-              }}
-            >
-              {loading ? <p className={styles.animation} /> : "중복확인"}
-            </div>
-          </button>
-        </div>
+            {loading ? <p className={styles.animation} /> : "중복확인"}
+          </div>
+        </button>
+      </div>
 
-        <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validU().color}`}>{validU().text}</p>
+      <div style={{ height: 2 }}></div>
+      <p className={`${styles.help} ${validU().color}`}>{validU().text}</p>
 
-        <div style={{ height: 16 }}></div>
+      <div style={{ height: 16 }}></div>
 
-        <p className={styles.formTitle}>비밀번호</p>
-        <div style={{ height: 2 }}></div>
-        <input
-          className={styles.form}
-          value={password}
-          type="password"
-          placeholder="비밀번호를 입력해주세요"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        ></input>
-        <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validP().color}`}>{validP().text}</p>
+      <p className={styles.formTitle}>비밀번호</p>
+      <div style={{ height: 2 }}></div>
+      <input
+        className={styles.form}
+        value={password}
+        type="password"
+        placeholder="비밀번호를 입력해주세요"
+        onChange={(e) => {
+          setPassword(e.target.value);
+        }}
+      ></input>
+      <div style={{ height: 2 }}></div>
+      <p className={`${styles.help} ${validP().color}`}>{validP().text}</p>
 
-        <div style={{ height: 16 }}></div>
+      <div style={{ height: 16 }}></div>
 
-        <p className={styles.formTitle}>비밀번호 재확인</p>
-        <div style={{ height: 2 }}></div>
-        <input
-          className={styles.form}
-          value={repassword}
-          type="password"
-          placeholder="비밀번호를 다시 입력해주세요"
-          onChange={(e) => {
-            setRepassword(e.target.value);
-          }}
-        ></input>
-        <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validR().color}`}>{validR().text}</p>
+      <p className={styles.formTitle}>비밀번호 재확인</p>
+      <div style={{ height: 2 }}></div>
+      <input
+        className={styles.form}
+        value={repassword}
+        type="password"
+        placeholder="비밀번호를 다시 입력해주세요"
+        onChange={(e) => {
+          setRepassword(e.target.value);
+        }}
+      ></input>
+      <div style={{ height: 2 }}></div>
+      <p className={`${styles.help} ${validR().color}`}>{validR().text}</p>
 
-        <div style={{ flex: 138 }}></div>
-        <div className="row">
-          <button className={`submit mini`} onClick={prev}>
-            이전
-          </button>
-          <div style={{ width: 12 }}></div>
-          <button
-            className={canSubmit() ? "submit" : "submit disable"}
-            onClick={click}
-          >
-            다음
-          </button>
-        </div>
+      <div style={{ flex: 138 }}></div>
+      <div className="row">
+        <button className={`submit mini`} onClick={prev}>
+          이전
+        </button>
+        <div style={{ width: 12 }}></div>
+        <button
+          className={canSubmit() ? "submit" : "submit disable"}
+          onClick={click}
+        >
+          다음
+        </button>
+      </div>
 
-        <div style={{ height: 36 }}></div>
-
+      <div style={{ height: 36 }}></div>
     </>
   );
 }

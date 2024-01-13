@@ -1,4 +1,4 @@
-function validN(name) {
+function validN(name:string) {
   // 빈칸일 때
   if (name == "") return { text: "", valid: false };
 
@@ -6,7 +6,7 @@ function validN(name) {
   return { text: "잘했어요!", color: "great", valid: true };
 }
 
-function validR(relationship) {
+function validR(relationship:string) {
   // 빈칸일 때
   if (relationship == "") return { text: "", valid: false };
 
@@ -14,7 +14,7 @@ function validR(relationship) {
   return { text: "잘했어요!", color: "great", valid: true };
 }
 
-function validT(title) {
+function validT(title:string) {
   // 빈칸일 때
   if (title == "") return { text: "", valid: false };
 
@@ -22,7 +22,7 @@ function validT(title) {
   return { text: "잘했어요!", color: "great", valid: true };
 }
 
-function validC(contents) {
+function validC(contents:string) {
   // 빈칸일 때
   if (contents == "") return { text: "", valid: false };
 
@@ -39,7 +39,7 @@ function validC(contents) {
   return { text: "", color: "great", valid: true };
 }
 
-function validP(password) {
+function validP(password:string) {
   // 빈칸일 때
   if (password == "") return { text: "", valid: false };
 
