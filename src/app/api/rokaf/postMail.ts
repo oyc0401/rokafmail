@@ -46,11 +46,15 @@ export async function postMail({
     data: data,
   };
 
+  //console.log(data.getHeaders())
+   console.log(data)
+
   console.log(`[postMail] ${memberSeq} 편지 보내는 중...`);
 
   try {
-    await axios(config);
+    const res = await axios(config);
     console.log(`[postMail] ${memberSeq} 편지 보내기 성공!`);
+    console.log(res.data)
     return {
       complete: true,
       serverOn: true,

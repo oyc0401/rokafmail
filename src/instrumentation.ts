@@ -1,5 +1,8 @@
+import {GET} from 'src/app/api/retry/route';
+
 export async function register() {
   console.log("처음 실행!!");
+ //await GET();
   // const schedule = require("node-schedule");
 
   // schedule.scheduleJob("00 * * * * *", () => {

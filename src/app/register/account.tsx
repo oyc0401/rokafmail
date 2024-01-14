@@ -37,7 +37,7 @@ export default function Account() {
     // console.log(val)
 
     if (load.current) {
-      setValidUser(true);
+      setValidUser(!val);
       clickUsernameDup.current = true;
       console.log("!");
     }

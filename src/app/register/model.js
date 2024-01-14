@@ -2,8 +2,8 @@ import { create } from "zustand";
 import createSelectors from "./selectors";
 
 export const useStoreBase = create((set) => ({
-  //page: 0,
-   page:1,
+  page: 0,
+  // page:1,
   next: () => set((state) => ({ page: state.page + 1 })),
   prev: () => set((state) => ({ page: state.page - 1 })),
 

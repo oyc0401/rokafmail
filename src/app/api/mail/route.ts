@@ -101,7 +101,8 @@ async function sendMail({
   // 편지보내기 시간이 지났으면 posted를 true로 업데이트 하되, 국방부 서버에는 보내지 말기
 
   // 인증된 유저면 국방부에 보내보기
-
+  // 배포하기전 이거 꼭 지워
+   //if (true) {
   if (canPost(generation)) {
     console.log("국방부 서버 보내는 중...");
     const response = await Rokaf.postMail({
