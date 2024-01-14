@@ -1,16 +1,13 @@
-import {GET} from 'src/app/api/retry/route';
+import { GET } from "src/app/api/retry/route";
 
 export async function register() {
   console.log("처음 실행!!");
- //await GET();
-  // const schedule = require("node-schedule");
 
-  // schedule.scheduleJob("00 * * * * *", () => {
-  //   console.log("schedule is executed");
+  const schedule = require("node-schedule");
 
-  //   let url='https://airforce-mail--oyc0401.repl.co/api/resend';
-  //   fetch(url, { method: "POST" }).catch((error) => {
-  //     console.error("Error:", error);
-  //   });
-  // });
+  // 매일 12시 마다
+  schedule.scheduleJob("00 00 12 * * *", () => {
+    console.log("schedule is executed");
+    GET();
+  });
 }

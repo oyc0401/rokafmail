@@ -1,6 +1,3 @@
-instrumentation에 url 수정하기
-app/link/page에 복사 url 수정하기
-app/mail/body에 api주소 수정하기
 
 
 git log --graph --all --oneline --date-order

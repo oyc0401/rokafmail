@@ -47,7 +47,7 @@ export async function postMail({
   };
 
   //console.log(data.getHeaders())
-   console.log(data)
+   //console.log(data)
 
   console.log(`[postMail] ${memberSeq} 편지 보내는 중...`);
 
