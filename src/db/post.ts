@@ -1,4 +1,4 @@
-import prisma from './_prisma'
+import prisma from "./_prisma";
 
 export class Post {
   static insert = (data: {

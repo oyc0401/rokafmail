@@ -60,10 +60,15 @@ export class User {
       },
       select: {
         id: true,
-        username:true,
+        username: true,
         generation: true,
         name: true,
         birth: true,
+        posts: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 }

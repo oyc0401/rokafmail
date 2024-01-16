@@ -3,8 +3,8 @@ import Link from "next/link";
 
 import {Logo} from "public/assets/index";
 import Image from "next/image";
-
 export default function Register() {
+
   return (
     <div className="screen">
       <div style={{ flex: 62 }}></div>
@@ -30,10 +30,10 @@ export default function Register() {
       <div style={{ flex: 61 }}></div>
 
       <Link className="submit" href={{ pathname: "/register" }}>
-        시작하기
+        편지함 만들기
       </Link>
       <div className="pt-2.5 pb-5 w-full">
-        <div className={styles.help}>도움말</div>
+        <Link href='/search' className={styles.help}>편지함 찾기</Link>
       </div>
     </div>
   );
