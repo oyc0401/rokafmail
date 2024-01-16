@@ -1,4 +1,4 @@
-import prisma from './_prisma'
+import prisma from "./_prisma";
 
 export class User {
   static insert = (data: {
@@ -40,6 +40,30 @@ export class User {
     prisma.user.count({
       where: {
         username,
+      },
+    });
+
+  static findByInfo = ({
+    generation,
+    name,
+    birth,
+  }: {
+    generation: number;
+    name: string;
+    birth: string;
+  }) =>
+    prisma.user.findMany({
+      where: {
+        generation,
+        name,
+        birth,
+      },
+      select: {
+        id: true,
+        username:true,
+        generation: true,
+        name: true,
+        birth: true,
       },
     });
 }
