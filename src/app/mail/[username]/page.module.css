@@ -26,6 +26,16 @@
 }
 
 
+.icon{
+ margin-top:4px;
+  width:28px;
+  height:28px;
+  
+}
+.icon:hover{
+  cursor:pointer;
+}
+
 /* 로딩창 */
  .animation {
    width: 12px;

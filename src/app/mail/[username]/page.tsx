@@ -5,6 +5,8 @@ import { Paper } from "./paper";
 import { getEnter, getCompletion, isContain } from "src/lib/time";
 import { User } from "src/db";
 import { notFound } from "next/navigation";
+import { Share } from "public/assets";
+import Image from "next/image";
 
 export default async function Mail({ params }) {
   return (
@@ -36,11 +38,17 @@ async function Header(params) {
   }
   return (
     <div className="pt-4 pb-3.5 w-full">
-      <h2 className={styles.title}>
-        <span className="text-primary">{name}</span> 훈련병에게
-        <br />
-        편지를 보내주세요!
-      </h2>
+      <div style={{ display: "flex", flexDirection: "row",justifyContent:'start' }}>
+        <h2 className={styles.title}>
+          <span className="text-primary">{name}</span> 훈련병에게
+          <br />
+          편지를 보내주세요!
+        </h2>
+        <div style={{ flex: 1 }}></div>
+        <div> <Image className={styles.icon} src={Share} alt="로고" /></div>
+       
+      </div>
+
       <div className="pt-px w-full">
         <h2 className={styles.time}>
           {startTime} ~ {compTime}
