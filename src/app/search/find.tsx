@@ -1,16 +1,16 @@
 "use client";
-import React, { useState, } from "react";
+import React, { useState } from "react";
 import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
 
 export function Find() {
- 
   const [generation, setGeneration] = useState("");
   const [name, setName] = useState("");
   const [birth, setBirth] = useState("");
+  const router = useRouter();
 
-  function click() {
-
-
+  function click(){
+    router.push(`/search?generation=${generation}&name=${name}&birth=${birth}`);
   }
 
   function canSubmit() {
