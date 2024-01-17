@@ -10,7 +10,7 @@ const notoSansKr = Noto_Sans_KR({
 
 export const metadata = {
   title: "하늘인편",
-  description: "공군인편 미리 만들기",
+  description: "공군 인편지기 사이트",
 };
 
 export default function RootLayout({ children }) {

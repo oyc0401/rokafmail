@@ -10,7 +10,7 @@ export default function Register() {
 
       <div className="p-5">
         <Image className={styles.logo} src={Logo} alt="로고" />
-        <div style={{paddingTop:31}}>
+        <div style={{paddingTop:38}}>
           <Image className={styles.logoTitle} src={LogoTitle} alt="로고" />
         </div>
       </div>
@@ -30,7 +30,7 @@ export default function Register() {
       <div style={{ flex: 16 }}></div>
 
       <Link className="submit" href={{ pathname: "/register" }}>
-        편지함 만들기
+       시작하기
       </Link>
       <div className="pt-2.5 pb-5 w-full">
         <Link href="/search" className={styles.help}>
