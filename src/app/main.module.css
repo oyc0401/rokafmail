@@ -3,6 +3,13 @@
   height:173px;
 }
 
+.logoTitle{
+  
+   width: 176px;
+  height:57px;
+}
+
+
 /* 메인화면에 나오는 글씨  */
 .title{
   text-align: center;
