@@ -55,7 +55,8 @@
    border-color: var(--dark-accent);
 }
 
-.title{
+.listTitle{
+  font-weight:500;
   font-size: 22px;
   padding: 24px 0 40px 0;
 }

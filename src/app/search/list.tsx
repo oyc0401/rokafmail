@@ -21,7 +21,7 @@ export function List({ users }: { users: Array<userInfo> }) {
   const user = users[0];
   return (
     <div className="screen">
-      <h1 className={styles.title}>이동할 편지함 선택</h1>
+      <h1 className={styles.listTitle}>이동할 편지함 선택</h1>
       {users.map((user, index) => (
         <Card
           username={user.username}
