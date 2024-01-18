@@ -7,8 +7,7 @@ async function Search({
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
-  console.log(searchParams);
-
+  
   const generation = Number(searchParams.generation);
   const name = searchParams.name;
   const birth = searchParams.birth;

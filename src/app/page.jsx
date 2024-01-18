@@ -19,23 +19,30 @@ export default function Register() {
 
      
 
-      <div className="pt-1 pb-4 w-full">
+      <div className="pt-1 pb-8 w-full">
         <h3 className={styles.substring}>
-          입대전에 공군 인편 링크를
+          입대전에 인편 링크를
           <br />
           만들고 공유하세요!
         </h3>
       </div>
 
-      <div style={{ flex: 16 }}></div>
-
+      
       <Link className="submit" href={{ pathname: "/register" }}>
        시작하기
       </Link>
+     
       <div className="pt-2.5 pb-5 w-full">
-        <Link href="/search" className={styles.help}>
-          편지함 찾기
-        </Link>
+         <div style={{display:'flex', flexDirection:'row',justifyContent:'center'}}>
+           <Link href="/help" className={styles.help}>
+             도움말
+           </Link>
+           
+           <Link href="/search" className={styles.help}>
+             편지함 찾기
+           </Link>
+         </div>
+        
       </div>
     </div>
   );

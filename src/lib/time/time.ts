@@ -15,6 +15,7 @@ dayjs.extend(isBetween);
 // 시간
 
 // 입대예정 ---- 입대 -- 편지시작 --- 편지 끝 - 훈련소 수료 -------- 전역자 --- 민간인
+// 입대예정 / 편지 시작전 / 편지가능 / 편지끝 / 수료전 / 수료후 / 전역
 
 // 입대
 export function getEnter(generation: number): dayjs.Dayjs {
@@ -43,11 +44,51 @@ export function getDischarge(generation: number): dayjs.Dayjs {
   return dayjs(end);
 }
 
+// export enum Status {
+//   beforeEnter,
+//   beforeMail,
+//   canMail,
+//   beforeCompletion,
+//   afterCompletion,
+//   afterDischarge,
+// }
+
+export enum Status {
+  before, // 입대 전
+  beginning, // 훈련 1, 2주차
+  training, // 훈련 3, 4, 5주차
+  ending, // 편지쓰기 기간 끝나고, 수료 전
+  working, // 군 복무 중
+  discharged, // 전역 후
+}
+
+// 복무상태
+export function serveStatus(generation: number) {
+  if (isFuture(getEnter(generation))) {
+    return Status.before;
+  } else if (isFuture(getMailStart(generation))) {
+    return Status.beginning;
+  } else if (isFuture(getMailEnd(generation))) {
+    // 편지쓰기 가능
+    return Status.training;
+  } else if (isFuture(getCompletion(generation))) {
+    return Status.ending;
+  } else if (isFuture(getDischarge(generation))) {
+    return Status.working;
+  } else {
+    return Status.discharged;
+  }
+}
+
 // 기수의 입영일을 아는지
-export function isContain(generation: number) {
+export function knowTime(generation: number) {
   return !isEmpty(generation);
 }
 
+
+/**  
+ * @deprecated use serveStatus()
+ */ 
 // 편지 보내는 기간인지
 export function canPost(generation: number): boolean {
   const now = dayjs().tz("Asia/Seoul");
@@ -57,7 +98,7 @@ export function canPost(generation: number): boolean {
 // 전역했는지
 export function isDischarged(generation: number): boolean {
   if (generation < startGeneration) return true;
-  if (!isContain(generation)) return false;
+  if (!knowTime(generation)) return false;
 
   const now = dayjs().tz("Asia/Seoul");
   return getDischarge(generation).isBefore(now);
@@ -87,11 +128,11 @@ export function getNow(): Date {
 }
 
 // 아직 메일쓰기 기간이 오지 않았을 때
-export function mailStartIsFuture(generation: number): boolean{
+export function mailStartIsFuture(generation: number): boolean {
   return isFuture(getMailStart(generation));
 }
 
 // 아직 메일쓰기 기간이 끝났을 때
-export function mailEnded(generation: number): boolean{
+export function mailEnded(generation: number): boolean {
   return isPast(getMailStart(generation));
 }

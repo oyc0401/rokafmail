@@ -7,7 +7,7 @@ import { Nav } from "src/components";
 
 import {
   mailStartIsFuture,
-  canPost,
+
   diffDay,
   getMailStart,
 } from "src/lib/time";

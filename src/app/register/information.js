@@ -1,7 +1,7 @@
 "use client";
 import styles from "./register.module.css";
 import { useStore, useStoreBase } from "./model";
-import { isContain, isDischarged } from "src/lib/time";
+import { knowTime, isDischarged } from "src/lib/time";
 
 export default function Information() {
   const { generation, name, birth, setGeneration, setName, setBirth, next } =
@@ -22,7 +22,7 @@ export default function Information() {
     if (isDischarged(generation))
       return { text: "이미 전역한 기수예요", color: "warn", valid: false };
 
-    if (!isContain(generation))
+    if (!knowTime(generation))
       return { text: "입영기수가 아니예요", color: "warn", valid: false };
 
     // 통과

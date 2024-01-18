@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getNow, canPost, mailEnded } from "src/lib/time";
+import { getNow, serveStatus, Status } from "src/lib/time";
 import Rokaf from "../rokaf/rokaf";
 import { Post, PostQueue, UnconnectedPost, User } from "src/db";
 
@@ -102,35 +102,47 @@ async function sendMail({
 
   // 인증된 유저면 국방부에 보내보기
   // 배포하기전 이거 꼭 지워
-   //if (true) {
-  if (canPost(generation)) {
-    console.log("국방부 서버 보내는 중...");
-    const response = await Rokaf.postMail({
-      name,
-      relationship,
-      title,
-      contents,
-      password,
-      memberSeq,
-      sodae,
-    });
+  //if (true) {
 
-    // 국방서버에 보내졌으면 보내졌다고 업데이트
-    if (response.complete) {
-      console.log("국방부 서버 보내기 성공.");
-      await Post.update(postId,{ posted: true, postAt: getNow() });
-    } else {
+  const status = serveStatus(generation);
+
+  switch (status) {
+    case Status.training:
+      console.log("국방부 서버 보내는 중...");
+      const response = await Rokaf.postMail({
+        name,
+        relationship,
+        title,
+        contents,
+        password,
+        memberSeq,
+        sodae,
+      });
+
+      // 국방서버에 보내졌으면 보내졌다고 업데이트
+      if (response.complete) {
+        console.log("국방부 서버 보내기 성공.");
+        await Post.update(postId, { posted: true, postAt: getNow() });
+      } else {
+        // 안보내졌으면 편지큐에 저장
+        console.log("국방부 서버 보내기 실패.");
+        await PostQueue.insert({ postId, userId });
+      }
+      break;
+
+    case Status.before:
+    case Status.beginning:
       // 안보내졌으면 편지큐에 저장
-      console.log("국방부 서버 보내기 실패.");
+      console.log("편지쓰기 기간 이전입니다.");
       await PostQueue.insert({ postId, userId });
-    }
-  } else if (mailEnded(generation)) {
-    console.log("편지 쓰기 기간이 지났습니다.");
-    await Post.update(postId,{  posted: true, postAt: getNow() });
-  } else {
-    // 안보내졌으면 편지큐에 저장
-    console.log("편지쓰기 기간 이전입니다.");
-    await PostQueue.insert({ postId, userId });
+      break;
+
+    case Status.ending:
+    case Status.working:
+    case Status.discharged:
+      console.log("편지 쓰기 기간이 지났습니다.");
+      await Post.update(postId, { posted: true, postAt: getNow() });
+      break;
   }
 
   console.log(`${username} 편지 전송 완료!`);

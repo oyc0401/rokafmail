@@ -1,0 +1,14 @@
+.title{
+  font-size:25px;
+font-weight:500;
+
+}
+
+.content{
+    font-size:18px;
+  text-align:start;
+}
+
+.blue{
+  color:var(--primary)
+}
