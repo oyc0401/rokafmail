@@ -3,10 +3,12 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
 import crypto from "crypto";
+import { setCookie } from "./cookie";
+import {Nav} from 'src/components';
 
-export function Client({ password }) {
+export function Client({ password, username }) {
   const [pw, setPw] = useState("");
-  const [valid, setValid] = useState(false);
+  const [message, setMessage] = useState("");
 
   function click() {
     const encryptedPassword = crypto
@@ -14,20 +16,21 @@ export function Client({ password }) {
       .update(pw)
       .digest("hex");
     if (encryptedPassword == password) {
-      setValid(true);
+      setCookie(encryptedPassword, username);
+    } else {
+      setMessage("비밀번호가 틀렸습니다.");
     }
-  }
-  if(valid){
-    return <>편지 모두 보여주기!</>
   }
 
   return (
     <div className="screen">
+      <div style={{ flex: 100 }}></div>
       <h2 className={styles.title}>
-        편지지에 보여질
+        편지함을 만들때 작성한
         <br />
-        한줄 글을 적어주세요
+        비밀번호를 입력해주세요
       </h2>
+      <div style={{height:49}}></div>
 
       <p className={styles.formTitle}>비밀번호</p>
       <div style={{ height: 2 }}></div>
@@ -37,14 +40,18 @@ export function Client({ password }) {
         placeholder="비밀번호를 입력해주세요"
         onChange={(e) => {
           setPw(e.target.value);
+          setMessage("");
         }}
       ></input>
+      <div style={{ height: 2 }}></div>
+      <p className={`${styles.help}`}>{message}</p>
+      <div style={{ flex: 340 }}></div>
 
-      <div style={{ paddingBottom: 32, width: "100%" }}>
+      <Nav>
         <button className="submit" onClick={click}>
-          시작하기
+          편지함 열기
         </button>
-      </div>
+      </Nav>
     </div>
   );
 }

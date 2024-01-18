@@ -47,7 +47,7 @@ export default async function Mails({ params }) {
   );
 }
 async function Mail({ username }) {
-  let posts = await Post.findByUsername(username);
+  let posts = await Post.findPostedByUsername(username);
   let queue = await PostQueue.findByUsername(username);
 
   //console.log(posts);
@@ -136,15 +136,15 @@ async function UnconnectedMail(parms) {
   );
 }
 
-function Card(params) {
+function Card({title,name, rel, time}) {
   return (
     <div className={styles.card}>
-      <p className="text-left text-lg">{params.title}</p>
+      <p className="text-left text-lg">{title}</p>
       <div className="sized" style={{ height: 4 }}></div>
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <p>{`${params.name} | ${params.rel}`}</p>
+        <p>{`${name} | ${rel}`}</p>
         <div style={{ flex: 1 }}></div>
-        <p>{params.time}</p>
+        <p>{time}</p>
       </div>
     </div>
   );

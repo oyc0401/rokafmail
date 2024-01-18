@@ -24,6 +24,27 @@ export class Post {
         user: {
           username,
         },
+      },
+      
+    });
+
+  static findPostedByUsername = (username: string) =>
+    prisma.post.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+            connect: true,
+          },
+        },
+      },
+      where: {
+        user: {
+          username,
+        },
         posted: true,
       },
     });

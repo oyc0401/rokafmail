@@ -19,7 +19,7 @@
 .help{
   width: 100%;
 
-  color: var(--medium-font);
+  color: red;
   font-size: 12px;
   font-weight: 400;
    text-align: left;
@@ -56,3 +56,15 @@
 }
 
 
+
+.box{
+  width:100%;
+}
+
+
+.card{
+   width:100%;
+     background: #F9F9F9;
+  padding: 20px;
+   padding-top:16px;
+}
