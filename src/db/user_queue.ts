@@ -13,6 +13,8 @@ export class UserQueue {
             birth: true,
             sodae: true,
             memberSeq: true,
+            generation:true,
+            username:true,
           },
         },
       },

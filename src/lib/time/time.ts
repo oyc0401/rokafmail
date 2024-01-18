@@ -62,7 +62,20 @@ export enum Status {
   discharged, // 전역 후
 }
 
-// 복무상태
+/**  
+ * 복무상태
+ *
+ switch (status) {
+  case Status.before:
+  case Status.beginning:
+  case Status.training:
+  case Status.ending:
+  case Status.working:
+  case Status.discharged:
+}
+ */ 
+
+
 export function serveStatus(generation: number) {
   if (isFuture(getEnter(generation))) {
     return Status.before;

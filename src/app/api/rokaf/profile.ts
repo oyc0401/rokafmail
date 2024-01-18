@@ -49,7 +49,7 @@ export async function getProfile(name: string, birth: string) {
   try {
     const response = await axios.get(url);
     const html = response.data;
-   // console.log(html)
+    // console.log(html)
     let memberSeq = htmlToMemberSeq(html);
     let sodae = htmlToSodae(html);
     return {
