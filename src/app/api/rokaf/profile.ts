@@ -53,7 +53,7 @@ export async function getProfile(name: string, birth: string) {
     let memberSeq = htmlToMemberSeq(html);
     let sodae = htmlToSodae(html);
     return {
-      data: {
+      member: {
         memberSeq: memberSeq,
         sodae: sodae,
       },
@@ -70,7 +70,7 @@ export async function getProfile(name: string, birth: string) {
       serverOn = false;
     }
     return {
-      data: null,
+        member: null,
       serverOn: serverOn,
     };
   }

@@ -71,4 +71,6 @@ export class User {
         },
       },
     });
+
+  static deleteById = (userId) => prisma.user.delete({ where: { id: userId } });
 }

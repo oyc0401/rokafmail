@@ -37,7 +37,7 @@ model Post {
   createdAt   DateTime  @default(now())
   posted      Boolean   @default(false)
   postAt      DateTime?
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   unconnectedPosts UnconnectedPost[]
   postQueues  PostQueue[]
 }
@@ -46,20 +46,20 @@ model UnconnectedPost {
   id          Int       @id @default(autoincrement())
   userId      Int
   postId      Int
-  user        User      @relation(fields: [userId], references: [id])
-  post        Post      @relation(fields: [postId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model UsersQueue {
   id          Int       @id @default(autoincrement())
   userId      Int
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model PostQueue {
   id          Int       @id @default(autoincrement())
   userId      Int
   postId      Int
-  user        User      @relation(fields: [userId], references: [id])
-  post        Post      @relation(fields: [postId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
 }

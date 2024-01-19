@@ -17,50 +17,54 @@ type Unconnected = {
 
 export async function verifyUser() {
   console.log("verifyUser...");
+
   // 미인증 유저들
   const unconnected = await UserQueue.findAll();
 
-  console.log("verifyUser: 유저 인증 시작, 미인증 유저 수:", unconnected.length);
+  let i = 1;
+  const length = unconnected.length;
+  console.log(`verifyUser count:`, length);
 
-  verify(unconnected).then(() => {
-    console.log("verifyUser Complete!");
-  });
+  try {
+    for (const unconnect of unconnected) {
+      const message = await verify(unconnect);
+      console.log(`verifyUser ${i}/${length}:`, message);
+      i++;
+    }
+  } catch (error) {
+    console.log(`verifyUser ${i}/${length}:`, error);
+    return;
+  }
+
+  console.log("verifyUser Complete!");
 }
 
-async function verify(unconnected: Array<Unconnected>) {
-  for (const unconnect of unconnected) {
-    const { userId } = unconnect;
-    const { generation, name, birth } = unconnect.user;
+async function verify(unconnect: Unconnected) {
+  const { userId } = unconnect;
+  const { generation, name, birth } = unconnect.user;
 
-    const status = serveStatus(generation);
-    if (status == Status.training) {
-      let { serverOn, data } = await Rokaf.getProfile(name, birth);
+  const status = serveStatus(generation);
+  if (status == Status.training) {
+    let { serverOn, member } = await Rokaf.getProfile(name, birth);
 
-      // 서버가 통신이 끊기면 바로 종료
-      if (!serverOn) {
-        console.log("verify Stopped!");
-        return;
-      }
-      // 얻었으면 업데이트
-      if (data != null) {
-        const { sodae, memberSeq } = data;
-        await updateUser({ userId, sodae, memberSeq });
-        await relocatePost(userId);
-      }
+    // 서버가 통신이 끊기면 바로 종료
+    if (!serverOn) {
+      throw "rokaf server error, verify Stopped.";
     }
+    // 얻었으면 업데이트
+    if (member != null) {
+      const { sodae, memberSeq } = member;
+      await updateUser(userId, sodae, memberSeq);
+      await relocatePost(userId);
+      return `add ${userId} complete.`;
+    }
+  } else {
+    return `not training status, skip.`;
   }
 }
 
 // 소대번호, 멤버번호 추가하고, 인증됐다고 업데이트
-async function updateUser({
-  userId,
-  sodae,
-  memberSeq,
-}: {
-  userId: number;
-  sodae: string;
-  memberSeq: string;
-}) {
+async function updateUser(userId: number, sodae: string, memberSeq: string) {
   await User.update(userId, { connect: true, sodae, memberSeq });
 
   // 유저큐에서 삭제
