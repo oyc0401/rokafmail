@@ -21,10 +21,6 @@ export async function postMail({
   data.append("contents", contents);
   data.append("password", password);
   data.append("siteId", "last2");
-  //   data.append(
-  //     "parent",
-  // "%2Fuser%2FindexSub.action%3FcodyMenuSeq%3D156893223%26siteId%3Dlast2%26menuUIType%3Dtop%26dum%3Ddum%26command2%3DwriteEmail%26searchCate%3D%26searchVal%3D%26page%3D1%26memberSeqVal%3D338287671%26sodaeVal%3D2344",
-  //   );
   data.append("page", "1");
   data.append("command2", "writeEmail");
   data.append("searchCate", "");
@@ -42,12 +38,10 @@ export async function postMail({
         "JSESSIONID=pVmoG5hmwpHCRsLqdiV1hegWfRiH9418N4YZ3AW5cUo7pcXvxER8Lbk0XIljcEOa.AF1303_servlet_CONT31",
       ...data.getHeaders(),
     },
-    timeout: 30000,
+    timeout: 10000,
     data: data,
   };
 
-  //console.log(data.getHeaders())
-   //console.log(data)
 
   console.log(`[postMail] ${memberSeq} 편지 보내는 중...`);
 

@@ -41,14 +41,14 @@ async function checkUser({ id, name, birth, generation }) {
   }
   console.log("편지쓰기 이후 유저, 번호 찾기 시작.");
   // 유저가 존재하는지 확인
-  const { memberSeq, sodae, connect } = await Rokaf.getProfile(name, birth);
+  const { data } = await Rokaf.getProfile(name, birth);
   // 유저인증이 안되면 인증 테이블에 저장
-  if (connect) {
-    console.log(`유저 인증 성공 memberSeq:${memberSeq}, sodae:${sodae}`);
+  if (data != null) {
+    console.log(`유저 인증 성공 memberSeq:${data.memberSeq}, sodae:${data.sodae}`);
     console.log("정보 업데이트 중...");
     await User.update(id, {
-      memberSeq: memberSeq || "",
-      sodae: sodae || "",
+      memberSeq: data.memberSeq,
+      sodae: data.sodae,
       connect: true,
     });
   } else {

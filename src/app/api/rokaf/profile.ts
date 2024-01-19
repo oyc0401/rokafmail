@@ -53,9 +53,11 @@ export async function getProfile(name: string, birth: string) {
     let memberSeq = htmlToMemberSeq(html);
     let sodae = htmlToSodae(html);
     return {
-      connect: true,
-      memberSeq: memberSeq,
-      sodae: sodae,
+      data: {
+        memberSeq: memberSeq,
+        sodae: sodae,
+      },
+
       serverOn: true,
     };
   } catch (error) {
@@ -67,11 +69,8 @@ export async function getProfile(name: string, birth: string) {
       console.log(`유저 인증 오류:`, error.message);
       serverOn = false;
     }
-
     return {
-      connect: false,
-      memberSeq: null,
-      sodae: null,
+      data: null,
       serverOn: serverOn,
     };
   }
