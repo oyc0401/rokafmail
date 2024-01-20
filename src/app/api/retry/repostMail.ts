@@ -2,6 +2,9 @@ import Rokaf from "../rokaf/rokaf";
 import { getNow } from "src/lib/time";
 import { PostQueue, Post } from "src/db";
 
+import { useLogger } from "config/winston";
+const logger = useLogger("repostMail");
+
 type Unpost = {
   postId: number;
   userId: number;
@@ -25,26 +28,27 @@ type Unpost = {
 };
 
 export async function repostMail() {
-  console.log("repostMail...");
-
   const unposted = await PostQueue.findAll();
 
   let i = 1;
   let length = unposted.length;
 
-  console.log("repostMail count:", unposted.length);
+  logger.debug(`count: ${length}`);
+
+  let success = 0;
+
   try {
     for (const unpost of unposted) {
       const message = await post(unpost);
-      console.log(`repostMail ${i}/${length}:`, message);
+      logger.debug(`${i}/${length}:`, message);
       i++;
+      success++;
     }
   } catch (error) {
-    console.log(`repostMail ${i}/${length}:`, error);
-    return;
+    logger.info(`${i}/${length}: ${error}`);
   }
 
-  console.log("repostMail Complete!");
+  logger.info(`success: ${success}, notpost: ${length - success}`);
 }
 
 async function post(unpost: Unpost) {

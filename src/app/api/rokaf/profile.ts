@@ -1,7 +1,8 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import { parse } from "node-html-parser";
-import { logger } from "config/winston";
+import { useLogger } from "config/winston";
+const logger = useLogger("Rokaf");
 
 function exist(html) {
   const $ = cheerio.load(html);
@@ -88,7 +89,7 @@ export async function getProfile(name: string, birth: string) {
       };
     }
   } catch (error) {
-    logger.info(`[Rokaf]: error:, ${error.message}`);
+    logger.warn(`error:, ${error.message}`);
     // console.log(`-error:`, error.message);
     return {
       member: null,

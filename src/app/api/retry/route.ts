@@ -3,11 +3,11 @@ import { NextResponse } from "next/server";
 import { verifyUser } from "./verifyUser";
 import { repostMail } from "./repostMail";
 import { getNow } from "src/lib/time";
-import { logger } from "config/winston";
+import { useLogger } from "config/winston";
+const logger = useLogger("retry");
 
 export async function GET() {
-  console.log("start retry", getNow());
-  logger.info("start retry");
+  logger.info("start");
   run();
 
   return NextResponse.json({ message: "retry 성공" }, { status: 200 });

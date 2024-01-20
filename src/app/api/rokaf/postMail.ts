@@ -1,6 +1,9 @@
 import axios from "axios";
 import FormData from "form-data";
 
+import { useLogger } from "config/winston";
+const logger = useLogger("Rokaf");
+
 export async function postMail({
   name,
   relationship,
@@ -42,26 +45,25 @@ export async function postMail({
     data: data,
   };
 
-
-  console.log(`[postMail] ${memberSeq} 편지 보내는 중...`);
+  logger.debug(`[postMail] ${memberSeq} 편지 보내는 중...`);
 
   try {
     const res = await axios(config);
-    console.log(`[postMail] ${memberSeq} 편지 보내기 성공!`);
-    console.log(res.data)
+    logger.debug(`[postMail] ${memberSeq} 편지 보내기 성공!`);
+    //console.log(res.data)
     return {
       complete: true,
       serverOn: true,
     };
   } catch (error) {
     if (error.response) {
-      console.log(
+      logger.debug(
         `${memberSeq} 편지 오류:`,
         error.message,
         error.response.status,
       );
     } else {
-      console.log(`${memberSeq} 편지 오류:`, error.message);
+      logger.warn(`${memberSeq} 편지 오류:`, error.message);
     }
     return {
       complete: false,

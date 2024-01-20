@@ -4,7 +4,7 @@ export async function register() {
   const schedule = require("node-schedule");
 
   // 매일 12시 마다
-  schedule.scheduleJob("00 */10 * * * *", () => {
+  schedule.scheduleJob("00 00 */4 * * *", () => {
     try {
       console.log("schedule is executed");
       const domain =

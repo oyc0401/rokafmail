@@ -1,7 +1,8 @@
 import { Status, serveStatus } from "src/lib/time";
 import Rokaf from "../rokaf/rokaf";
 import { UnconnectedPost, PostQueue, UserQueue, User } from "src/db";
-import { logger } from "config/winston";
+import { useLogger } from "config/winston";
+const logger = useLogger("verifyUser");
 
 type Unconnected = {
   id: number;
@@ -22,7 +23,7 @@ export async function verifyUser() {
 
   let i = 1;
   const length = unconnected.length;
-  logger.debug(`[verifyUser]... count: ${length}`);
+  logger.debug(`count: ${length}`);
 
   let success = 0;
   let notfound = 0;
@@ -30,7 +31,7 @@ export async function verifyUser() {
   try {
     for (const unconnect of unconnected) {
       const { message, data } = await verify(unconnect);
-      logger.debug(`[verifyUser] ${i}/${length}: ${message}`);
+      logger.debug(`${i}/${length}: ${message}`);
       if (data) {
         success++;
       } else {
@@ -41,17 +42,15 @@ export async function verifyUser() {
     }
   } catch (error) {
     logger.info(
-      `[verifyUser] ${i}/${length}: ${error} | success: ${success}, notfound: ${notfound}`,
+      `${i}/${length}: ${error} | success: ${success}, notfound: ${notfound}`,
     );
-    logger.debug(`[verifyUser] ${i}/${length}: ${error}`);
     return;
   }
   logger.info(
-    `[verifyUser] success: ${success}, notfound: ${notfound}, missing: ${
+    `success: ${success}, notfound: ${notfound}, missing: ${
       length - success - notfound
     }`,
   );
-  logger.debug(`[verifyUser] Complete!`);
 }
 
 async function verify(unconnect: Unconnected) {
