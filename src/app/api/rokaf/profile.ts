@@ -3,6 +3,7 @@ import cheerio from "cheerio";
 import { parse } from "node-html-parser";
 
 function htmlToMemberSeq(html) {
+  //console.log(html)
   // 여기에서는 가져온 HTML을 파싱하거나 원하는 작업을 수행합니다.
   const root = parse(html);
   // 예제: 클래스가 "choice"인 요소를 찾아서 onclick 속성 값 추출
@@ -70,7 +71,7 @@ export async function getProfile(name: string, birth: string) {
       serverOn = false;
     }
     return {
-        member: null,
+      member: null,
       serverOn: serverOn,
     };
   }

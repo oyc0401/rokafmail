@@ -5,19 +5,13 @@ import { User } from "src/db";
 import styles from "./complete.module.css";
 import { Nav } from "src/components";
 
-import {
-  mailStartIsFuture,
-
-  diffDay,
-  getMailStart,
-} from "src/lib/time";
+import { mailStartIsFuture, diffDay, getMailStart } from "src/lib/time";
 import { CheckCircle } from "public/assets/index";
 
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 export default async function Complete({ searchParams, params }) {
   //const sc = searchParams.sc;
-  console.log(params.username);
-  const { username } = params;
+  const username = decodeURI(params.username);
   let user = await User.findByUsername(username);
 
   if (!user) {

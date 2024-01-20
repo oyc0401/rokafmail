@@ -44,22 +44,30 @@ async function verify(unconnect: Unconnected) {
   const { generation, name, birth } = unconnect.user;
 
   const status = serveStatus(generation);
-  if (status == Status.training) {
-    let { serverOn, member } = await Rokaf.getProfile(name, birth);
 
-    // 서버가 통신이 끊기면 바로 종료
-    if (!serverOn) {
-      throw "rokaf server error, verify Stopped.";
-    }
-    // 얻었으면 업데이트
-    if (member != null) {
-      const { sodae, memberSeq } = member;
-      await updateUser(userId, sodae, memberSeq);
-      await relocatePost(userId);
-      return `add ${userId} complete.`;
-    }
-  } else {
-    return `not training status, skip.`;
+  switch (status) {
+    case Status.before:
+    case Status.beginning:
+    case Status.discharged:
+      return `can't search status, skip.`;
+    case Status.training:
+    case Status.ending:
+    case Status.working:
+      let { serverOn, member } = await Rokaf.getProfile(name, birth);
+
+      // 서버가 통신이 끊기면 바로 종료
+      if (!serverOn) {
+        throw "rokaf server error, verify Stopped.";
+      }
+      // 얻었으면 업데이트
+      if (member != null) {
+        const { sodae, memberSeq } = member;
+        await updateUser(userId, sodae, memberSeq);
+        await relocatePost(userId);
+        return `add ${userId} complete.`;
+      }else{
+        return `can't find ${userId}.`;
+      }
   }
 }
 

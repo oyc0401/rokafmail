@@ -1,16 +1,14 @@
 import { NextResponse } from "next/server";
 
 import { getNow } from "src/lib/time";
-import { PrismaClient } from "@prisma/client";
-import { User, UserQueue } from "src/db";
+import { Post, PostQueue, UnconnectedPost, User, UserQueue } from "src/db";
 import { verifyUser } from "src/app/api/retry/verifyUser";
-
-const prisma = new PrismaClient();
+import { repostMail } from "src/app/api/retry/repostMail";
 
 export async function GET() {
   console.log("start test", getNow());
 
-  await verifyUserTest();
+  await verifyRepostMail();
 
   return NextResponse.json({ message: "테스트 성공" }, { status: 200 });
 }
@@ -32,6 +30,40 @@ async function verifyUserTest() {
   await verifyUser();
 
   // 끝나면 지우기
-  console.log(dummyUser.id)
+  console.log(dummyUser.id);
   await User.deleteById(dummyUser.id);
+}
+
+async function verifyRepostMail() {
+  // // 더미 미인증 유저 제작
+  // const dummyUser = await User.insert({
+  //   username: "oy21312",
+  //   password: "password",
+  //   name: "오유찬",
+  //   birth: "20030401",
+  //   generation: 850,
+  //   message: `I am test`,
+  // });
+
+  // await UserQueue.insert({ userId: dummyUser.id });
+
+  // const dummyPost = await Post.insert({
+  //   userId: dummyUser.id,
+  //   name: "이름",
+  //   relationship: "친구",
+  //   title: "제목",
+  //   contents: "내용",
+  //   password: "비번",
+  // });
+
+  // await UnconnectedPost.insert({ postId: dummyPost.id, userId: dummyUser.id });
+
+  await verifyUser();
+
+  // 실행
+  await repostMail();
+
+  // 끝나면 지우기
+  // console.log(dummyUser.id);
+  // await User.deleteById(dummyUser.id);
 }

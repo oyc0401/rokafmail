@@ -18,9 +18,8 @@ import { Share } from "public/assets";
 import Image from "next/image";
 
 export default async function Mail({ params }) {
-  const { username } = params;
+  const username = decodeURI(params.username);
   let user = await User.findByUsername(username);
-
   if (!user) {
     notFound();
   }
@@ -36,7 +35,7 @@ export default async function Mail({ params }) {
     case Status.ending:
 
     // TODO: 이거 지워
-    //case Status.working:
+    case Status.working:
       return (
         <div className="screen">
           <Header user={user}></Header>
@@ -48,19 +47,29 @@ export default async function Mail({ params }) {
 
     case Status.working:
     case Status.discharged:
-      return <div className="screen">
-        <div style={{flex:178}}></div>
-        <div style={{paddingBottom:54}}>
-          <h1 style={{fontSize:25, fontWeight:500}}>오유찬님<br/>수료를 축하드립니다!</h1>
+      return (
+        <div className="screen">
+          <div style={{ flex: 178 }}></div>
+          <div style={{ paddingBottom: 54 }}>
+            <h1 style={{ fontSize: 25, fontWeight: 500 }}>
+              오유찬님
+              <br />
+              수료를 축하드립니다!
+            </h1>
+          </div>
+          <h2 style={{ fontSize: 18 }}>
+            받은 편지를 다시보고 싶으시면
+            <br />
+            아래 버튼을 눌러주세요!
+          </h2>
+          <div style={{ flex: 260 }}></div>
+          <Nav>
+            <Link className={`submit`} href={`/mailbox/${username}`}>
+              받은 편지 보기
+            </Link>
+          </Nav>
         </div>
-        <h2 style={{fontSize:18}}>받은 편지를 다시보고 싶으시면<br/>아래 버튼을 눌러주세요!</h2>
-        <div style={{flex:260}}></div>
-        <Nav>
-          <Link className={`submit`} href={`/mailbox/${username}`}>
-            받은 편지 보기
-          </Link>
-        </Nav>
-      </div>;
+      );
   }
 }
 

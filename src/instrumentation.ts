@@ -6,8 +6,12 @@ export async function register() {
   const schedule = require("node-schedule");
 
   // 매일 12시 마다
-  schedule.scheduleJob("00 00 12 * * *", () => {
-    console.log("schedule is executed");
-    GET();
+  schedule.scheduleJob("00 * * * * *", () => {
+    try {
+      console.log("schedule is executed");
+      GET();
+    } catch (e) {
+      console.log("schedule 중 오류발생", e);
+    }
   });
 }

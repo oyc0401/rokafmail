@@ -8,8 +8,9 @@ import { notFound } from "next/navigation";
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 
 export default async function Mails({ params }) {
-  // console.log(params.username);
-  let user = await User.findByUsername(params.username);
+  const username = decodeURI(params.username);
+  
+  let user = await User.findByUsername(username);
 
   if (!user) {
     notFound();
@@ -18,9 +19,9 @@ export default async function Mails({ params }) {
   return (
     <div className="screen">
       {user.connect ? (
-        <Mail username={params.username} />
+        <Mail username={username} />
       ) : (
-        <UnconnectedMail username={params.username} />
+        <UnconnectedMail username={username} />
       )}
       {user.connect ? (
         <Nav elevation={true}>
