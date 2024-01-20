@@ -1,8 +1,8 @@
 import { Status, serveStatus } from "src/lib/time";
 import Rokaf from "../rokaf/rokaf";
 import { UnconnectedPost, PostQueue, UserQueue, User } from "src/db";
-import { useLogger } from "config/winston";
-const logger = useLogger("verifyUser");
+import { makeLogger } from "config/winston";
+const logger = makeLogger("verifyUser");
 
 type Unconnected = {
   id: number;

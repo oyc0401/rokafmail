@@ -1,8 +1,8 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import { parse } from "node-html-parser";
-import { useLogger } from "config/winston";
-const logger = useLogger("Rokaf");
+import { makeLogger } from "config/winston";
+const logger = makeLogger("Rokaf");
 
 function exist(html) {
   const $ = cheerio.load(html);

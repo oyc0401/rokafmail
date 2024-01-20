@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 import { verifyUser } from "./verifyUser";
 import { repostMail } from "./repostMail";
 import { getNow } from "src/lib/time";
-import { useLogger } from "config/winston";
-const logger = useLogger("retry");
+import { makeLogger } from "config/winston";
+const logger = makeLogger("retry");
 
 export async function GET() {
   logger.info("start");

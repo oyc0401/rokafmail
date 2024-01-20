@@ -1,8 +1,8 @@
 import axios from "axios";
 import FormData from "form-data";
 
-import { useLogger } from "config/winston";
-const logger = useLogger("Rokaf");
+import { makeLogger } from "config/winston";
+const logger = makeLogger("Rokaf");
 
 export async function postMail({
   name,

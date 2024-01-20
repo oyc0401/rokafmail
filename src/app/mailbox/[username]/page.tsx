@@ -23,7 +23,7 @@ export default async function MailBox({ params }) {
   }
 
   if (pwcookie.value == password) {
-    return <Mailbox/>;
+    return <Mailbox username={username}/>;
   } 
 
   return <Client password={password} username={username}/>;

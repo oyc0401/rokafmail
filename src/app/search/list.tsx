@@ -23,13 +23,15 @@ export function List({ users }: { users: Array<userInfo> }) {
     <div className="screen">
       <h1 className={styles.listTitle}>이동할 편지함 선택</h1>
       {users.map((user, index) => (
-        <Card
-          username={user.username}
-          name={user.name}
-          generation={user.generation}
-          mailCount={user.posts.length}
-        />
-    ))}
+        <div key={user.id}>
+          <Card
+            username={user.username}
+            name={user.name}
+            generation={user.generation}
+            mailCount={user.posts.length}
+          />
+        </div>
+      ))}
     </div>
   );
 }

@@ -2,8 +2,8 @@ import Rokaf from "../rokaf/rokaf";
 import { getNow } from "src/lib/time";
 import { PostQueue, Post } from "src/db";
 
-import { useLogger } from "config/winston";
-const logger = useLogger("repostMail");
+import { makeLogger } from "config/winston";
+const logger = makeLogger("repostMail");
 
 type Unpost = {
   postId: number;
