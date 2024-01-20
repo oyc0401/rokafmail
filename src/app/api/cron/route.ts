@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-
-import { run } from "../retry/route";
+import { verifyUser } from "../retry/verifyUser";
+import { repostMail } from "../retry/repostMail";
 import { getNow } from "src/lib/time";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("retry");
@@ -26,4 +26,9 @@ export async function POST() {
   );
 
   return NextResponse.json({ message: "cron 시작" }, { status: 200 });
+}
+
+async function run() {
+  await verifyUser();
+  await repostMail();
 }

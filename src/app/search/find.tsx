@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
-import { useStore, useStoreBase } from "./model";
 import { knowTime, isDischarged } from "src/lib/time";
 
 export function Find() {
@@ -24,12 +23,12 @@ export function Find() {
       return { text: "숫자만 입력해주세요", color: "warn", valid: false };
 
     // 작성중
-    if (generation < 100) return { text: "예시) 850", valid: false };
+    if (Number(generation) < 100) return { text: "예시) 850", valid: false };
 
-    if (isDischarged(generation))
+    if (isDischarged(Number(generation)))
       return { text: "이미 전역한 기수예요", color: "warn", valid: false };
 
-    if (!knowTime(generation))
+    if (!knowTime(Number(generation)))
       return { text: "입영기수가 아니예요", color: "warn", valid: false };
 
     // 통과
