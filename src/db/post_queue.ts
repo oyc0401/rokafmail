@@ -22,6 +22,7 @@ export class PostQueue {
         user: {
           select: {
             username: true,
+            generation:true,
             memberSeq: true,
             sodae: true,
           },
