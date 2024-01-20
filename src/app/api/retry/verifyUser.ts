@@ -59,6 +59,7 @@ async function verify(unconnect: Unconnected) {
 
   const status = serveStatus(generation);
 
+  // 2주전에서 수료후 특학까지 유저인증 가능, 안보내진 편지 보내기 위해 그리고 나중에 혹시모를 특학 인편을 위해
   switch (status) {
     case Status.before:
     case Status.beginning:

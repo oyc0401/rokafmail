@@ -34,6 +34,7 @@ export async function POST(request: Request) {
 async function checkUser({ id, name, birth, generation }) {
   const status = serveStatus(generation);
 
+  // 전역 후에도 회원가입은 가능하다. 다만 편지를 못쓸뿐
   switch (status) {
     case Status.before:
     case Status.beginning:

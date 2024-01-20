@@ -40,7 +40,7 @@ export async function repostMail() {
   try {
     for (const unpost of unposted) {
       const message = await post(unpost);
-      logger.debug(`${i}/${length}:`, message);
+      logger.debug(`${i}/${length}: ${message}`);
       i++;
       success++;
     }

@@ -7,8 +7,8 @@ export async function register() {
   schedule.scheduleJob("00 00 */4 * * *", () => {
     try {
       console.log("schedule is executed");
-      const domain =
-        "aa46348c-fadc-4dcc-af32-e878e8df23f8-00-2jam61sxcz2ou.pike.replit.dev";
+      const domain=process.env.domain;
+      //const domain = "aa46348c-fadc-4dcc-af32-e878e8df23f8-00-2jam61sxcz2ou.pike.replit.dev";
       const url = `https://${domain}/api/retry`;
       
       fetch(url, { method: "GET" }).catch((error) => {

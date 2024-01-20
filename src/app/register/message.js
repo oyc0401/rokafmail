@@ -15,6 +15,7 @@ export default function Message() {
     message,
     setMessage,
     prev,
+    reset,
   } = useStoreBase();
 
   const [progress, setProgress] = useState(false);
@@ -49,7 +50,11 @@ export default function Message() {
         generation: Number(generation),
         message: message,
       });
+
       router.push(`/link/${username}`);
+      reset();
+      prev();
+      prev();
     } catch (error) {
       console.log("오류:", error);
       alert("오류:", error);

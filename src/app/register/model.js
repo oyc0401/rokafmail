@@ -2,6 +2,17 @@ import { create } from "zustand";
 import createSelectors from "./selectors";
 
 export const useStoreBase = create((set) => ({
+  reset: () =>
+    set({
+      generation: "",
+      name: "",
+      birth: "",
+      username: "",
+      password: "",
+      repassword: "",
+      message: "",
+    }),
+
   page: 0,
   // page:1,
   next: () => set((state) => ({ page: state.page + 1 })),

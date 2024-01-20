@@ -58,12 +58,10 @@ export async function postMail({
   } catch (error) {
     if (error.response) {
       logger.debug(
-        `${memberSeq} 편지 오류:`,
-        error.message,
-        error.response.status,
+        `${memberSeq} 편지 오류: ${error.message} status:${error.response.status}`,
       );
     } else {
-      logger.warn(`${memberSeq} 편지 오류:`, error.message);
+      logger.warn(`${memberSeq} 편지 오류: ${error.message}`);
     }
     return {
       complete: false,

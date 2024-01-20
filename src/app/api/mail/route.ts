@@ -106,9 +106,10 @@ async function sendMail({
 
   const status = serveStatus(generation);
 
+  // 국방부 서버 보내는건 편지쓰기 기간에만 가능, 어짜피 다른시간에 보내도 도착안함
   switch (status) {
     case Status.training:
-      case Status.working:
+     
       
       console.log("국방부 서버 보내는 중...");
       const response = await Rokaf.postMail({

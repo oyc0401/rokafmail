@@ -18,7 +18,6 @@ export default function Information() {
     // 작성중
     if (generation < 100) return { text: "예시) 850", valid: false };
 
-   
     if (isDischarged(generation))
       return { text: "이미 전역한 기수예요", color: "warn", valid: false };
 
@@ -26,7 +25,7 @@ export default function Information() {
       return { text: "입영기수가 아니예요", color: "warn", valid: false };
 
     // 통과
-    return { text: "잘했어요!", color: "great", valid: true };
+    return {text: "예시) 850", valid: true };
   }
 
   function validN() {
@@ -34,7 +33,7 @@ export default function Information() {
     if (name == "") return { text: "", valid: false };
 
     // 통과
-    return { text: "잘했어요!", color: "great", valid: true };
+    return { text: "", color: "great", valid: true };
   }
 
   function validB() {
@@ -57,7 +56,7 @@ export default function Information() {
       };
 
     // 통과
-    return { text: "잘했어요!", color: "great", valid: true };
+    return { text: "예시) 20020101", valid: true };
   }
 
   const canSubmit = () => validG().valid && validN().valid && validB().valid;

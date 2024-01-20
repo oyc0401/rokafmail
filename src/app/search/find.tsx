@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
+import { useStore, useStoreBase } from "./model";
+import { knowTime, isDischarged } from "src/lib/time";
 
 export function Find() {
   const [generation, setGeneration] = useState("");
@@ -9,12 +11,64 @@ export function Find() {
   const [birth, setBirth] = useState("");
   const router = useRouter();
 
-  function click(){
+  function click() {
     router.push(`/search?generation=${generation}&name=${name}&birth=${birth}`);
   }
 
+  function validG() {
+    // 빈칸일 때
+    if (generation == "") return { text: "예시) 850", valid: false };
+
+    // 숫자가 아닌 다른문자 입력
+    if (!/^\d+$/.test(generation))
+      return { text: "숫자만 입력해주세요", color: "warn", valid: false };
+
+    // 작성중
+    if (generation < 100) return { text: "예시) 850", valid: false };
+
+    if (isDischarged(generation))
+      return { text: "이미 전역한 기수예요", color: "warn", valid: false };
+
+    if (!knowTime(generation))
+      return { text: "입영기수가 아니예요", color: "warn", valid: false };
+
+    // 통과
+    return {text: "예시) 850", valid: true };
+  }
+
+  function validN() {
+    // 빈칸일 때
+    if (name == "") return { text: "", valid: false };
+
+    // 통과
+    return { text: "", color: "great", valid: true };
+  }
+
+  function validB() {
+    // 빈칸일 때
+    if (birth == "") return { text: "예시) 20020101", valid: false };
+
+    // 숫자가 아닌 문자 입력
+    if (!/^\d+$/.test(birth))
+      return { text: "숫자만 입력해주세요.", color: "warn", valid: false };
+
+    // 8자리 미만
+    if (birth.length < 8) return { text: "예시) 20020101", valid: false };
+
+    // 8자리 초과
+    if (birth.length > 8)
+      return {
+        text: "생년월일 8자리를 입력해주세요",
+        color: "warn",
+        valid: false,
+      };
+
+    // 통과
+    return { text: "예시) 20020101", valid: true };
+  }
+
   function canSubmit() {
-    return generation != "" && name != "" && birth != "";
+    return validG().valid && validN().valid && validB().valid;
   }
 
   return (
@@ -39,6 +93,8 @@ export function Find() {
           setGeneration(e.target.value);
         }}
       ></input>
+      <div style={{ height: 2 }}></div>
+      <p className={`${styles.help} ${validG().color}`}>{validG().text}</p>
 
       <div style={{ height: 16 }}></div>
 
@@ -53,6 +109,8 @@ export function Find() {
           setName(e.target.value);
         }}
       ></input>
+      <div style={{ height: 2 }}></div>
+      <p className={`${styles.help} ${validN().color}`}>{validN().text}</p>
 
       <div style={{ height: 16 }}></div>
 
@@ -67,6 +125,8 @@ export function Find() {
           setBirth(e.target.value);
         }}
       ></input>
+      <div style={{ height: 2 }}></div>
+      <p className={`${styles.help} ${validB().color}`}>{validB().text}</p>
 
       <div style={{ flex: 138 }}></div>
       <button

@@ -18,12 +18,11 @@ export function List({ users }: { users: Array<userInfo> }) {
     return "해당유저가 없습니다.";
   }
 
-  const user = users[0];
   return (
     <div className="screen">
       <h1 className={styles.listTitle}>이동할 편지함 선택</h1>
       {users.map((user, index) => (
-        <div key={user.id}>
+        <div key={user.id} style={{width:'100%'}}>
           <Card
             username={user.username}
             name={user.name}

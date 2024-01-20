@@ -28,14 +28,13 @@ export default async function Mail({ params }) {
 
   const status = serveStatus(generation);
 
+  // 편지쓰는 기간은 입대전부터 수료까지. 수료후에 편지 쓰는건 훈련병 입장에서 안좋을듯
   switch (status) {
     case Status.before:
     case Status.beginning:
     case Status.training:
     case Status.ending:
-
-    // TODO: 이거 지워
-    case Status.working:
+   
       return (
         <div className="screen">
           <Header user={user}></Header>

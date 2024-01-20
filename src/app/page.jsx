@@ -10,14 +10,12 @@ export default function Register() {
 
       <div className="p-5">
         <Image className={styles.logo} src={Logo} alt="로고" />
-        <div style={{paddingTop:38}}>
+        <div style={{ paddingTop: 38 }}>
           <Image className={styles.logoTitle} src={LogoTitle} alt="로고" />
         </div>
       </div>
 
       <div style={{ flex: 130 }}></div>
-
-     
 
       <div className="pt-1 pb-8 w-full">
         <h3 className={styles.substring}>
@@ -27,22 +25,30 @@ export default function Register() {
         </h3>
       </div>
 
-      
       <Link className="submit" href={{ pathname: "/register" }}>
-       시작하기
+        시작하기
       </Link>
-     
+
       <div className="pt-2.5 pb-5 w-full">
-         <div style={{display:'flex', flexDirection:'row',justifyContent:'center'}}>
-           <Link href="/help" className={styles.help}>
-             도움말
-           </Link>
-           
-           <Link href="/search" className={styles.help}>
-             편지함 찾기
-           </Link>
-         </div>
-        
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+
+          <Link href="/search" className={styles.help}>
+            편지함 찾기
+          </Link>
+          <div style={{width:80, textAlign:'start'}}><Link href="/help" className={styles.help}>
+            도움말
+          </Link></div>
+            
+       
+       
+      
+        </div>
       </div>
     </div>
   );
