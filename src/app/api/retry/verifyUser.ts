@@ -1,6 +1,7 @@
 import { Status, serveStatus } from "src/lib/time";
 import Rokaf from "../rokaf/rokaf";
 import { UnconnectedPost, PostQueue, UserQueue, User } from "src/db";
+import { logger } from "config/winston";
 
 type Unconnected = {
   id: number;
@@ -16,27 +17,41 @@ type Unconnected = {
 };
 
 export async function verifyUser() {
-  console.log("verifyUser...");
-
   // 미인증 유저들
   const unconnected = await UserQueue.findAll();
 
   let i = 1;
   const length = unconnected.length;
-  console.log(`verifyUser count:`, length);
+  logger.debug(`[verifyUser]... count: ${length}`);
+
+  let success = 0;
+  let notfound = 0;
 
   try {
     for (const unconnect of unconnected) {
-      const message = await verify(unconnect);
-      console.log(`verifyUser ${i}/${length}:`, message);
+      const { message, data } = await verify(unconnect);
+      logger.debug(`[verifyUser] ${i}/${length}: ${message}`);
+      if (data) {
+        success++;
+      } else {
+        notfound++;
+      }
+
       i++;
     }
   } catch (error) {
-    console.log(`verifyUser ${i}/${length}:`, error);
+    logger.info(
+      `[verifyUser] ${i}/${length}: ${error} | success: ${success}, notfound: ${notfound}`,
+    );
+    logger.debug(`[verifyUser] ${i}/${length}: ${error}`);
     return;
   }
-
-  console.log("verifyUser Complete!");
+  logger.info(
+    `[verifyUser] success: ${success}, notfound: ${notfound}, missing: ${
+      length - success - notfound
+    }`,
+  );
+  logger.debug(`[verifyUser] Complete!`);
 }
 
 async function verify(unconnect: Unconnected) {
@@ -49,7 +64,7 @@ async function verify(unconnect: Unconnected) {
     case Status.before:
     case Status.beginning:
     case Status.discharged:
-      return `can't search status, skip.`;
+      return { message: `can't search status, skip.`, data: false };
     case Status.training:
     case Status.ending:
     case Status.working:
@@ -57,16 +72,16 @@ async function verify(unconnect: Unconnected) {
 
       // 서버가 통신이 끊기면 바로 종료
       if (!serverOn) {
-        throw "rokaf server error, verify Stopped.";
+        throw Error("rokaf server error, verify Stopped.");
       }
       // 얻었으면 업데이트
       if (member != null) {
         const { sodae, memberSeq } = member;
         await updateUser(userId, sodae, memberSeq);
         await relocatePost(userId);
-        return `add ${userId} complete.`;
-      }else{
-        return `can't find ${userId}.`;
+        return { message: `add ${userId} complete.`, data: true };
+      } else {
+        return { message: `can't find ${userId}.`, data: false };
       }
   }
 }

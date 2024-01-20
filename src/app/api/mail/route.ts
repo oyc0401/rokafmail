@@ -108,6 +108,8 @@ async function sendMail({
 
   switch (status) {
     case Status.training:
+      case Status.working:
+      
       console.log("국방부 서버 보내는 중...");
       const response = await Rokaf.postMail({
         name,

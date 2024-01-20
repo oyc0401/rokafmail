@@ -1,6 +1,23 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import { parse } from "node-html-parser";
+import { logger } from "config/winston";
+
+function exist(html) {
+  const $ = cheerio.load(html);
+
+  const SameResultList = $(".SameResultList");
+
+  if (SameResultList.length > 0) {
+    // li 태그 안에 "교육생이 없습니다." 메시지가 포함되어 있는지 확인
+    const liText = SameResultList.find("li").text();
+    return !liText.includes("교육생이 없습니다.");
+  } else {
+    console.log(".SameResultList 클래스를 갖는 요소를 찾을 수 없습니다.");
+    console.log(html);
+    throw Error(".SameResultList 클래스를 갖는 요소를 찾을 수 없습니다.");
+  }
+}
 
 function htmlToMemberSeq(html) {
   //console.log(html)
@@ -9,11 +26,11 @@ function htmlToMemberSeq(html) {
   // 예제: 클래스가 "choice"인 요소를 찾아서 onclick 속성 값 추출
   let buttonElement = root.querySelector(".choice");
   if (buttonElement == null) {
-    throw Error("해당 유저가 없습니다.");
+    throw Error("no .choice");
   } else {
     let onclickAttributeValue = buttonElement.getAttribute("onclick");
     if (onclickAttributeValue == null) {
-      throw Error("해당 유저가 없습니다.");
+      throw Error("no onclickAttributeValue");
     } else {
       let functionName = onclickAttributeValue
         .replace("resultSelect('", "")
@@ -45,34 +62,37 @@ function htmlToSodae(html) {
 export async function getProfile(name: string, birth: string) {
   const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=${name}&searchBirth=${birth}`;
 
-  console.log("훈련병 찾는중...", url);
+  // console.log("-link:", url);
+  logger.http(`crawling ${url}`);
 
   try {
     const response = await axios.get(url);
     const html = response.data;
     // console.log(html)
-    let memberSeq = htmlToMemberSeq(html);
-    let sodae = htmlToSodae(html);
-    return {
-      member: {
-        memberSeq: memberSeq,
-        sodae: sodae,
-      },
 
-      serverOn: true,
-    };
-  } catch (error) {
-    let serverOn = true;
-    if (error.message == "해당 유저가 없습니다.") {
-      console.log("cannot find user.");
-      serverOn = true;
+    if (exist(html)) {
+      let memberSeq = htmlToMemberSeq(html);
+      let sodae = htmlToSodae(html);
+      return {
+        member: {
+          memberSeq: memberSeq,
+          sodae: sodae,
+        },
+        serverOn: true,
+      };
     } else {
-      console.log(`유저 인증 오류:`, error.message);
-      serverOn = false;
+      // console.log("-cannot find user.");
+      return {
+        member: null,
+        serverOn: true,
+      };
     }
+  } catch (error) {
+    logger.info(`[Rokaf]: error:, ${error.message}`);
+    // console.log(`-error:`, error.message);
     return {
       member: null,
-      serverOn: serverOn,
+      serverOn: false,
     };
   }
 }
