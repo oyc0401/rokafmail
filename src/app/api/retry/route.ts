@@ -13,7 +13,7 @@ export async function GET() {
   return NextResponse.json({ message: "retry 성공" }, { status: 200 });
 }
 
-async function run() {
+export async function run() {
   await verifyUser();
   await repostMail();
 }
