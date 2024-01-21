@@ -15,7 +15,7 @@ async function execute() {
   console.log("init");
 
   cron.schedule(
-    "00 */10 * * * *",
+    "00 */4 * * *",
     () => {
       try {
         console.log("node-cron is executed");
