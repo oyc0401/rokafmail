@@ -39,13 +39,11 @@ export default function Register() {
         >
 
           <Link href="/search" className={styles.help}>
-            편지함 찾기
+            편지함찾기
           </Link>
-          <div style={{width:80, textAlign:'start'}}><Link href="/help" className={styles.help}>
+          <Link href="/help" className={styles.help}>
             도움말
-          </Link></div>
-            
-       
+          </Link>
        
       
         </div>

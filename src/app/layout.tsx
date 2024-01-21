@@ -23,7 +23,6 @@ export const metadata = {
     locale: "ko-KR",
     type: "website",
     url: "https://rokafmail.kr",
-    
   },
 };
 
