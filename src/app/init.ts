@@ -1,16 +1,21 @@
-import { NextResponse } from "next/server";
-import { verifyUser } from "../retry/verifyUser";
-import { repostMail } from "../retry/repostMail";
-import { getNow } from "src/lib/time";
+import { verifyUser } from "src/app/api/retry/verifyUser";
+import { repostMail } from "src/app/api/retry/repostMail";
 import { makeLogger } from "config/winston";
-const logger = makeLogger("retry");
 var cron = require("node-cron");
 
-export async function POST() {
-  console.log("cron 시작!");
-  // 매일 8,12,18시 마다
+export function init() {
+  if (!globalThis.init) {
+      globalThis.init = true;
+    execute();
+  }
+}
+
+
+async function execute() {
+  console.log("init");
+
   cron.schedule(
-    "00 */4 * * *",
+    "00 */10 * * * *",
     () => {
       try {
         console.log("node-cron is executed");
@@ -24,8 +29,6 @@ export async function POST() {
       timezone: "Asia/Seoul",
     },
   );
-
-  return NextResponse.json({ message: "cron 시작" }, { status: 200 });
 }
 
 async function run() {
