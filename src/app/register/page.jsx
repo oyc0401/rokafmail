@@ -15,7 +15,7 @@ export default function Register() {
       reset();
       window.onbeforeunload = null;
     };
-  }, []);
+  }, [reset]);
 
   const page = useStore.use.page();
 

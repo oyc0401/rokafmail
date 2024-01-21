@@ -30,12 +30,7 @@ export default function RootLayout({ children }) {
   init();
   return (
     <html lang="ko-KR" className={notoSansKr.className}>
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
-        />
-      </head>
+      <head></head>
       <body>{children}</body>
     </html>
   );

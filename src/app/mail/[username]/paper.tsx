@@ -1,16 +1,19 @@
 "use client";
-import{useEffect} from 'react'
+import { useEffect } from "react";
 import styles from "./paper.module.css";
 import { useStore } from "./model";
-import {  validC } from "./valid";
+import { validC } from "./valid";
 import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 export function Paper() {
   const { initial } = useStore();
   useEffect(() => {
     initial();
-  },[]);
-  
+    return () => {
+      initial();
+    };
+  }, [initial]);
+
   return (
     <div
       className={styles.paper}
@@ -57,7 +60,10 @@ function Contents() {
   const { contents, setContents, setClick } = useStore();
 
   return (
-    <div className="pb-3" style={{ flex: 1,display:'flex',flexDirection:'column' }}>
+    <div
+      className="pb-3"
+      style={{ flex: 1, display: "flex", flexDirection: "column" }}
+    >
       <div style={{ flex: 1 }}>
         <textarea
           className={`${styles.form} ${styles.contentForm}`}
@@ -82,7 +88,7 @@ function Contents() {
 }
 
 function Name() {
-  const { setName, setRelationship,setClick } = useStore();
+  const { setName, setRelationship, setClick } = useStore();
 
   return (
     <div className="pb-6">
@@ -97,7 +103,8 @@ function Name() {
             type="text"
             placeholder="이름"
             onChange={(e) => {
-              setName(e.target.value);setClick(true);
+              setName(e.target.value);
+              setClick(true);
             }}
           ></input>
         </div>
@@ -109,7 +116,8 @@ function Name() {
             style={{ flex: "1" }}
             placeholder="관계"
             onChange={(e) => {
-              setRelationship(e.target.value);setClick(true);
+              setRelationship(e.target.value);
+              setClick(true);
             }}
           ></input>
         </div>
@@ -119,7 +127,7 @@ function Name() {
 }
 
 function Password() {
-  const { setPassword,setClick } = useStore();
+  const { setPassword, setClick } = useStore();
 
   return (
     <div className="pb-5">
@@ -137,7 +145,8 @@ function Password() {
             type="password"
             placeholder="비밀번호"
             onChange={(e) => {
-              setPassword(e.target.value);setClick(true);
+              setPassword(e.target.value);
+              setClick(true);
             }}
           ></input>
         </div>
