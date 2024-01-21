@@ -1,0 +1,27 @@
+"use client";
+import { Share } from "public/assets";
+import Image from "next/image";
+import styles from "./page.module.css";
+export function ShareButton({ url, name }) {
+  function copy() {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "하늘인편",
+          text: `${name} 훈련병에게 힘이 되는 편지를 보내주세요.`,
+          url: url,
+        })
+        .then(() => console.log("공유 성공"))
+        .catch((error) => console.log("공유 실패", error));
+    } else {
+      navigator.clipboard.writeText(url);
+      alert(`링크가 복사되었습니다!`);
+    }
+  }
+
+  return (
+    <div onClick={copy}>
+      <Image className={styles.icon} src={Share} alt="로고" />
+    </div>
+  );
+}

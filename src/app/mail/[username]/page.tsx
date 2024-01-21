@@ -14,8 +14,8 @@ import {
 } from "src/lib/time";
 import { User } from "src/db";
 import { notFound } from "next/navigation";
-import { Share } from "public/assets";
-import Image from "next/image";
+
+import { ShareButton } from "./copy_button";
 
 export default async function Mail({ params }) {
   const username = decodeURI(params.username);
@@ -34,7 +34,6 @@ export default async function Mail({ params }) {
     case Status.beginning:
     case Status.training:
     case Status.ending:
-   
       return (
         <div className="screen">
           <Header user={user}></Header>
@@ -74,10 +73,13 @@ export default async function Mail({ params }) {
 
 async function Header({ user }) {
   // console.log(user);
-  const { name, message, generation } = user;
+  const { name, message, generation, username } = user;
 
   const startTime = getEnter(generation).format("YY.MM.DD");
   const compTime = getCompletion(generation).format("YY.MM.DD");
+
+  const domain = process.env.DOMAIN;
+  const url = `https://${domain}/mail/${username}`;
 
   return (
     <div className="pt-4 pb-3.5 w-full">
@@ -94,9 +96,8 @@ async function Header({ user }) {
           편지를 보내주세요!
         </h2>
         <div style={{ flex: 1 }}></div>
-        <div>
-          <Image className={styles.icon} src={Share} alt="로고" />
-        </div>
+        <ShareButton url={url} name={name}></ShareButton>
+        
       </div>
 
       <div className="pt-px w-full">

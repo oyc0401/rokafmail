@@ -4,10 +4,21 @@ import Image from "next/image";
 
 import styles from "./link.module.css";
 import { CheckCircle } from "public/assets/index";
+import { User } from "src/db";
+import { notFound } from "next/navigation";
 
-export default function LinkPage({ params }) {
-  let domain = process.env.DOMAIN;
-  let url = `https://${domain}/mail/${params.username}`;
+export default async function LinkPage({ params }) {
+  const username = params.username;
+
+  const user = await User.findByUsername(username);
+  if (!user) {
+    notFound();
+  }
+
+  const domain = process.env.DOMAIN;
+  const url = `https://${domain}/mail/${username}`;
+
+  const {name, generation} = user;
 
   return (
     <div className="screen">
@@ -22,7 +33,7 @@ export default function LinkPage({ params }) {
         편지를 받으세요!
       </h2>
       <div style={{ height: 36 }}></div>
-      <CopyButton url={url}></CopyButton>
+      <CopyButton url={url} name={name} generation={generation}></CopyButton>
       <div style={{ height: 32 }}></div>
     </div>
   );
