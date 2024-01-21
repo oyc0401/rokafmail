@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./register.module.css";
 import { useStore, useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+
 import axios from "axios";
 import crypto from "crypto";
 export default function Message() {
@@ -15,51 +17,43 @@ export default function Message() {
     message,
     setMessage,
     prev,
-    reset,
   } = useStoreBase();
 
   const [progress, setProgress] = useState(false);
 
   const router = useRouter();
 
-  function validM() {
-    // 빈칸일 때
-    if (message == "") return { text: "", valid: false };
-
-    // 너무 많을 때
-    if (50 < message.length)
-      return { text: "글이 너무 길어요", color: "warn", valid: false };
-
-    // 통과
-    return { text: "잘했어요!", color: "great", valid: true };
-  }
-
-  const canSubmit = () => validM().valid;
+  const canSubmit = () => validM(message).valid;
 
   async function send() {
     let encryptedPassword = crypto
       .createHash("sha256")
       .update(password)
       .digest("hex");
-    try {
-      await axios.post("/api/register", {
+
+    await axios
+      .post("/api/register", {
         username: username,
         password: encryptedPassword,
         name: name,
         birth: birth,
         generation: Number(generation),
         message: message,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          window.onbeforeunload = null;
+          router.push(`/link/${username}`);
+         
+        } else {
+          alert(`회원가입 실패 ${response.status}, ${response.data}`);
+        }
+      })
+      .catch((error) => {
+        alert(`오류발생, 회원가입 실패 ${error}`);
       });
-
-      router.push(`/link/${username}`);
-      reset();
-      prev();
-      prev();
-    } catch (error) {
-      console.log("오류:", error);
-      alert("오류:", error);
-    }
   }
+
 
   async function click() {
     if (canSubmit()) {
@@ -99,7 +93,9 @@ export default function Message() {
         }}
       ></input>
       <div style={{ height: 2 }}></div>
-      <p className={`${styles.help} ${validM().color}`}>{validM().text}</p>
+      <p className={`${styles.help} ${validM(message).color}`}>
+        {validM(message).text}
+      </p>
       <div style={{ flex: 253 }}></div>
 
       <p className={styles.intro}>
@@ -125,4 +121,16 @@ export default function Message() {
       <div style={{ height: 36 }}></div>
     </>
   );
+}
+
+function validM(message) {
+  // 빈칸일 때
+  if (message == "") return { text: "", valid: false };
+
+  // 너무 많을 때
+  if (50 < message.length)
+    return { text: "글이 너무 길어요", color: "warn", valid: false };
+
+  // 통과
+  return { text: "잘했어요!", color: "great", valid: true };
 }

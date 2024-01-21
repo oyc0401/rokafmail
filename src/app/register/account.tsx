@@ -30,6 +30,7 @@ export default function Account() {
   }
 
   async function checkUsername() {
+    if (!validU(username).valid) return;
     if (load.current) return;
     setLoading(true);
     load.current = true;
@@ -45,7 +46,7 @@ export default function Account() {
     load.current = false;
   }
 
-  function validU() {
+  function validUUU() {
     if (!clickUsernameDup.current) return { text: "", valid: false };
 
     return validUser
@@ -53,35 +54,8 @@ export default function Account() {
       : { text: "이미 사용중인 아이디 입니다", color: "warn", valid: false };
   }
 
-  function validP() {
-    // 빈칸일 때
-    if (password == "") return { text: "", valid: false };
-
-    // 짧을 때
-    if (password.length < 4)
-      return {
-        text: "비밀번호는 4자리 이상이여야 합니다",
-        color: "warn",
-        valid: false,
-      };
-
-    // 통과
-    return { text: "잘했어요!", color: "great", valid: true };
-  }
-
-  function validR() {
-    // 빈칸일 때
-    if (repassword == "") return { text: "", valid: false };
-
-    // 비밀번호가 같지 않음
-    if (repassword != password)
-      return { text: "비밀번호가 같지 않습니다", color: "warn", valid: false };
-
-    // 통과
-    return { text: "잘했어요!", color: "great", valid: true };
-  }
-
-  const canSubmit = () => validUser && validP().valid && validR().valid;
+  const canSubmit = () =>
+    validUser && validP(password).valid && validR(repassword, password).valid;
 
   const click = () => {
     if (canSubmit()) next();
@@ -139,7 +113,7 @@ export default function Account() {
       </div>
 
       <div style={{ height: 2 }}></div>
-      <p className={`${styles.help} ${validU().color}`}>{validU().text}</p>
+      <p className={`${styles.help} ${validUUU().color}`}>{validUUU().text}</p>
 
       <div style={{ height: 16 }}></div>
 
@@ -155,7 +129,9 @@ export default function Account() {
         }}
       ></input>
       <div style={{ height: 2 }}></div>
-      <p className={`${styles.help} ${validP().color}`}>{validP().text}</p>
+      <p className={`${styles.help} ${validP(password).color}`}>
+        {validP(password).text}
+      </p>
 
       <div style={{ height: 16 }}></div>
 
@@ -171,7 +147,9 @@ export default function Account() {
         }}
       ></input>
       <div style={{ height: 2 }}></div>
-      <p className={`${styles.help} ${validR().color}`}>{validR().text}</p>
+      <p className={`${styles.help} ${validR(repassword, password).color}`}>
+        {validR(repassword, password).text}
+      </p>
 
       <div style={{ flex: 138 }}></div>
       <div className="row">
@@ -190,4 +168,44 @@ export default function Account() {
       <div style={{ height: 36 }}></div>
     </>
   );
+}
+
+function validU(username) {
+  if (username == "") {
+    return { text: "아이디를 입력해주세요", color: "warn", valid: false };
+  }
+
+  return {
+    text: "사용할 수 있는 아이디입니다,",
+    color: "great",
+    valid: true,
+  };
+}
+
+function validP(password) {
+  // 빈칸일 때
+  if (password == "") return { text: "", valid: false };
+
+  // 짧을 때
+  if (password.length < 4)
+    return {
+      text: "비밀번호는 4자리 이상이여야 합니다",
+      color: "warn",
+      valid: false,
+    };
+
+  // 통과
+  return { text: "잘했어요!", color: "great", valid: true };
+}
+
+function validR(repassword, password) {
+  // 빈칸일 때
+  if (repassword == "") return { text: "", valid: false };
+
+  // 비밀번호가 같지 않음
+  if (repassword != password)
+    return { text: "비밀번호가 같지 않습니다", color: "warn", valid: false };
+
+  // 통과
+  return { text: "잘했어요!", color: "great", valid: true };
 }
