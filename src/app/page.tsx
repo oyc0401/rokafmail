@@ -37,15 +37,12 @@ export default function Register() {
             justifyContent: "center",
           }}
         >
-
           <Link href="/search" className={styles.help}>
             편지함찾기
           </Link>
           <Link href="/help" className={styles.help}>
             도움말
           </Link>
-       
-      
         </div>
       </div>
     </div>
