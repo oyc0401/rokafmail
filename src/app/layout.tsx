@@ -15,13 +15,15 @@ export const metadata = {
     "공군 훈련병에게 인터넷편지를 보내주는 사이트입니다. 입대전 미리 링크를 만들어 사람들에게 공유하세요.",
   keywords: ["공군", "인편", "인편지기", "인터넷편지"],
   applicationName: "하늘인편",
+  metadataBase: new URL(`https://${process.env.domain}`),
   openGraph: {
     title: "하늘인편",
     description: "링크를 눌러 편지를 작성해주세요",
     siteName: "하늘인편",
     locale: "ko-KR",
     type: "website",
-    url: "http://rokafmail.kr",
+    url: "https://rokafmail.kr",
+    
   },
 };
 
