@@ -2,7 +2,7 @@ import prisma from "./_prisma";
 
 export class UnidentifiedUser {
   static insert = (data: { userId: number }) =>
-    prisma.UnidentifiedUser.create({ data });
+    prisma.unidentifiedUser.create({ data });
 
   static findAll = () =>
     prisma.usersQueue.findMany({
