@@ -1,6 +1,12 @@
 import { Status, serveStatus } from "src/lib/time";
 import Rokaf from "../rokaf/rokaf";
-import { UnconnectedPost, PostQueue, UserQueue, User } from "src/db";
+import {
+  UnconnectedPost,
+  PostQueue,
+  UserQueue,
+  User,
+  UnidentifiedUser,
+} from "src/db";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("verifyUser");
 
@@ -79,11 +85,21 @@ async function verify(unconnect: Unconnected) {
         const { sodae, memberSeq } = member;
         await updateUser(userId, sodae, memberSeq);
         await relocatePost(userId);
+        logger.debug(`userId: ${userId} 유저 정보 확인.`)
         return { message: `add ${userId} complete.`, data: true };
       } else {
+        await moveUnidentify(userId);
+        logger.debug(`userId: ${userId} 유저 찾지못함. Unidentify 테이블로 이동`)
         return { message: `can't find ${userId}.`, data: false };
       }
   }
+}
+// 미등록 사용자 모음에 넣음
+async function moveUnidentify(userId: number) {
+  await UnidentifiedUser.insert({ userId });
+
+  // 유저큐에서 삭제
+  await UserQueue.deleteByUserId(userId);
 }
 
 // 소대번호, 멤버번호 추가하고, 인증됐다고 업데이트

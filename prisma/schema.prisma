@@ -22,6 +22,7 @@ model User {
   connect     Boolean   @default(false)
   posts       Post[]
   usersQueue  UsersQueue[]
+  UnidentifiedUser  UnidentifiedUser[]
   postQueue   PostQueue[]
   unconnectedPosts UnconnectedPost[]
 }
@@ -56,6 +57,12 @@ model UsersQueue {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model UnidentifiedUser {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model PostQueue {
   id          Int       @id @default(autoincrement())
   userId      Int
@@ -63,3 +70,4 @@ model PostQueue {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
+
