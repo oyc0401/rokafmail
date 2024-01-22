@@ -2,6 +2,6 @@
 node_modules
 .vercel
 
-src/app/(admin)/debug
+src/app/(admin)/admin
 logs
 .env

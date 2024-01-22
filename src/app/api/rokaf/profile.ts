@@ -15,7 +15,9 @@ function exist(html) {
     return !liText.includes("교육생이 없습니다.");
   } else {
     console.log(".SameResultList 클래스를 갖는 요소를 찾을 수 없습니다.");
-    console.log(html);
+    logger.error(
+      `.SameResultList 클래스를 갖는 요소를 찾을 수 없습니다. ${html}`,
+    );
     throw Error(".SameResultList 클래스를 갖는 요소를 찾을 수 없습니다.");
   }
 }

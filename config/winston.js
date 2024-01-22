@@ -9,6 +9,12 @@ const logFormat = printf((info) => {
   return `${info.timestamp} ${info.level}: [${info.label}] ${info.message}`;
 });
 
+const appendTimestamp = winston.format((info, opts) => {
+  if (opts.tz)
+    info.timestamp = moment().tz(opts.tz).format(" YYYY-MM-DD HH:mm:ss ||");
+  return info;
+});
+
 /*
  * Log Level
  * error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6
@@ -17,6 +23,7 @@ const logFormat = printf((info) => {
 const makeLogger = (lab) => {
   const lo = winston.createLogger({
     format: combine(
+      appendTimestamp({ tz: "Asia/Seoul" }),
       timestamp({
         format: "YYYY-MM-DD HH:mm:ss",
       }),
@@ -55,7 +62,7 @@ const makeLogger = (lab) => {
   });
 
   if (process.env.NODE_ENV !== "production") {
-      lo.add(
+    lo.add(
       new winston.transports.Console({
         format: winston.format.combine(
           winston.format.colorize(), // 색깔 넣어서 출력
@@ -67,7 +74,6 @@ const makeLogger = (lab) => {
   }
 
   return lo;
-  
 };
 
 const logger = winston.createLogger({

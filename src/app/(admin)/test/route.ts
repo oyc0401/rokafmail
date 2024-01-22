@@ -8,7 +8,10 @@ import { repostMail } from "src/app/api/retry/repostMail";
 export async function GET() {
   console.log("start test", getNow());
 
-  await verifyRepostMail();
+  let d = await User.findAll();
+  console.log(d)
+
+ // await verifyRepostMail();
 
   return NextResponse.json({ message: "테스트 성공" }, { status: 200 });
 }
