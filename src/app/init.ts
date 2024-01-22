@@ -2,26 +2,27 @@ import { verifyUser } from "src/app/api/retry/verifyUser";
 import { repostMail } from "src/app/api/retry/repostMail";
 import { makeLogger } from "config/winston";
 var cron = require("node-cron");
+const logger = makeLogger("cron");
 
 export function init() {
   if (!globalThis.init) {
-      globalThis.init = true;
+    globalThis.init = true;
     execute();
   }
 }
 
-
 async function execute() {
   console.log("init");
+  logger.info("init");
 
   cron.schedule(
     "00 */4 * * *",
     () => {
       try {
-        console.log("node-cron is executed");
+        logger.info("node-cron is executed");
         run();
       } catch (e) {
-        console.log("node-cron 중 오류발생", e);
+        logger.error(`node-cron 중 오류발생: ${e}`);
       }
     },
     {

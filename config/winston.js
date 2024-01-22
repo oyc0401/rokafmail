@@ -1,5 +1,6 @@
 import winston from "winston";
 import winstonDaily from "winston-daily-rotate-file";
+import moment from "moment-timezone";
 
 const logDir = "logs"; // logs 디렉토리 하위에 로그 파일 저장
 const { combine, timestamp, label, printf } = winston.format;
