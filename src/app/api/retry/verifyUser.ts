@@ -93,6 +93,11 @@ async function verify(unconnect: Unconnected) {
         logger.debug(
           `userId: ${userId} 유저 찾지못함. Unidentify 테이블로 이동`,
         );
+        return {
+          message: `can't find ${userId}. move unidentify`,
+          data: true,
+        };
+      } else {
         return { message: `can't find ${userId}.`, data: false };
       }
   }
