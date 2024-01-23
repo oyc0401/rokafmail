@@ -8,7 +8,7 @@ import { User } from "src/db";
 import { notFound } from "next/navigation";
 
 export default async function LinkPage({ params }) {
-  const username = params.username;
+   const username = decodeURI(params.username);
 
   const user = await User.findByUsername(username);
   if (!user) {
