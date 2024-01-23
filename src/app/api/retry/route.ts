@@ -7,7 +7,8 @@ import { makeLogger } from "config/winston";
 const logger = makeLogger("retry");
 
 export async function GET() {
-  logger.info("start");
+  console.log('retry start')
+  logger.info("retry start");
   run();
 
   return NextResponse.json({ message: "retry 성공" }, { status: 200 });

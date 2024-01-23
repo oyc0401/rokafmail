@@ -66,6 +66,7 @@ async function verify(unconnect: Unconnected) {
   const status = serveStatus(generation);
 
   // 2주전에서 수료후 특학까지 유저인증 가능, 안보내진 편지 보내기 위해 그리고 나중에 혹시모를 특학 인편을 위해
+  // working인데 유저인증 못할때만 유저큐에서 빼기
   switch (status) {
     case Status.before:
     case Status.beginning:
@@ -85,11 +86,13 @@ async function verify(unconnect: Unconnected) {
         const { sodae, memberSeq } = member;
         await updateUser(userId, sodae, memberSeq);
         await relocatePost(userId);
-        logger.debug(`userId: ${userId} 유저 정보 확인.`)
+        logger.debug(`userId: ${userId} 유저 정보 확인.`);
         return { message: `add ${userId} complete.`, data: true };
-      } else {
+      } else if (status == Status.working) {
         await moveUnidentify(userId);
-        logger.debug(`userId: ${userId} 유저 찾지못함. Unidentify 테이블로 이동`)
+        logger.debug(
+          `userId: ${userId} 유저 찾지못함. Unidentify 테이블로 이동`,
+        );
         return { message: `can't find ${userId}.`, data: false };
       }
   }
