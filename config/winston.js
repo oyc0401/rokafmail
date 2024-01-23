@@ -12,7 +12,7 @@ const logFormat = printf((info) => {
 
 const appendTimestamp = winston.format((info, opts) => {
   if (opts.tz)
-    info.timestamp = moment().tz(opts.tz).format(" YYYY-MM-DD HH:mm:ss ||");
+    info.timestamp = moment().tz(opts.tz).format("YYYY-MM-DD HH:mm:ss -");
   return info;
 });
 
@@ -25,9 +25,9 @@ const makeLogger = (lab) => {
   const lo = winston.createLogger({
     format: combine(
       appendTimestamp({ tz: "Asia/Seoul" }),
-      timestamp({
-        format: "YYYY-MM-DD HH:mm:ss",
-      }),
+      // timestamp({
+      //   format: "YYYY-MM-DD HH:mm:ss",
+      // }),
       label({ label: lab }),
       logFormat,
     ),
