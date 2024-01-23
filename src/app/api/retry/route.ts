@@ -8,10 +8,10 @@ const logger = makeLogger("retry");
 
 export async function GET() {
   console.log('retry start')
-  logger.info("retry start");
-  run();
+   logger.info("retry start");
+  await run();
 
-  return NextResponse.json({ message: "retry 성공" }, { status: 200 });
+  return NextResponse.json({ message: `retry 성공 ${getNow()}`}, { status: 200 });
 }
 
 async function run() {
