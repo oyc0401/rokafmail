@@ -6,10 +6,10 @@ import { getNow } from "src/lib/time";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("retry");
 
-export async function GET() {
+export async function POST() {
   console.log('retry start')
    logger.info("retry start");
-  await run();
+  run();
 
   return NextResponse.json({ message: `retry 성공 ${getNow()}`}, { status: 200 });
 }
