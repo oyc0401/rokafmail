@@ -1,19 +1,33 @@
+import { NextResponse } from "next/server";
 import { verifyUser } from "src/app/api/retry/verifyUser";
 import { repostMail } from "src/app/api/retry/repostMail";
 import { makeLogger } from "config/winston";
 var cron = require("node-cron");
-const logger = makeLogger("cron");
+const logger = makeLogger("repeat");
 
-export function init() {
-  if (!globalThis.init) {
-    globalThis.init = true;
+class Init {
+  static run = false;
+}
+
+export async function POST(request: Request) {
+  logger.info("POST - repeat");
+  if (!Init.run) {
     execute();
+    Init.run = true;
+  } else {
+    logger.error("이미 작동중 입니다.");
+    return NextResponse.json(
+      { message: "이미 작동중 입니다." },
+      { status: 200 },
+    );
   }
+
+  return NextResponse.json({ message: "시작" }, { status: 200 });
 }
 
 async function execute() {
-  console.log("init");
-  logger.info("init");
+  console.log("cron.schedule start");
+  logger.info("cron.schedule start");
 
   cron.schedule(
     "00 */4 * * *",

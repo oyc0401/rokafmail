@@ -6,7 +6,7 @@ import { getNow } from "src/lib/time";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("retry");
 
-export async function POST() {
+export async function GET() {
   console.log('retry start')
    logger.info("retry start");
   run();

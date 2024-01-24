@@ -11,28 +11,25 @@
 //     console.error("Error:", error);
 //   });
 // }
-// const sleep = (delay: number) =>
-//   new Promise((resolve) => setTimeout(resolve, delay));
+const sleep = (delay: number) =>
+  new Promise((resolve) => setTimeout(resolve, delay));
 export async function register() {
   console.log("처음 실행!!");
- 
-  // const schedule = require("node-schedule");
+  execute();
+}
 
-  // // 매일 12시 마다
-
-  // schedule.scheduleJob("00 */10 * * * *", () => {
-  //   try {
-  //     console.log("schedule is executed");
-  //     const domain=process.env.domain;
-  //     //const domain = "aa46348c-fadc-4dcc-af32-e878e8df23f8-00-2jam61sxcz2ou.pike.replit.dev";
-  //     const url = `https://${domain}/api/retry`;
-
-  //     fetch(url, { method: "GET" }).catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-
-  //   } catch (e) {
-  //     console.log("schedule 중 오류발생", e);
-  //   }
-  // });
+async function execute() {
+   console.log("schedule post wait...");
+  await sleep(10000);
+  console.log("schedule post");
+  try {
+    const domain = process.env.DOMAIN;
+    //const domain = "aa46348c-fadc-4dcc-af32-e878e8df23f8-00-2jam61sxcz2ou.pike.replit.dev";
+    const url = `https://${domain}/api/repeat`;
+    fetch(url, { method: "POST" }).catch((error) => {
+      console.error("Error:", error);
+    });
+  } catch (e) {
+    console.log("schedule post 중 오류발생", e);
+  }
 }

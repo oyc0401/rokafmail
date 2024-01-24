@@ -24,6 +24,19 @@ enum VerifyStatus {
   unidentify,
 }
 
+function statusToMsg(status: VerifyStatus) {
+  switch (status) {
+    case VerifyStatus.verify:
+      return verifyLog.verify;
+    case VerifyStatus.notfound:
+      return verifyLog.notfound;
+    case VerifyStatus.skip:
+      return verifyLog.skip;
+    case VerifyStatus.unidentify:
+      return verifyLog.unidentify;
+  }
+}
+
 type Unconnected = {
   id: number;
   userId: number;
@@ -51,8 +64,14 @@ export async function verifyUser() {
   let i = 1;
   try {
     for (const unconnect of unconnected) {
-      const { message, status } = await verify(unconnect);
-      logger.info(`${i}/${length} | ${message}`);
+      const { userId } = unconnect;
+      const { generation, name, birth } = unconnect.user;
+      const userLogForm = `${userId} ${name} ${birth} ${generation}`;
+      
+      //`${verifyLog.verify} ${userLogForm}`
+      const status = await verify(unconnect);
+      logger.info(`${i}/${length} | ${statusToMsg(status)} ${userLogForm}`);
+
       switch (status) {
         case VerifyStatus.verify:
           verifyCount++;
@@ -80,11 +99,7 @@ export async function verifyUser() {
   );
 }
 
-async function verifyLogWrapper(){
-  
-}
-
-async function verify(unconnect: Unconnected) {
+async function verify(unconnect: Unconnected): Promise<VerifyStatus> {
   const { userId } = unconnect;
   const { generation, name, birth } = unconnect.user;
 
@@ -92,16 +107,11 @@ async function verify(unconnect: Unconnected) {
 
   // 2주전에서 수료후 특학까지 유저인증 가능, 안보내진 편지 보내기 위해 그리고 나중에 혹시모를 특학 인편을 위해
   // working인데 유저인증 못할때만 유저큐에서 빼기
-  const userLogForm = `${userId} ${name} ${birth} ${generation}`;
-
   switch (status) {
     case Status.before:
     case Status.beginning:
     case Status.discharged:
-      return {
-        message: `${verifyLog.skip} ${userLogForm}`,
-        status: VerifyStatus.skip,
-      };
+      return VerifyStatus.skip;
     case Status.training:
     case Status.ending:
     case Status.working:
@@ -117,28 +127,17 @@ async function verify(unconnect: Unconnected) {
         const { sodae, memberSeq } = member;
         await updateUser(userId, sodae, memberSeq);
         await relocatePost(userId);
-        return {
-          message: `${verifyLog.verify} ${userLogForm}`,
-          status: VerifyStatus.verify,
-        };
+        return VerifyStatus.verify;
       } else if (status == Status.working) {
         // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
         await moveUnidentify(userId);
-        return {
-          message: `${verifyLog.unidentify} ${userLogForm}`,
-          status: VerifyStatus.unidentify,
-        };
+        return VerifyStatus.unidentify;
       } else {
         // member가 null이면 못찾았다고 하기
-        return {
-          message: `${verifyLog.notfound} ${userLogForm}`,
-          status: VerifyStatus.notfound,
-        };
+        return VerifyStatus.notfound;
       }
   }
 }
-
-
 
 // 미등록 사용자 모음에 넣음
 async function moveUnidentify(userId: number) {

@@ -13,7 +13,14 @@ import { verifyUser } from "src/app/api/retry/verifyUser";
 import { repostMail } from "src/app/api/retry/repostMail";
 
 export async function GET() {
-  console.log("start test", getNow());
+  // console.log("start test", getNow());
+  // let data = await Post.findByUsername("전진우");
+  // console.log(data);
+  // await PostQueue.deleteByPostId(1);
+
+
+  // let data22 = await PostQueue.findByUsername("전진우");
+  // console.log(data22)
 
   // let uni = await UnidentifiedUser.findAll();
   // console.log(uni)
