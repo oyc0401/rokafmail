@@ -1,17 +1,31 @@
 import { NextResponse } from "next/server";
 
 import { getNow } from "src/lib/time";
-import { Post, PostQueue, UnconnectedPost, User, UserQueue } from "src/db";
+import {
+  Post,
+  PostQueue,
+  UnconnectedPost,
+  User,
+  UserQueue,
+  UnidentifiedUser,
+} from "src/db";
 import { verifyUser } from "src/app/api/retry/verifyUser";
 import { repostMail } from "src/app/api/retry/repostMail";
 
 export async function GET() {
   console.log("start test", getNow());
 
-  let d = await User.findAll();
-  console.log(d)
+  // let uni = await UnidentifiedUser.findAll();
+  // console.log(uni)
 
- // await verifyRepostMail();
+  // for (const u of uni) {
+  //  // await UserQueue.insert({ userId: u.userId });
+  // await UnidentifiedUser.deleteByUserId(u.userId);
+  // }
+
+  //let d = await User.findAll();
+
+  // await verifyRepostMail();
 
   return NextResponse.json({ message: "테스트 성공" }, { status: 200 });
 }

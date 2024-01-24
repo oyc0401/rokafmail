@@ -10,6 +10,20 @@ import {
 import { makeLogger } from "config/winston";
 const logger = makeLogger("verifyUser");
 
+const verifyLog = {
+  verify: "verify    ",
+  notfound: "notfound  ",
+  skip: "skip      ",
+  unidentify: "unidentify",
+};
+
+enum VerifyStatus {
+  verify,
+  notfound,
+  skip,
+  unidentify,
+}
+
 type Unconnected = {
   id: number;
   userId: number;
@@ -27,36 +41,47 @@ export async function verifyUser() {
   // 미인증 유저들
   const unconnected = await UserQueue.findAll();
 
-  let i = 1;
   const length = unconnected.length;
   logger.debug(`count: ${length}`);
 
-  let success = 0;
+  let verifyCount = 0;
   let notfound = 0;
-
+  let skip = 0;
+  let unidentify = 0;
+  let i = 1;
   try {
     for (const unconnect of unconnected) {
-      const { message, data } = await verify(unconnect);
-      logger.debug(`${i}/${length}: ${message}`);
-      if (data) {
-        success++;
-      } else {
-        notfound++;
+      const { message, status } = await verify(unconnect);
+      logger.info(`${i}/${length} | ${message}`);
+      switch (status) {
+        case VerifyStatus.verify:
+          verifyCount++;
+          break;
+        case VerifyStatus.notfound:
+          notfound++;
+          break;
+        case VerifyStatus.skip:
+          skip++;
+          break;
+        case VerifyStatus.unidentify:
+          unidentify++;
+          break;
       }
 
       i++;
     }
   } catch (error) {
-    logger.info(
-      `${i}/${length}: ${error} | success: ${success}, notfound: ${notfound}`,
-    );
-    return;
+    logger.info(`${i}/${length} | ${error}`);
   }
   logger.info(
-    `success: ${success}, notfound: ${notfound}, missing: ${
-      length - success - notfound
+    `verify: ${verifyCount}, notfound: ${notfound}, skip: ${skip} unidentify: ${unidentify} missing:${
+      length - verifyCount - notfound - skip - unidentify
     }`,
   );
+}
+
+async function verifyLogWrapper(){
+  
 }
 
 async function verify(unconnect: Unconnected) {
@@ -67,11 +92,16 @@ async function verify(unconnect: Unconnected) {
 
   // 2주전에서 수료후 특학까지 유저인증 가능, 안보내진 편지 보내기 위해 그리고 나중에 혹시모를 특학 인편을 위해
   // working인데 유저인증 못할때만 유저큐에서 빼기
+  const userLogForm = `${userId} ${name} ${birth} ${generation}`;
+
   switch (status) {
     case Status.before:
     case Status.beginning:
     case Status.discharged:
-      return { message: `can't search status, skip.`, data: false };
+      return {
+        message: `${verifyLog.skip} ${userLogForm}`,
+        status: VerifyStatus.skip,
+      };
     case Status.training:
     case Status.ending:
     case Status.working:
@@ -81,27 +111,35 @@ async function verify(unconnect: Unconnected) {
       if (!serverOn) {
         throw Error("rokaf server error, verify Stopped.");
       }
+
       // 얻었으면 업데이트
       if (member != null) {
         const { sodae, memberSeq } = member;
         await updateUser(userId, sodae, memberSeq);
         await relocatePost(userId);
-        logger.debug(`userId: ${userId} 유저 정보 확인.`);
-        return { message: `add ${userId} complete.`, data: true };
-      } else if (status == Status.working) {
-        await moveUnidentify(userId);
-        logger.debug(
-          `userId: ${userId} 유저 찾지못함. Unidentify 테이블로 이동`,
-        );
         return {
-          message: `can't find ${userId}. move unidentify`,
-          data: true,
+          message: `${verifyLog.verify} ${userLogForm}`,
+          status: VerifyStatus.verify,
+        };
+      } else if (status == Status.working) {
+        // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
+        await moveUnidentify(userId);
+        return {
+          message: `${verifyLog.unidentify} ${userLogForm}`,
+          status: VerifyStatus.unidentify,
         };
       } else {
-        return { message: `can't find ${userId}.`, data: false };
+        // member가 null이면 못찾았다고 하기
+        return {
+          message: `${verifyLog.notfound} ${userLogForm}`,
+          status: VerifyStatus.notfound,
+        };
       }
   }
 }
+
+
+
 // 미등록 사용자 모음에 넣음
 async function moveUnidentify(userId: number) {
   await UnidentifiedUser.insert({ userId });

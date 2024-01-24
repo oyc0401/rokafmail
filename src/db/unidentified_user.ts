@@ -5,7 +5,7 @@ export class UnidentifiedUser {
     prisma.unidentifiedUser.create({ data });
 
   static findAll = () =>
-    prisma.usersQueue.findMany({
+    prisma.unidentifiedUser.findMany({
       include: {
         user: {
           select: {
@@ -21,7 +21,7 @@ export class UnidentifiedUser {
     });
 
   static deleteByUserId = (userId: number) =>
-    prisma.usersQueue.deleteMany({
+    prisma.unidentifiedUser.deleteMany({
       where: { userId: userId },
     });
 }

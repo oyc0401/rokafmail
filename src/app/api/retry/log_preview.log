@@ -1,0 +1,10 @@
+2024-01-23 23:08:30 - info: [retry] start
+2024-01-23 23:08:30 - info: [verifyUser] 1/4 | notfound   0 오유찬 20030401 850 
+2024-01-23 23:08:30 - info: [verifyUser] 2/4 | verify     0 오유찬 20030401 850
+2024-01-23 23:08:30 - info: [verifyUser] 3/4 | verify     0 오유찬 20030401 850
+2024-01-23 23:08:30 - info: [verifyUser] 4/4 | skip       0 오유찬 20030401 850
+2024-01-23 23:08:30 - info: [verifyUser] 4/4 | unidentify 0 오유찬 20030401 850
+2024-01-23 23:08:30 - info: [verifyUser] success: 0, notfound: 1, missing: 0
+
+
+2024-01-23 23:08:31 - info: [repostMail] success: 0, notpost: 0

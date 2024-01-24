@@ -13,11 +13,9 @@
 // }
 // const sleep = (delay: number) =>
 //   new Promise((resolve) => setTimeout(resolve, delay));
-
-
 export async function register() {
   console.log("처음 실행!!");
-
+ 
   // const schedule = require("node-schedule");
 
   // // 매일 12시 마다
