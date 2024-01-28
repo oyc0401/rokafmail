@@ -3,5 +3,8 @@ node_modules
 .vercel
 
 src/app/(admin)/admin
+
+src/app/(admin)/table1
+
 logs
 .env
