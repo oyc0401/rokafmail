@@ -1,36 +1,48 @@
-## repl.it 깃허브 설정방법
+# 하늘인편
 
-깃허브로 가져오기.
+- 854 인편 시작: 1/22
 
-> npm install
-> pages 폴더 지우기
-> Home.module.css지우기
-> run!
+- 855 입대: 2/12 | 855대상 출시일: 2/5
 
-run 버튼 클릭
+- 856 입대: 3/18 | 856대상 출시일: 3/11
 
--------------------------
-Welcome to the NextJS base template bootstrapped using the `create-next-app`. This template supports TypeScript, but you can use normal JavaScript as well.
 
-## Getting Started
+2/5 -> 24.02.01 기준 D-4
 
-Hit the run button to start the development server.
+# Todo
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+회원가입, 편지 로그에 보여주기 [서버]
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on `/api/hello`. This endpoint can be edited in `pages/api/hello.ts`.
+서버측 데이터 유효성 검사 [서버]
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+목록 디자인 [디자인]
 
-## Learn More
+로고, 이름 바꾸기 [디자인]
 
-To learn more about Next.js, take a look at the following resources:
+# 배포후 업데이트 할 것
+주소에 보낸 시각 적어주기
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+mails에 편지시작 전이면 며칠뒤 보내지는지 표시하기 (디자인 필요)
 
-## Productionizing your Next App
 
-To make your next App run smoothly in production make sure to deploy your project with [Repl Deployments](https://docs.replit.com/hosting/deployments/about-deployments)!
+# Bug fix
 
-You can also produce a production build by running `npm run build` and [changing the run command](https://docs.replit.com/programming-ide/configuring-repl#run) to `npm run start`.
+
+# Question
+하루에 or 한사이클에 편지 최대 50개만 보내게?
+매시각 다시 보내기 사이클 => 8시, 14시, 20시?
+회원가입 하면 응원문구 보여주기
+
+편지쓰기 시간일때만 유저인증하기..?
+
+
+# 고민중
+DB관련된것만 타입스크립트로 바꿨는데 언제 모든파일이 타입스크립트 세상으로 들어가야할까
+ ㄴ이미 들어가고 있는중
+
+
+# 해결
+DB에 generation number로 바꾸기
+편지 쓰기 완료 페이지 여러 분기점 추가
+체크 아이콘 svg로 변경
+편지 보낼 수 있는 기간에만 편지 보내기, 기간이 아니면 db에만 저장하기, 기간이 지나고 보내면 보냈다고 치고 posted=true로 하기
