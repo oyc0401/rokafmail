@@ -59,6 +59,14 @@ input{
   padding-left: 20px;
   padding-right: 20px;
 }
+.screen-not-flex{
+  max-width:640px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 
 .sized{
   width:1px;

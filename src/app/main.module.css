@@ -1,20 +1,42 @@
+.title{
+  font-size:24px;
+font-weight:700;
+  padding-bottom:32px;
+}
+
+.subtitle{
+    font-size:20px;
+  font-weight:700;
+  /* text-align:start;
+  width:100%; */
+   padding-bottom:8px;
+}
+.content{
+    font-size:18px;
+  text-align:start;
+     padding-bottom:54px;
+}
+
+.blue{
+  color:var(--primary)
+}
+
 .logo{
    width: 173px;
   height:173px;
 }
 
 .logoTitle{
-  
+
    width: 173px;
   height:43px;
 }
 
+.top{
+  /* background:gray; */
+  height:calc(100vh - 0px);
+  width:100%;
 
-/* 메인화면에 나오는 글씨  */
-.title{
-  text-align: center;
-  font-size: 42px;
-  font-weight: 700;
 }
 
 .substring{
@@ -22,8 +44,6 @@
   font-size: 20px;
   font-weight: 400;
 }
-
-
 
 .help{
   margin: 0 6px;
@@ -41,3 +61,15 @@
 }
 
 
+.footer{
+width:100%;
+
+  background:var(--primary);
+  padding:30px 20px ;
+  text-align:start
+}
+
+.footerText{
+  font-size:12px;
+  color:white;
+}

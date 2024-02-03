@@ -1,19 +1,64 @@
 .title{
   font-size:24px;
 font-weight:700;
+  padding-bottom:32px;
 }
 
 .subtitle{
     font-size:20px;
   font-weight:700;
-  text-align:start;
-  width:100%;
+  /* text-align:start;
+  width:100%; */
+   margin-bottom:8px;
 }
 .content{
-    font-size:16px;
+    font-size:18px;
   text-align:start;
+   margin-bottom:54px;
 }
 
 .blue{
   color:var(--primary)
 }
+
+.logo{
+   width: 173px;
+  height:173px;
+}
+
+.logoTitle{
+
+   width: 173px;
+  height:43px;
+}
+
+.top{
+  /* background:gray; */
+  height:calc(100vh - 0px);
+  width:100%;
+  
+}
+
+.substring{
+  text-align: center;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.help{
+  margin: 0 6px;
+  color: #191919;
+  text-align: center;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+  cursor: pointer;
+}
+.help:hover{
+  color: var(--dark-accent);
+}
+
+
+
