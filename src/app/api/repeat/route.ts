@@ -30,8 +30,8 @@ async function execute() {
   logger.info("cron.schedule start");
 
   cron.schedule(
-    "*/10 * * * *",
-   // "00 */4 * * *",
+   // "*/10 * * * *",
+    "00 */4 * * *",
     () => {
       try {
         logger.info("node-cron is executed");
