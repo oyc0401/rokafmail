@@ -9,9 +9,9 @@ const notoSansKr = Noto_Sans_KR({
 });
 
 export const metadata = {
-  title: "공군 인터넷편지 하늘인편",
+  title: "하늘인편 - 공군 인터넷편지",
   description:
-    "공군 훈련병에게 인터넷편지를 보내주는 사이트입니다. 입대전 미리 링크를 만들어 사람들에게 공유하세요.",
+    "공군 훈련병에게 인터넷편지를 보내주는 사이트입니다. 입대 전 미리 링크를 만들어 사람들에게 공유하세요.",
   keywords: ["공군", "인편", "인편지기", "인터넷편지"],
   applicationName: "하늘인편",
   metadataBase: new URL(`https://${process.env.DOMAIN}`),

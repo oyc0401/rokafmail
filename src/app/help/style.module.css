@@ -1,11 +1,16 @@
 .title{
-  font-size:25px;
-font-weight:500;
-
+  font-size:24px;
+font-weight:700;
 }
 
+.subtitle{
+    font-size:20px;
+  font-weight:700;
+  text-align:start;
+  width:100%;
+}
 .content{
-    font-size:18px;
+    font-size:16px;
   text-align:start;
 }
 
