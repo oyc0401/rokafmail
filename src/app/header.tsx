@@ -10,19 +10,18 @@ import Image from "next/image";
 
 export function Header() {
   const [height, setHeight] = useState(0);
-  const handleScroll = () => {
-    const innerHeight = window.innerHeight;
-    setHeight(innerHeight);
-    console.log(innerHeight);
-  };
+  // const handleScroll = () => {
+  //   const innerHeight = window.innerHeight;
+  //   setHeight(innerHeight);
+  //   console.log(innerHeight);
+  // };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleScroll);
-    handleScroll();
+    const innerHeight = window.innerHeight;
+    setHeight(innerHeight);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      // window.removeEventListener("scroll", handleScroll);
+      // window.removeEventListener("resize", handleScroll);
     };
   }, []);
 
