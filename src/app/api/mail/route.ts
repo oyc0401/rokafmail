@@ -157,9 +157,9 @@ async function sendMail({
     case Status.discharged:
       await Post.update(postId, { posted: true, postAt: getNow() });
 
-      const msg = "after";
+      const msg2 = "after";
       logger.info(
-        `${username} (${userId}), ${msg} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
+        `${username} (${userId}), ${msg2} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
       );
       break;
   }
