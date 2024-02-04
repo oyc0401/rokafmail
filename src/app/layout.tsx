@@ -28,7 +28,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ko-KR" className={notoSansKr.className}>
-      <head></head>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="daf22BPVkbTY82jmuxh9x3rsm38fZpTGdt0sl9o7mm8"
+        />
+        <meta
+          name="naver-site-verification"
+          content="1b4f09dac96624b20134a08b4d3884618caaf21f"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

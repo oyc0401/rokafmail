@@ -49,13 +49,6 @@ function Body() {
 
       <h2 className={styles.subtitle}>입대 후 바로 편지작성</h2>
       <h3 className={styles.content}>
-        이제 편지를 쓸 때 번거로운 정보 입력은 필요 없습니다. 미리 이름과
-        생년월일을 등록해두면, 가족과 친구들은 쉽게 마음을 담은 편지를 작성할 수
-        있습니다.
-      </h3>
-
-      <h2 className={styles.subtitle}>간편한 편지 작성</h2>
-      <h3 className={styles.content}>
         입대 직후부터 하늘인편을 통해 편지를 작성할 수 있습니다. 이렇게 작성된
         편지는 저장되었다가, 입대 후 2주가 지나면 일괄적으로 훈련병에게
         전달됩니다.
