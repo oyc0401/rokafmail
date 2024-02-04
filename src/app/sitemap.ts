@@ -9,19 +9,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: 'https://rokafmail/privacy-policy',
+      url: 'https://rokafmail.kr/privacy-policy',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: 'https://rokafmail/register',
+      url: 'https://rokafmail.kr/register',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
-      url: 'https://rokafmail/search',
+      url: 'https://rokafmail.kr/search',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
