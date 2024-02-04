@@ -63,109 +63,119 @@ export default function Account() {
 
   return (
     <>
-      <div style={{ flex: 100 }}></div>
+      <div style={{ flex: 64 }}></div>
+      <div className="pt-12 pb-8 w-full">
+        <h2 className={styles.title}>
+          수료 후 편지함 확인을 위해
+          <br />
+          비밀번호를 설정해주세요
+        </h2>
+      </div>
 
-      <h2 className={styles.title}>
-        수료 후 편지함 확인을 위해
-        <br />
-        비밀번호를 설정해주세요
-      </h2>
-
-      <div style={{ flex: 49 }}></div>
-
-      <p className={styles.formTitle}>아이디</p>
-      <div style={{ height: 2 }}></div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          width: "100%",
-          justifyContent: "flex-start",
-        }}
-      >
-        <input
-          className={styles.form}
-          value={username}
-          type="text"
-          style={{ flex: "1" }}
-          placeholder="아이디를 입력해주세요"
-          onChange={(e) => {
-            editUsername(e.target.value);
+      <div style={{ flex: 12 }}></div>
+      <div className="pb-4 w-full">
+        <p className={styles.formTitle}>아이디</p>
+        <div style={{ height: 2 }}></div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            width: "100%",
+            justifyContent: "flex-start",
           }}
-        ></input>
-        <button
-          className={
-            loading ? `${styles.dupButton} ${styles.loading}` : styles.dupButton
-          }
-          onClick={checkUsername}
         >
-          <div
-            style={{
-              display: "flex",
-              textAlign: "center",
-              justifyContent: "center",
+          <input
+            className={styles.form}
+            value={username}
+            type="text"
+            style={{ flex: "1" }}
+            placeholder="아이디를 입력해주세요"
+            onChange={(e) => {
+              editUsername(e.target.value);
             }}
+          ></input>
+          <button
+            className={
+              loading
+                ? `${styles.dupButton} ${styles.loading}`
+                : styles.dupButton
+            }
+            onClick={checkUsername}
           >
-            {loading ? <p className={styles.animation} /> : "중복확인"}
-          </div>
-        </button>
+            <div
+              style={{
+                display: "flex",
+                textAlign: "center",
+                justifyContent: "center",
+              }}
+            >
+              {loading ? <p className={styles.animation} /> : "중복확인"}
+            </div>
+          </button>
+        </div>
+
+        <div style={{ height: 2 }}></div>
+        <p className={`${styles.help} ${validUUU().color}`}>
+          {validUUU().text}
+        </p>
       </div>
 
-      <div style={{ height: 2 }}></div>
-      <p className={`${styles.help} ${validUUU().color}`}>{validUUU().text}</p>
+       <div className="pb-4 w-full">
+         <p className={styles.formTitle}>비밀번호</p>
+         <div style={{ height: 2 }}></div>
+         <input
+           className={styles.form}
+           value={password}
+           type="password"
+           placeholder="비밀번호를 입력해주세요"
+           onChange={(e) => {
+             setPassword(e.target.value);
+           }}
+         ></input>
+         <div style={{ height: 2 }}></div>
+         <p className={`${styles.help} ${validP(password).color}`}>
+           {validP(password).text}
+         </p>
+       </div>
+      
 
-      <div style={{ height: 16 }}></div>
+       <div className="pb-4 w-full">
+         <p className={styles.formTitle}>비밀번호 재확인</p>
+         <div style={{ height: 2 }}></div>
+         <input
+           className={styles.form}
+           value={repassword}
+           type="password"
+           placeholder="비밀번호를 다시 입력해주세요"
+           onChange={(e) => {
+             setRepassword(e.target.value);
+           }}
+         ></input>
+         <div style={{ height: 2 }}></div>
+         <p className={`${styles.help} ${validR(repassword, password).color}`}>
+           {validR(repassword, password).text}
+         </p>
+       </div>
+     
 
-      <p className={styles.formTitle}>비밀번호</p>
-      <div style={{ height: 2 }}></div>
-      <input
-        className={styles.form}
-        value={password}
-        type="password"
-        placeholder="비밀번호를 입력해주세요"
-        onChange={(e) => {
-          setPassword(e.target.value);
-        }}
-      ></input>
-      <div style={{ height: 2 }}></div>
-      <p className={`${styles.help} ${validP(password).color}`}>
-        {validP(password).text}
-      </p>
-
-      <div style={{ height: 16 }}></div>
-
-      <p className={styles.formTitle}>비밀번호 재확인</p>
-      <div style={{ height: 2 }}></div>
-      <input
-        className={styles.form}
-        value={repassword}
-        type="password"
-        placeholder="비밀번호를 다시 입력해주세요"
-        onChange={(e) => {
-          setRepassword(e.target.value);
-        }}
-      ></input>
-      <div style={{ height: 2 }}></div>
-      <p className={`${styles.help} ${validR(repassword, password).color}`}>
-        {validR(repassword, password).text}
-      </p>
-
-      <div style={{ flex: 138 }}></div>
-      <div className="row">
-        <button className={`submit mini`} onClick={prev}>
-          이전
-        </button>
-        <div style={{ width: 12 }}></div>
-        <button
-          className={canSubmit() ? "submit" : "submit disable"}
-          onClick={click}
-        >
-          다음
-        </button>
+     
+      
+      <div style={{ flex: 90 }}></div>
+      <div className="pb-8 pt-6 w-full">
+        <div className="row">
+          <button className={`submit mini`} onClick={prev}>
+            이전
+          </button>
+          <div style={{ width: 12 }}></div>
+          <button
+            className={canSubmit() ? "submit" : "submit disable"}
+            onClick={click}
+          >
+            다음
+          </button>
+        </div>
       </div>
-
-      <div style={{ height: 36 }}></div>
     </>
   );
 }
@@ -195,7 +205,7 @@ function validP(password) {
     };
 
   // 통과
-  return { text: "잘했어요!", color: "great", valid: true };
+  return { text: "", color: "great", valid: true };
 }
 
 function validR(repassword, password) {
@@ -207,5 +217,5 @@ function validR(repassword, password) {
     return { text: "비밀번호가 같지 않습니다", color: "warn", valid: false };
 
   // 통과
-  return { text: "잘했어요!", color: "great", valid: true };
+  return { text: "", color: "great", valid: true };
 }

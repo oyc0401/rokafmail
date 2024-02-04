@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import styles from "./paper.module.css";
 import { useStore } from "./model";
-import { validC } from "./valid";
+import { validC,validP } from "./valid";
 import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 export function Paper() {
@@ -127,7 +127,7 @@ function Name() {
 }
 
 function Password() {
-  const { setPassword, setClick } = useStore();
+  const {password, setPassword, setClick } = useStore();
 
   return (
     <div className="pb-5">
@@ -149,8 +149,13 @@ function Password() {
               setClick(true);
             }}
           ></input>
+          <p className={`${styles.help} ${validP(password).color}`}>
+            {validP(password).text}
+          </p>
         </div>
       </div>
+     
+     
     </div>
   );
 }

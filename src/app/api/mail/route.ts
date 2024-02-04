@@ -9,6 +9,9 @@ import { Post, PostQueue, UnconnectedPost, User } from "src/db";
 // 편지쓰기 가능한 기간이면 보내고 아니면 그냥 둔다.
 // 보내지면 posted를 true로 업데이트한다.
 // 안보내지면 post_queue에 추가한다.
+import { makeLogger } from "config/winston";
+const logger = makeLogger("mail");
+
 
 export async function POST(request: Request) {
   const {
@@ -81,6 +84,7 @@ export async function POST(request: Request) {
     });
   }
 
+  logger.info(`${userId} 에게 ${postId} ${name} ${relationship} ${title} ${contents} ${password} 편지 보냄`);
   return NextResponse.json({ message: "편지 전송 성공!" }, { status: 200 });
 }
 

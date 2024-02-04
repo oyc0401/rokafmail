@@ -149,3 +149,8 @@ export function mailStartIsFuture(generation: number): boolean {
 export function mailEnded(generation: number): boolean {
   return isPast(getMailStart(generation));
 }
+
+
+export function parseKorea(date:Date){
+  return  dayjs(date).tz("Asia/Seoul")
+}

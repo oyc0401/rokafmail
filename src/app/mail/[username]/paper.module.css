@@ -28,7 +28,7 @@
 .contentForm{
    display:block;
   font-family:var(--font-family) !important;
-  min-height:60;
+  min-height:140px;
   resize:none;
 }
 .contentForm::-webkit-scrollbar {

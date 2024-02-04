@@ -25,7 +25,7 @@ export function CopyButton({ url, name, generation }) {
 
   return (
     <button className={"submit"} onClick={copy}>
-      링크 복사
+      링크 공유
     </button>
   );
 }

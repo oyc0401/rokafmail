@@ -42,8 +42,9 @@ body {
   text-align: center;
 }
 
-input{
+textarea,input{
   border-radius:0px;
+  -webkit-appearance: none;
 }
 
 /* 너비 440px 화면 레이아웃 */

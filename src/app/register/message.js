@@ -73,30 +73,38 @@ export default function Message() {
       >
         <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
       </div>
-      <div style={{ flex: 100 }}></div>
-      <h2 className={styles.title}>
-        편지지에 보여질
-        <br />
-        한줄 글을 적어주세요
-      </h2>
-      <div style={{ flex: 49 }}></div>
 
-      <p className={styles.formTitle}>한줄 글</p>
-      <div style={{ height: 2 }}></div>
-      <input
-        className={styles.form}
-        value={message}
-        type="text"
-        placeholder="한줄 글을 작성해주세요"
-        onChange={(e) => {
-          setMessage(e.target.value);
-        }}
-      ></input>
-      <div style={{ height: 2 }}></div>
-      <p className={`${styles.help} ${validM(message).color}`}>
-        {validM(message).text}
-      </p>
-      <div style={{ flex: 253 }}></div>
+      <div style={{ flex: 64 }}></div>
+      <div className="pt-12 pb-8 w-full">
+         <h2 className={styles.title}>
+          편지지에 보여질
+          <br />
+          한줄 글을 적어주세요
+        </h2>
+      </div>
+  
+   
+      <div style={{ flex: 12 }}></div>
+      <div className="pb-4 w-full">
+        <p className={styles.formTitle}>한줄 글</p>
+        <div style={{ height: 2 }}></div>
+        <input
+          className={styles.form}
+          value={message}
+          type="text"
+          placeholder="한줄 글을 작성해주세요"
+          onChange={(e) => {
+            setMessage(e.target.value);
+          }}
+        ></input>
+        <div style={{ height: 2 }}></div>
+        <p className={`${styles.help} ${validM(message).color}`}>
+          {validM(message).text}
+        </p>
+      </div>
+      <div style={{paddingBottom:115, width:1}}></div>
+      
+      <div style={{ flex: 90 }}></div>
 
       <p className={styles.intro}>
         편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
@@ -104,21 +112,21 @@ export default function Message() {
         공군 기본군사훈련단은 훈련 3주차부터 인터넷편지 작성을 할 수 있습니다.
         따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로 발송됩니다.
       </p>
-      <div style={{ height: 24 }}></div>
-
-      <div className="row">
-        <button className={`submit mini`} onClick={prev}>
-          이전
-        </button>
-        <div style={{ width: 12 }}></div>
-        <button
-          className={canSubmit() ? "submit" : "submit disable"}
-          onClick={click}
-        >
-          만들기
-        </button>
-      </div>
-      <div style={{ height: 36 }}></div>
+       <div className="pb-8 pt-6 w-full">
+         <div className="row">
+           <button className={`submit mini`} onClick={prev}>
+             이전
+           </button>
+           <div style={{ width: 12 }}></div>
+           <button
+             className={canSubmit() ? "submit" : "submit disable"}
+             onClick={click}
+           >
+             만들기
+           </button>
+         </div>
+       </div>
+      
     </>
   );
 }
@@ -132,5 +140,5 @@ function validM(message) {
     return { text: "글이 너무 길어요", color: "warn", valid: false };
 
   // 통과
-  return { text: "잘했어요!", color: "great", valid: true };
+  return { text: "", color: "great", valid: true };
 }

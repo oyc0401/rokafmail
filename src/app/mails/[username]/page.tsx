@@ -71,6 +71,7 @@ async function Mail({ username }) {
               name={post.post.name}
               rel={post.post.relationship}
               time={dateToStr(post.post.createdAt)}
+              
             />
           </div>
         ))}

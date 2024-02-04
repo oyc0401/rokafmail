@@ -1,4 +1,4 @@
-function validN(name:string) {
+function validN(name: string) {
   // 빈칸일 때
   if (name == "") return { text: "", valid: false };
 
@@ -6,7 +6,7 @@ function validN(name:string) {
   return { text: "잘했어요!", color: "great", valid: true };
 }
 
-function validR(relationship:string) {
+function validR(relationship: string) {
   // 빈칸일 때
   if (relationship == "") return { text: "", valid: false };
 
@@ -14,7 +14,7 @@ function validR(relationship:string) {
   return { text: "잘했어요!", color: "great", valid: true };
 }
 
-function validT(title:string) {
+function validT(title: string) {
   // 빈칸일 때
   if (title == "") return { text: "", valid: false };
 
@@ -22,7 +22,7 @@ function validT(title:string) {
   return { text: "잘했어요!", color: "great", valid: true };
 }
 
-function validC(contents:string) {
+function validC(contents: string) {
   // 빈칸일 때
   if (contents == "") return { text: "", valid: false };
 
@@ -39,12 +39,15 @@ function validC(contents:string) {
   return { text: "", color: "great", valid: true };
 }
 
-function validP(password:string) {
+function validP(password: string) {
   // 빈칸일 때
   if (password == "") return { text: "", valid: false };
 
+  if (password.length < 4)
+    return { text: "4자리 이상 입력", color: "warn", valid: false };
+
   // 통과
-  return { text: "잘했어요!", color: "great", valid: true };
+  return { text: "", color: "great", valid: true };
 }
 
 export { validN, validR, validC, validT, validP };

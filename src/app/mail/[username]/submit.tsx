@@ -10,8 +10,7 @@ import styles from "./page.module.css";
 import { useStore } from "./model";
 import { validN, validR, validC, validT, validP } from "./valid";
 
-export function Submit({username}) {
- 
+export function Submit({ username }) {
   const { name, relationship, title, contents, password } = useStore();
 
   const router = useRouter();
@@ -65,18 +64,27 @@ export function Submit({username}) {
 
   return (
     <>
-      <Nav>
-        <Link className={`submit mini`} href={`/mails/${username}`}>
-          편지함
-        </Link>
-        <div style={{ width: 12 }}></div>
-        <button
-          className={canSubmit() ? "submit" : "submit disable"}
-          onClick={click}
-        >
-          전송하기
-        </button>
-      </Nav>
+      <div
+        style={{
+          paddingTop: 12,
+          paddingBottom: 36,
+          width:'100%',
+        }}
+      >
+        <div className="row">
+          <Link className={`submit mini`} href={`/mails/${username}`}>
+            편지함
+          </Link>
+          <div style={{ width: 12 }}></div>
+          <button
+            className={canSubmit() ? "submit" : "submit disable"}
+            onClick={click}
+          >
+            전송하기
+          </button>
+        </div>
+      </div>
+
       <Loading></Loading>
     </>
   );

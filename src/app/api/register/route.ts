@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import Rokaf from "../rokaf/rokaf";
-import {serveStatus, Status } from "src/lib/time";
+import { serveStatus, Status } from "src/lib/time";
 import { UserQueue, User } from "src/db";
 // 로그인을 하면 먼저 DB에 저장한다.
 // 편지쓰기 가능한 기간이면 국방부 사이트에서 존재하는지 확인하고, 아니면 그냥 둔다.
 // 존재하는 유저면 connect를 true로 업데이트한다.
 // 존재하지 않으면 users_queue에 추가한다.
+
+import { makeLogger } from "config/winston";
+const logger = makeLogger("register");
 
 export async function POST(request: Request) {
   console.log("회원가입 중...");
@@ -28,6 +31,7 @@ export async function POST(request: Request) {
 
   checkUser({ id, name, birth, generation });
 
+  logger.info(`${id} ${name} ${birth} ${generation} 회원가입 성공`);
   return NextResponse.json({ message: "회원가입 성공" }, { status: 200 });
 }
 
@@ -58,10 +62,10 @@ async function insertQueue(userId: number) {
 
 async function saveUser(userId: number, name: string, birth: string) {
   console.log("편지쓰기 이후 유저, 번호 찾기 시작.");
-  
+
   // 유저가 존재하는지 확인
   const { member } = await Rokaf.getProfile(name, birth);
-  
+
   // 유저인증이 안되면 인증 테이블에 저장
   if (member != null) {
     console.log(

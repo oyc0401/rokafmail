@@ -16,75 +16,80 @@ export default function Information() {
 
   return (
     <>
-      <div style={{ flex: 100 }}></div>
-      <h2 className={styles.title}>
-        편지 주소를 확인하기 위해
-        <br />
-        이름과 생년월일이 필요해요
-      </h2>
+      <div style={{ flex: 64 }}></div>
+      <div className="pt-12 pb-8 w-full">
+        <h2 className={styles.title}>
+          편지 주소를 확인하기 위해
+          <br />
+          이름과 생년월일이 필요해요
+        </h2>
+      </div>
 
-      <div style={{ flex: 49 }}></div>
+      <div style={{ flex: 12 }}></div>
 
-      <p className={styles.formTitle}>기수</p>
-      <div style={{ height: 2 }}></div>
-      <input
-        className={styles.form}
-        value={generation}
-        type="text"
-        placeholder="기수를 입력해주세요 예시) 850"
-        onChange={(e) => {
-          setGeneration(e.target.value);
-        }}
-      ></input>
-      <div style={{ height: 2 }}></div>
-      <p className={`${styles.help} ${validG(generation).color}`}>
-        {validG(generation).text}
-      </p>
+      <div className="pb-4 w-full">
+        <p className={styles.formTitle}>기수</p>
+        <div style={{ height: 2 }}></div>
+        <input
+          className={styles.form}
+          value={generation}
+          type="text"
+          placeholder="기수를 입력해주세요 예시) 850"
+          onChange={(e) => {
+            setGeneration(e.target.value);
+          }}
+        ></input>
+        <div style={{ height: 2 }}></div>
+        <p className={`${styles.help} ${validG(generation).color}`}>
+          {validG(generation).text}
+        </p>
+      </div>
 
-      <div style={{ height: 16 }}></div>
+      <div className="pb-4 w-full">
+        <p className={styles.formTitle}>이름</p>
+        <div style={{ height: 2 }}></div>
+        <input
+          className={styles.form}
+          value={name}
+          type="text"
+          placeholder="이름을 입력해주세요"
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+        ></input>
+        <div style={{ height: 2 }}></div>
+        <p className={`${styles.help} ${validN(name).color}`}>
+          {validN(name).text}
+        </p>
+      </div>
 
-      <p className={styles.formTitle}>이름</p>
-      <div style={{ height: 2 }}></div>
-      <input
-        className={styles.form}
-        value={name}
-        type="text"
-        placeholder="이름을 입력해주세요"
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-      ></input>
-      <div style={{ height: 2 }}></div>
-      <p className={`${styles.help} ${validN(name).color}`}>
-        {validN(name).text}
-      </p>
+      <div className="pb-4 w-full">
+        <p className={styles.formTitle}>생년월일</p>
+        <div style={{ height: 2 }}></div>
+        <input
+          className={styles.form}
+          value={birth}
+          type="text"
+          placeholder="생년월일 8자리를 입력해주세요"
+          onChange={(e) => {
+            setBirth(e.target.value);
+          }}
+        ></input>
+        <div style={{ height: 2 }}></div>
+        <p className={`${styles.help} ${validB(birth).color}`}>
+          {validB(birth).text}
+        </p>
+      </div>
 
-      <div style={{ height: 16 }}></div>
-
-      <p className={styles.formTitle}>생년월일</p>
-      <div style={{ height: 2 }}></div>
-      <input
-        className={styles.form}
-        value={birth}
-        type="text"
-        placeholder="생년월일 8자리를 입력해주세요"
-        onChange={(e) => {
-          setBirth(e.target.value);
-        }}
-      ></input>
-      <div style={{ height: 2 }}></div>
-      <p className={`${styles.help} ${validB(birth).color}`}>
-        {validB(birth).text}
-      </p>
-
-      <div style={{ flex: 138 }}></div>
-      <button
-        className={canSubmit() ? "submit" : "submit disable"}
-        onClick={click}
-      >
-        다음
-      </button>
-      <div style={{ height: 36 }}></div>
+      <div style={{ flex: 90 }}></div>
+      <div className="pb-8 pt-6 w-full">
+        <button
+          className={canSubmit() ? "submit" : "submit disable"}
+          onClick={click}
+        >
+          다음
+        </button>
+      </div>
     </>
   );
 }

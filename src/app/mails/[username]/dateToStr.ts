@@ -1,3 +1,5 @@
+import { parseKorea } from "src/lib/time";
+
 export function dateToStr(date: Date) {
   if (isToday(date)) {
     return toStringTime(date);
@@ -24,15 +26,17 @@ function leftPad(value: number) {
 }
 
 function toStringTime(source: Date, delimiter = ":") {
-  const hour = leftPad(source.getHours() + 1);
-  const minute = leftPad(source.getMinutes() + 1);
+   const koreaDate=parseKorea(source);
+  const hour = leftPad(koreaDate.hour());
+  const minute = leftPad(koreaDate.minute());
   return [hour, minute].join(delimiter);
 }
 
 function toStringByFormatting(source: Date, delimiter = "-") {
-  const year = source.getFullYear();
-  const month = leftPad(source.getMonth() + 1);
-  const day = leftPad(source.getDate());
+  const koreaDate=parseKorea(source);
+  const year = koreaDate.year();
+  const month = leftPad(koreaDate.month());
+  const day = leftPad(koreaDate.date());
 
   return [year, month, day].join(delimiter);
 }
