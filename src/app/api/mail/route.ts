@@ -36,6 +36,38 @@ export async function POST(request: Request) {
   if (!user) {
     return NextResponse.json(
       { message: "해당 유저를 찾을 수 없습니다." },
+      { status: 404 },
+    );
+  }
+
+  if (password.length < 4) {
+    return NextResponse.json(
+      { message: "비밀번호는 4자리 이상이여야합니다." },
+      { status: 400 },
+    );
+  }
+
+  if (contents.length > 1200) {
+    return NextResponse.json(
+      { message: "내용은 1200자를 넘을 수 없습니다." },
+      { status: 400 },
+    );
+  }
+  if (title.length > 300) {
+    return NextResponse.json(
+      { message: "제목은 300자를 넘을 수 없습니다." },
+      { status: 400 },
+    );
+  }
+  if (name.length > 100) {
+    return NextResponse.json(
+      { message: "이름은 100자를 넘을 수 없습니다." },
+      { status: 400 },
+    );
+  }
+  if (relationship.length > 100) {
+    return NextResponse.json(
+      { message: "관계는 100자를 넘을 수 없습니다." },
       { status: 400 },
     );
   }

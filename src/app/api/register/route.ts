@@ -8,6 +8,7 @@ import { UserQueue, User } from "src/db";
 // 존재하지 않으면 users_queue에 추가한다.
 
 import { makeLogger } from "config/winston";
+import { duplicateUsername, validB, validG } from "./valid";
 const logger = makeLogger("register");
 
 export async function POST(request: Request) {
@@ -16,6 +17,43 @@ export async function POST(request: Request) {
   // 인터넷 편지 사이트 프로필 가져오기
   const { username, password, name, birth, generation, message } =
     await request.json();
+
+  if (!validG(generation).valid) {
+    return NextResponse.json(
+      { message: validG(generation).text },
+      { status: 400 },
+    );
+  }
+  if (!validB(birth).valid) {
+    return NextResponse.json({ message: validB(birth).text }, { status: 400 });
+  }
+
+  if (await duplicateUsername(username)) {
+    return NextResponse.json(
+      { message: "아이디가 중복되었습니다." },
+      { status: 400 },
+    );
+  }
+  if (password.length < 4) {
+    return NextResponse.json(
+      { message: "비밀번호는 4자리 이상이여야합니다." },
+      { status: 400 },
+    );
+  }
+
+  if (name.length > 100) {
+    return NextResponse.json(
+      { message: "이름은 100자 이하여야합니다." },
+      { status: 400 },
+    );
+  }
+
+  if (message.length > 500) {
+    return NextResponse.json(
+      { message: "메시지는 500자 이하여야합니다." },
+      { status: 400 },
+    );
+  }
 
   // 유저 만들기
   const newUser = await User.insert({
