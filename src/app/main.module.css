@@ -65,11 +65,17 @@ font-weight:700;
 width:100%;
 
   background:var(--primary);
-  padding: 20px 20px 30px;
+  padding: 20px 0 30px;
   text-align:start
 }
 
 .footerText{
   font-size:12px;
   color:white;
+}
+
+.footerLink{
+  font-size:10px;
+  color:white;
+  text-decoration-line: underline;
 }

@@ -134,8 +134,20 @@ function Body() {
 function Footer() {
   return (
     <div className={styles.footer}>
-      <h3 className={styles.footerText}> 문의: oyc0401@gmail.com</h3>
-      <h3 className={styles.footerText}> ©OhYuchan. All Rights Reserved.</h3>
+      <div className="screen" style={{ alignItems: "start" }}>
+        <div>
+          <h3 className={styles.footerText}> 문의: oyc0401@gmail.com</h3>
+          <h3 className={styles.footerText}>
+            © OhYuchan. All Rights Reserved.
+          </h3>
+          <Link
+            className={styles.footerLink}
+            href="/privacy-policy"
+          >
+            개인정보처리방침
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
