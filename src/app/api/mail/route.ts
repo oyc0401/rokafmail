@@ -12,7 +12,6 @@ import { Post, PostQueue, UnconnectedPost, User } from "src/db";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("mail");
 
-
 export async function POST(request: Request) {
   const {
     username,
@@ -65,8 +64,10 @@ export async function POST(request: Request) {
       postId,
       userId,
     }).then(() => {
-      console.log(`unconnected_post 업로드 성공.`);
-      console.log(`${username} 편지 전송 완료!`);
+      const msg = "unconnected_post";
+      logger.info(
+        `${username} (${userId}), ${msg} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
+      );
     });
   } else {
     sendMail({
@@ -84,7 +85,6 @@ export async function POST(request: Request) {
     });
   }
 
-  logger.info(`${userId} 에게 ${postId} ${name} ${relationship} ${title} ${contents} ${password} 편지 보냄`);
   return NextResponse.json({ message: "편지 전송 성공!" }, { status: 200 });
 }
 
@@ -113,8 +113,6 @@ async function sendMail({
   // 국방부 서버 보내는건 편지쓰기 기간에만 가능, 어짜피 다른시간에 보내도 도착안함
   switch (status) {
     case Status.training:
-     
-      
       console.log("국방부 서버 보내는 중...");
       const response = await Rokaf.postMail({
         name,
@@ -128,27 +126,41 @@ async function sendMail({
 
       // 국방서버에 보내졌으면 보내졌다고 업데이트
       if (response.complete) {
-        console.log("국방부 서버 보내기 성공.");
         await Post.update(postId, { posted: true, postAt: getNow() });
+        const msg = "complete";
+        logger.info(
+          `${username} (${userId}), ${msg} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
+        );
       } else {
         // 안보내졌으면 편지큐에 저장
-        console.log("국방부 서버 보내기 실패.");
         await PostQueue.insert({ postId, userId });
+        const msg = "server error";
+        logger.info(
+          `${username} (${userId}), ${msg} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
+        );
       }
       break;
 
     case Status.before:
     case Status.beginning:
       // 안보내졌으면 편지큐에 저장
-      console.log("편지쓰기 기간 이전입니다.");
       await PostQueue.insert({ postId, userId });
+      // 소대번호 다 있는데 편지쓰기 시간 전이면 안되지
+      const msg = "before post time?";
+      logger.error(
+        `${username} (${userId}), ${msg} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
+      );
       break;
 
     case Status.ending:
     case Status.working:
     case Status.discharged:
-      console.log("편지 쓰기 기간이 지났습니다.");
       await Post.update(postId, { posted: true, postAt: getNow() });
+
+      const msg = "after";
+      logger.info(
+        `${username} (${userId}), ${msg} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
+      );
       break;
   }
 

@@ -31,7 +31,6 @@ export async function POST(request: Request) {
 
   checkUser({ id, name, birth, generation });
 
-  logger.info(`${id} ${name} ${birth} ${generation} 회원가입 성공`);
   return NextResponse.json({ message: "회원가입 성공" }, { status: 200 });
 }
 
@@ -42,25 +41,31 @@ async function checkUser({ id, name, birth, generation }) {
   switch (status) {
     case Status.before:
     case Status.beginning:
-      console.log("편지쓰기 전 유저, 인증 큐에 저장하는 중...");
-      await insertQueue(id).then(() => console.log(`id: ${id} 회원가입 성공!`));
+      await insertQueue(id);
+      logger.info(`${id} ${name} ${birth} ${generation} | user queue`);
       break;
     case Status.training:
     case Status.ending:
     case Status.working:
     case Status.discharged:
-      await saveUser(id, name, birth);
+      await saveUser(id, name, birth, generation);
+
       break;
   }
 
-  return console.log(`id: ${id} 회원가입 성공!`);
+  return;
 }
 
 async function insertQueue(userId: number) {
   await UserQueue.insert({ userId });
 }
 
-async function saveUser(userId: number, name: string, birth: string) {
+async function saveUser(
+  userId: number,
+  name: string,
+  birth: string,
+  generation: number,
+) {
   console.log("편지쓰기 이후 유저, 번호 찾기 시작.");
 
   // 유저가 존재하는지 확인
@@ -77,8 +82,12 @@ async function saveUser(userId: number, name: string, birth: string) {
       sodae: member.sodae,
       connect: true,
     });
+    logger.info(`${userId} ${name} ${birth} ${generation} | complete - user`);
   } else {
     console.log("유저 인증 실패, 인증 큐에 저장하는 중...");
     await insertQueue(userId);
+    logger.info(
+      `${userId} ${name} ${birth} ${generation} | false - user queue`,
+    );
   }
 }
