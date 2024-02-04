@@ -9,7 +9,7 @@ import { Logo, LogoTitle } from "public/assets/index";
 import Image from "next/image";
 
 export function Header() {
-  const [height, setHeight] = useState(0);
+  const [height, setHeight] = useState(window.innerHeight);
   // const handleScroll = () => {
   //   const innerHeight = window.innerHeight;
   //   setHeight(innerHeight);
@@ -18,6 +18,7 @@ export function Header() {
 
   useEffect(() => {
     const innerHeight = window.innerHeight;
+
     setHeight(innerHeight);
     return () => {
       // window.removeEventListener("scroll", handleScroll);
