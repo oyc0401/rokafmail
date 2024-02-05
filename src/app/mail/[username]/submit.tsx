@@ -27,23 +27,27 @@ export function Submit({ username }) {
 
   async function postMail() {
     setProgress(true);
-    try {
-      await mailApi({
-        username: username,
-        name: name,
-        relationship: relationship,
-        title: title,
-        contents: contents,
-        password: password,
-      });
-      //console.log(data);
-      alert("편지 전송 성공!");
+    await mailApi({
+      username: username,
+      name: name,
+      relationship: relationship,
+      title: title,
+      contents: contents,
+      password: password,
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          alert("편지 전송 성공!");
 
-      router.push(`/complete/${username}?sc=200`);
-    } catch (e) {
-      alert(e);
-      setProgress(false);
-    }
+          router.push(`/complete/${username}?sc=200`);
+        } else {
+          alert(`편지 전송 실패 ${response.status}, ${response.message}`);
+        }
+      })
+      .catch((error) => {
+        alert(`오류발생, 편지 전송 실패 ${error}`);
+        setProgress(false);
+      });
   }
 
   async function click() {
@@ -69,7 +73,7 @@ export function Submit({ username }) {
         style={{
           paddingTop: 12,
           paddingBottom: 36,
-          width: "100%",
+          width:'100%',
         }}
       >
         <div className="row">
