@@ -67,12 +67,12 @@ export async function POST(request: Request) {
 
   const id = newUser.id;
 
-  checkUser({ id, name, birth, generation });
+  checkUser({ id, name, birth, generation, username });
 
   return NextResponse.json({ message: "회원가입 성공" }, { status: 200 });
 }
 
-async function checkUser({ id, name, birth, generation }) {
+async function checkUser({ id, name, birth, generation, username }) {
   const status = serveStatus(generation);
 
   // 전역 후에도 회원가입은 가능하다. 다만 편지를 못쓸뿐
@@ -80,13 +80,15 @@ async function checkUser({ id, name, birth, generation }) {
     case Status.before:
     case Status.beginning:
       await insertQueue(id);
-      logger.info(`${id} ${name} ${birth} ${generation} | user queue`);
+      logger.info(
+        `${username} (${id}) ${name}, ${birth}, ${generation} | user queue`,
+      );
       break;
     case Status.training:
     case Status.ending:
     case Status.working:
     case Status.discharged:
-      await saveUser(id, name, birth, generation);
+      await saveUser(id, name, birth, generation, username);
 
       break;
   }
@@ -103,6 +105,7 @@ async function saveUser(
   name: string,
   birth: string,
   generation: number,
+  username: string,
 ) {
   console.log("편지쓰기 이후 유저, 번호 찾기 시작.");
 
@@ -120,12 +123,14 @@ async function saveUser(
       sodae: member.sodae,
       connect: true,
     });
-    logger.info(`${userId} ${name} ${birth} ${generation} | complete - user`);
+    logger.info(
+      `${username} (${userId}) ${name}, ${birth}, ${generation} | complete - user`,
+    );
   } else {
     console.log("유저 인증 실패, 인증 큐에 저장하는 중...");
     await insertQueue(userId);
     logger.info(
-      `${userId} ${name} ${birth} ${generation} | false - user queue`,
+      `${username} (${userId}) ${name} ${birth} ${generation} | false - user queue`,
     );
   }
 }
