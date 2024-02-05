@@ -4,6 +4,7 @@ import styles from "./register.module.css";
 import { useStore, useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
 import { usePathname, useSearchParams } from "next/navigation";
+import {registerApi} from 'src/app/api/register/register'
 
 import axios from "axios";
 import crypto from "crypto";
@@ -31,20 +32,18 @@ export default function Message() {
       .update(password)
       .digest("hex");
 
-    await axios
-      .post("/api/register", {
-        username: username,
-        password: encryptedPassword,
-        name: name,
-        birth: birth,
-        generation: Number(generation),
-        message: message,
-      })
+    await registerApi({
+      username: username,
+      password: encryptedPassword,
+      name: name,
+      birth: birth,
+      generation: Number(generation),
+      message: message,
+    })
       .then((response) => {
         if (response.status === 200) {
           window.onbeforeunload = null;
           router.push(`/link/${username}`);
-         
         } else {
           alert(`회원가입 실패 ${response.status}, ${response.data}`);
         }
@@ -53,7 +52,6 @@ export default function Message() {
         alert(`오류발생, 회원가입 실패 ${error}`);
       });
   }
-
 
   async function click() {
     if (canSubmit()) {
@@ -76,14 +74,13 @@ export default function Message() {
 
       <div style={{ flex: 64 }}></div>
       <div className="pt-12 pb-8 w-full">
-         <h2 className={styles.title}>
+        <h2 className={styles.title}>
           편지지에 보여질
           <br />
           한줄 글을 적어주세요
         </h2>
       </div>
-  
-   
+
       <div style={{ flex: 12 }}></div>
       <div className="pb-4 w-full">
         <p className={styles.formTitle}>한줄 글</p>
@@ -102,8 +99,8 @@ export default function Message() {
           {validM(message).text}
         </p>
       </div>
-      <div style={{paddingBottom:115, width:1}}></div>
-      
+      <div style={{ paddingBottom: 115, width: 1 }}></div>
+
       <div style={{ flex: 90 }}></div>
 
       <p className={styles.intro}>
@@ -112,21 +109,20 @@ export default function Message() {
         공군 기본군사훈련단은 훈련 3주차부터 인터넷편지 작성을 할 수 있습니다.
         따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로 발송됩니다.
       </p>
-       <div className="pb-8 pt-6 w-full">
-         <div className="row">
-           <button className={`submit mini`} onClick={prev}>
-             이전
-           </button>
-           <div style={{ width: 12 }}></div>
-           <button
-             className={canSubmit() ? "submit" : "submit disable"}
-             onClick={click}
-           >
-             만들기
-           </button>
-         </div>
-       </div>
-      
+      <div className="pb-8 pt-6 w-full">
+        <div className="row">
+          <button className={`submit mini`} onClick={prev}>
+            이전
+          </button>
+          <div style={{ width: 12 }}></div>
+          <button
+            className={canSubmit() ? "submit" : "submit disable"}
+            onClick={click}
+          >
+            만들기
+          </button>
+        </div>
+      </div>
     </>
   );
 }

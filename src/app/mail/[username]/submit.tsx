@@ -9,6 +9,7 @@ import { Nav } from "src/components";
 import styles from "./page.module.css";
 import { useStore } from "./model";
 import { validN, validR, validC, validT, validP } from "./valid";
+import { mailApi } from "src/app/api/mail/mail";
 
 export function Submit({ username }) {
   const { name, relationship, title, contents, password } = useStore();
@@ -27,7 +28,7 @@ export function Submit({ username }) {
   async function postMail() {
     setProgress(true);
     try {
-      let data = await axios.post("/api/mail", {
+      await mailApi({
         username: username,
         name: name,
         relationship: relationship,
@@ -68,7 +69,7 @@ export function Submit({ username }) {
         style={{
           paddingTop: 12,
           paddingBottom: 36,
-          width:'100%',
+          width: "100%",
         }}
       >
         <div className="row">
