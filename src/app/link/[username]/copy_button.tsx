@@ -7,8 +7,12 @@ export function CopyButton({ url, name, generation }) {
     const startTime = getEnter(generation).format("YY.MM.DD");
 
     const endTime = getCompletion(generation).format("YY.MM.DD");
-
-    if (navigator.share) {
+    const isMobile = () => {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent,
+      );
+    };
+    if (isMobile() && navigator.share) {
       navigator
         .share({
           title: "하늘인편",
