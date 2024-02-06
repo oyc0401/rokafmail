@@ -5,6 +5,7 @@ import { Nav } from "src/components";
 import { Logo, LogoTitle } from "public/assets/index";
 import Image from "next/image";
 import { Header } from "./header";
+import { Footer } from "./footer";
 export default function Help() {
   return (
     <>
@@ -14,7 +15,6 @@ export default function Help() {
     </>
   );
 }
-
 
 function Body() {
   return (
@@ -79,27 +79,6 @@ function Body() {
                               시작하기
                             </Link>
                           </Nav> */}
-    </div>
-  );
-}
-
-function Footer() {
-  return (
-    <div className={styles.footer}>
-      <div className="screen" style={{ alignItems: "start" }}>
-        <div>
-          <h3 className={styles.footerText}> 문의: oyc0401@gmail.com</h3>
-          <h3 className={styles.footerText}>
-            © OhYuchan. All Rights Reserved.
-          </h3>
-          <Link
-            className={styles.footerLink}
-            href="/privacy-policy"
-          >
-            개인정보처리방침
-          </Link>
-        </div>
-      </div>
     </div>
   );
 }
