@@ -17,11 +17,7 @@ export class User {
       },
     });
 
-  static findAll = () =>
-    prisma.user.findMany({
-      
-    });
-  
+  static findAll = () => prisma.user.findMany({});
 
   static update = (
     id: number,
@@ -79,4 +75,7 @@ export class User {
     });
 
   static deleteById = (userId) => prisma.user.delete({ where: { id: userId } });
+
+  static deleteByUsername = (username) =>
+    prisma.user.delete({ where: { username: username } });
 }
