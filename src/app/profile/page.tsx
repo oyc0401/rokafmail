@@ -5,15 +5,49 @@ import Link from "next/link";
 import crypto from "crypto";
 // import { setCookie } from "./cookie";
 import { Nav } from "src/components";
+import { login } from "src/app/api/login/login";
+import { signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { Profile } from "./profile";
 
 export default function Client() {
+ 
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  if (!session?.user) {
+  } else if (status === "authenticated") {
+    console.log(session.user);
+    // router.push(`profile/${session.user.email}`)
+    return (
+      <>
+        <Profile username={session.user.email}></Profile>
+        <p>Signed in as {session.user.name}</p>
+        <button
+          onClick={() => {
+            signOut();
+          }}
+        >
+          log out
+        </button>
+      </>
+    );
+  }
+
+  return <a href="/api/auth/signin">Sign in</a>;
+
+
+
+//////
+
   const [username, setUsername] = useState("");
-  const [pw, setPw] = useState("");
+  const [password, setpassword] = useState("");
   const [message, setMessage] = useState("");
 
+  
   function validP() {
     // 빈칸일 때
-    if (pw == "") return { text: "", valid: false };
+    if (password == "") return { text: "", valid: false };
 
     // 통과
     return { text: "", color: "great", valid: true };
@@ -27,17 +61,18 @@ export default function Client() {
     return { text: "", color: "great", valid: true };
   }
 
-  function click() {
-    if (!canSubmit()) return;
-    const encryptedPassword = crypto
-      .createHash("sha256")
-      .update(pw)
-      .digest("hex");
-    if (encryptedPassword == password) {
-      //setCookie(encryptedPassword, username);
-    } else {
-      setMessage("비밀번호가 틀렸습니다.");
-    }
+  async function click() {
+    signIn();
+    // if (!canSubmit()) return;
+
+    // const data = await login(username, password);
+
+    // if (data.status == 200) {
+    //   alert("로그인 성공!");
+    //    //setCookie(encryptedPassword, username);
+    // } else {
+    //   alert(`로그인 실패 ${data.message}`);
+    // }
   }
 
   function canSubmit() {
@@ -68,10 +103,7 @@ export default function Client() {
               setUsername(e.target.value);
             }}
           ></input>
-          <div style={{ height: 2 }}></div>
-          <p className={`${styles.help} ${validU(username).color}`}>
-            {validU(username).text}
-          </p>
+          <div style={{ height: 19 }}></div>
         </div>
 
         <div className="pb-4 w-full">
@@ -82,13 +114,10 @@ export default function Client() {
             type="password"
             placeholder="비밀번호를 입력해주세요"
             onChange={(e) => {
-              setPw(e.target.value);
+              setpassword(e.target.value);
             }}
           ></input>
-          <div style={{ height: 2 }}></div>
-          <p className={`${styles.help} ${validP(pw).color}`}>
-            {validP(pw).text}
-          </p>
+          <div style={{ height: 19 }}></div>
         </div>
 
         <div style={{ height: 95 + 16 }}></div>
