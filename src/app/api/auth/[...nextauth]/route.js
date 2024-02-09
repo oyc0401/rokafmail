@@ -33,7 +33,6 @@ export const authOptions ={
         } else {
           return null;
         }
-
       },
 
       callbacks: {
@@ -49,9 +48,16 @@ export const authOptions ={
           session.accessToken = token.accessToken
           return session
         }
-      }
+      },
+
+     
+      
     }),
   ],
+
+  pages: {
+    signIn: '/auth/signin',
+  }
 }
 
 const handler = NextAuth(authOptions);

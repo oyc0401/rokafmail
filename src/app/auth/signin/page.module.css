@@ -68,37 +68,3 @@
   padding: 20px;
    padding-top:16px;
 }
-
-
-
-/* 내 정보 */
-
-.profile>h1{
-  font-size:22px;
-  font-weight:500;
-}
-
-.profile>h2{
-  font-size:20px;
-  font-weight:400;
-  text-align:start;
-  width:100%;
-}
-
-
-.editButton{
-  font-size: 16px;
-  white-space: nowrap;
-  text-decoration: underline;
-}
-
-.textButton{
-  font-size: 16px;
-  text-decoration: underline;
-}
-
-.delete{
-  color:#E6E6E6;
-  font-size: 16px;
-  text-decoration: underline;
-}

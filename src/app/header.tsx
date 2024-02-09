@@ -58,8 +58,8 @@ export function Header() {
               justifyContent: "center",
             }}
           >
-            <Link href="/search" className={styles.help}>
-              편지함찾기
+            <Link href="/profile" className={styles.help}>
+             로그인
             </Link>
           </div>
         </div>

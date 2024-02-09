@@ -15,11 +15,16 @@ const sleep = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay));
 export async function register() {
   console.log("처음 실행!!");
-  execute();
+
+  const node_env = process.env.NODE_ENV;
+
+  if (node_env == "production") {
+    execute();
+  }
 }
 
 async function execute() {
-   console.log("schedule post wait...");
+  console.log("schedule post wait...");
   await sleep(10000);
   console.log("schedule post");
   try {

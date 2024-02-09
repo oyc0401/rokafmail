@@ -1,7 +1,8 @@
-import { auth } from "src/app/api/auth/auth";
+
 import { User } from "src/db";
 import { notFound } from "next/navigation";
 import { Client } from "./client";
+import { auth } from "src/app/api/auth/auth";
 
 export default async function Page() {
   const session = await auth();
@@ -9,18 +10,13 @@ export default async function Page() {
     notFound();
   }
   const username = session.user.email;
-  const user = await User.findByUsername(username);
 
+  
+
+  const user = await User.findByUsername(username);
   if (!user)  notFound();
   
   const { name, birth, message } = user;
 
-  return (
-    <Client
-      username={username}
-      name={name}
-      birth={birth}
-      message={message}
-    ></Client>
-  );
+  return <Client username={username}></Client>;
 }

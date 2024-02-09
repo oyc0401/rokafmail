@@ -78,4 +78,28 @@ export class User {
 
   static deleteByUsername = (username) =>
     prisma.user.delete({ where: { username: username } });
+
+  static editProfile = ({ username, name, birth, message }) =>
+    prisma.user.update({
+      where: {
+        username,
+      },
+
+      data: {
+        name: name,
+        birth: birth,
+        message: message,
+      },
+    });
+
+  static editPassword = ({ username, password }) =>
+    prisma.user.update({
+      where: {
+        username,
+      },
+
+      data: {
+        password: password,
+      },
+    });
 }
