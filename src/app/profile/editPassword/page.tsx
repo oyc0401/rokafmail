@@ -6,12 +6,14 @@ import { auth } from "src/app/api/auth/auth";
 
 export default async function Page() {
   const session = await auth();
+ // console.log(session)
   if (!session || !session.user || !session.user.email) {
+    
     notFound();
   }
   const username = session.user.email;
 
-  
+  console.log(username);
 
   const user = await User.findByUsername(username);
   if (!user)  notFound();

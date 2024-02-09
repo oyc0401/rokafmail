@@ -7,7 +7,13 @@ import styles from './page.module.css'
 export default function Login() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
+   
+  const error = searchParams.get("error");
 
+  const errorMessage = useRef('')
+  if(error=='CredentialsSignin'){
+        errorMessage.current='아이디 또는 비밀번호가 다릅니다.'
+  }
 
 
   const [username, setUsername] = useState("");
@@ -27,6 +33,7 @@ export default function Login() {
       password: password,
       callbackUrl: callbackUrl ?? "/",
     });
+   // console.log(result)
     
   };
 
@@ -64,13 +71,14 @@ export default function Login() {
           />
           <div style={{ height: 19 }}></div>
         </div>
+        <p className={`warn ${styles.warning}`}>{errorMessage.current}</p>
 
         <div style={{ height: 95 + 16 }}></div>
 
         <div style={{ flex: 90 }}></div>
         <div className="pb-8 pt-6 w-full">
           <button
-            className={canSubmit() ? "submit" : "submit disable"}
+            className={"submit" }
             onClick={click}
           >
             로그인

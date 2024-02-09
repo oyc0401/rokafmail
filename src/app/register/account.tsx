@@ -128,6 +128,7 @@ export default function Account() {
            className={styles.form}
            value={password}
            type="password"
+           autoComplete="new-password"
            placeholder="비밀번호를 입력해주세요"
            onChange={(e) => {
              setPassword(e.target.value);
@@ -147,6 +148,7 @@ export default function Account() {
            className={styles.form}
            value={repassword}
            type="password"
+           autoComplete="new-password"
            placeholder="비밀번호를 다시 입력해주세요"
            onChange={(e) => {
              setRepassword(e.target.value);

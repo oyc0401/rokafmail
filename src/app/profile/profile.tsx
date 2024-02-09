@@ -46,6 +46,10 @@ export function Profile({ username, name, birth, generation, message }) {
         </div>
 
         <ProfileArea title="한줄 글" text={message} />
+         <div style={{height:20}}></div>
+        <Link className="submit" href={{ pathname: `/mail/${username}` }}>
+          내 편지함
+        </Link>
         <div style={{ flex: 1 }}></div>
 
         <div style={{ height: 26 }}></div>
@@ -61,7 +65,7 @@ export function Profile({ username, name, birth, generation, message }) {
 
         <div style={{ height: 36 }}></div>
         <button className={styles.delete} onClick={onclickDelete}>
-          회원 삭제
+          회원삭제
         </button>
         <div style={{ height: 36 }}></div>
       </div>

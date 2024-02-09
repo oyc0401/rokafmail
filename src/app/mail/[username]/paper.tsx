@@ -143,6 +143,7 @@ function Password() {
           <input
             className={`${styles.form} ${styles.centerForm}`}
             type="password"
+            autoComplete="new-password"
             placeholder="비밀번호"
             onChange={(e) => {
               setPassword(e.target.value);
