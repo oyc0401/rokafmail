@@ -3,6 +3,7 @@ import styles from "./register.module.css";
 import { useStore, useStoreBase } from "./model";
 import { knowTime, isDischarged } from "src/lib/time";
 
+import { InputField, BasicArea } from "src/components";
 export default function Information() {
   const { generation, name, birth, setGeneration, setName, setBirth, next } =
     useStoreBase();
@@ -14,82 +15,59 @@ export default function Information() {
     if (canSubmit()) next();
   };
 
+  const generationValidation = validG(generation);
+  const nameValidation = validN(name);
+  const birthValidation = validB(birth);
   return (
     <>
-      <div style={{ flex: 64 }}></div>
-      <div className="pt-12 pb-8 w-full">
-        <h2 className={styles.title}>
-          편지 주소를 확인하기 위해
-          <br />
-          이름과 생년월일이 필요해요
-        </h2>
-      </div>
+      <BasicArea
+        header={
+          <div className="pt-12 pb-12 w-full">
+            <h2 className={styles.title}>
+              편지 주소를 확인하기 위해
+              <br />
+              이름과 생년월일이 필요해요
+            </h2>
+          </div>
+        }
+        body={
+          <>
+            <InputField
+              label="기수"
+              placeholder="기수를 입력해주세요 예시) 850"
+              value={generation}
+              onChange={setGeneration}
+              helpMessage={generationValidation.text}
+              color={generationValidation.color}
+            ></InputField>
 
-      <div style={{ flex: 12 }}></div>
-
-      <div className="pb-4 w-full">
-        <p className={styles.formTitle}>기수</p>
-        <div style={{ height: 2 }}></div>
-        <input
-          className={styles.form}
-          value={generation}
-          type="text"
-          placeholder="기수를 입력해주세요 예시) 850"
-          onChange={(e) => {
-            setGeneration(e.target.value);
-          }}
-        ></input>
-        <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validG(generation).color}`}>
-          {validG(generation).text}
-        </p>
-      </div>
-
-      <div className="pb-4 w-full">
-        <p className={styles.formTitle}>이름</p>
-        <div style={{ height: 2 }}></div>
-        <input
-          className={styles.form}
-          value={name}
-          type="text"
-          placeholder="이름을 입력해주세요"
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-        ></input>
-        <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validN(name).color}`}>
-          {validN(name).text}
-        </p>
-      </div>
-
-      <div className="pb-4 w-full">
-        <p className={styles.formTitle}>생년월일</p>
-        <div style={{ height: 2 }}></div>
-        <input
-          className={styles.form}
-          value={birth}
-          type="text"
-          placeholder="생년월일 8자리를 입력해주세요"
-          onChange={(e) => {
-            setBirth(e.target.value);
-          }}
-        ></input>
-        <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validB(birth).color}`}>
-          {validB(birth).text}
-        </p>
-      </div>
-
-      <div style={{ flex: 90 }}></div>
-      <div className="pb-8 pt-6 w-full">
-        <button
-          className={canSubmit() ? "submit" : "submit disable"}
-          onClick={click}
-        >
-          다음
-        </button>
-      </div>
+            <InputField
+              label="이름"
+              placeholder="이름을 입력해주세요"
+              value={name}
+              onChange={setName}
+              helpMessage={nameValidation.text}
+              color={nameValidation.color}
+            ></InputField>
+            <InputField
+              label="생년월일"
+              placeholder="생년월일 8자리를 입력해주세요"
+              value={birth}
+              onChange={setBirth}
+              helpMessage={birthValidation.text}
+              color={birthValidation.color}
+            ></InputField>
+          </>
+        }
+        footer={
+          <button
+            className={canSubmit() ? "submit" : "submit disable"}
+            onClick={click}
+          >
+            다음
+          </button>
+        }
+      ></BasicArea>
     </>
   );
 }

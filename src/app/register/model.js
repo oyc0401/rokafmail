@@ -4,7 +4,7 @@ import createSelectors from "./selectors";
 export const useStoreBase = create((set) => ({
   reset: () =>
     set({
-      page:0,
+      page:2,
       generation: "",
       name: "",
       birth: "",
@@ -14,7 +14,7 @@ export const useStoreBase = create((set) => ({
       message: "",
     }),
 
-  page: 0,
+  page: 2,
   // page:1,
   next: () => set((state) => ({ page: state.page + 1 })),
   prev: () => set((state) => ({ page: state.page - 1 })),

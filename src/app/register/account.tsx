@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
 import { duplicateUsername } from "src/server";
 import { useStore, useStoreBase } from "./model";
+import { InputField,BasicArea } from "src/components";
 
 export default function Account() {
   const {
@@ -61,123 +62,90 @@ export default function Account() {
     if (canSubmit()) next();
   };
 
+  const UsernameValidation = validUUU();
+  const passwordValidation = validP(password);
+  const repasswordValidation = validR(repassword, password);
+
   return (
     <>
-      <div style={{ flex: 64 }}></div>
-      <div className="pt-12 pb-8 w-full">
-        <h2 className={styles.title}>
-          수료 후 편지함 확인을 위해
-          <br />
-          비밀번호를 설정해주세요
-        </h2>
-      </div>
-
-      <div style={{ flex: 12 }}></div>
-      <div className="pb-4 w-full">
-        <p className={styles.formTitle}>아이디</p>
-        <div style={{ height: 2 }}></div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-            justifyContent: "flex-start",
-          }}
-        >
-          <input
-            className={styles.form}
-            value={username}
-            type="text"
-            style={{ flex: "1" }}
-            placeholder="아이디를 입력해주세요"
-            onChange={(e) => {
-              editUsername(e.target.value);
-            }}
-          ></input>
-          <button
-            className={
-              loading
-                ? `${styles.dupButton} ${styles.loading}`
-                : styles.dupButton
-            }
-            onClick={checkUsername}
-          >
-            <div
-              style={{
-                display: "flex",
-                textAlign: "center",
-                justifyContent: "center",
-              }}
+      <BasicArea
+        header={
+          <div className="pt-12 pb-12">
+            <h2 className={styles.title}>
+              수료 후 편지함 확인을 위해
+              <br />
+              비밀번호를 설정해주세요
+            </h2>
+          </div>
+        }
+        body={
+          <>
+            <InputField
+              label="아이디"
+              placeholder="아이디를 입력해주세요"
+              value={username}
+              onChange={editUsername}
+              helpMessage={UsernameValidation.text}
+              color={UsernameValidation.color}
             >
-              {loading ? <p className={styles.animation} /> : "중복확인"}
-            </div>
-          </button>
-        </div>
+              <button
+                className={
+                  loading
+                    ? `${styles.dupButton} ${styles.loading}`
+                    : styles.dupButton
+                }
+                onClick={checkUsername}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    textAlign: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {loading ? <p className={styles.animation} /> : "중복확인"}
+                </div>
+              </button>
+            </InputField>
 
-        <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validUUU().color}`}>
-          {validUUU().text}
-        </p>
-      </div>
-
-       <div className="pb-4 w-full">
-         <p className={styles.formTitle}>비밀번호</p>
-         <div style={{ height: 2 }}></div>
-         <input
-           className={styles.form}
-           value={password}
-           type="password"
-           autoComplete="new-password"
-           placeholder="비밀번호를 입력해주세요"
-           onChange={(e) => {
-             setPassword(e.target.value);
-           }}
-         ></input>
-         <div style={{ height: 2 }}></div>
-         <p className={`${styles.help} ${validP(password).color}`}>
-           {validP(password).text}
-         </p>
-       </div>
+            <InputField
+              label="비밀번호"
+              type="password"
+              value={password}
+              autoComplete="new-password"
+              placeholder="비밀번호를 입력해주세요"
+              onChange={setPassword}
+              helpMessage={passwordValidation.text}
+              color={passwordValidation.color}
+            />
+            <InputField
+              label="비밀번호 재확인"
+              type="password"
+              value={repassword}
+              autoComplete="new-password"
+              placeholder="비밀번호를 다시 입력해주세요"
+              onChange={setRepassword}
+              helpMessage={repasswordValidation.text}
+              color={repasswordValidation.color}
+            />
+          </>
+        }
+        footer={
+          <div className="row">
+            <button className={`submit mini`} onClick={prev}>
+              이전
+            </button>
+            <div style={{ width: 12 }}></div>
+            <button
+              className={canSubmit() ? "submit" : "submit disable"}
+              onClick={click}
+            >
+              다음
+            </button>
+          </div>
+        }
+      ></BasicArea>
       
-
-       <div className="pb-4 w-full">
-         <p className={styles.formTitle}>비밀번호 재확인</p>
-         <div style={{ height: 2 }}></div>
-         <input
-           className={styles.form}
-           value={repassword}
-           type="password"
-           autoComplete="new-password"
-           placeholder="비밀번호를 다시 입력해주세요"
-           onChange={(e) => {
-             setRepassword(e.target.value);
-           }}
-         ></input>
-         <div style={{ height: 2 }}></div>
-         <p className={`${styles.help} ${validR(repassword, password).color}`}>
-           {validR(repassword, password).text}
-         </p>
-       </div>
-     
-
-     
-      
-      <div style={{ flex: 90 }}></div>
-      <div className="pb-8 pt-6 w-full">
-        <div className="row">
-          <button className={`submit mini`} onClick={prev}>
-            이전
-          </button>
-          <div style={{ width: 12 }}></div>
-          <button
-            className={canSubmit() ? "submit" : "submit disable"}
-            onClick={click}
-          >
-            다음
-          </button>
-        </div>
-      </div>
     </>
   );
 }
