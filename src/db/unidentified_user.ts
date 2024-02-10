@@ -4,6 +4,8 @@ export class UnidentifiedUser {
   static insert = (data: { userId: number }) =>
     prisma.unidentifiedUser.create({ data });
 
+
+  
   static findAll = () =>
     prisma.unidentifiedUser.findMany({
       include: {
