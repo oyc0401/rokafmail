@@ -3,7 +3,13 @@ import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
 import { duplicateUsername } from "src/server";
 import { useStore, useStoreBase } from "./model";
-import { InputField, BasicArea } from "src/components";
+import {
+  InputField,
+  BasicArea,
+  BasicHeader,
+  BasicBody,
+  BasicFooter,
+} from "src/components";
 
 export default function Account() {
   const {
@@ -67,68 +73,62 @@ export default function Account() {
   const repasswordValidation = validR(repassword, password);
 
   return (
-    <>
-      <BasicArea
-        header={
-          <>
-            수료 후 편지함 확인을 위해
-            <br />
-            비밀번호를 설정해주세요
-          </>
-        }
-        body={
-          <div className="pb-12 w-full">
-            <InputField
-              label="아이디"
-              placeholder="아이디를 입력해주세요"
-              value={username}
-              onChange={editUsername}
-              helpMessage={UsernameValidation.text}
-              color={UsernameValidation.color}
+      <BasicArea>
+        <BasicHeader>
+          수료 후 편지함 확인을 위해
+          <br />
+          비밀번호를 설정해주세요
+        </BasicHeader>
+        <BasicBody>
+          <InputField
+            label="아이디"
+            placeholder="아이디를 입력해주세요"
+            value={username}
+            onChange={editUsername}
+            helpMessage={UsernameValidation.text}
+            color={UsernameValidation.color}
+          >
+            <button
+              className={
+                loading
+                  ? `${styles.dupButton} ${styles.loading}`
+                  : styles.dupButton
+              }
+              onClick={checkUsername}
             >
-              <button
-                className={
-                  loading
-                    ? `${styles.dupButton} ${styles.loading}`
-                    : styles.dupButton
-                }
-                onClick={checkUsername}
+              <div
+                style={{
+                  display: "flex",
+                  textAlign: "center",
+                  justifyContent: "center",
+                }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    textAlign: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {loading ? <p className={styles.animation} /> : "중복확인"}
-                </div>
-              </button>
-            </InputField>
-
-            <InputField
-              label="비밀번호"
-              type="password"
-              value={password}
-              autoComplete="new-password"
-              placeholder="비밀번호를 입력해주세요"
-              onChange={setPassword}
-              helpMessage={passwordValidation.text}
-              color={passwordValidation.color}
-            />
-            <InputField
-              label="비밀번호 재확인"
-              type="password"
-              value={repassword}
-              autoComplete="new-password"
-              placeholder="비밀번호를 다시 입력해주세요"
-              onChange={setRepassword}
-              helpMessage={repasswordValidation.text}
-              color={repasswordValidation.color}
-            />
-          </div>
-        }
-        footer={
+                {loading ? <p className={styles.animation} /> : "중복확인"}
+              </div>
+            </button>
+          </InputField>
+          <InputField
+            label="비밀번호"
+            type="password"
+            value={password}
+            autoComplete="new-password"
+            placeholder="비밀번호를 입력해주세요"
+            onChange={setPassword}
+            helpMessage={passwordValidation.text}
+            color={passwordValidation.color}
+          />
+          <InputField
+            label="비밀번호 재확인"
+            type="password"
+            value={repassword}
+            autoComplete="new-password"
+            placeholder="비밀번호를 다시 입력해주세요"
+            onChange={setRepassword}
+            helpMessage={repasswordValidation.text}
+            color={repasswordValidation.color}
+          />
+        </BasicBody>
+        <BasicFooter>
           <div className="row">
             <button className={`submit mini`} onClick={prev}>
               이전
@@ -141,9 +141,8 @@ export default function Account() {
               다음
             </button>
           </div>
-        }
-      ></BasicArea>
-    </>
+        </BasicFooter>
+      </BasicArea>
   );
 }
 

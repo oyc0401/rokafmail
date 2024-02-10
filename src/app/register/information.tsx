@@ -3,7 +3,13 @@ import styles from "./register.module.css";
 import { useStore, useStoreBase } from "./model";
 import { knowTime, isDischarged } from "src/lib/time";
 
-import { InputField, BasicArea } from "src/components";
+import {
+  InputField,
+  BasicArea,
+  BasicHeader,
+  BasicBody,
+  BasicFooter,
+} from "src/components";
 export default function Information() {
   const { generation, name, birth, setGeneration, setName, setBirth, next } =
     useStoreBase();
@@ -20,52 +26,47 @@ export default function Information() {
   const birthValidation = validB(birth);
   return (
     <>
-      <BasicArea
-        header={
-          <>
-            편지 주소를 확인하기 위해
-            <br />
-            이름과 생년월일이 필요해요
-          </>
-        }
-        body={
-          <div className="pb-12 w-full">
-            <InputField
-              label="기수"
-              placeholder="기수를 입력해주세요 예시) 850"
-              value={generation}
-              onChange={setGeneration}
-              helpMessage={generationValidation.text}
-              color={generationValidation.color}
-            ></InputField>
-
-            <InputField
-              label="이름"
-              placeholder="이름을 입력해주세요"
-              value={name}
-              onChange={setName}
-              helpMessage={nameValidation.text}
-              color={nameValidation.color}
-            ></InputField>
-            <InputField
-              label="생년월일"
-              placeholder="생년월일 8자리를 입력해주세요"
-              value={birth}
-              onChange={setBirth}
-              helpMessage={birthValidation.text}
-              color={birthValidation.color}
-            ></InputField>
-          </div>
-        }
-        footer={
+      <BasicArea>
+        <BasicHeader>
+          편지 주소를 확인하기 위해
+          <br />
+          이름과 생년월일이 필요해요
+        </BasicHeader>
+        <BasicBody>
+          <InputField
+            label="기수"
+            placeholder="기수를 입력해주세요 예시) 850"
+            value={generation}
+            onChange={setGeneration}
+            helpMessage={generationValidation.text}
+            color={generationValidation.color}
+          />
+          <InputField
+            label="이름"
+            placeholder="이름을 입력해주세요"
+            value={name}
+            onChange={setName}
+            helpMessage={nameValidation.text}
+            color={nameValidation.color}
+          />
+          <InputField
+            label="생년월일"
+            placeholder="생년월일 8자리를 입력해주세요"
+            value={birth}
+            onChange={setBirth}
+            helpMessage={birthValidation.text}
+            color={birthValidation.color}
+          />
+        </BasicBody>
+        <BasicFooter>
           <button
             className={canSubmit() ? "submit" : "submit disable"}
             onClick={click}
           >
             다음
           </button>
-        }
-      ></BasicArea>
+        </BasicFooter>
+      </BasicArea>
     </>
   );
 }

@@ -5,7 +5,13 @@ import { useStore, useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
 import { usePathname, useSearchParams } from "next/navigation";
 import { registerApi } from "src/app/api/register/register";
-import { InputField, BasicArea } from "src/components";
+import {
+  InputField,
+  BasicArea,
+  BasicHeader,
+  BasicBody,
+  BasicFooter,
+} from "src/components";
 
 import axios from "axios";
 import crypto from "crypto";
@@ -73,15 +79,13 @@ export default function Message() {
       >
         <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
       </div>
-      <BasicArea
-        header={
-          <>
-            편지지에 보여질
-            <br />
-            한줄 글을 적어주세요
-          </>
-        }
-        body={
+      <BasicArea>
+        <BasicHeader>
+          편지지에 보여질
+          <br />
+          한줄 글을 적어주세요
+        </BasicHeader>
+        <BasicBody paddingBottom={false}>
           <div className="flex flex-col">
             <div className="pb-12 w-full">
               <InputField
@@ -91,9 +95,8 @@ export default function Message() {
                 onChange={setMessage}
                 helpMessage={messageValidation.text}
                 color={messageValidation.color}
-              ></InputField>
+              />
             </div>
-
             <div style={{ flex: 1 }}></div>
             <p className={styles.intro}>
               편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
@@ -103,24 +106,22 @@ export default function Message() {
               발송됩니다.
             </p>
           </div>
-        }
-        footer={
-          <>
-            <div className="row">
-              <button className={`submit mini`} onClick={prev}>
-                이전
-              </button>
-              <div style={{ width: 12 }}></div>
-              <button
-                className={canSubmit() ? "submit" : "submit disable"}
-                onClick={click}
-              >
-                만들기
-              </button>
-            </div>
-          </>
-        }
-      ></BasicArea>
+        </BasicBody>
+        <BasicFooter>
+          <div className="row">
+            <button className={`submit mini`} onClick={prev}>
+              이전
+            </button>
+            <div style={{ width: 12 }}></div>
+            <button
+              className={canSubmit() ? "submit" : "submit disable"}
+              onClick={click}
+            >
+              만들기
+            </button>
+          </div>
+        </BasicFooter>
+      </BasicArea>
     </>
   );
 }
