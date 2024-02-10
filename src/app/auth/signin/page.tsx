@@ -1,28 +1,35 @@
 "use client";
-import React, { useRef,useState } from "react";
+import React, { useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import styles from './page.module.css'
+import styles from "./page.module.css";
+import { Suspense } from "react";
 
 export default function Login() {
+  return (
+    <Suspense fallback={<>Loading...</>}>
+      <Page />
+    </Suspense>
+  );
+}
+
+function Page() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
-   
+
   const error = searchParams.get("error");
 
-  const errorMessage = useRef('')
-  if(error=='CredentialsSignin'){
-        errorMessage.current='아이디 또는 비밀번호가 다릅니다.'
+  const errorMessage = useRef("");
+  if (error == "CredentialsSignin") {
+    errorMessage.current = "아이디 또는 비밀번호가 다릅니다.";
   }
-
 
   const [username, setUsername] = useState("");
   const [password, setpassword] = useState("");
-  
+
   function canSubmit() {
     return validU(username).valid && validP(password).valid;
   }
-  
 
   const click = async () => {
     // console.log(emailRef.current)
@@ -33,8 +40,7 @@ export default function Login() {
       password: password,
       callbackUrl: callbackUrl ?? "/",
     });
-   // console.log(result)
-    
+    // console.log(result)
   };
 
   return (
@@ -42,9 +48,7 @@ export default function Login() {
       <div className="screen">
         <div style={{ flex: 64 }}></div>
         <div className="pt-12 pb-8 w-full">
-          <h2 className={styles.title}>
-            로그인
-          </h2>
+          <h2 className={styles.title}>로그인</h2>
         </div>
 
         <div style={{ flex: 12 }}></div>
@@ -77,10 +81,7 @@ export default function Login() {
 
         <div style={{ flex: 90 }}></div>
         <div className="pb-8 pt-6 w-full">
-          <button
-            className={"submit" }
-            onClick={click}
-          >
+          <button className={"submit"} onClick={click}>
             로그인
           </button>
         </div>
