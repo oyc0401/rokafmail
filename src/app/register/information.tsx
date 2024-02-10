@@ -22,16 +22,14 @@ export default function Information() {
     <>
       <BasicArea
         header={
-          <div className="pt-12 pb-12 w-full">
-            <h2 className={styles.title}>
-              편지 주소를 확인하기 위해
-              <br />
-              이름과 생년월일이 필요해요
-            </h2>
-          </div>
+          <>
+            편지 주소를 확인하기 위해
+            <br />
+            이름과 생년월일이 필요해요
+          </>
         }
         body={
-          <>
+          <div className="pb-12 w-full">
             <InputField
               label="기수"
               placeholder="기수를 입력해주세요 예시) 850"
@@ -57,7 +55,7 @@ export default function Information() {
               helpMessage={birthValidation.text}
               color={birthValidation.color}
             ></InputField>
-          </>
+          </div>
         }
         footer={
           <button

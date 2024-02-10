@@ -5,7 +5,7 @@ import { useStore, useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
 import { usePathname, useSearchParams } from "next/navigation";
 import { registerApi } from "src/app/api/register/register";
-import { InputField,BasicArea } from "src/components/InputField";
+import { InputField, BasicArea } from "src/components";
 
 import axios from "axios";
 import crypto from "crypto";
@@ -65,44 +65,47 @@ export default function Message() {
   const messageValidation = validM(message);
   return (
     <>
-      {/* <div
+      <div
         className={styles.registerLoad}
         style={{
           display: progress ? "flex" : "none",
         }}
       >
         <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
-      </div> */}
+      </div>
       <BasicArea
         header={
-          <div className="pt-12 pb-12 w-full">
-            <h2 className={styles.title}>
-              편지지에 보여질
-              <br />
-              한줄 글을 적어주세요
-            </h2>
-          </div>
-        }
-        body={
           <>
-            <InputField
-              label="한줄 글"
-              placeholder="한줄 글을 작성해주세요"
-              value={message}
-              onChange={setMessage}
-              helpMessage={messageValidation.text}
-              color={messageValidation.color}
-            ></InputField>
+            편지지에 보여질
+            <br />
+            한줄 글을 적어주세요
           </>
         }
-        footer={
-          <>
+        body={
+          <div className="flex flex-col">
+            <div className="pb-12 w-full">
+              <InputField
+                label="한줄 글"
+                placeholder="한줄 글을 작성해주세요"
+                value={message}
+                onChange={setMessage}
+                helpMessage={messageValidation.text}
+                color={messageValidation.color}
+              ></InputField>
+            </div>
+
+            <div style={{ flex: 1 }}></div>
             <p className={styles.intro}>
               편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
               <br />
-              공군 기본군사훈련단은 훈련 3주차부터 인터넷편지 작성을 할 수 있습니다.
-              따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로 발송됩니다.
+              공군 기본군사훈련단은 훈련 3주차부터 인터넷편지 작성을 할 수
+              있습니다. 따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로
+              발송됩니다.
             </p>
+          </div>
+        }
+        footer={
+          <>
             <div className="row">
               <button className={`submit mini`} onClick={prev}>
                 이전
@@ -116,7 +119,6 @@ export default function Message() {
               </button>
             </div>
           </>
-
         }
       ></BasicArea>
     </>

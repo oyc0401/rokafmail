@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
 import { duplicateUsername } from "src/server";
 import { useStore, useStoreBase } from "./model";
-import { InputField,BasicArea } from "src/components";
+import { InputField, BasicArea } from "src/components";
 
 export default function Account() {
   const {
@@ -70,16 +70,14 @@ export default function Account() {
     <>
       <BasicArea
         header={
-          <div className="pt-12 pb-12">
-            <h2 className={styles.title}>
-              수료 후 편지함 확인을 위해
-              <br />
-              비밀번호를 설정해주세요
-            </h2>
-          </div>
+          <>
+            수료 후 편지함 확인을 위해
+            <br />
+            비밀번호를 설정해주세요
+          </>
         }
         body={
-          <>
+          <div className="pb-12 w-full">
             <InputField
               label="아이디"
               placeholder="아이디를 입력해주세요"
@@ -128,7 +126,7 @@ export default function Account() {
               helpMessage={repasswordValidation.text}
               color={repasswordValidation.color}
             />
-          </>
+          </div>
         }
         footer={
           <div className="row">
@@ -145,7 +143,6 @@ export default function Account() {
           </div>
         }
       ></BasicArea>
-      
     </>
   );
 }
