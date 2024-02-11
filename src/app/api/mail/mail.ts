@@ -121,19 +121,11 @@ async function processPost(postModel: PostModel) {
 
   logger.info(`(${postId}) | ${username} (${userId}) | ${logMessage}`);
 }
+
 async function sendMail(postModel: PostModel) {
-  const {
-    userId,
-    postId,
-    name,
-    relationship,
-    title,
-    contents,
-    password,
-    memberSeq,
-    sodae,
-    generation,
-  } = postModel;
+  const { userId, postId, generation } = postModel;
+  const { name, relationship, title, contents, password, memberSeq, sodae } =
+    postModel;
   // 만약 편지보내기 기간이 아직 안왔으면 안보내고 post_queue에만 저장하고
   // 편지보내기 시간이 지났으면 posted를 true로 업데이트 하되, 국방부 서버에는 보내지 말기
 
@@ -156,8 +148,8 @@ async function sendMail(postModel: PostModel) {
         title,
         contents,
         password,
-        memberSeq: memberSeq!,
-        sodae: sodae!,
+        memberSeq,
+        sodae,
       });
 
       // 국방서버에 보내졌으면 보내졌다고 업데이트
