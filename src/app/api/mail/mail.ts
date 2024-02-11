@@ -158,7 +158,7 @@ async function sendMail({
       // 안보내졌으면 편지큐에 저장
       await PostQueue.insert({ postId, userId });
       // 소대번호 다 있는데 편지쓰기 시간 전이면 안되지
-      const msg = "before post time?";
+      const msg = "소대번호 다 있는데 편지쓰기 시간 전에 편지가 보내져? PostQueue에 넣음.";
       logger.error(
         `${username} (${userId}), ${msg} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
       );

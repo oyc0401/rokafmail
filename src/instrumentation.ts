@@ -16,9 +16,7 @@ const sleep = (delay: number) =>
 export async function register() {
   console.log("처음 실행!!");
 
-  const node_env = process.env.NODE_ENV;
-
-  if (node_env == "production") {
+  if (process.env.NODE_ENV == "production") {
     execute();
   }
 }
