@@ -52,7 +52,7 @@ export default function Message() {
           window.onbeforeunload = null;
           router.push(`/link/${username}`);
         } else {
-          alert(`회원가입 실패 ${response.status}, ${response.data}`);
+          alert(`회원가입 실패 ${response.status}, ${response.message}`);
         }
       })
       .catch((error) => {
