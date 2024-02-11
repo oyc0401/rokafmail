@@ -5,3 +5,9 @@
 
 
 2024-02-03 20:00:01 - info : [mail] oyc0401 (3), unconnect (9) | [민수, 친구, 안녕?, 내용, 1234]
+
+[mail] (9) | oyc0401 (3) | QueueAdded - Unconnected
+[mail] (9) | oyc0401 (3) | QueueAdded - ServerError
+[mail] (9) | oyc0401 (3) | Complete
+[mail] (9) | oyc0401 (3) | Skip - AfterMailTime
+[mail] (9) | oyc0401 (3) | QueueAdded - BeforeMailTime
