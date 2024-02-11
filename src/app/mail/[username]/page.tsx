@@ -50,7 +50,7 @@ export default async function Mail({ params }) {
           <div style={{ flex: 178 }}></div>
           <div style={{ paddingBottom: 54 }}>
             <h1 style={{ fontSize: 25, fontWeight: 500 }}>
-              오유찬님
+              {user.name}님
               <br />
               수료를 축하드립니다!
             </h1>
