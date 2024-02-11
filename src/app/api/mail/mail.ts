@@ -5,12 +5,6 @@ import Rokaf from "../rokaf/rokaf";
 import { Post, PostQueue, UnconnectedPost, User } from "src/db";
 
 import { ServerActionResponse } from ".././serverActionResponse";
-// 편지를 보내면 먼저 post에 저장한다.
-// 인증안된 유저면 unconnected에 추가
-// 인증된 유저는
-// 편지쓰기 가능한 기간이면 보내고 아니면 그냥 둔다.
-// 보내지면 posted를 true로 업데이트한다.
-// 안보내지면 post_queue에 추가한다.
 import { makeLogger } from "config/winston";
 const logger = makeLogger("mail");
 
@@ -26,14 +20,22 @@ const logger = makeLogger("mail");
  * 편지 큐 저장: 국방부 서버로 전송하기에 적합한 시간이 아니면, PostQueue에 편지 정보를 저장합니다.
  */
 
-export async function mailApi({
-  username,
-  name,
-  relationship,
-  title,
-  contents,
-  password,
-}: {
+type PostModel = {
+  userId: number;
+  postId: number;
+  username: string;
+  name: string;
+  relationship: string;
+  title: string;
+  contents: string;
+  password: string;
+  memberSeq: string | null;
+  sodae: string | null;
+  generation: number;
+  connect: boolean;
+};
+
+export async function mailApi(mailForm: {
   username: string;
   name: string;
   relationship: string;
@@ -41,80 +43,44 @@ export async function mailApi({
   contents: string;
   password: string;
 }) {
-  // 유저 확인
-  const user = await User.findByUsername(username).catch((error) => {
-    throw ServerActionResponse({ message: error, status: 500 });
-  });
+  try {
+    const { username, name, relationship, title, contents, password } =
+      mailForm;
 
-  if (!user) {
-    return ServerActionResponse({
-      message: "해당 유저를 찾을 수 없습니다.",
-      status: 404,
-    });
-  }
+    // 유저 확인
+    const user = await User.findByUsername(username);
 
-  const { id: userId, memberSeq, sodae, connect, generation } = user;
+    if (!user) {
+      return ServerActionResponse({
+        message: "해당 유저를 찾을 수 없습니다.",
+        status: 404,
+      });
+    }
 
-  // 입력 검증
-  if (password.length < 4) {
-    return ServerActionResponse({
-      message: "비밀번호는 4자리 이상이여야합니다.",
-      status: 400,
-    });
-  }
-  if (contents.length > 1200) {
-    return ServerActionResponse({
-      message: "내용은 1200자를 넘을 수 없습니다.",
-      status: 400,
-    });
-  }
-  if (title.length > 300) {
-    return ServerActionResponse({
-      message: "제목은 300자를 넘을 수 없습니다.",
-      status: 400,
-    });
-  }
-  if (name.length > 100) {
-    return ServerActionResponse({
-      message: "이름은 100자를 넘을 수 없습니다.",
-      status: 400,
-    });
-  }
-  if (relationship.length > 100) {
-    return ServerActionResponse({
-      message: "관계는 100자를 넘을 수 없습니다.",
-      status: 400,
-    });
-  }
+    const { id: userId, memberSeq, sodae, connect, generation } = user;
 
-  // 편지 저장
-  const newPost = await Post.insert({
-    userId,
-    name,
-    relationship,
-    title,
-    contents,
-    password,
-  }).catch(e, () => {
-    return ServerActionResponse({ message: "데이터베이스 오류", status: 500 });
-  });
+    // 입력 검증
+    const validationResult = validateInput(mailForm);
+    if (!validationResult.validate) {
+      return ServerActionResponse({
+        message: validationResult.message,
+        status: 400,
+      });
+    }
 
-  const postId = newPost.id;
-  console.log("post 업로드 성공.");
-
-  // 인증 여부 확인
-  if (!connect) {
-    UnconnectedPost.insert({
-      postId,
+    // 편지 저장
+    const newPost = await Post.insert({
       userId,
-    }).then(() => {
-      const msg = "unconnected_post";
-      logger.info(
-        `${username} (${userId}), ${msg} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
-      );
+      name,
+      relationship,
+      title,
+      contents,
+      password,
     });
-  } else {
-    sendMail({
+
+    const postId = newPost.id;
+
+    const postModel = {
       userId,
       postId,
       username,
@@ -126,24 +92,48 @@ export async function mailApi({
       memberSeq,
       sodae,
       generation,
-    });
+      connect,
+    };
+
+    processPost(postModel);
+
+    return ServerActionResponse({ message: "편지 전송 성공!", status: 200 });
+  } catch (error) {
+    logger.error(`편지 보내는 중 오류 발생: ${error}`);
+    return ServerActionResponse({ message: "서버 오류", status: 500 });
   }
-  return ServerActionResponse({ message: "편지 전송 성공!", status: 200 });
 }
 
-async function sendMail({
-  userId,
-  postId,
-  username,
-  name,
-  relationship,
-  title,
-  contents,
-  password,
-  memberSeq,
-  sodae,
-  generation,
-}) {
+async function processPost(postModel: PostModel) {
+  const { userId, postId, username, connect } = postModel;
+
+  // 인증 여부 확인
+  let logMessage = "";
+  if (!connect) {
+    await UnconnectedPost.insert({
+      postId,
+      userId,
+    });
+    logMessage = "QueueAdded - Unconnected";
+  } else {
+    logMessage = await sendMail(postModel);
+  }
+
+  logger.info(`(${postId}) | ${username} (${userId}) | ${logMessage}`);
+}
+async function sendMail(postModel: PostModel) {
+  const {
+    userId,
+    postId,
+    name,
+    relationship,
+    title,
+    contents,
+    password,
+    memberSeq,
+    sodae,
+    generation,
+  } = postModel;
   // 만약 편지보내기 기간이 아직 안왔으면 안보내고 post_queue에만 저장하고
   // 편지보내기 시간이 지났으면 posted를 true로 업데이트 하되, 국방부 서버에는 보내지 말기
 
@@ -154,57 +144,87 @@ async function sendMail({
   // 국방부 서버 보내는건 편지쓰기 기간에만 가능, 어짜피 다른시간에 보내도 도착안함
   switch (status) {
     case Status.training:
-      console.log("국방부 서버 보내는 중...");
+      if (!memberSeq || !sodae) {
+        logger.error(
+          `user가 connect 인데 memberSeq또는 sodae가 null이다?, memberSeq: ${memberSeq}, sodae: ${sodae}`,
+        );
+        return "user가 connect 인데 membe";
+      }
       const response = await Rokaf.postMail({
         name,
         relationship,
         title,
         contents,
         password,
-        memberSeq,
-        sodae,
+        memberSeq: memberSeq!,
+        sodae: sodae!,
       });
 
       // 국방서버에 보내졌으면 보내졌다고 업데이트
       if (response.complete) {
         await Post.update(postId, { posted: true, postAt: getNow() });
-        const msg = "complete";
-        logger.info(
-          `${username} (${userId}), ${msg} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
-        );
+        return "Complete";
       } else {
         // 안보내졌으면 편지큐에 저장
         await PostQueue.insert({ postId, userId });
-        const msg = "server error";
-        logger.info(
-          `${username} (${userId}), ${msg} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
-        );
+        return "QueueAdded - ServerError";
       }
-      break;
 
     case Status.before:
     case Status.beginning:
       // 안보내졌으면 편지큐에 저장
       await PostQueue.insert({ postId, userId });
-      // 소대번호 다 있는데 편지쓰기 시간 전이면 안되지
-      const msg =
-        "소대번호 다 있는데 편지쓰기 시간 전에 편지가 보내져? PostQueue에 넣음.";
-      logger.error(
-        `${username} (${userId}), ${msg} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
-      );
-      break;
-
+      return "QueueAdded - BeforeMailTime";
     case Status.ending:
     case Status.working:
     case Status.discharged:
       await Post.update(postId, { posted: true, postAt: getNow() });
+      return "Skip - AfterMailTime";
+  }
+}
 
-      const msg2 = "after";
-      logger.info(
-        `${username} (${userId}), ${msg2} (${postId}) | [${name}, ${relationship}, ${title}, ${contents}. ${password}]`,
-      );
-      break;
+function validateInput({
+  username,
+  name,
+  relationship,
+  title,
+  contents,
+  password,
+}) {
+  // 입력 검증
+  if (password.length < 4) {
+    return {
+      message: "비밀번호는 4자리 이상이여야합니다.",
+      validate: false,
+    };
+  }
+  if (contents.length > 1200) {
+    return {
+      message: "내용은 1200자를 넘을 수 없습니다.",
+      validate: false,
+    };
+  }
+  if (title.length > 300) {
+    return {
+      message: "제목은 300자를 넘을 수 없습니다.",
+      validate: false,
+    };
+  }
+  if (name.length > 100) {
+    return {
+      message: "이름은 100자를 넘을 수 없습니다.",
+      validate: false,
+    };
+  }
+  if (relationship.length > 100) {
+    return {
+      message: "관계는 100자를 넘을 수 없습니다.",
+      validate: false,
+    };
   }
 
-  console.log(`${username} 편지 전송 완료!`);
+  return {
+    message: "유효한 데이터 형식 입니다.",
+    validate: true,
+  };
 }
