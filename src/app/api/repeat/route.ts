@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     execute();
     Init.run = true;
   } else {
-    logger.error("이미 작동중 입니다.");
+    logger.error("이미 작동중 입니다. pm2 restart를 하셨나요?");
     return NextResponse.json(
       { message: "이미 작동중 입니다." },
       { status: 200 },
