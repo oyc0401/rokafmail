@@ -129,7 +129,6 @@ export default function Account() {
           />
         </BasicBody>
         <BasicFooter>
-          <div className="row">
             <button className={`submit mini`} onClick={prev}>
               이전
             </button>
@@ -140,7 +139,6 @@ export default function Account() {
             >
               다음
             </button>
-          </div>
         </BasicFooter>
       </BasicArea>
   );

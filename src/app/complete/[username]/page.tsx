@@ -3,9 +3,14 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { User } from "src/db";
 import styles from "./complete.module.css";
-import { Nav } from "src/components";
+import { BasicFooter, Nav } from "src/components";
 
-import { mailStartIsFuture, diffDay, getMailStart } from "src/lib/time";
+import {
+  mailStartIsFuture,
+  diffDay,
+  getMailStart,
+  getMailEnd,
+} from "src/lib/time";
 import { CheckCircle } from "public/assets/index";
 
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
@@ -25,11 +30,13 @@ export default async function Complete({ searchParams, params }) {
 
   let page = <Good name={user.name}></Good>;
 
+  let helpAdditional = "";
   // 편지 시작 이전에 보냄
   if (mailStartIsFuture(user.generation)) {
     const start = getMailStart(user.generation);
     let diff = diffDay(start);
     page = <Later day={diff} name={user.name}></Later>;
+    helpAdditional = `${start.format("YY.MM.DD")}부터 `;
   }
 
   return (
@@ -44,9 +51,11 @@ export default async function Complete({ searchParams, params }) {
       </h2>
       <div style={{ flex: 28 }}></div>
       {page}
-      <div style={{ flex: 182 }}></div>
-
-      <Nav>
+      <div style={{ flex: 160 }}></div>
+      <p className={styles.intro}>
+        {`${helpAdditional}편지함 > 기훈단 페이지에서 비밀번호를 사용해 수정 및 삭제가 가능합니다.`}
+      </p>
+      <BasicFooter>
         <Link className={`submit mini`} href={`/mails/${user.username}`}>
           편지함
         </Link>
@@ -54,7 +63,7 @@ export default async function Complete({ searchParams, params }) {
         <Link className={"submit"} href={`/mail/${user.username}`}>
           다시 작성하기
         </Link>
-      </Nav>
+      </BasicFooter>
     </div>
   );
 }

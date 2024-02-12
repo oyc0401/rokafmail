@@ -4,6 +4,13 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import styles from "./page.module.css";
 import { Suspense } from "react";
+import {
+  InputField,
+  BasicArea,
+  BasicHeader,
+  BasicBody,
+  BasicFooter,
+} from "src/components";
 
 export default function Login() {
   return (
@@ -44,6 +51,37 @@ function Page() {
   };
 
   return (
+    <BasicArea>
+      <BasicHeader>
+        아이디와 비밀번호를
+        <br />
+        입력해주세요
+      </BasicHeader>
+      <BasicBody>
+        <InputField
+          label="아이디"
+          placeholder="아이디를 입력해주세요"
+          onChange={setUsername}
+          helpMessage={" "}
+        />
+        <InputField
+          label="비밀번호"
+          placeholder="비밀번호를 입력해주세요"
+          type="password"
+          onChange={setpassword}
+          helpMessage={errorMessage.current}
+          color={"warn"}
+        />
+      </BasicBody>
+      <BasicFooter>
+        <button className={"submit"} onClick={click}>
+          로그인
+        </button>
+      </BasicFooter>
+    </BasicArea>
+  );
+
+  return (
     <>
       <div className="screen">
         <div style={{ flex: 64 }}></div>
@@ -52,17 +90,6 @@ function Page() {
         </div>
 
         <div style={{ flex: 12 }}></div>
-
-        <div className="pb-4 w-full">
-          <p className={styles.formTitle}>아이디</p>
-          <div style={{ height: 2 }}></div>
-          <input
-            className={styles.form}
-            placeholder="아이디를 입력해주세요"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <div style={{ height: 19 }}></div>
-        </div>
 
         <div className="pb-4 w-full">
           <p className={styles.formTitle}>비밀번호</p>
@@ -80,11 +107,7 @@ function Page() {
         <div style={{ height: 95 + 16 }}></div>
 
         <div style={{ flex: 90 }}></div>
-        <div className="pb-8 pt-6 w-full">
-          <button className={"submit"} onClick={click}>
-            로그인
-          </button>
-        </div>
+        <div className="pb-8 pt-6 w-full"></div>
       </div>
     </>
   );

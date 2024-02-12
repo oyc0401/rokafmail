@@ -25,5 +25,9 @@ export function BasicBody({ children, paddingBottom = true }) {
 }
 
 export function BasicFooter({ children }) {
-  return <div className="pb-8 pt-6 w-full">{children}</div>;
+  return (
+    <div className="pb-8 pt-6 w-full">
+      <div className="row">{children}</div>
+    </div>
+  );
 }

@@ -108,7 +108,6 @@ export default function Message() {
           </div>
         </BasicBody>
         <BasicFooter>
-          <div className="row">
             <button className={`submit mini`} onClick={prev}>
               이전
             </button>
@@ -119,7 +118,6 @@ export default function Message() {
             >
               만들기
             </button>
-          </div>
         </BasicFooter>
       </BasicArea>
     </>
