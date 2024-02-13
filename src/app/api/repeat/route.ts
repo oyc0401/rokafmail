@@ -5,15 +5,15 @@ import { makeLogger } from "config/winston";
 var cron = require("node-cron");
 const logger = makeLogger("repeat");
 
-class Init {
+export class Repeat {
   static run = false;
 }
 
 export async function POST(request: Request) {
   logger.info("POST - repeat");
-  if (!Init.run) {
+  if (!Repeat.run) {
     execute();
-    Init.run = true;
+      Repeat.run = true;
   } else {
     logger.error("이미 작동중 입니다.");
     return NextResponse.json(
