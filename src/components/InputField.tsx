@@ -21,7 +21,6 @@ export function InputField({
   color?: string;
   children?: React.ReactNode;
 }) {
-  console.log(label)
   return (
     <div className="pb-4 w-full">
       {label ? <p className={styles.label}>{label}</p> : null}
