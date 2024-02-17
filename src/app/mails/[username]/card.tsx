@@ -20,7 +20,7 @@ export function DropDownCard({ id, title, name, rel, time }) {
   const onDelete = async () => {
     var password = prompt("편지 삭제를 위해 비밀번호를 입력해주세요.", "");
 
-    if(!password){
+    if(password){
       const result = await deletePost(id, password);
 
       if (result) {
