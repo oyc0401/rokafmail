@@ -20,8 +20,6 @@ export const authOptions ={
         password: { label: "비밀번호", type: "password" },
       },
       async authorize(credentials, req) {
-        console.log(credentials);
-
         const { username, password, csrfToken } = credentials;
 
         const response = await login(username, password);

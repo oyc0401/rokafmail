@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import styles from "./InputField.module.css";
 
 export function InputField({
@@ -21,6 +22,12 @@ export function InputField({
   color?: string;
   children?: React.ReactNode;
 }) {
+
+  useEffect(()=>{
+
+console.log('dsa')
+    
+  },[]);
   return (
     <div className="pb-4 w-full">
       {label ? <p className={styles.label}>{label}</p> : null}
@@ -39,10 +46,11 @@ export function InputField({
           value={value}
           placeholder={placeholder}
           autoComplete={autoComplete}
-          onChange={(e) => {
-            const text = e.target.value;
+          onInput={(e: React.FormEvent<HTMLInputElement>) => {
+            const text = e.currentTarget.value;
             if (onChange) onChange(text);
           }}
+          
           style={{ flex: 1 }}
         />
         {children}

@@ -11,7 +11,7 @@ export async function login(username, password) {
     .createHash("sha256")
     .update(password)
     .digest("hex");
-
+  
   if (user.password == encryptedPassword) {
     return {
       message: "로그인 성공",
