@@ -17,6 +17,7 @@ export default async function MailBox({ params }) {
   const { password } = user;
   const cookieStore = cookies();
   const pwcookie = cookieStore.get("password");
+   console.log('pw:',pwcookie)
 
   if (pwcookie == null) {
     return <Client password={password} username={username}/>;
@@ -26,5 +27,6 @@ export default async function MailBox({ params }) {
     return <Mailbox username={username}/>;
   } 
 
+  console.log('다른사람으로 로그인 되어있음')
   return <Client password={password} username={username}/>;
 }
