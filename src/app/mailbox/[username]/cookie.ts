@@ -6,7 +6,6 @@ export async function setCookie(password: string, username: string) {
   cookies().set({
     name: "password",
     value: password,
-    path: `/mailbox/${username}`,
   });
 }
 
