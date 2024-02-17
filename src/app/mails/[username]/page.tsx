@@ -4,12 +4,12 @@ import { Post, PostQueue, UnconnectedPost, User } from "src/db";
 import { dateToStr } from "./dateToStr";
 import { Nav } from "src/components";
 import { notFound } from "next/navigation";
-
+import { Card, DropDownCard } from "./card";
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 
 export default async function Mails({ params }) {
   const username = decodeURI(params.username);
-  
+
   let user = await User.findByUsername(username);
 
   if (!user) {
@@ -66,12 +66,12 @@ async function Mail({ username }) {
         {queue.map((post, index) => (
           <div key={post.id}>
             {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
-            <Card
+            <DropDownCard
+              id={post.postId}
               title={post.post.title}
               name={post.post.name}
               rel={post.post.relationship}
               time={dateToStr(post.post.createdAt)}
-              
             />
           </div>
         ))}
@@ -126,7 +126,8 @@ async function UnconnectedMail(parms) {
       {unconnected.map((post, index) => (
         <div key={post.id}>
           {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
-          <Card
+          <DropDownCard
+            id={post.postId}
             title={post.post.title}
             name={post.post.name}
             rel={post.post.relationship}
@@ -134,20 +135,6 @@ async function UnconnectedMail(parms) {
           />
         </div>
       ))}
-    </div>
-  );
-}
-
-function Card({title,name, rel, time}) {
-  return (
-    <div className={styles.card}>
-      <p className="text-left text-lg">{title}</p>
-      <div className="sized" style={{ height: 4 }}></div>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <p>{`${name} | ${rel}`}</p>
-        <div style={{ flex: 1 }}></div>
-        <p>{time}</p>
-      </div>
     </div>
   );
 }
