@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+
 import styles from "./InputField.module.css";
 
 export function InputField({
@@ -23,11 +23,6 @@ export function InputField({
   children?: React.ReactNode;
 }) {
 
-  useEffect(()=>{
-
-console.log('dsa')
-    
-  },[]);
   return (
     <div className="pb-4 w-full">
       {label ? <p className={styles.label}>{label}</p> : null}
