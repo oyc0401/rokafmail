@@ -37,34 +37,30 @@ export async function repostMail() {
   let success = 0;
   let skippedDueToLimit = 0; // 10번 초과하여 스킵된 편지 수
 
-
-  function statusMessage(){
+  function statusMessage() {
     return `${success + skippedDueToLimit + 1}/${unposted.length}`;
   }
   for (const unpost of unposted) {
     try {
       // 현재 userId에 대한 편지 수 추적
       const userId = unpost.userId;
-      userPostCounts[userId] = (userPostCounts[userId] || 0) + 1;
 
       // userId별로 편지가 10번 이하인 경우에만 post 호출
       if (userPostCounts[userId] <= 10) {
         const message = await post(unpost);
-        logger.info(
-          `${statusMessage()}: ${message}`,
-        );
+        logger.info(`${statusMessage()}: ${message}`);
         success++;
+        // 보내졌으면 횟수 올리기
+        if (message == "success") {
+          userPostCounts[userId] = (userPostCounts[userId] || 0) + 1;
+        }
       } else {
         // 10번 초과 시 로그만 남김
-        logger.info(
-          `${statusMessage()}: Limit exceeded - ${userId}`,
-        );
+        logger.info(`${statusMessage()}: Limit exceeded - ${userId}`);
         skippedDueToLimit++;
       }
     } catch (error) {
-      logger.info(
-        `${statusMessage()}: ${error}`,
-      );
+      logger.info(`${statusMessage()}: ${error}`);
     }
   }
 

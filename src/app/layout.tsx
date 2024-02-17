@@ -28,7 +28,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ko-KR" className={notoSansKr.className}>
+    <html lang="ko-KR" className={`${notoSansKr.className} light`}>
       <head>
         <meta
           name="google-site-verification"

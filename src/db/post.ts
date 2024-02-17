@@ -10,6 +10,13 @@ export class Post {
     password: string;
   }) => prisma.post.create({ data });
 
+  static findById = (id: number) =>
+  prisma.post.findUnique({
+    where: {
+      id,
+    },
+  });
+
   static findByUsername = (username: string) =>
     prisma.post.findMany({
       include: {
@@ -61,5 +68,12 @@ export class Post {
         id,
       },
       data,
+    });
+
+  static deleteById=(id:number)=>
+    prisma.post.delete({
+      where: {
+        id,
+      },
     });
 }
