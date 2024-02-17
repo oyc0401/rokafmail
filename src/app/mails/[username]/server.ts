@@ -4,9 +4,8 @@ import { Post } from "src/db";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("DeleteMail");
 
-export async function deletePost(id, password) {
+export async function deletePost(id: number, password: string) {
   const post = await Post.findById(id);
-  console.log(id, password, post?.password);
   if (post && post.password == password) {
     await Post.deleteById(id);
     logger.info(

@@ -20,14 +20,17 @@ export function DropDownCard({ id, title, name, rel, time }) {
   const onDelete = async () => {
     var password = prompt("편지 삭제를 위해 비밀번호를 입력해주세요.", "");
 
-    const result = await deletePost(id, password);
+    if(!password){
+      const result = await deletePost(id, password);
 
-    if (result) {
-      alert("편지를 삭제했습니다.");
-      router.refresh();
-    } else {
-        alert("잘못된 비밀번호 입니다.");
+      if (result) {
+        alert("편지를 삭제했습니다.");
+        router.refresh();
+      } else {
+          alert("잘못된 비밀번호 입니다.");
+      }
     }
+    
   };
   return (
     <Dropdown>
