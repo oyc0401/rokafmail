@@ -1,4 +1,4 @@
-import prisma from "./_prisma";
+import prisma from "./prisma";
 
 export class PostQueue {
   static insert = (data: { postId: number; userId: number }) =>
