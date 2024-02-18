@@ -1,38 +1,151 @@
-'use client'
-import styles from './Table.module.css'
+"use client";
+import React from "react";
 import {
-  Dropdown,
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  getKeyValue,
+  Button,
   DropdownTrigger,
+  Dropdown,
   DropdownMenu,
-  DropdownSection,
-  DropdownItem,Button
+  DropdownItem,
+  Chip,
 } from "@nextui-org/react";
+import { VerticalDotsIcon } from "./VerticalDotsIcon";
+import { useAsyncList } from "@react-stately/data";
+import dayjs from "dayjs";
+var utc = require("dayjs/plugin/utc");
+var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
-export function Table({ data, column }) {
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+export function DatabaseTable({ data }) {
+  let list = useAsyncList({
+    async load({ signal }) {
+      return {
+        items: data,
+      };
+    },
+    async sort({ items, sortDescriptor }) {
+      return {
+        items: items.sort((a, b) => {
+          let first = a[sortDescriptor.column];
+          let second = b[sortDescriptor.column];
+          let cmp =
+            (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
+
+          if (sortDescriptor.direction === "descending") {
+            cmp *= -1;
+          }
+
+          return cmp;
+        }),
+      };
+    },
+  });
+
   return (
-    <>
-
-  <Dropdown >
-    <DropdownTrigger>
-     <div className='flex' style={{ overflowX: 'auto' }}>
-       <div className={styles.columnCell} style={{ flex: 100 }}>id</div>
-       <div className={styles.columnCell} style={{ flex: 100 }}>user</div>
-       <div className={styles.columnCell} style={{ flex: 800 }}>user</div>
-       <div className={styles.columnCell} style={{ flex: 500 }}>user</div>
-     </div>
-    </DropdownTrigger>
-    <DropdownMenu aria-label="Static Actions">
-      <DropdownItem key="new">New file</DropdownItem>
-      <DropdownItem key="copy">Copy link</DropdownItem>
-      <DropdownItem key="edit">Edit file</DropdownItem>
-      <DropdownItem key="delete" className="text-danger" color="danger">
-        Delete file
-      </DropdownItem>
-    </DropdownMenu>
-  </Dropdown>
-
-        
-       
-    </>
+    <Table
+      aria-label="Example table with client side sorting"
+      sortDescriptor={list.sortDescriptor}
+      onSortChange={list.sort}
+      classNames={{
+        table: "min-h-[400px]",
+      }}
+    >
+      <TableHeader>
+        <TableColumn key="id" allowsSorting>
+          Id
+        </TableColumn>
+        <TableColumn key="username" allowsSorting>
+          Username
+        </TableColumn>
+        <TableColumn key="name" allowsSorting>
+          Name
+        </TableColumn>
+        <TableColumn key="birth" allowsSorting>
+          Birth
+        </TableColumn>
+        <TableColumn key="generation" allowsSorting>
+          Generation
+        </TableColumn>
+        {/* <TableColumn key="sodae" allowsSorting>
+          sodae
+        </TableColumn>
+        <TableColumn key="memberSeq" allowsSorting>
+          memberSeq
+        </TableColumn> */}
+        <TableColumn key="connect" allowsSorting>
+          Connect
+        </TableColumn>
+        <TableColumn key="action">Action</TableColumn>
+      </TableHeader>
+      <TableBody items={list.items} emptyContent={"No rows to display."}>
+        {(item) => (
+          <TableRow key={item.id}>
+            {(columnKey) => {
+            switch(columnKey){
+              case "connect":
+                if (item.connect) {
+                  return (
+                    <TableCell>
+                      <Chip color="success">Connected</Chip>
+                    </TableCell>
+                  );
+                } else {
+                  return (
+                    <TableCell>
+                      <Chip color="danger">Wating</Chip>
+                    </TableCell>
+                  );
+                }
+                case "action":
+                return (
+                  <TableCell>
+                    <div className="relative flex justify-end items-center gap-2">
+                      <Dropdown>
+                        <DropdownTrigger>
+                          <Button isIconOnly size="sm" variant="light">
+                            <VerticalDotsIcon className="text-default-300" />
+                          </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu>
+                          <DropdownItem>View</DropdownItem>
+                          <DropdownItem>Edit</DropdownItem>
+                          <DropdownItem>Delete</DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
+                    </div>
+                  </TableCell>
+                );
+              default:
+                return (
+                  <TableCell>
+                    {renderCellValue(getKeyValue(item, columnKey))}
+                  </TableCell>
+                );
+            }
+            }}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
+}
+function renderCellValue(value: any) {
+  if (typeof value === "boolean") {
+    return value ? "T" : "F";
+  }
+
+  //console.log(value);
+  if (value instanceof Date) {
+    return dayjs.tz(value, "Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
+  }
+
+  return value;
 }
