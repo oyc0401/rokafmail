@@ -26,16 +26,16 @@ export class Repeat {
     if (!this.task) {
       this.task = cron.schedule(
         // 10분 마다
-        "*/10 * * * *",
+        // "*/10 * * * *",
 
         // 4시간 마다
-        // "00 */4 * * *",
+        "00 */4 * * *",
         async () => {
           try {
-            console.log("cron 실행!", new Date());
-            // logger.info("node-cron is executed");
-            // await verifyUser();
-            // await repostMail();
+            // console.log("cron 실행!", new Date());
+            logger.info("node-cron is executed");
+            await verifyUser();
+            await repostMail();
           } catch (e) {
             logger.error(`node-cron 중 오류발생: ${e}`);
           }

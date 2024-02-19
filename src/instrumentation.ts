@@ -18,10 +18,9 @@ export async function register() {
 
   // execute();
 
-  // if (process.env.NODE_ENV == "production")
-  // {
-  execute();
-  // }
+  if (process.env.NODE_ENV == "production") {
+    execute();
+  }
 }
 
 async function execute() {
