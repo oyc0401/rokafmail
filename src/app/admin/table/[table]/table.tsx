@@ -76,24 +76,24 @@ export function Table({ data, tableName }) {
 const width=[60,100,700,60,70,80]
 
 function TableRow({ columns, row, event }) {
-  return (<Dropdown>
-    <DropdownTrigger>
-      <div>{columns.map((column, colIndex) => (
-        <td key={colIndex} style={{width:width[colIndex]}} className="border px-4 py-2">
-          {renderCellValue(row[column])}
-        </td>
-      ))}</div>
+  // return (<Dropdown>
+  //   <DropdownTrigger>
+  //     <div>{columns.map((column, colIndex) => (
+  //       <td key={colIndex} style={{width:width[colIndex]}} className="border px-4 py-2">
+  //         {renderCellValue(row[column])}
+  //       </td>
+  //     ))}</div>
     
-    </DropdownTrigger>
-    <DropdownMenu aria-label="Static Actions">
-      <DropdownItem key="new">New file</DropdownItem>
-      <DropdownItem key="copy">Copy link</DropdownItem>
-      <DropdownItem key="edit">Edit file</DropdownItem>
-      <DropdownItem key="delete" className="text-danger" color="danger">
-        Delete file
-      </DropdownItem>
-    </DropdownMenu>
-  </Dropdown>);
+  //   </DropdownTrigger>
+  //   <DropdownMenu aria-label="Static Actions">
+  //     <DropdownItem key="new">New file</DropdownItem>
+  //     <DropdownItem key="copy">Copy link</DropdownItem>
+  //     <DropdownItem key="edit">Edit file</DropdownItem>
+  //     <DropdownItem key="delete" className="text-danger" color="danger">
+  //       Delete file
+  //     </DropdownItem>
+  //   </DropdownMenu>
+  // </Dropdown>);
   return (
     <tr
       onContextMenu={(e) => {
@@ -152,7 +152,7 @@ function Header({ tableName }) {
 function SelectButton({ now, path, children }) {
   return (
     <Link
-      href={`/table/${path}`}
+      href={`/admin/table/${path}`}
       className={`${
         now == path ? `bg-gray-500 text-white font-bold` : `bg-white`
       }border border-gray-300 px-3 py-2 `}

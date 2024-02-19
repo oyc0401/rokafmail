@@ -10,7 +10,10 @@ export class Repeat {
 
   static getInstance() {
     if (!Repeat.singleTon) {
+      console.log('새로만듬')
       Repeat.singleTon = new Repeat();
+    }else{
+       console.log('기존객체')
     }
     return Repeat.singleTon;
   }
