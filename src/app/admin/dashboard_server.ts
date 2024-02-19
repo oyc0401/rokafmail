@@ -1,21 +1,18 @@
-'use server'
-import {Repeat} from 'src/app/api/repeat/repeat'
+import axios from "axios";
 
-export async function start(){
-  const repeater = Repeat.getInstance();
-  repeater.start();
+export async function start() {
+  await axios.post("/api/repeat/start");
 }
 
-export async function stop(){
-  const repeater = Repeat.getInstance();
-  repeater.stop();
+export async function stop() {
+  await axios.post("/api/repeat/stop");
 }
 
-export async function status(){
-  const repeater = Repeat.getInstance();
-  return{
-   
-    running:repeater.status,
-     lastUpdated:repeater.lastUpdated,
-  }
+export async function status() {
+  const response = await axios.post("/api/repeat/status");
+  console.log(response);
+  return {
+    running: response.data.message.status,
+    lastUpdated: new Date(response.data.message.lastUpdated),
+  };
 }

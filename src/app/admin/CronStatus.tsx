@@ -4,7 +4,7 @@ import {start,stop, status} from './dashboard_server'
 
 import {CircularProgress} from "@nextui-org/react";
 
-export default function CronStatus(){
+export default function CronStatusAPI(){
   const [loading,setLoading]=useState(true);
    const [run,setRun] = useState(false);
   const [updated,setUpdated]=useState('loading');
