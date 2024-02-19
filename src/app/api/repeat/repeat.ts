@@ -25,7 +25,10 @@ export class Repeat {
     console.log("start cron");
     if (!this.task) {
       this.task = cron.schedule(
-        "*/3 * * * * *",
+        // 10분 마다
+        "*/10 * * * *",
+
+        // 4시간 마다
         // "00 */4 * * *",
         async () => {
           try {
