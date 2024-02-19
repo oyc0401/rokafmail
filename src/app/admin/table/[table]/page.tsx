@@ -13,14 +13,14 @@ const prismaStore = {
   unidentify: prisma.unidentifiedUser,
 };
 
-export enum Store {
-  user,
-  user_queue,
-  post,
-  post_queue,
-  unc_post,
-  unidentify,
-}
+// export enum Store {
+//   user,
+//   user_queue,
+//   post,
+//   post_queue,
+//   unc_post,
+//   unidentify,
+// }
 
 export default async function LinkPage({ params }) {
   const tableName = params.table;
