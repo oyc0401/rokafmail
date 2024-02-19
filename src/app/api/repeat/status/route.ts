@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
+import { Repeat } from "../repeat";
 import { auth } from "src/app/api/auth/auth";
 import { User } from "src/db";
-import { Repeat } from "../repeat";
 
 export async function POST(request: Request) {
   // <어드민 인증 코드>
@@ -17,9 +17,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
    // </어드민 인증 코드>
+
   
   const now = Repeat.getInstance();
-  now.start();
 
-  return NextResponse.json({ message: "시작" }, { status: 200 });
+  return NextResponse.json(
+    { message: { status: now.status, lastUpdated: now.lastUpdated } },
+    { status: 200 },
+  );
 }

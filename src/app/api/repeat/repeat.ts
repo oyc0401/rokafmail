@@ -16,21 +16,26 @@ export class Repeat {
   }
 
   run = false;
-  task: any | null = null;
+  task: any | null;
+  updated: Date | null;
 
   async start() {
-     this.run=true;
+    this.run = true;
+    this.updated = new Date();
     console.log("start cron");
     if (!this.task) {
       this.task = cron.schedule(
-        "*/3 * * * * *",
-        // "00 */4 * * *",
+        // 10분 마다
+        // "*/10 * * * *",
+
+        // 4시간 마다
+        "00 */4 * * *",
         async () => {
           try {
-            console.log('cron 실행!')
-           // logger.info("node-cron is executed");
-            // await verifyUser();
-            // await repostMail();
+            // console.log("cron 실행!", new Date());
+            logger.info("node-cron is executed");
+            await verifyUser();
+            await repostMail();
           } catch (e) {
             logger.error(`node-cron 중 오류발생: ${e}`);
           }
@@ -41,22 +46,27 @@ export class Repeat {
         },
       );
     } else {
+      console.log("cron exist");
       this.task.start();
-      console.log("cron has been running.");
     }
   }
 
   stop() {
-    this.run=false;
+    this.run = false;
+    this.updated = new Date();
     if (this.task) {
-       console.log("stop cron");
+      console.log("stop cron");
       this.task.stop();
     } else {
       console.log("no cron");
     }
   }
 
-  status(){
+  get status() {
     return this.run;
+  }
+
+  get lastUpdated() {
+    return this.updated;
   }
 }
