@@ -8,7 +8,6 @@ export default async function Page({params}){
   const logAddress = `./logs/${params.file}`;
   const data = await readFileAndDecompress(logAddress);
 
-  console.log(data);
   return <>
     <Link  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href='/admin/log'>Logs</Link>
     <article className='mt-6 p-4 bg-gray-100 '>
@@ -28,7 +27,7 @@ async function readFileAndDecompress(filePath) {
         // 파일 경로가 .gz로 끝나는지 확인
         if (filePath.endsWith('.gz')) {
             // 파일 읽기
-            const compressedData = fs.readFileSync(filePath, {encoding: 'utf8',flag:'r'})
+            const compressedData = fs.readFileSync(filePath)
             // 압축 해제
             const decompressedData = await gunzip(compressedData);
             // 압축 해제된 데이터를 문자열로 변환하여 반환
