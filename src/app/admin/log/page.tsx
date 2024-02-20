@@ -9,9 +9,6 @@ export default async function Page(){
   const logDirectory = './logs'; // 로그 파일이 저장된 디렉토리 경로 지정
   
     const files = await getFiles(logDirectory); // 파일 목록 가져오기
-    console.log(files); // 파일 목록 출력
-   
-
   const list = groupLogsByDate(files);
 
   console.log(list)

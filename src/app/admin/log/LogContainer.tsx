@@ -11,7 +11,7 @@ function LogButton({ filename }) {
 
   
   return (
-    <Link className={buttonClass} href={`/admin/logs/${filename}`}>
+    <Link className={buttonClass} href={`/admin/log/${filename}`}>
       {filename}
     </Link>
   );
