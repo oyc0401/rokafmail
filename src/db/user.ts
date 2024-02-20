@@ -17,6 +17,13 @@ export class User {
       },
     });
 
+  static findById = (id: number) =>
+  prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
   static findAll = () => prisma.user.findMany({});
 
   static update = (

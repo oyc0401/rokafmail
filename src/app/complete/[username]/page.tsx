@@ -56,9 +56,9 @@ export default async function Complete({ searchParams, params }) {
         {`${helpAdditional}편지함 > 기훈단 페이지에서 비밀번호를 사용해 수정 및 삭제가 가능합니다.`}
       </p>
       <BasicFooter>
-        <Link className={`submit mini`} href={`/mails/${user.username}`}>
+        <a className={`submit mini`} href={`/mails/${user.username}`}>
           편지함
-        </Link>
+        </a>
         <div style={{ width: 12 }}></div>
         <Link className={"submit"} href={`/mail/${user.username}`}>
           다시 작성하기

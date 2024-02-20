@@ -17,21 +17,25 @@ import { deletePost } from "./server";
 export function DropDownCard({ id, title, name, rel, time }) {
   const router = useRouter()
 
-  const onDelete = async () => {
-    var password = prompt("편지 삭제를 위해 비밀번호를 입력해주세요.", "");
+  // const onDelete = async () => {
+  //   var password = prompt("편지 삭제를 위해 비밀번호를 입력해주세요.", "");
 
-    if(password){
-      const result = await deletePost(id, password);
+  //   if(password){
+  //     const result = await deletePost(id, password);
 
-      if (result) {
-        alert("편지를 삭제했습니다.");
-        router.refresh();
-      } else {
-          alert("잘못된 비밀번호 입니다.");
-      }
-    }
+  //     if (result) {
+  //       alert("편지를 삭제했습니다.");
+  //       router.refresh();
+  //     } else {
+  //         alert("잘못된 비밀번호 입니다.");
+  //     }
+  //   }
     
-  };
+  // };
+
+  function moveView(){
+    router.push(`/view/${id}`);
+  }
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -51,11 +55,11 @@ export function DropDownCard({ id, title, name, rel, time }) {
       <DropdownItem key="edit">Edit file</DropdownItem> */}
         <DropdownItem
           key="delete"
-          className="text-danger"
-          color="danger"
-          onClick={onDelete}
+          className=""
+       
+          onClick={moveView}
         >
-          삭제
+          열기
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

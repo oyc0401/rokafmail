@@ -35,7 +35,7 @@ function toStringTime(source: Date, delimiter = ":") {
 function toStringByFormatting(source: Date, delimiter = "-") {
   const koreaDate=parseKorea(source);
   const year = koreaDate.year();
-  const month = leftPad(koreaDate.month());
+  const month = leftPad(koreaDate.month()+1);
   const day = leftPad(koreaDate.date());
 
   return [year, month, day].join(delimiter);

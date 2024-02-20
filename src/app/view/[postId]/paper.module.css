@@ -1,0 +1,78 @@
+.paper{
+  background: #FFFDF8;
+  padding:10px 20px;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.07);
+}
+
+
+/* 입력 폼 */
+.form{
+   border-width: 0 0 1px;
+  background-color: transparent;
+  outline: none;
+  color: var(--font-color);
+ border-color:var(--font-color);
+   font-weight: 400;
+  font-size: 18px;
+  transition: 0.2s;
+  width: 100%;
+  text-align: left;
+  overflow: scroll;
+text-align:start;
+}
+
+.formTitle{
+   font-size: 20px;
+  font-weight:500;
+}
+
+.contentForm{
+   display:block;
+  font-family:var(--font-family) !important;
+  min-height:140px;
+  resize:none;
+  text-align:start;
+}
+.contentForm::-webkit-scrollbar {
+   display: none;
+ }
+.centerForm{
+  text-align:center
+}
+
+
+
+/* 입력폼 힌트 메시지 */
+.form::placeholder {
+  color: var(--light-font);
+   font-weight: 400;
+}
+
+.contentForm::placeholder {
+  font-family:var(--font-family) !important;
+  color: var(--light-font);
+   font-weight: 400;
+}
+
+
+.formTitle::placeholder{
+   font-size: 20px;
+}
+
+
+
+.description{
+   color: var(--light-font);
+  font-weight: 400;
+  font-size:12px;
+  text-align:left;
+   width: 100%;
+}
+
+.help{
+  color: #808080;
+  font-weight: 400;
+  font-size:12px;
+  text-align:left;
+  height:17px;
+}
