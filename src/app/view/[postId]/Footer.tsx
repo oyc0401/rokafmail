@@ -31,7 +31,7 @@ export function Footer({ postId,username }) {
       }}
     >
       <div className="row">
-        <button className={`submit mini`} onClick={onDelete}>
+        <button className={`submit mini`} style={{background:'red'}} onClick={onDelete}>
           삭제하기
         </button>
         <div style={{ width: 12 }}></div>

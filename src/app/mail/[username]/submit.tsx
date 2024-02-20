@@ -77,9 +77,9 @@ export function Submit({ username }) {
         }}
       >
         <div className="row">
-          <Link className={`submit mini`} href={`/mails/${username}`}>
+          <a className={`submit mini`} href={`/mails/${username}`}>
             편지함
-          </Link>
+          </a>
           <div style={{ width: 12 }}></div>
           <button
             className={canSubmit() ? "submit" : "submit disable"}
