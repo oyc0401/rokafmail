@@ -35,6 +35,9 @@ export class Post {
       
     });
 
+  static findAll = () => prisma.post.findMany();
+
+
   static findPostedByUsername = (username: string) =>
     prisma.post.findMany({
       orderBy: {
