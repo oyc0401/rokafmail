@@ -90,7 +90,7 @@ export async function verifyUser() {
       i++;
     }
   } catch (error) {
-    logger.info(`${i}/${length} | ${error}`);
+    logger.debug(`${i}/${length} | ${error}`);
   }
   logger.info(
     `verify: ${verifyCount}, notfound: ${notfound}, skip: ${skip} unidentify: ${unidentify} missing:${
