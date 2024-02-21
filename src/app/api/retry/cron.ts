@@ -56,13 +56,13 @@ class Cron {
       this.task = cron.schedule(
 
         //3초마다
-         "*/3 * * * * *",
+         // "*/3 * * * * *",
         
         // 10분 마다
         // "*/10 * * * *",
 
         // 4시간 마다
-        // `00 */${this.perHour} * * *`,
+        `00 */${this.perHour} * * *`,
         this.event,
         {
           scheduled: true,
