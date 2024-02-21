@@ -11,11 +11,11 @@ export class Post {
   }) => prisma.post.create({ data });
 
   static findById = (id: number) =>
-  prisma.post.findUnique({
-    where: {
-      id,
-    },
-  });
+    prisma.post.findUnique({
+      where: {
+        id,
+      },
+    });
 
   static findByUsername = (username: string) =>
     prisma.post.findMany({
@@ -32,11 +32,25 @@ export class Post {
           username,
         },
       },
-      
     });
 
   static findAll = () => prisma.post.findMany();
 
+  static findAllTable = () =>
+    prisma.post.findMany({
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        relationship: true,
+        title: true,
+        // contents: true,
+        password: true,
+        createdAt: true,
+        posted: true,
+        postAt: true,
+      },
+    });
 
   static findPostedByUsername = (username: string) =>
     prisma.post.findMany({
@@ -73,7 +87,7 @@ export class Post {
       data,
     });
 
-  static deleteById=(id:number)=>
+  static deleteById = (id: number) =>
     prisma.post.delete({
       where: {
         id,
