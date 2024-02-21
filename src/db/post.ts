@@ -45,7 +45,7 @@ export class Post {
         relationship: true,
         title: true,
         // contents: true,
-        password: true,
+        // password: true,
         createdAt: true,
         posted: true,
         postAt: true,
