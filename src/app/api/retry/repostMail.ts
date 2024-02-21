@@ -32,7 +32,7 @@ export async function repostMail() {
   const unposted = await PostQueue.findAll();
   const userPostCounts = {}; // userId별로 편지를 보낸 횟수를 추적할 객체
 
-  logger.debug(`count: ${unposted.length}`);
+  logger.info(`count: ${unposted.length}`);
 
   let success = 0;
   let skippedDueToLimit = 0; // 10번 초과하여 스킵된 편지 수
