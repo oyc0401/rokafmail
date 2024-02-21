@@ -3,16 +3,18 @@ import { User } from "src/db";
 
 import { Profile } from "./profile";
 import { notFound } from "next/navigation";
+import { redirect } from 'next/navigation'
 
 export default async function Page() {
   const session = await auth();
   if (!session || !session.user || !session.user.email) {
-    notFound();
+    redirect('/auth/signin')
   }
+  
   const username = session.user.email;
 
   const user = await User.findByUsername(username);
-  if (!user)  notFound();
+  if (!user) redirect('/auth/signin')
 
   const {  name, birth,generation, message } = user;
 

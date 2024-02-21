@@ -1,10 +1,10 @@
 'use client'
 import { useRef, useState,useEffect } from 'react';
-import {start,stop, status} from './dashboard_server'
+import {startMailCron,stopMailCron, statusMailCron} from './dashboard_server'
 
 import {CircularProgress} from "@nextui-org/react";
 
-export default function CronStatusAPI(){
+export default function CronStatusMail(){
   const [loading,setLoading]=useState(true);
    const [run,setRun] = useState(false);
   const [updated,setUpdated]=useState('loading');
@@ -18,7 +18,7 @@ export default function CronStatusAPI(){
     setLoading(true);
     init();
     async function init(){
-      const repeater =await status();
+      const repeater =await statusMailCron();
       setRun(repeater.running);
       if(repeater.lastUpdated){
         
@@ -32,12 +32,12 @@ export default function CronStatusAPI(){
   
 
   async function onclickStart() {
-    await start(); // 프로그램 시작
+    await startMailCron(); // 프로그램 시작
     sync();
   }
 
   async function onclickStop() {
-    await stop(); // 프로그램 중지
+    await stopMailCron(); // 프로그램 중지
     sync();
   }
 
@@ -59,7 +59,7 @@ export default function CronStatusAPI(){
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
 
         <div className="mb-4 items-center">
-          <h2 className="font-bold text-xl mb-2">Cron Status</h2>
+          <h2 className="font-bold text-xl mb-2">Mail Cron Status</h2>
           <Status></Status>
           
 

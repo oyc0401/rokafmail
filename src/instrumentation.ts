@@ -30,7 +30,7 @@ async function execute() {
   try {
     const domain = process.env.DOMAIN;
     //const domain = "aa46348c-fadc-4dcc-af32-e878e8df23f8-00-2jam61sxcz2ou.pike.replit.dev";
-    const url = `https://${domain}/api/repeat/initialize`;
+    const url = `https://${domain}/api/retry/initialize`;
     const data = { key: process.env.NEXTAUTH_SECRET };
 
     fetch(url, { method: "POST", body: JSON.stringify(data) }).catch(
