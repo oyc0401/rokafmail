@@ -2,7 +2,7 @@ import { Table } from "./table";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import { useRouter } from "next/router";
-
+import { Post, User } from "src/db";
 
 const prismaStore = {
   user: prisma.user,
@@ -25,8 +25,19 @@ const prismaStore = {
 export default async function LinkPage({ params }) {
   const tableName = params.table;
   // console.log(tableName);
-  
-  const data = await prismaStore[tableName].findMany();
+
+  let data;
+
+  switch (tableName) {
+    case "post":
+      data = await Post.findAllTable();
+      break;
+    case "user":
+      data = await User.findAllTable();
+      break;
+    default:
+      data = await prismaStore[tableName].findMany();
+  }
 
   //console.log(Store[tableName])
 

@@ -18,13 +18,29 @@ export class User {
     });
 
   static findById = (id: number) =>
-  prisma.user.findUnique({
-    where: {
-      id,
-    },
-  });
+    prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
 
   static findAll = () => prisma.user.findMany({});
+
+  static findAllTable = () =>
+    prisma.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        // password: true,
+        name: true,
+        birth: true,
+        generation: true,
+        message: true,
+        memberSeq: true,
+        sodae: true,
+        connect: true,
+      },
+    });
 
   static update = (
     id: number,
