@@ -1,6 +1,6 @@
 import { Post, User } from "src/db";
 
-interface User {
+interface Count {
   userId: number;
   username: string;
   count: number;
@@ -10,7 +10,7 @@ export default async function UserStat() {
   const users = await User.findAll();
   const posts = await Post.findAll();
  
-  let userMap: Record<string, User> = {};
+  let userMap: Record<string, Count> = {};
 
   for (let user of users) {
     userMap[user.id] = { userId: user.id, username: user.username, count: 0 };
@@ -22,7 +22,7 @@ export default async function UserStat() {
   }
 
 
-  const sortedUsers: User[] = Object.values(userMap).sort(
+  const sortedUsers: Count[] = Object.values(userMap).sort(
     (a, b) => b.count - a.count,
   );
 
