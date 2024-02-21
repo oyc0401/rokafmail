@@ -11,8 +11,6 @@ export default async function Page(){
     const files = await getFiles(logDirectory); // 파일 목록 가져오기
   const list = groupLogsByDate(files);
 
-  console.log(list)
-  
 
   
  
