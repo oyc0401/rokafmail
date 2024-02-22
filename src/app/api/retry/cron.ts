@@ -13,6 +13,7 @@ export class CronStore {
       CronStore._mailCronSingleTon = new Cron(4, async () => {
         try {
           logger.info("mailCron is executed");
+          // Http x, 바로 호출
           await repostMail();
         } catch (e) {
           logger.error(`node-cron 중 오류발생: ${e}`);
@@ -27,6 +28,7 @@ export class CronStore {
       CronStore._userCronSingleTon = new Cron(4, async () => {
         try {
           logger.info("userCron is executed");
+          // Http x, 바로 호출
           await verifyUser();
         } catch (e) {
           logger.error(`node-cron 중 오류발생: ${e}`);
