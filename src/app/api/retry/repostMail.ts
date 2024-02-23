@@ -1,5 +1,5 @@
 import { PostQueue } from "src/db";
-import { repost,RepostStatus } from "./repostMailOnce";
+import { repost, RepostStatus } from "./repostMailOnce";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("repostMail");
 
@@ -15,6 +15,7 @@ export async function repostMail() {
   function statusMessage() {
     return `${success + skippedDueToLimit + 1}/${unposted.length}`;
   }
+  
   for (const unpost of unposted) {
     try {
       // 현재 userId에 대한 편지 수 추적
@@ -27,25 +28,28 @@ export async function repostMail() {
         const { memberSeq, sodae, generation } = unpost.user;
 
         if (!memberSeq || !sodae) {
-          console.log("유저 인증이 된 편지인데 소대번호가 없다?");
-        } else {
-          const result = await repost({
-            postId,
-            post: { name, relationship, title, contents, password },
-            user: { memberSeq, sodae, generation },
-          });
-          logger.info(`${statusMessage()}: ${message}`);
-          success++;
-          // 보내졌으면 횟수 올리기
-          switch(result){
-            case RepostStatus.success:
-               userPostCounts[userId] = (userPostCounts[userId] || 0) + 1;
-              break;
-case RepostStatus.after:
-          }
-          
+          throw Error("유저 인증이 된 편지인데 소대번호가 없다?");
         }
-        
+
+        const result = await repost({
+          postId,
+          post: { name, relationship, title, contents, password },
+          user: { memberSeq, sodae, generation },
+        });
+        switch (result) {
+          case RepostStatus.success:
+            userPostCounts[userId] = (userPostCounts[userId] || 0) + 1;
+            logger.info(`${statusMessage()}: success`);
+
+            break;
+          case RepostStatus.skip:
+            logger.info(`${statusMessage()}: skip`);
+          case RepostStatus.after:
+            logger.info(`${statusMessage()}: after`);
+          case RepostStatus.error:
+            throw Error("국방부 인편 서버 오류");
+        }
+        success++; // 보내졌으면 횟수 올리기
       } else {
         // 10번 초과 시 로그만 남김
         logger.info(`${statusMessage()}: Limit exceeded - ${userId}`);

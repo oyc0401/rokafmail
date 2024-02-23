@@ -26,8 +26,6 @@ export default async function UserStat() {
     (a, b) => b.count - a.count,
   );
 
-  console.log(sortedUsers);
-
 
   return (
     <div>
