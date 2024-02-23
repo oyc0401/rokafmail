@@ -1,6 +1,7 @@
 import { UserQueue} from "src/db";
 import{verify} from './verifyUserOnce';
 import { makeLogger } from "config/winston";
+import {VerifyStatus} from  './verifyUserOnce'
 const logger = makeLogger("verifyUser");
 
 const verifyLog = {
@@ -9,14 +10,6 @@ const verifyLog = {
   skip: "skip      ",
   unidentify: "unidentify",
 };
-
-enum VerifyStatus {
-  verify,
-  notfound,
-  skip,
-  unidentify,
-}
-
 function statusToMsg(status: VerifyStatus) {
   switch (status) {
     case VerifyStatus.verify:
@@ -65,6 +58,8 @@ export async function verifyUser() {
         case VerifyStatus.unidentify:
           unidentify++;
           break;
+        case VerifyStatus.error:
+          throw Error("rokaf server error, verify Stopped.");
       }
 
       i++;

@@ -2,12 +2,12 @@ import Rokaf from "../rokaf/rokaf";
 import { getNow, serveStatus, Status } from "src/lib/time";
 import { PostQueue, Post } from "src/db";
 import { makeLogger } from "config/winston";
-const logger = makeLogger("repostMail");
 
 export enum RepostStatus {
   success,
   skip,
   after,
+  error
 }
 
 export async function repost({
@@ -40,7 +40,7 @@ export async function repost({
   switch (status) {
     case Status.before:
     case Status.beginning:
-      return RepostStatus.success;
+      return RepostStatus.skip;
       
     case Status.training:
       let postComplete = await Rokaf.postMail({
@@ -57,13 +57,13 @@ export async function repost({
         await relocatePost(postId);
         return RepostStatus.success;
       } else {
-        throw "rokaf server error, repostMail Stopped";
+        return RepostStatus.error;
       }
       
     case Status.ending:
     case Status.working:
     case Status.discharged:
-      // relocatePost()?? 할까말까 흠..
+      // relocatePost() 할까말까 흠..
       return RepostStatus.after;
   }
 }

@@ -8,11 +8,12 @@ import {
   UnidentifiedUser,
 } from "src/db";
 
-enum VerifyStatus {
+export enum VerifyStatus {
   verify,
   notfound,
   skip,
   unidentify,
+  error
 }
 
 export async function verify({
@@ -37,7 +38,7 @@ export async function verify({
 
       // 서버가 통신이 끊기면 바로 종료
       if (!serverOn) {
-        throw Error("rokaf server error, verify Stopped.");
+        return VerifyStatus.error; 
       }
 
       // 얻었으면 업데이트

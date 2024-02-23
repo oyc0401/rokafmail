@@ -17,6 +17,8 @@ export default async function Page(){
     <Link  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2" href='/admin/log'>View Logs</Link>
     
      <Link  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2" href='/admin/userStat'>User Stat</Link>
+
+    <Link  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2" href='/admin/control'>Move Control</Link>
   </>;
 
   
