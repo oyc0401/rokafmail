@@ -18,6 +18,7 @@ import {
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
 import { useAsyncList } from "@react-stately/data";
 import dayjs from "dayjs";
+import { userDoubleCheck } from "./server";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
@@ -89,47 +90,54 @@ export function DatabaseTable({ data }) {
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => {
-            switch(columnKey){
-              case "connect":
-                if (item.connect) {
-                  return (
-                    <TableCell>
-                      <Chip color="success">Connected</Chip>
-                    </TableCell>
-                  );
-                } else {
-                  return (
-                    <TableCell>
-                      <Chip color="danger">Wating</Chip>
-                    </TableCell>
-                  );
-                }
+              switch (columnKey) {
+                case "connect":
+                  if (item.connect) {
+                    return (
+                      <TableCell>
+                        <Chip color="success">Connected</Chip>
+                      </TableCell>
+                    );
+                  } else {
+                    return (
+                      <TableCell>
+                        <Chip color="danger">Wating</Chip>
+                      </TableCell>
+                    );
+                  }
                 case "action":
-                return (
-                  <TableCell>
-                    <div className="relative flex justify-end items-center gap-2">
-                      <Dropdown>
-                        <DropdownTrigger>
-                          <Button isIconOnly size="sm" variant="light">
-                            <VerticalDotsIcon className="text-default-300" />
-                          </Button>
-                        </DropdownTrigger>
-                        <DropdownMenu>
-                          <DropdownItem>View</DropdownItem>
-                          <DropdownItem>Edit</DropdownItem>
-                          <DropdownItem>Delete</DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown>
-                    </div>
-                  </TableCell>
-                );
-              default:
-                return (
-                  <TableCell>
-                    {renderCellValue(getKeyValue(item, columnKey))}
-                  </TableCell>
-                );
-            }
+                  return (
+                    <TableCell>
+                      <div className="relative flex justify-end items-center gap-2">
+                        <Dropdown>
+                          <DropdownTrigger>
+                            <Button isIconOnly size="sm" variant="light">
+                              <VerticalDotsIcon className="text-default-300" />
+                            </Button>
+                          </DropdownTrigger>
+                          <DropdownMenu>
+                            <DropdownItem
+                              onClick={async () => {
+                                const result = await userDoubleCheck(item.id);
+                                alert(result);
+                              }}
+                            >
+                              Verify
+                            </DropdownItem>
+                            <DropdownItem>Edit</DropdownItem>
+                            <DropdownItem>Delete</DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>
+                      </div>
+                    </TableCell>
+                  );
+                default:
+                  return (
+                    <TableCell>
+                      {renderCellValue(getKeyValue(item, columnKey))}
+                    </TableCell>
+                  );
+              }
             }}
           </TableRow>
         )}

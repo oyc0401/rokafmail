@@ -1,7 +1,7 @@
-import { UserQueue} from "src/db";
-import{verify} from './verifyUserOnce';
+import { UserQueue } from "src/db";
+import { verify } from "./verifyUserOnce";
 import { makeLogger } from "config/winston";
-import {VerifyStatus} from  './verifyUserOnce'
+import { VerifyStatus } from "./verifyUserOnce";
 const logger = makeLogger("verifyUser");
 
 const verifyLog = {
@@ -9,6 +9,7 @@ const verifyLog = {
   notfound: "notfound  ",
   skip: "skip      ",
   unidentify: "unidentify",
+  error: "error",
 };
 function statusToMsg(status: VerifyStatus) {
   switch (status) {
@@ -20,6 +21,8 @@ function statusToMsg(status: VerifyStatus) {
       return verifyLog.skip;
     case VerifyStatus.unidentify:
       return verifyLog.unidentify;
+    case VerifyStatus.error:
+      return verifyLog.error;
   }
 }
 
@@ -38,13 +41,12 @@ export async function verifyUser() {
   try {
     for (const unconnect of unconnected) {
       const { userId } = unconnect;
-      const { generation, name, birth } = unconnect.user;
-      const userLogForm = `${userId} ${name} ${birth} ${generation}`;
-      
-      //`${verifyLog.verify} ${userLogForm}`
-      const status = await verify({userId ,generation, name, birth });
-      logger.info(`${i}/${length} | ${statusToMsg(status)} ${userLogForm}`);
+      const { username, generation, name, birth } = unconnect.user;
+      const userLogForm = `${username} (${userId}) ${name} ${birth} ${generation}`;
 
+      //`${verifyLog.verify} ${userLogForm}`
+      const status = await verify({ userId, generation, name, birth });
+      
       switch (status) {
         case VerifyStatus.verify:
           verifyCount++;
@@ -61,6 +63,8 @@ export async function verifyUser() {
         case VerifyStatus.error:
           throw Error("rokaf server error, verify Stopped.");
       }
+      logger.info(`${i}/${length} | ${statusToMsg(status)} ${userLogForm}`);
+
 
       i++;
     }
