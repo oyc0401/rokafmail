@@ -115,73 +115,7 @@ export function DatabaseTable({ data }) {
                   return (
                     <TableCell>
                       <div className="relative flex justify-end items-center gap-2">
-                        <Dropdown>
-                          <DropdownTrigger>
-                            <Button isIconOnly size="sm" variant="light">
-                              <VerticalDotsIcon className="text-default-300" />
-                            </Button>
-                          </DropdownTrigger>
-
-                          <DropdownMenu
-                            disabledKeys={
-                              item.connect
-                                ? ["verify"]
-                                : ["sendAll", "sendFront"]
-                            }
-                          >
-                            
-                            <DropdownSection title="Actions" showDivider>
-                              <DropdownItem
-                                key="verify"
-                                onClick={async () => {
-                                  const result = await userDoubleCheck(item.id);
-                                  alert(result);
-                                }}
-                              >
-                                Verify
-                              </DropdownItem>
-                              <DropdownItem
-                                key="sendAll"
-                                onClick={async () => {
-                                  const result = await resendUserMail(item.id);
-                                  alert(result);
-                                }}
-                              >
-                                Post All
-                              </DropdownItem>
-                              <DropdownItem
-                                key="sendFront"
-                                onClick={async () => {
-                                  const result = await resendPostLast(item.id);
-                                  alert(result);
-                                }}
-                              >
-                                Post Front
-                              </DropdownItem>
-                            </DropdownSection>
-
-                            <DropdownSection title="Navigations">
-                              <DropdownItem
-                                onClick={async () => {
-                                  router.push(
-                                    `/admin/control/post?userId=${item.id}`,
-                                  );
-                                }}
-                              >
-                                Search Posts
-                              </DropdownItem>
-                              <DropdownItem
-                                onClick={async () => {
-                                  router.push(
-                                    `/admin/control/postQueue?userId=${item.id}`,
-                                  );
-                                }}
-                              >
-                                Search PostQueues
-                              </DropdownItem>
-                            </DropdownSection>
-                          </DropdownMenu>
-                        </Dropdown>
+                        
                       </div>
                     </TableCell>
                   );
