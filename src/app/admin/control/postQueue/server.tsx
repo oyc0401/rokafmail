@@ -10,12 +10,10 @@ const logger = makeLogger("Resend Post");
 export async function resend(postId: number) {
   const post = await PostQueue.findByPostId(postId);
   if (!post) return;
-  const user = await User.findById(post.userId);
-  if (!user) return;
-  
 
-  const { name, relationship, title, contents, password, createdAt } = post;
-  const { memberSeq, sodae, generation, username, id: userId } = user;
+  const { name, relationship, title, contents, password, createdAt } =
+    post.post;
+  const { memberSeq, sodae, generation, username, id: userId } = post.user;
   if (!memberSeq || !sodae) return;
 
   const status = await repost({
