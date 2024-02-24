@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableHeader,
@@ -13,11 +13,14 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  DropdownSection,
   Chip,
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
 import { useAsyncList } from "@react-stately/data";
 import dayjs from "dayjs";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 // import { resend } from "./server";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
@@ -26,6 +29,8 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export function DatabaseTable({ data }) {
+  const router = useRouter();
+
   let list = useAsyncList({
     async load({ signal }) {
       return {
@@ -66,7 +71,7 @@ export function DatabaseTable({ data }) {
         <TableColumn key="userId" allowsSorting>
           UserId
         </TableColumn>
-       
+
         <TableColumn key="title" allowsSorting>
           Title
         </TableColumn>
@@ -88,7 +93,12 @@ export function DatabaseTable({ data }) {
         <TableColumn key="action">Action</TableColumn>
       </TableHeader>
       <TableBody items={list.items} emptyContent={"No rows to display."}>
-        {(item: { id:number; posted:boolean; [key: string]: any }) => (
+        {(item: {
+          id: number;
+          userId: number;
+          posted: boolean;
+          [key: string]: any;
+        }) => (
           <TableRow key={item.id}>
             {(columnKey) => {
               switch (columnKey) {
@@ -117,14 +127,26 @@ export function DatabaseTable({ data }) {
                             </Button>
                           </DropdownTrigger>
                           <DropdownMenu>
-                            {/* <DropdownItem
-                              onClick={async () => {
-                                 const result = await resend(item.id);
-                                 alert(result);
-                              }}
-                            >
-                              Post
-                            </DropdownItem> */}
+                            <DropdownSection title="Navigations">
+                              <DropdownItem
+                                onClick={async () => {
+                                  router.push(
+                                    `/admin/control/post?userId=${item.userId}`,
+                                  );
+                                }}
+                              >
+                                Search Posts
+                              </DropdownItem>
+                              <DropdownItem
+                                onClick={async () => {
+                                  router.push(
+                                    `/admin/control/postQueue?userId=${item.userId}`,
+                                  );
+                                }}
+                              >
+                                Search PostQueues
+                              </DropdownItem>
+                            </DropdownSection>
                           </DropdownMenu>
                         </Dropdown>
                       </div>

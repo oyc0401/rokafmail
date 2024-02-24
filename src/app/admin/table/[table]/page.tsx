@@ -50,7 +50,3 @@ export default async function LinkPage({ params }) {
     </>
   );
 }
-
-function toJson(text) {
-  return JSON.parse(JSON.stringify(text));
-}
