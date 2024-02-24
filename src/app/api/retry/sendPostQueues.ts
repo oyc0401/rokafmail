@@ -1,8 +1,8 @@
 import { repost, RepostStatus } from "./repostMailOnce";
 import { makeLogger } from "config/winston";
-const logger = makeLogger("sendUnposteds");
+const logger = makeLogger("sendPostQueues");
 
-export async function postUnposteds(
+export async function sendPostQueues(
   unposted: {
     userId: number;
     postId: number;
@@ -72,6 +72,7 @@ export async function postUnposteds(
             logger.info(`${statusMessage()}: after | ${postLogForm}`);
             break;
           case RepostStatus.error:
+            logger.info(`${statusMessage()}: error | ${postLogForm}`);
             throw Error(`국방부 인편 서버 오류 | ${postLogForm}`);
         }
         userPostCounts[userId] = (userPostCounts[userId] || 0) + 1;

@@ -18,7 +18,7 @@ import {
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
 import { useAsyncList } from "@react-stately/data";
 import dayjs from "dayjs";
-import { userDoubleCheck ,resendUserMail,resendPostLast} from "./server";
+import { userDoubleCheck, resendUserMail, resendPostLast } from "./server";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
@@ -115,8 +115,15 @@ export function DatabaseTable({ data }) {
                               <VerticalDotsIcon className="text-default-300" />
                             </Button>
                           </DropdownTrigger>
-                          <DropdownMenu>
+                          <DropdownMenu
+                            disabledKeys={
+                              item.connect
+                                ? ["verify"]
+                                : ["sendAll", "sendFront"]
+                            }
+                          >
                             <DropdownItem
+                              key="verify"
                               onClick={async () => {
                                 const result = await userDoubleCheck(item.id);
                                 alert(result);
@@ -125,18 +132,23 @@ export function DatabaseTable({ data }) {
                               Verify
                             </DropdownItem>
                             <DropdownItem
+                              key="sendAll"
                               onClick={async () => {
                                 const result = await resendUserMail(item.id);
                                 alert(result);
                               }}
-                              >resendAll</DropdownItem>
+                            >
+                              Post All
+                            </DropdownItem>
                             <DropdownItem
+                              key="sendFront"
                               onClick={async () => {
                                 const result = await resendPostLast(item.id);
                                 alert(result);
                               }}
-                              >PostLasted</DropdownItem>
-                            
+                            >
+                              Post Front
+                            </DropdownItem>
                           </DropdownMenu>
                         </Dropdown>
                       </div>

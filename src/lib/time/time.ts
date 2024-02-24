@@ -151,6 +151,7 @@ export function mailEnded(generation: number): boolean {
 }
 
 
+// Date to Datejs
 export function parseKorea(date:Date){
   return  dayjs(date).tz("Asia/Seoul")
 }

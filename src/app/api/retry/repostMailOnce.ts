@@ -38,6 +38,7 @@ export async function repost({
   // 다시보내기 할 때 편지쓰기 가능한 기간에만 보낸다.
   // 편지쓰기 이후에 보내도 일단은 그냥 스킵하고 postQueue에 그대로 두겠다.
   // 편지가 안 보내졌다는걸 확실히 알려주기 위해서
+  
   switch (status) {
     case Status.before:
     case Status.beginning:
