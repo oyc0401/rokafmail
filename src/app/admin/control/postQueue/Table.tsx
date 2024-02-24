@@ -18,7 +18,7 @@ import {
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
 import { useAsyncList } from "@react-stately/data";
 import dayjs from "dayjs";
-// import { resend } from "./server";
+import { resend } from "./server";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
@@ -60,13 +60,20 @@ export function DatabaseTable({ data }) {
       }}
     >
       <TableHeader>
+        
         <TableColumn key="id" allowsSorting>
           Id
         </TableColumn>
         <TableColumn key="userId" allowsSorting>
           UserId
         </TableColumn>
-       
+        <TableColumn key="username" allowsSorting>
+          Username
+        </TableColumn>
+        <TableColumn key="postId" allowsSorting>
+          PostId
+        </TableColumn>
+        
         <TableColumn key="title" allowsSorting>
           Title
         </TableColumn>
@@ -79,16 +86,15 @@ export function DatabaseTable({ data }) {
         <TableColumn key="createdAt" allowsSorting>
           CreatedAt
         </TableColumn>
-        <TableColumn key="posted" allowsSorting>
-          Posted
-        </TableColumn>
-        <TableColumn key="postAt" allowsSorting>
-          PostAt
-        </TableColumn>
         <TableColumn key="action">Action</TableColumn>
       </TableHeader>
       <TableBody items={list.items} emptyContent={"No rows to display."}>
-        {(item: { id:number; posted:boolean; [key: string]: any }) => (
+        {(item: {
+          id: number;
+          postId: number;
+          posted: boolean;
+          [key: string]: any;
+        }) => (
           <TableRow key={item.id}>
             {(columnKey) => {
               switch (columnKey) {
@@ -117,14 +123,14 @@ export function DatabaseTable({ data }) {
                             </Button>
                           </DropdownTrigger>
                           <DropdownMenu>
-                            {/* <DropdownItem
+                            <DropdownItem
                               onClick={async () => {
-                                 const result = await resend(item.id);
-                                 alert(result);
+                                const result = await resend(item.postId);
+                                alert(result);
                               }}
                             >
-                              Post
-                            </DropdownItem> */}
+                              Send
+                            </DropdownItem>
                           </DropdownMenu>
                         </Dropdown>
                       </div>

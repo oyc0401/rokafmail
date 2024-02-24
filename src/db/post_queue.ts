@@ -66,6 +66,35 @@ export class PostQueue {
       },
     });
 
+  static findByPostId = async (postId: number) => {
+    const result = await prisma.postQueue.findMany({
+      include: {
+        user: {
+          select: {
+            username: true,
+            generation: true,
+            memberSeq: true,
+            sodae: true,
+          },
+        },
+        post: true,
+      },
+      where: {
+        postId,
+      },
+    });
+
+    if (result.length == 0) {
+      return null;
+    }
+    if (result.length > 1) {
+      throw Error(
+        "PostQueue 안에 같은 postId를 가진 요소가 여러개 들어있습니다.",
+      );
+    }
+    return result[0];
+  };
+
   static deleteByPostId = (postId: number) =>
     prisma.postQueue.deleteMany({
       where: {

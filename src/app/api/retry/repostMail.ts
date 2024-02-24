@@ -2,9 +2,9 @@ import { PostQueue } from "src/db";
 import { repost, RepostStatus } from "./repostMailOnce";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("repostMail");
-import { postUnposteds } from "./postUnposteds";
+import { sendPostQueues } from "./sendPostQueues";
 
 export async function repostMail() {
   const unposted = await PostQueue.findAll();
-  await postUnposteds(unposted);
+     sendPostQueues(unposted);
 }

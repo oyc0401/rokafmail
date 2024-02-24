@@ -1,20 +1,20 @@
 "use server";
 
 import { verify } from "src/app/api/retry/verifyUserOnce";
-import { User, PostQueue } from "src/db";
+import { User, PostQueue, UserQueue } from "src/db";
 import { makeLogger } from "config/winston";
 import { VerifyStatus } from "src/app/api/retry/verifyUserOnce";
 import { repost, RepostStatus } from "src/app/api/retry/repostMailOnce";
-import { postUnposteds } from "src/app/api/retry/postUnposteds";
+import { sendPostQueues } from "src/app/api/retry/sendPostQueues";
 const logger = makeLogger("verifyUser");
 
 // import {} from'src/app/api/retry/'
 
 export async function userDoubleCheck(userId: number) {
-  const user = await User.findById(userId);
-  if (!user) return;
+  const userQueueElement = await UserQueue.findByUserId(userId);
+  if (!userQueueElement) return;
 
-  const { username, name, generation, birth } = user;
+  const { username, name, generation, birth } = userQueueElement.user;
   const status = await verify({ userId, name, generation, birth });
 
   const userLogForm = `| ${username} (${userId}) ${name} ${birth} ${generation}`;
@@ -45,11 +45,11 @@ export async function userDoubleCheck(userId: number) {
 
 export async function resendUserMail(userId: number) {
   const unposted = await PostQueue.findByUserId(userId);
-  return await postUnposteds(unposted);
+  sendPostQueues(unposted);
+  return "await sendPostQueues(unposted)";
 }
 
 export async function resendPostLast(userId: number) {
   const unposted = await PostQueue.findByUserId(userId);
-  return await postUnposteds(unposted,1);
+  return await sendPostQueues(unposted, 1);
 }
-

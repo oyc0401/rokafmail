@@ -1,5 +1,6 @@
 import axios from "axios";
 import FormData from "form-data";
+import { parseKorea } from "src/lib/time";
 
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Rokaf");
@@ -10,9 +11,13 @@ export async function postMail(
 ) {
   let data = new FormData();
 
-  data.append("senderZipcode", "06252");
-  data.append("senderAddr1", "서울특별시 강남구 강남대로 328");
-  data.append("senderAddr2", "역삼동");
+
+  const dateJs=parseKorea(createdAt);
+  const formattedDate = dateJs.format("YYYY.MM.DD HH:mm:ss")
+
+  data.append("senderZipcode", `00000`);
+  data.append("senderAddr1", "하늘인편");
+  data.append("senderAddr2", `${formattedDate}`);
   data.append("senderName", name);
   data.append("relationship", relationship);
   data.append("title", title);
@@ -40,11 +45,11 @@ export async function postMail(
     data: data,
   };
 
-  logger.debug(`[postMail] ${memberSeq} 편지 보내는 중...`);
+ // console.log(`[postMail] ${memberSeq} 편지 보내는 중...`);
 
   try {
     const res = await axios(config);
-    logger.debug(`[postMail] ${memberSeq} 편지 보내기 성공!`);
+   //   console.log(`[postMail] ${memberSeq} 편지 보내기 성공!`);
     //console.log(res.data)
     return {
       complete: true,
