@@ -6,7 +6,7 @@ import { User, Post } from "src/db";
 
 export default async function UserController({ searchParams }) {
   if (searchParams.userId) {
-    const data = await Post.findByUserId(Number(searchParams.userId));
+    const data = await Post.findByUserIdTable(Number(searchParams.userId));
     return (
       <>
         <h2 className="font-bold text-2xl mb-4">{`Post - user id:${searchParams.userId}`}</h2>

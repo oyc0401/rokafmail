@@ -43,6 +43,26 @@ export class Post {
       },
     });
 
+  // 어드민 페이지 post 테이블
+  static findByUserIdTable = (userId: number) =>
+  prisma.post.findMany({
+    select: {
+      id: true,
+      userId: true,
+      name: true,
+      relationship: true,
+      title: true,
+      // contents: true,
+      // password: true,
+      createdAt: true,
+      posted: true,
+      postAt: true,
+    },
+    where: {
+      userId,
+    },
+  });
+
   static findAllTable = () =>
     prisma.post.findMany({
       select: {

@@ -26,6 +26,7 @@ export class User {
 
   static findAll = () => prisma.user.findMany({});
 
+  // 어드민 페이지 User 테이블
   static findAllTable = () =>
     prisma.user.findMany({
       select: {

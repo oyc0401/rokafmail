@@ -24,7 +24,7 @@ export class PostQueue {
             generation: true,
             memberSeq: true,
             sodae: true,
-             id:true,
+            id: true,
           },
         },
         post: true,
@@ -49,7 +49,8 @@ export class PostQueue {
       },
     });
 
-  static findByUserId = (userId: number) =>
+  // 어드민 페이지 userQueue 테이블
+  static findByUserIdTable = (userId: number) =>
     prisma.postQueue.findMany({
       include: {
         user: {
@@ -58,10 +59,23 @@ export class PostQueue {
             generation: true,
             memberSeq: true,
             sodae: true,
-             id:true,
+            id: true,
           },
         },
-        post: true,
+        post: {
+          select: {
+            id: true,
+            userId: true,
+            name: true,
+            relationship: true,
+            title: true,
+            // contents: true,
+            // password: true,
+            createdAt: true,
+            posted: true,
+            postAt: true,
+          },
+        },
       },
       where: {
         userId,
@@ -77,7 +91,7 @@ export class PostQueue {
             generation: true,
             memberSeq: true,
             sodae: true,
-            id:true,
+            id: true,
           },
         },
         post: true,

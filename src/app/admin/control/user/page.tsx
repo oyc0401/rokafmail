@@ -6,7 +6,7 @@ import { User } from "src/db";
 
 
 export default async function UserController( ) {
-  const data = await User.findAll();
+  const data = await User.findAllTable();
 
   return (
     <>
