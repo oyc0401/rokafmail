@@ -15,11 +15,9 @@ const sleep = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay));
 export async function register() {
   console.log("처음 실행!!");
-
-  // execute();
-
+  
   if (process.env.NODE_ENV == "production") {
-    execute();
+    // execute();
   }
 }
 
