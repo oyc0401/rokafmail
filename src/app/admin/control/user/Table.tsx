@@ -36,11 +36,13 @@ export function DatabaseTable({ data }) {
         items: data,
       };
     },
-    async sort({ items, sortDescriptor }) {
+    async sort({ items, sortDescriptor }
+              // :{items:any[];sortDescriptor:string}
+              ) {
       return {
-        items: items.sort((a, b) => {
-          let first = a[sortDescriptor.column];
-          let second = b[sortDescriptor.column];
+        items: items.sort((a:object, b:object) => {
+          let first = a[sortDescriptor.column!];
+          let second = b[sortDescriptor.column!];
           let cmp =
             (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
 
