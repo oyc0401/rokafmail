@@ -22,6 +22,7 @@ export async function repost({
     title: string;
     contents: string;
     password: string;
+    createdAt:Date;
   };
   user: {
     memberSeq: string;
@@ -29,11 +30,11 @@ export async function repost({
     generation: number;
   };
 }) {
-  const { name, relationship, title, contents, password } = post;
+  const { name, relationship, title, contents, password,createdAt } = post;
   const { memberSeq, sodae, generation } = user;
 
   const status = serveStatus(generation);
-
+ 
   // 다시보내기 할 때 편지쓰기 가능한 기간에만 보낸다.
   // 편지쓰기 이후에 보내도 일단은 그냥 스킵하고 postQueue에 그대로 두겠다.
   // 편지가 안 보내졌다는걸 확실히 알려주기 위해서
@@ -51,7 +52,7 @@ export async function repost({
         password,
         memberSeq,
         sodae,
-      });
+      },createdAt);
       // 국방서버에 보내는 요청
       if (postComplete.complete) {
         await relocatePost(postId);

@@ -18,7 +18,7 @@ import {
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
 import { useAsyncList } from "@react-stately/data";
 import dayjs from "dayjs";
-import { userDoubleCheck } from "./server";
+import { resend } from "./server";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
@@ -63,39 +63,36 @@ export function DatabaseTable({ data }) {
         <TableColumn key="id" allowsSorting>
           Id
         </TableColumn>
-        <TableColumn key="username" allowsSorting>
-          Username
+        <TableColumn key="userId" allowsSorting>
+          UserId
         </TableColumn>
         <TableColumn key="name" allowsSorting>
           Name
         </TableColumn>
-        <TableColumn key="birth" allowsSorting>
-          Birth
+        <TableColumn key="title" allowsSorting>
+          Title
         </TableColumn>
-        <TableColumn key="generation" allowsSorting>
-          Generation
+        <TableColumn key="createdAt" allowsSorting>
+          CreatedAt
         </TableColumn>
-        {/* <TableColumn key="sodae" allowsSorting>
-          sodae
+        <TableColumn key="posted" allowsSorting>
+          Posted
         </TableColumn>
-        <TableColumn key="memberSeq" allowsSorting>
-          memberSeq
-        </TableColumn> */}
-        <TableColumn key="connect" allowsSorting>
-          Connect
+        <TableColumn key="postAt" allowsSorting>
+          PostAt
         </TableColumn>
         <TableColumn key="action">Action</TableColumn>
       </TableHeader>
       <TableBody items={list.items} emptyContent={"No rows to display."}>
-        {(item:{id,connect}) => (
+        {(item: { id:number; posted:boolean; [key: string]: any }) => (
           <TableRow key={item.id}>
             {(columnKey) => {
               switch (columnKey) {
                 case "connect":
-                  if (item.connect) {
+                  if (item.posted) {
                     return (
                       <TableCell>
-                        <Chip color="success">Connected</Chip>
+                        <Chip color="success">Posted</Chip>
                       </TableCell>
                     );
                   } else {
@@ -118,14 +115,12 @@ export function DatabaseTable({ data }) {
                           <DropdownMenu>
                             <DropdownItem
                               onClick={async () => {
-                                const result = await userDoubleCheck(item.id);
-                                alert(result);
+                                 const result = await resend(item.id);
+                                 alert(result);
                               }}
                             >
-                              Verify
+                              Post
                             </DropdownItem>
-                            <DropdownItem>Edit</DropdownItem>
-                            <DropdownItem>Delete</DropdownItem>
                           </DropdownMenu>
                         </Dropdown>
                       </div>

@@ -4,15 +4,10 @@ import FormData from "form-data";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Rokaf");
 
-export async function postMail({
-  name,
-  relationship,
-  title,
-  contents,
-  password,
-  memberSeq,
-  sodae,
-}) {
+export async function postMail(
+  { name, relationship, title, contents, password, memberSeq, sodae },
+  createdAt: Date,
+) {
   let data = new FormData();
 
   data.append("senderZipcode", "06252");
@@ -57,10 +52,14 @@ export async function postMail({
     };
   } catch (error) {
     if (error.response) {
+      console.log(
+        `debug - ${memberSeq} 편지 오류: ${error.message} status:${error.response.status}`,
+      );
       logger.debug(
         `${memberSeq} 편지 오류: ${error.message} status:${error.response.status}`,
       );
     } else {
+      console.log(`warning - ${memberSeq} 편지 오류: ${error.message}`);
       logger.warn(`${memberSeq} 편지 오류: ${error.message}`);
     }
     return {

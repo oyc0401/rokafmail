@@ -1,9 +1,11 @@
 "use server";
 
 import { verify } from "src/app/api/retry/verifyUserOnce";
-import { User } from "src/db";
+import { User, PostQueue } from "src/db";
 import { makeLogger } from "config/winston";
 import { VerifyStatus } from "src/app/api/retry/verifyUserOnce";
+import { repost, RepostStatus } from "src/app/api/retry/repostMailOnce";
+import { postUnposteds } from "src/app/api/retry/postUnposteds";
 const logger = makeLogger("verifyUser");
 
 // import {} from'src/app/api/retry/'
@@ -40,3 +42,14 @@ export async function userDoubleCheck(userId: number) {
       return msg;
   }
 }
+
+export async function resendUserMail(userId: number) {
+  const unposted = await PostQueue.findByUserId(userId);
+  return await postUnposteds(unposted);
+}
+
+export async function resendPostLast(userId: number) {
+  const unposted = await PostQueue.findByUserId(userId);
+  return await postUnposteds(unposted,1);
+}
+

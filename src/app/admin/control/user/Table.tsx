@@ -18,7 +18,7 @@ import {
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
 import { useAsyncList } from "@react-stately/data";
 import dayjs from "dayjs";
-import { userDoubleCheck } from "./server";
+import { userDoubleCheck ,resendUserMail,resendPostLast} from "./server";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
@@ -87,7 +87,7 @@ export function DatabaseTable({ data }) {
         <TableColumn key="action">Action</TableColumn>
       </TableHeader>
       <TableBody items={list.items} emptyContent={"No rows to display."}>
-        {(item:{id,connect}) => (
+        {(item: { id: number; connect: boolean; [key: string]: any }) => (
           <TableRow key={item.id}>
             {(columnKey) => {
               switch (columnKey) {
@@ -124,8 +124,19 @@ export function DatabaseTable({ data }) {
                             >
                               Verify
                             </DropdownItem>
-                            <DropdownItem>Edit</DropdownItem>
-                            <DropdownItem>Delete</DropdownItem>
+                            <DropdownItem
+                              onClick={async () => {
+                                const result = await resendUserMail(item.id);
+                                alert(result);
+                              }}
+                              >resendAll</DropdownItem>
+                            <DropdownItem
+                              onClick={async () => {
+                                const result = await resendPostLast(item.id);
+                                alert(result);
+                              }}
+                              >PostLasted</DropdownItem>
+                            
                           </DropdownMenu>
                         </Dropdown>
                       </div>
