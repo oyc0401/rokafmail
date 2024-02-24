@@ -13,6 +13,7 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  DropdownSection,
   Chip,
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
@@ -123,14 +124,16 @@ export function DatabaseTable({ data }) {
                             </Button>
                           </DropdownTrigger>
                           <DropdownMenu>
-                            <DropdownItem
-                              onClick={async () => {
-                                const result = await resend(item.postId);
-                                alert(result);
-                              }}
-                            >
-                              Send
-                            </DropdownItem>
+                            <DropdownSection title="Actions">
+                              <DropdownItem
+                                onClick={async () => {
+                                  const result = await resend(item.postId);
+                                  alert(result);
+                                }}
+                              >
+                                Send
+                              </DropdownItem>
+                            </DropdownSection>
                           </DropdownMenu>
                         </Dropdown>
                       </div>

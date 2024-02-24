@@ -13,12 +13,14 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  DropdownSection,
   Chip,
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
 import { useAsyncList } from "@react-stately/data";
 import dayjs from "dayjs";
 import { userDoubleCheck, resendUserMail, resendPostLast } from "./server";
+import { useRouter } from "next/navigation";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
@@ -26,6 +28,8 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export function DatabaseTable({ data }) {
+  const router = useRouter();
+
   let list = useAsyncList({
     async load({ signal }) {
       return {
@@ -115,6 +119,7 @@ export function DatabaseTable({ data }) {
                               <VerticalDotsIcon className="text-default-300" />
                             </Button>
                           </DropdownTrigger>
+
                           <DropdownMenu
                             disabledKeys={
                               item.connect
@@ -122,33 +127,57 @@ export function DatabaseTable({ data }) {
                                 : ["sendAll", "sendFront"]
                             }
                           >
-                            <DropdownItem
-                              key="verify"
-                              onClick={async () => {
-                                const result = await userDoubleCheck(item.id);
-                                alert(result);
-                              }}
-                            >
-                              Verify
-                            </DropdownItem>
-                            <DropdownItem
-                              key="sendAll"
-                              onClick={async () => {
-                                const result = await resendUserMail(item.id);
-                                alert(result);
-                              }}
-                            >
-                              Post All
-                            </DropdownItem>
-                            <DropdownItem
-                              key="sendFront"
-                              onClick={async () => {
-                                const result = await resendPostLast(item.id);
-                                alert(result);
-                              }}
-                            >
-                              Post Front
-                            </DropdownItem>
+                            
+                            <DropdownSection title="Actions" showDivider>
+                              <DropdownItem
+                                key="verify"
+                                onClick={async () => {
+                                  const result = await userDoubleCheck(item.id);
+                                  alert(result);
+                                }}
+                              >
+                                Verify
+                              </DropdownItem>
+                              <DropdownItem
+                                key="sendAll"
+                                onClick={async () => {
+                                  const result = await resendUserMail(item.id);
+                                  alert(result);
+                                }}
+                              >
+                                Post All
+                              </DropdownItem>
+                              <DropdownItem
+                                key="sendFront"
+                                onClick={async () => {
+                                  const result = await resendPostLast(item.id);
+                                  alert(result);
+                                }}
+                              >
+                                Post Front
+                              </DropdownItem>
+                            </DropdownSection>
+
+                            <DropdownSection title="Navigations">
+                              <DropdownItem
+                                onClick={async () => {
+                                  router.push(
+                                    `/admin/control/post?userId=${item.userId}`,
+                                  );
+                                }}
+                              >
+                                Search Posts
+                              </DropdownItem>
+                              <DropdownItem
+                                onClick={async () => {
+                                  router.push(
+                                    `/admin/control/postQueue?userId=${item.userId}`,
+                                  );
+                                }}
+                              >
+                                Search PostQueues
+                              </DropdownItem>
+                            </DropdownSection>
                           </DropdownMenu>
                         </Dropdown>
                       </div>

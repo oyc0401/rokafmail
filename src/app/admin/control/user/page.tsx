@@ -10,6 +10,7 @@ export default async function UserController( ) {
 
   return (
     <>
+      <h2 className="font-bold text-2xl mb-4">{`User`}</h2>
       <DatabaseTable data={data}></DatabaseTable>
     </>
   );
