@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableHeader,
@@ -19,8 +19,9 @@ import {
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
 import { useAsyncList } from "@react-stately/data";
 import dayjs from "dayjs";
-import { userDoubleCheck, resendUserMail, resendPostLast } from "./server";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+// import { resend } from "./server";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
@@ -36,14 +37,13 @@ export function DatabaseTable({ data }) {
         <thead className="bg-gray-200">
           <tr>
             <th className="border px-4 py-2">id</th>
-            <th className="border px-4 py-2">username</th>
-            <th className="border px-4 py-2">name</th>
-            <th className="border px-4 py-2">birth</th>
-            <th className="border px-4 py-2">generation</th>
-            <th className="border px-4 py-2">message</th>
-            <th className="border px-4 py-2">memberSeq</th>
-            <th className="border px-4 py-2">sodae</th>
-            <th className="border px-4 py-2">connect</th>
+            <th className="border px-4 py-2">UserId</th>
+            <th className="border px-4 py-2">Title</th>
+            <th className="border px-4 py-2">Name</th>
+            <th className="border px-4 py-2">Relationship</th>
+            <th className="border px-4 py-2">CreatedAt</th>
+            <th className="border px-4 py-2">Posted</th>
+            <th className="border px-4 py-2">PostAt</th>
             <th className="border px-4 py-2">Action</th>
           </tr>
         </thead>
@@ -53,62 +53,27 @@ export function DatabaseTable({ data }) {
             return (
               <tr>
                 <td>{item.id}</td>
-                <td>{item.username}</td>
+                <td>{item.userId}</td>
+                <td>{item.title}</td>
                 <td>{item.name}</td>
-                <td>{item.birth}</td>
-                <td>{item.generation}</td>
-                <td>{item.message}</td>
-                <td>{item.memberSeq}</td>
-                <td>{item.sodae}</td>
-                <td>{renderCellValue(item.connect)}</td>
+                <td>{item.relationship}</td>
+                <td>{renderCellValue(item.createdAt)}</td>
+                <td>{item.posted}</td>
+                <td>{renderCellValue(item.postAt)}</td>
                 <td>
+                  
                   <Dropdown>
                     <DropdownTrigger>
                       <Button isIconOnly size="sm" variant="light">
                         <VerticalDotsIcon className="text-default-300" />
                       </Button>
                     </DropdownTrigger>
-
-                    <DropdownMenu
-                      disabledKeys={
-                        item.connect ? ["verify"] : ["sendAll", "sendFront"]
-                      }
-                    >
-                      <DropdownSection title="Actions" showDivider>
-                        <DropdownItem
-                          key="verify"
-                          onClick={async () => {
-                            const result = await userDoubleCheck(item.id);
-                            alert(result);
-                          }}
-                        >
-                          Verify
-                        </DropdownItem>
-                        <DropdownItem
-                          key="sendAll"
-                          onClick={async () => {
-                            const result = await resendUserMail(item.id);
-                            alert(result);
-                          }}
-                        >
-                          Post All
-                        </DropdownItem>
-                        <DropdownItem
-                          key="sendFront"
-                          onClick={async () => {
-                            const result = await resendPostLast(item.id);
-                            alert(result);
-                          }}
-                        >
-                          Post Front
-                        </DropdownItem>
-                      </DropdownSection>
-
+                    <DropdownMenu>
                       <DropdownSection title="Navigations">
                         <DropdownItem
                           onClick={async () => {
                             router.push(
-                              `/admin/control/post?userId=${item.id}`,
+                              `/admin/control/post?userId=${item.userId}`,
                             );
                           }}
                         >
@@ -117,7 +82,7 @@ export function DatabaseTable({ data }) {
                         <DropdownItem
                           onClick={async () => {
                             router.push(
-                              `/admin/control/postQueue?userId=${item.id}`,
+                              `/admin/control/postQueue?userId=${item.userId}`,
                             );
                           }}
                         >
