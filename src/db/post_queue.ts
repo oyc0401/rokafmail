@@ -9,7 +9,6 @@ export class PostQueue {
 
   static findAll = () =>
     prisma.postQueue.findMany({
-      
       where: {
         user: {
           NOT: {
@@ -22,7 +21,7 @@ export class PostQueue {
         user: {
           select: {
             username: true,
-            generation:true,
+            generation: true,
             memberSeq: true,
             sodae: true,
           },
@@ -46,6 +45,24 @@ export class PostQueue {
         user: {
           username,
         },
+      },
+    });
+
+  static findByUserId = (userId: number) =>
+    prisma.postQueue.findMany({
+      include: {
+        user: {
+          select: {
+            username: true,
+            generation: true,
+            memberSeq: true,
+            sodae: true,
+          },
+        },
+        post: true,
+      },
+      where: {
+        userId,
       },
     });
 

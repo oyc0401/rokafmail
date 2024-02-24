@@ -1,41 +1,46 @@
 "use server";
 
-import { verify } from "src/app/api/retry/verifyUserOnce";
-import { User } from "src/db";
+import { repost, RepostStatus } from "src/app/api/retry/repostMailOnce";
+import { Post, User } from "src/db";
 import { makeLogger } from "config/winston";
-import { VerifyStatus } from "src/app/api/retry/verifyUserOnce";
-const logger = makeLogger("verifyUser");
+const logger = makeLogger("Resend Post");
 
 // import {} from'src/app/api/retry/'
 
-export async function userDoubleCheck(userId: number) {
-  const user = await User.findById(userId);
+export async function resend(postId: number) {
+  const post = await Post.findById(postId);
+  if (!post) return;
+  const user = await User.findById(post.userId);
   if (!user) return;
 
-  const { username, name, generation, birth } = user;
-  const status = await verify({ userId, name, generation, birth });
+  const { name, relationship, title, contents, password, createdAt } = post;
+  const { memberSeq, sodae, generation, username, id: userId } = user;
+  if (!memberSeq || !sodae) return;
 
-  const userLogForm = `| ${username} (${userId}) ${name} ${birth} ${generation}`;
+  const status = await repost({
+    postId,
+    post: { name, relationship, title, contents, password, createdAt },
+    user: { memberSeq, sodae, generation },
+  });
+
+  const postLogForm = `${postId} - ${username} (${userId})`;
   let msg = "";
+
   switch (status) {
-    case VerifyStatus.verify:
-      msg = `verify ${userLogForm}`;
+    case RepostStatus.success:
+      msg = `success ${postLogForm}`;
       logger.info(msg);
       return msg;
-    case VerifyStatus.notfound:
-      msg = `notfound ${userLogForm}`;
+    case RepostStatus.skip:
+      msg = `skip ${postLogForm}`;
       logger.info(msg);
       return msg;
-    case VerifyStatus.skip:
-      msg = `skip ${userLogForm}`;
+    case RepostStatus.after:
+      msg = `after ${postLogForm}`;
       logger.info(msg);
       return msg;
-    case VerifyStatus.unidentify:
-      msg = `unidentify ${userLogForm}`;
-      logger.info(msg);
-      return msg;
-    case VerifyStatus.error:
-      msg = `error ${userLogForm}`;
+    case RepostStatus.error:
+      msg = `error ${postLogForm}`;
       logger.info(msg);
       return msg;
   }
