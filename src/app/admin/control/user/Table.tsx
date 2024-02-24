@@ -162,7 +162,7 @@ export function DatabaseTable({ data }) {
                               <DropdownItem
                                 onClick={async () => {
                                   router.push(
-                                    `/admin/control/post?userId=${item.userId}`,
+                                    `/admin/control/post?userId=${item.id}`,
                                   );
                                 }}
                               >
@@ -171,7 +171,7 @@ export function DatabaseTable({ data }) {
                               <DropdownItem
                                 onClick={async () => {
                                   router.push(
-                                    `/admin/control/postQueue?userId=${item.userId}`,
+                                    `/admin/control/postQueue?userId=${item.id}`,
                                   );
                                 }}
                               >
