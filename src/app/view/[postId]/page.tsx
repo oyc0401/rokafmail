@@ -28,6 +28,8 @@ export default async function View({ params }) {
   }
 
   if (pwcookie.value == password) {
+    
+   
     return  <PostView postId={postId} />
   }
 

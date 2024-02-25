@@ -26,6 +26,8 @@ export async function PostView({ postId }) {
   if (!user) {
     notFound();
   }
+
+  
   
   return (
     <div className="screen">
@@ -33,7 +35,7 @@ export async function PostView({ postId }) {
       <Paper post={post}></Paper>
 
       <div style={{ height: 12 }}></div>
-      <Footer postId={postId} username={user.username}></Footer>
+      <Footer postId={postId} username={user.username} posted={post.posted} url={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`}></Footer>
     </div>
   );
 }

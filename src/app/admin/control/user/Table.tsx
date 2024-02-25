@@ -172,6 +172,15 @@ export function DatabaseTable({ data }) {
                               <DropdownItem
                                 onClick={async () => {
                                   router.push(
+                                    `/mail/${item.username}`,
+                                  );
+                                }}
+                              >
+                                Write Mail
+                              </DropdownItem>
+                              <DropdownItem
+                                onClick={async () => {
+                                  router.push(
                                     `/admin/control/post?userId=${item.id}`,
                                   );
                                 }}
