@@ -2,6 +2,9 @@ import axios from "axios";
 import FormData from "form-data";
 import { parseKorea } from "src/lib/time";
 
+import cheerio from "cheerio";
+import { parse } from "node-html-parser";
+
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Rokaf");
 
@@ -11,9 +14,8 @@ export async function postMail(
 ) {
   let data = new FormData();
 
-
-  const dateJs=parseKorea(createdAt);
-  const formattedDate = dateJs.format("YYYY.MM.DD HH:mm:ss")
+  const dateJs = parseKorea(createdAt);
+  const formattedDate = dateJs.format("YYYY.MM.DD HH:mm:ss");
 
   data.append("senderZipcode", `00000`);
   data.append("senderAddr1", "하늘인편");
@@ -45,16 +47,29 @@ export async function postMail(
     data: data,
   };
 
- // console.log(`[postMail] ${memberSeq} 편지 보내는 중...`);
+  // console.log(`[postMail] ${memberSeq} 편지 보내는 중...`);
 
   try {
     const res = await axios(config);
-   //   console.log(`[postMail] ${memberSeq} 편지 보내기 성공!`);
-    //console.log(res.data)
-    return {
-      complete: true,
-      serverOn: true,
-    };
+    //   console.log(`[postMail] ${memberSeq} 편지 보내기 성공!`);
+    //console.log(res.data);
+
+    const msgList = extractInnerText(res.data, "message");
+    //console.log(msgList);
+
+    if(msgList[0] == '정상적으로 등록되었습니다.'){
+      return {
+        complete: true,
+        serverOn: true,
+      };
+    }else{
+      logger.warn(`${memberSeq} | ${msgList}`);
+      return {
+        complete: false,
+        serverOn: true,
+      };
+    }
+    
   } catch (error) {
     if (error.response) {
       console.log(
@@ -72,4 +87,18 @@ export async function postMail(
       serverOn: false,
     };
   }
+}
+
+function extractInnerText(htmlString, className) {
+  // HTML 문자열 파싱
+  const root = parse(htmlString);
+
+  // 특정 클래스를 가진 모든 요소를 찾음
+  const elements = root.querySelectorAll(`.${className}`);
+
+  // 요소들의 innerText를 배열로 수집
+  const innerTexts = elements.map(element => element.innerText);
+
+  // innerText 배열 리턴
+  return innerTexts;
 }

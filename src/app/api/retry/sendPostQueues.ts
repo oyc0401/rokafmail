@@ -71,6 +71,9 @@ export async function sendPostQueues(
           case RepostStatus.after:
             logger.info(`${statusMessage()}: after | ${postLogForm}`);
             break;
+          case RepostStatus.fail:
+            logger.info(`${statusMessage()}: fail | ${postLogForm}`);
+            break;
           case RepostStatus.error:
             logger.info(`${statusMessage()}: error | ${postLogForm}`);
             throw Error(`국방부 인편 서버 오류 | ${postLogForm}`);
