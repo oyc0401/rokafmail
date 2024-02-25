@@ -49,7 +49,7 @@ export function DatabaseTable({ data }) {
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
-  }, [sortDescriptor]);
+  }, [sortDescriptor,data]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
