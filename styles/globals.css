@@ -144,3 +144,8 @@ a{
 }
 
 
+.myCustomTable {
+  max-height: 525px !important;
+  overflow: auto !important;
+}
+

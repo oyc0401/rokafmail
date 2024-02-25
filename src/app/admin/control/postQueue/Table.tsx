@@ -14,10 +14,12 @@ import {
   DropdownMenu,
   DropdownItem,
   DropdownSection,
+  Pagination,
+  SortDescriptor,
   Chip,
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
-import { useAsyncList } from "@react-stately/data";
+import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { resend } from "./server";
 var utc = require("dayjs/plugin/utc");
@@ -27,38 +29,55 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export function DatabaseTable({ data }) {
-  let list = useAsyncList({
-    async load({ signal }) {
-      return {
-        items: data,
-      };
-    },
-    async sort({ items, sortDescriptor }) {
-      return {
-        items: items.sort((a:object, b:object) => {
-          let first = a[sortDescriptor.column!];
-          let second = b[sortDescriptor.column!];
-          let cmp =
-            (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
+  const router = useRouter();
 
-          if (sortDescriptor.direction === "descending") {
-            cmp *= -1;
-          }
+  const [page, setPage] = React.useState(1);
+  const rowsPerPage = 10;
 
-          return cmp;
-        }),
-      };
-    },
+  const pages = Math.ceil(data.length / rowsPerPage);
+
+  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+    column: "age",
+    direction: "ascending",
   });
 
+  const sortedItems = React.useMemo(() => {
+    return [...data].sort((a, b) => {
+      const first = a[sortDescriptor.column!];
+      const second = b[sortDescriptor.column!];
+      const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+    });
+  }, [sortDescriptor]);
+
+  const items = React.useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return sortedItems.slice(start, end);
+  }, [page, sortedItems]);
   return (
     <Table
       aria-label="Example table with client side sorting"
-      sortDescriptor={list.sortDescriptor}
-      onSortChange={list.sort}
+      sortDescriptor={sortDescriptor}
+      onSortChange={setSortDescriptor}
       classNames={{
-        table: "min-h-[400px]",
+        wrapper: "min-h-[400px]",
       }}
+      bottomContent={
+        <div className="flex w-full justify-center h-10" style={{ height: 40 }}>
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="primary"
+            page={page}
+            total={pages}
+            onChange={setPage}
+          />
+        </div>
+      }
     >
       <TableHeader>
         
@@ -89,7 +108,7 @@ export function DatabaseTable({ data }) {
         </TableColumn>
         <TableColumn key="action">Action</TableColumn>
       </TableHeader>
-      <TableBody items={list.items} emptyContent={"No rows to display."}>
+      <TableBody items={items} emptyContent={"No rows to display."}>
         {(item: {
           id: number;
           postId: number;

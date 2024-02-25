@@ -23,7 +23,7 @@ export default async function RootLayout({ children }) {
     <>
       <div className="container mx-auto pt-8">
 
-        <div className="flex justify-between mb-4">
+        <div className="flex flex justify-between mb-4">
           <a className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="/admin">
             Home
           </a>
