@@ -49,6 +49,25 @@ export class PostQueue {
       },
     });
 
+  static findByUserId = (userId: number) =>
+  prisma.postQueue.findMany({
+    include: {
+      user: {
+        select: {
+          username: true,
+          generation: true,
+          memberSeq: true,
+          sodae: true,
+          id: true,
+        },
+      },
+      post: true,
+    },
+    where: {
+      userId,
+    },
+  });
+
   // 어드민 페이지 userQueue 테이블
   static findByUserIdTable = (userId: number) =>
     prisma.postQueue.findMany({
