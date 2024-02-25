@@ -42,5 +42,9 @@ export async function resend(postId: number) {
       msg = `error ${postLogForm}`;
       logger.info(msg);
       return msg;
+      case RepostStatus.fail:
+      msg = `fail ${postLogForm}`;
+      logger.info(msg);
+      return msg;
   }
 }

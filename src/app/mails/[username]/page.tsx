@@ -90,7 +90,8 @@ async function Mail({ username }) {
         {posts.map((post, index) => (
           <div key={post.id}>
             {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
-            <Card
+            <DropDownCard
+              id={post.id}
               title={post.title}
               name={post.name}
               rel={post.relationship}

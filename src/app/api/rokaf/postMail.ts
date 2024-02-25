@@ -52,10 +52,10 @@ export async function postMail(
   try {
     const res = await axios(config);
     //   console.log(`[postMail] ${memberSeq} 편지 보내기 성공!`);
-    //console.log(res.data);
+    console.log(res.data);
 
     const msgList = extractInnerText(res.data, "message");
-    //console.log(msgList);
+    console.log(msgList,password);
 
     if(msgList[0] == '정상적으로 등록되었습니다.'){
       return {

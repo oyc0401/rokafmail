@@ -42,9 +42,9 @@ export async function repost({
 
   switch (status) {
     case Status.before:
-    case Status.beginning:
       return RepostStatus.skip;
 
+    case Status.beginning:
     case Status.training:
       let postComplete = await Rokaf.postMail(
         {
@@ -59,7 +59,7 @@ export async function repost({
         createdAt,
       );
       // 국방서버에 보내는 요청
-      if (postComplete.serverOn) {
+      if (!postComplete.serverOn) {
         return RepostStatus.error;
       }
       if (postComplete.complete) {
