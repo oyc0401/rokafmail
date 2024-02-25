@@ -89,7 +89,9 @@ export function DatabaseTable({ data }) {
         <TableColumn key="userId" allowsSorting>
           UserId
         </TableColumn>
-
+        <TableColumn key="username" allowsSorting>
+          Username
+        </TableColumn>
         <TableColumn key="title" allowsSorting>
           Title
         </TableColumn>

@@ -34,7 +34,16 @@ export class Post {
       },
     });
 
-  static findAll = () => prisma.post.findMany();
+  static findAll = () => prisma.post.findMany({
+    include: {
+      user: {
+        select: {
+          username: true,
+          connect: true,
+        },
+      },
+    },
+  });
 
   static findByUserId = (userId: number) =>
     prisma.post.findMany({

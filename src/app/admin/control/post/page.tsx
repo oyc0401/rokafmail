@@ -15,10 +15,19 @@ export default async function UserController({ searchParams }) {
     );
   }
   const data = await Post.findAll();
+
+  const transformedArray = data.map((item) => {
+    // 각 객체에 대해 user와 post 속성을 해체하여 상위 객체에 통합
+    return {
+      ...item,
+      ...item.user
+    };
+  });
+  
   return (
     <>
       <h2 className="font-bold text-2xl mb-4">Post</h2>
-      <DatabaseTable key={"2"} data={data}></DatabaseTable>
+      <DatabaseTable key={"2"} data={transformedArray}></DatabaseTable>
     </>
   );
 }
