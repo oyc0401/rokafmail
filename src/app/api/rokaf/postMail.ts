@@ -43,7 +43,7 @@ export async function postMail(
         "JSESSIONID=pVmoG5hmwpHCRsLqdiV1hegWfRiH9418N4YZ3AW5cUo7pcXvxER8Lbk0XIljcEOa.AF1303_servlet_CONT31",
       ...data.getHeaders(),
     },
-    timeout: 10000,
+    timeout: 20000,
     data: data,
   };
 

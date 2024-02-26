@@ -6,5 +6,5 @@ import { sendPostQueues } from "./sendPostQueues";
 
 export async function repostMail() {
   const unposted = await PostQueue.findAll();
-     sendPostQueues(unposted,1);
+     sendPostQueues(unposted,2);
 }
