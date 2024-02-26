@@ -17,9 +17,9 @@ export async function postMail(
   const dateJs = parseKorea(createdAt);
   const formattedDate = dateJs.format("YYYY.MM.DD HH:mm:ss");
 
-  data.append("senderZipcode", `00000`);
-  data.append("senderAddr1", "하늘인편");
-  data.append("senderAddr2", `${formattedDate}`);
+  data.append("senderZipcode", `하늘인편`);
+  data.append("senderAddr1", `${formattedDate}`);
+  data.append("senderAddr2", ``);
   data.append("senderName", name);
   data.append("relationship", relationship);
   data.append("title", title);
@@ -52,7 +52,7 @@ export async function postMail(
   try {
     const res = await axios(config);
     //   console.log(`[postMail] ${memberSeq} 편지 보내기 성공!`);
-    console.log(res.data);
+    //console.log(res.data);
 
     const msgList = extractInnerText(res.data, "message");
     console.log(msgList,password);

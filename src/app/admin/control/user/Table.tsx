@@ -96,6 +96,9 @@ export function DatabaseTable({ data }) {
         <TableColumn key="generation" allowsSorting>
           Generation
         </TableColumn>
+        <TableColumn key="sodae" allowsSorting>
+          sodae
+        </TableColumn>
         <TableColumn key="connect" allowsSorting>
           Connect
         </TableColumn>

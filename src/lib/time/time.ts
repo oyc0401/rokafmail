@@ -25,7 +25,7 @@ export function getEnter(generation: number): dayjs.Dayjs {
 
 // 편지 시작
 export function getMailStart(generation: number): dayjs.Dayjs {
-  return getEnter(generation).add(14, "day").add(9, "hour");
+  return getEnter(generation).add(14, "day").add(9-9, "hour"); // 잠시만 시차 9시간 뺌
 }
 
 // 편지 마감
@@ -80,6 +80,7 @@ export function serveStatus(generation: number) {
   if (isFuture(getEnter(generation))) {
     return Status.before;
   } else if (isFuture(getMailStart(generation))) {
+
     return Status.beginning;
   } else if (isFuture(getMailEnd(generation))) {
     // 편지쓰기 가능
@@ -132,6 +133,7 @@ export function isPast(date: dayjs.Dayjs): boolean {
 // 해당 날짜가 미래인지
 export function isFuture(date: dayjs.Dayjs): boolean {
   const now = dayjs().tz("Asia/Seoul");
+  //console.log(now, date)
   return now.isBefore(date);
 }
 
