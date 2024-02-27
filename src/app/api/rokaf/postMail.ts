@@ -37,7 +37,7 @@ export async function postMail(
 
   var config = {
     method: "post",
-    url: "https://atc.airforce.mil.kr:444/user/emailPicSaveEmail.action",
+    url: "https://www.airforce.mil.kr/user/emailPicSaveEmail.action",
     headers: {
       Cookie:
         "JSESSIONID=pVmoG5hmwpHCRsLqdiV1hegWfRiH9418N4YZ3AW5cUo7pcXvxER8Lbk0XIljcEOa.AF1303_servlet_CONT31",

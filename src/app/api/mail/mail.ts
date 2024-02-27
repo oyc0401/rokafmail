@@ -142,16 +142,16 @@ async function sendMail(postModel: PostModel) {
         );
         return "user가 connect 인데 membe";
       }
-      // const response = await Rokaf.postMail({
-      //   name,
-      //   relationship,
-      //   title,
-      //   contents,
-      //   password,
-      //   memberSeq,
-      //   sodae,
-      // });
-      const response = { complete: false, serverOn: false }; // 편지 보내지 말고 다 오류로
+      const response = await Rokaf.postMail({
+        name,
+        relationship,
+        title,
+        contents,
+        password,
+        memberSeq,
+        sodae,
+      });
+      //const response = { complete: false, serverOn: false }; // 편지 보내지 말고 다 오류로
 
       // 국방서버에 보내졌으면 보내졌다고 업데이트
       if (response.complete) {
