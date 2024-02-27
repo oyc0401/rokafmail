@@ -5,7 +5,7 @@ import { parseKorea } from "src/lib/time";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("puppeteer");
 
-export async function POSTㅋㅋㅋㅋ() {
+export async function POST() {
   console.log(0);
   runCodeInBrowser();
   return NextResponse.json(
