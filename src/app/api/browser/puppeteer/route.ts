@@ -15,21 +15,25 @@ export async function GET() {
 }
 
 async function runCodeInBrowser() {
+  console.log(1)
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
+  console.log(2)
   const page = await browser.newPage();
-
+  console.log(3)
   page.on('console', msg => {
       console.log('PAGE LOG:', msg.text());
   });
-  
+  console.log(4)
   await page.goto(
     "https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=sub",
   );
+  console.log(5)
 
   // 여기에 실행할 코드를 입력합니다.
   await page.evaluate(() => {
+    console.log('!@#!@#')
     ////////////////////////////////////////////////////////////////
     async function execute(list) {
       for (let post of list) {
@@ -172,6 +176,7 @@ async function runCodeInBrowser() {
 
     ////////////////////////////////////////////////////////
   });
-
+  console.log(6)
   await browser.close();
+  console.log(7)
 }
