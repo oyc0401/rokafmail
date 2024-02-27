@@ -2,11 +2,10 @@ const puppeteer = require("puppeteer");
 
 import { NextResponse } from "next/server";
 import { parseKorea } from "src/lib/time";
-import { PostQueue, Post } from "src/db";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("puppeteer");
 
-export async function GET() {
+export async function Post() {
   console.log('2313')
   logger.info(0);
   runCodeInBrowser();
