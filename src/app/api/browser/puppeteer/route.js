@@ -226,6 +226,6 @@ async function runCodeInBrowser() {
     ////////////////////////////////////////////////////////
   });
   console.log(6);
-  await browser.close();
-  console.log(7);
+  //await browser.close();
+ // console.log(7);
 }
