@@ -7,10 +7,11 @@ import { makeLogger } from "config/winston";
 const logger = makeLogger("puppeteer");
 
 export async function GET() {
+  console.log('2313')
   logger.info(0);
   runCodeInBrowser();
   return NextResponse.json(
-    { message: 123 },
+    { message: new Date() },
     {
       status: 200,
     },
