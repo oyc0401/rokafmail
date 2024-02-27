@@ -29,7 +29,7 @@ async function runCodeInBrowser() {
   });
   console.log(4);
   await page.goto(
-    "https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=sub",
+    "https://www.airforce.mil.kr/user/indexMain.action?siteId=last2",
   );
   console.log(5);
 
