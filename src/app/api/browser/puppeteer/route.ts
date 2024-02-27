@@ -25,7 +25,7 @@ async function runCodeInBrowser() {
   const page = await browser.newPage();
   console.log(3);
   page.on("console", (msg) => {
-    logger.info("PAGE LOG:", msg.text());
+       console.log("PAGE LOG:", msg.text());
   });
   console.log(4);
   await page.goto(
