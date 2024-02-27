@@ -25,7 +25,7 @@ export function getEnter(generation: number): dayjs.Dayjs {
 
 // 편지 시작
 export function getMailStart(generation: number): dayjs.Dayjs {
-  return getEnter(generation).add(14, "day").add(9-9, "hour"); // 잠시만 시차 9시간 뺌
+  return getEnter(generation).add(14, "day").add(9, "hour"); // 잠시만 시차 9시간 뺌
 }
 
 // 편지 마감
