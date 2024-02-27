@@ -20,12 +20,27 @@ dayjs.extend(isBetween);
 // 입대
 export function getEnter(generation: number): dayjs.Dayjs {
   let [start] = timeDB(generation);
-  return dayjs(start);
+  return dayjs(start).add(-9, "hour").tz("Asia/Seoul"); // 시차 9시간 뺌
 }
 
 // 편지 시작
 export function getMailStart(generation: number): dayjs.Dayjs {
-  return getEnter(generation).add(14, "day").add(9, "hour"); // 잠시만 시차 9시간 뺌
+  let date = getEnter(generation); // "입장" 날짜를 기준으로 시작
+  let dayOfWeek = date.day(); // 현재 요일을 가져옴 (일요일 = 0, 월요일 = 1, ..., 토요일 = 6)
+
+  console.log(dayOfWeek);
+
+  // 요일별로 다음 월요일까지의 날짜를 계산
+  if (dayOfWeek === 0) { // 일요일
+    date = date.add(15, 'day'); // 다음주 월요일은 15일 후
+  } else if (dayOfWeek === 6) { // 토요일
+    date = date.add(16, 'day'); // 다음주 월요일은 16일 후
+  } else { // 월요일부터 금요일
+    date = date.add(14 - (dayOfWeek - 1), 'day'); // 다음 월요일까지의 날짜 계산
+  }
+
+  // 해당 날짜에 9시간을 추가
+  return date.add(9, 'hour');
 }
 
 // 편지 마감
@@ -73,14 +88,12 @@ export enum Status {
   case Status.working:
   case Status.discharged:
 }
- */ 
-
+ */
 
 export function serveStatus(generation: number) {
   if (isFuture(getEnter(generation))) {
     return Status.before;
   } else if (isFuture(getMailStart(generation))) {
-
     return Status.beginning;
   } else if (isFuture(getMailEnd(generation))) {
     // 편지쓰기 가능
@@ -94,20 +107,16 @@ export function serveStatus(generation: number) {
   }
 }
 
+
 // 기수의 입영일을 아는지
 export function knowTime(generation: number) {
   return !isEmpty(generation);
 }
 
-
-/**  
+/**
  * @deprecated use serveStatus()
- */ 
+ */
 // 편지 보내는 기간인지
-export function canPost(generation: number): boolean {
-  const now = dayjs().tz("Asia/Seoul");
-  return now.isBetween(getMailStart(generation), getMailEnd(generation));
-}
 
 // 전역했는지
 export function isDischarged(generation: number): boolean {
@@ -152,8 +161,7 @@ export function mailEnded(generation: number): boolean {
   return isPast(getMailStart(generation));
 }
 
-
 // Date to Datejs
-export function parseKorea(date:Date){
-  return  dayjs(date).tz("Asia/Seoul")
+export function parseKorea(date: Date) {
+  return dayjs(date).tz("Asia/Seoul");
 }
