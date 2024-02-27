@@ -70,24 +70,24 @@ async function runCodeInBrowser() {
     //   }
     // }
 
-    function extractInnerText(htmlString, className) {
-      // DOMParser 인스턴스를 생성합니다.
-      const parser = new DOMParser();
+    // function extractInnerText(htmlString, className) {
+    //   // DOMParser 인스턴스를 생성합니다.
+    //   const parser = new DOMParser();
 
-      // HTML 문자열을 파싱하여 DOM Document를 생성합니다.
-      const doc = parser.parseFromString(htmlString, "text/html");
+    //   // HTML 문자열을 파싱하여 DOM Document를 생성합니다.
+    //   const doc = parser.parseFromString(htmlString, "text/html");
 
-      // 특정 클래스를 가진 모든 요소를 찾습니다.
-      const elements = doc.querySelectorAll(`.${className}`);
+    //   // 특정 클래스를 가진 모든 요소를 찾습니다.
+    //   const elements = doc.querySelectorAll(`.${className}`);
 
-      // 요소들의 innerText를 배열로 수집합니다.
-      const innerTexts = Array.from(elements).map(
-        (element) => element.textContent,
-      );
+    //   // 요소들의 innerText를 배열로 수집합니다.
+    //   const innerTexts = Array.from(elements).map(
+    //     (element) => element.textContent,
+    //   );
 
-      // innerText 배열을 반환합니다.
-      return innerTexts;
-    }
+    //   // innerText 배열을 반환합니다.
+    //   return innerTexts;
+    // }
 
     // async function postMail(
     //   { name, relationship, title, contents, password, memberSeq, sodae },
@@ -156,19 +156,18 @@ async function runCodeInBrowser() {
     //   }
     // }
 
-
     async function gogo(){
       let data = new FormData();
       // const formattedDate = formatDateToKST(createdAt);
 
-      data.append("senderZipcode", `하늘인편`);
-      data.append("senderAddr1", `${'createdAt'}`);
+      data.append("senderZipcode", `1234`);
+      data.append("senderAddr1", `${"createdAt"}`);
       data.append("senderAddr2", ` `);
-      data.append("senderName", 'name');
-      data.append("relationship", 'relationship');
-      data.append("title", 'title');
-      data.append("contents", 'contents');
-      data.append("password", 'password');
+      data.append("senderName", "name");
+      data.append("relationship", "relationship");
+      data.append("title", "title");
+      data.append("contents", "contents");
+      data.append("password", "password");
       data.append("siteId", "last2");
       data.append("page", "1");
       data.append("command2", "writeEmail");
@@ -176,44 +175,23 @@ async function runCodeInBrowser() {
       data.append("searchVal", "");
       data.append("letterSeq", "");
       data.append("memberSeq", "");
-      data.append("memberSeqVal", 'memberSeq');
-      data.append("sodaeVal", 'sodae');
+      data.append("memberSeqVal", "1234567");
+      data.append("sodaeVal", "1234");
 
       const url = "https://www.airforce.mil.kr/user/emailPicSaveEmail.action";
 
-      try {
-        const res = await fetch(url, {
-          method: "POST",
-          body: data,
-        });
+      const res = await fetch(url, {
+        method: "POST",
+        body: data,
+      });
 
-        if (res.ok) {
-          // Check if the response status is 2xx
-          const responseData = await res.text(); // or res.json() if the response is JSON
-          const msgList = extractInnerText(responseData, "message");
-         // console.log(msgList, password);
+      if (res.ok) {
+        // Check if the response status is 2xx
+        const responseData = await res.text(); // or res.json() if the response is JSON
 
-          if (msgList[0] == "정상적으로 등록되었습니다.") {
-            return {
-              complete: true,
-              serverOn: true,
-            };
-          } else {
-            console.warn(`${'memberSeq'} | ${msgList}`);
-            return {
-              complete: false,
-              serverOn: true,
-            };
-          }
-        } else {
-          console.error("Fetch request failed with status: ", res.status);
-          return {
-            complete: false,
-            serverOn: false,
-          };
-        }
-      } catch (error) {
-        console.error("Fetch request resulted in an error: ", error);
+          console.log(responseData);
+      } else {
+        console.error("Fetch request failed with status: ", res.status);
         return {
           complete: false,
           serverOn: false,
@@ -221,7 +199,9 @@ async function runCodeInBrowser() {
       }
     }
 
+
     gogo();
+   
 
     // async function parser() {
     //   const res = await fetch(
