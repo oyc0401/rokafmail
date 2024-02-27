@@ -8,7 +8,7 @@ import { sendPostQueues } from "src/app/api/retry/sendPostQueues";
 export async function repost(){
  
   const unposted = await PostQueue.findAll();
-   sendPostQueues(unposted,1);
+   sendPostQueues(unposted,50);
  
 }
 
