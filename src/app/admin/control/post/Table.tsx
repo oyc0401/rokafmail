@@ -23,6 +23,7 @@ import { useAsyncList } from "@react-stately/data";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { enQueue } from "./server";
 // import { resend } from "./server";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
@@ -51,7 +52,7 @@ export function DatabaseTable({ data }) {
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
-  }, [sortDescriptor,data]);
+  }, [sortDescriptor, data]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -104,8 +105,8 @@ export function DatabaseTable({ data }) {
         <TableColumn key="createdAt" allowsSorting>
           CreatedAt
         </TableColumn>
-        <TableColumn key="posted" allowsSorting>
-          Posted
+        <TableColumn key="status" allowsSorting>
+          Status
         </TableColumn>
         <TableColumn key="postAt" allowsSorting>
           PostAt
@@ -117,22 +118,27 @@ export function DatabaseTable({ data }) {
           id: number;
           userId: number;
           posted: boolean;
+          connect: boolean;
           [key: string]: any;
         }) => (
           <TableRow key={item.id}>
             {(columnKey) => {
               switch (columnKey) {
-                case "posted":
+                case "status":
                   if (item.posted) {
                     return (
                       <TableCell>
                         <Chip color="success">Posted</Chip>
                       </TableCell>
                     );
+                  } else if (!item.posted && item.connect) {
+                    <TableCell>
+                      <Chip color="danger">Wating</Chip>
+                    </TableCell>
                   } else {
                     return (
                       <TableCell>
-                        <Chip color="danger">Wating</Chip>
+                        <Chip color="warning">Verifying</Chip>
                       </TableCell>
                     );
                   }
@@ -147,6 +153,19 @@ export function DatabaseTable({ data }) {
                             </Button>
                           </DropdownTrigger>
                           <DropdownMenu>
+                            <DropdownSection title="Actions" showDivider>
+                              <DropdownItem
+                                onClick={async () => {
+                                  if (await enQueue(item.id)) {
+                                    alert("큐에 넣는것에 성공했습니다.");
+                                  } else {
+                                    alert("큐에 넣는것에 실패했습니다.");
+                                  }
+                                }}
+                              >
+                                enqueue
+                              </DropdownItem>
+                            </DropdownSection>
                             <DropdownSection title="Navigations">
                               <DropdownItem
                                 onClick={async () => {

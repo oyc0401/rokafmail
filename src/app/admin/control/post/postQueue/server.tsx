@@ -3,11 +3,12 @@
 import { repost, RepostStatus } from "src/app/api/retry/repostMailOnce";
 import { Post, PostQueue, User } from "src/db";
 import { makeLogger } from "config/winston";
-const logger = makeLogger("Resend Post");
+const logger = makeLogger("Control Post Queue");
 
 // import {} from'src/app/api/retry/'
 
 export async function resend(postId: number) {
+  
   const post = await PostQueue.findByPostId(postId);
   if (!post) return;
 

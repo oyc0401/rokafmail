@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
-import { verify, repost } from "./server";
+import { verify, repost, findNotQueueNotpost } from "./server";
 export default function Page() {
   return (
     <>
@@ -42,6 +42,15 @@ export default function Page() {
         >
           모든 편지 재전송
         </Button>
+
+        <Button
+          onClick={() => {
+            if (confirm("findNotQueueNotpost?")) findNotQueueNotpost();
+          }}
+        >
+          findNotQueueNotpost
+        </Button>
+        
       </div>
     </>
   );

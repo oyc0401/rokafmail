@@ -34,16 +34,17 @@ export class Post {
       },
     });
 
-  static findAll = () => prisma.post.findMany({
-    include: {
-      user: {
-        select: {
-          username: true,
-          connect: true,
+  static findAll = () =>
+    prisma.post.findMany({
+      include: {
+        user: {
+          select: {
+            username: true,
+            connect: true,
+          },
         },
       },
-    },
-  });
+    });
 
   static findByUserId = (userId: number) =>
     prisma.post.findMany({
@@ -52,9 +53,20 @@ export class Post {
       },
     });
 
-  // 어드민 페이지 post 테이블
+  /** 
+   * 어드민 페이지
+   * 대상 유저아이디인 편지만 가져옵니다.
+  **/
   static findByUserIdTable = (userId: number) =>
     prisma.post.findMany({
+      include: {
+        user: {
+          select: {
+            username: true,
+            connect: true,
+          },
+        },
+      },
       where: {
         userId,
       },
@@ -115,6 +127,16 @@ export class Post {
     prisma.post.delete({
       where: {
         id,
+      },
+    });
+
+  static notPosts = () =>
+    prisma.post.findMany({
+      where: {
+        posted: false,
+        user:{
+          connect:true,
+        }
       },
     });
 }
