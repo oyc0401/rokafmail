@@ -19,6 +19,11 @@ async function runCodeInBrowser() {
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   const page = await browser.newPage();
+
+  page.on('console', msg => {
+      console.log('PAGE LOG:', msg.text());
+  });
+  
   await page.goto(
     "https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=sub",
   );
