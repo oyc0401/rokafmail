@@ -17,56 +17,43 @@ dayjs.extend(isBetween);
 // 입대예정 ---- 입대 -- 편지시작 --- 편지 끝 - 훈련소 수료 -------- 전역자 --- 민간인
 // 입대예정 / 편지 시작전 / 편지가능 / 편지끝 / 수료전 / 수료후 / 전역
 
+/**
+ * 주어진 날짜가 속한 주의 월요일을 반환하는 함수
+ * @param {dayjs.Dayjs} date - 주어진 날짜
+ * @returns {dayjs.Dayjs} 해당 주의 월요일
+ */
+function getProgramStart(generation: number): dayjs.Dayjs {
+  const enter = getEnter(generation);
+
+  let dayOfWeek = enter.day();
+  return enter.subtract(dayOfWeek - 1, "day");
+}
+
 // 입대
 export function getEnter(generation: number): dayjs.Dayjs {
   let [start] = timeDB(generation);
   return dayjs(start).add(-9, "hour").tz("Asia/Seoul"); // 시차 9시간 뺌
 }
-
 // 편지 시작
 export function getMailStart(generation: number): dayjs.Dayjs {
-  let date = getEnter(generation); // "입장" 날짜를 기준으로 시작
-  let dayOfWeek = date.day(); // 현재 요일을 가져옴 (일요일 = 0, 월요일 = 1, ..., 토요일 = 6)
-
-  console.log(dayOfWeek);
-
-  // 요일별로 다음 월요일까지의 날짜를 계산
-  if (dayOfWeek === 0) { // 일요일
-    date = date.add(15, 'day'); // 다음주 월요일은 15일 후
-  } else if (dayOfWeek === 6) { // 토요일
-    date = date.add(16, 'day'); // 다음주 월요일은 16일 후
-  } else { // 월요일부터 금요일
-    date = date.add(14 - (dayOfWeek - 1), 'day'); // 다음 월요일까지의 날짜 계산
-  }
-
-  // 해당 날짜에 9시간을 추가
-  return date.add(9, 'hour');
+  return getProgramStart(generation).add(14, "day").add(9, "hour"); // 잠시만 시차 9ㅅ
 }
 
 // 편지 마감
 export function getMailEnd(generation: number): dayjs.Dayjs {
-  return getEnter(generation).add(30, "day").add(17, "hour");
+  return getProgramStart(generation).add(30, "day").add(17, "hour");
 }
 
 // 수료
 export function getCompletion(generation: number): dayjs.Dayjs {
-  return getEnter(generation).add(32, "day");
+  return getProgramStart(generation).add(32, "day");
 }
 
 // 전역
 export function getDischarge(generation: number): dayjs.Dayjs {
   let [, end] = timeDB(generation);
-  return dayjs(end);
+  return dayjs(end).tz("Asia/Seoul");
 }
-
-// export enum Status {
-//   beforeEnter,
-//   beforeMail,
-//   canMail,
-//   beforeCompletion,
-//   afterCompletion,
-//   afterDischarge,
-// }
 
 export enum Status {
   before, // 입대 전
@@ -107,7 +94,6 @@ export function serveStatus(generation: number) {
   }
 }
 
-
 // 기수의 입영일을 아는지
 export function knowTime(generation: number) {
   return !isEmpty(generation);
@@ -142,7 +128,6 @@ export function isPast(date: dayjs.Dayjs): boolean {
 // 해당 날짜가 미래인지
 export function isFuture(date: dayjs.Dayjs): boolean {
   const now = dayjs().tz("Asia/Seoul");
-  //console.log(now, date)
   return now.isBefore(date);
 }
 

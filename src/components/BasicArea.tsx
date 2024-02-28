@@ -1,7 +1,9 @@
 import styles from "./BasicArea.module.css";
 
 export function BasicArea({ children }) {
-  return <div className="screen">{children}</div>;
+  return <div className="screen">
+      {children}
+    </div>;
 }
 
 export function BasicHeader({ children }) {
