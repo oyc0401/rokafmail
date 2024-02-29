@@ -32,7 +32,7 @@ function getProgramStart(generation: number): dayjs.Dayjs {
 // 입대
 export function getEnter(generation: number): dayjs.Dayjs {
   let [start] = timeDB(generation);
-  return dayjs(start).add(-9, "hour").tz("Asia/Seoul"); // 시차 9시간 뺌
+  return dayjs.utc(start).tz("Asia/Seoul").add(-9, "hour"); // 시차 9시간 뺌
 }
 // 편지 시작
 export function getMailStart(generation: number): dayjs.Dayjs {
@@ -52,7 +52,7 @@ export function getCompletion(generation: number): dayjs.Dayjs {
 // 전역
 export function getDischarge(generation: number): dayjs.Dayjs {
   let [, end] = timeDB(generation);
-  return dayjs(end).tz("Asia/Seoul");
+  return dayjs.utc(end).tz("Asia/Seoul");
 }
 
 export enum Status {
@@ -113,31 +113,31 @@ export function isDischarged(generation: number): boolean {
   if (generation < startGeneration) return true;
   if (!knowTime(generation)) return false;
 
-  const now = dayjs().tz("Asia/Seoul");
+  const now = dayjs.utc().tz("Asia/Seoul");
   return getDischarge(generation).isBefore(now);
 }
 
 // 현재와 차이나는 날짜
 export function diffDay(date: dayjs.Dayjs): number {
-  const now = dayjs().tz("Asia/Seoul");
+  const now = dayjs.utc().tz("Asia/Seoul");
   return date.diff(now, "day");
 }
 
 // 해당 날짜가 과거인지
 export function isPast(date: dayjs.Dayjs): boolean {
-  const now = dayjs().tz("Asia/Seoul");
+  const now = dayjs.utc().tz("Asia/Seoul");
   return date.isBefore(now);
 }
 
 // 해당 날짜가 미래인지
 export function isFuture(date: dayjs.Dayjs): boolean {
-  const now = dayjs().tz("Asia/Seoul");
+  const now = dayjs.utc().tz("Asia/Seoul");
   return now.isBefore(date);
 }
 
 // 현재시각
 export function getNow(): Date {
-  return dayjs().tz("Asia/Seoul").toDate();
+  return dayjs.utc().tz("Asia/Seoul").toDate();
 }
 
 // 아직 메일쓰기 기간이 오지 않았을 때
@@ -152,5 +152,5 @@ export function mailEnded(generation: number): boolean {
 
 // Date to Datejs
 export function parseKorea(date: Date) {
-  return dayjs(date).tz("Asia/Seoul");
+  return dayjs.utc(date).tz("Asia/Seoul");
 }

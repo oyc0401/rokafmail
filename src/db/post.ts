@@ -24,6 +24,7 @@ export class Post {
           select: {
             username: true,
             connect: true,
+            generation: true,
           },
         },
       },
@@ -41,6 +42,7 @@ export class Post {
           select: {
             username: true,
             connect: true,
+            generation: true,
           },
         },
       },
@@ -53,10 +55,10 @@ export class Post {
       },
     });
 
-  /** 
+  /**
    * 어드민 페이지
    * 대상 유저아이디인 편지만 가져옵니다.
-  **/
+   **/
   static findByUserIdTable = (userId: number) =>
     prisma.post.findMany({
       include: {
@@ -64,6 +66,7 @@ export class Post {
           select: {
             username: true,
             connect: true,
+            generation: true,
           },
         },
       },
@@ -98,6 +101,7 @@ export class Post {
           select: {
             username: true,
             connect: true,
+            generation: true,
           },
         },
       },
@@ -134,9 +138,9 @@ export class Post {
     prisma.post.findMany({
       where: {
         posted: false,
-        user:{
-          connect:true,
-        }
+        user: {
+          connect: true,
+        },
       },
     });
 }

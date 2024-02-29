@@ -24,6 +24,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { enQueue } from "./server";
+import {canSearch} from'src/lib/time'
 // import { resend } from "./server";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
@@ -122,6 +123,7 @@ export function DatabaseTable({ data }) {
           userId: number;
           posted: boolean;
           connect: boolean;
+          generation: number;
           [key: string]: any;
         }) => (
           <TableRow key={item.id}>
@@ -134,14 +136,22 @@ export function DatabaseTable({ data }) {
                         <Chip color="success">Posted</Chip>
                       </TableCell>
                     );
-                  } else if (!item.posted && item.connect) {
-                    <TableCell>
-                      <Chip color="danger">Wating</Chip>
-                    </TableCell>
+                  } else if (item.connect) {
+                    return (
+                      <TableCell>
+                        <Chip color="warning">Wating</Chip>
+                      </TableCell>
+                    );
+                  } else if (canSearch(item.generation)) {
+                    return (
+                      <TableCell>
+                        <Chip color="danger">NoSearch</Chip>
+                      </TableCell>
+                    );
                   } else {
                     return (
                       <TableCell>
-                        <Chip color="warning">Verifying</Chip>
+                        <Chip color="primary">Verifying</Chip>
                       </TableCell>
                     );
                   }
