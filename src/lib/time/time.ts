@@ -94,6 +94,10 @@ export function serveStatus(generation: number) {
   }
 }
 
+export function canSearch(generation: number) {
+  return isPast(getMailStart(generation).add(3, "day"));
+}
+
 // 기수의 입영일을 아는지
 export function knowTime(generation: number) {
   return !isEmpty(generation);

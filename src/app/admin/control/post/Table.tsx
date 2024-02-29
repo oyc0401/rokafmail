@@ -96,6 +96,9 @@ export function DatabaseTable({ data }) {
         <TableColumn key="title" allowsSorting>
           Title
         </TableColumn>
+        {/* <TableColumn key="contents" allowsSorting>
+          content
+        </TableColumn> */}
         <TableColumn key="name" allowsSorting>
           Name
         </TableColumn>

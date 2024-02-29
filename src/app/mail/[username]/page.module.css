@@ -17,6 +17,12 @@
    text-align:left;
 }
 
+.alert{
+  font-size: 12px;
+  font-weight: 400;
+   text-align:left;
+}
+
 .btn{
   background: var(--font-color);
   color:white;
