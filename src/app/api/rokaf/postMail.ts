@@ -1,4 +1,5 @@
 import axios from "axios";
+import https from "https";
 import FormData from "form-data";
 import { parseKorea } from "src/lib/time";
 
@@ -45,6 +46,9 @@ export async function postMail(
     },
     timeout: 20000,
     data: data,
+    httpsAgent: new https.Agent({
+          rejectUnauthorized: false, //허가되지 않은 인증을 reject하지 않겠다!
+        }),
   };
 
   // console.log(`[postMail] ${memberSeq} 편지 보내는 중...`);
