@@ -1,4 +1,5 @@
 import axios from "axios";
+import https from "https";
 import cheerio from "cheerio";
 import { parse } from "node-html-parser";
 import { makeLogger } from "config/winston";
@@ -69,7 +70,11 @@ export async function getProfile(name: string, birth: string) {
   logger.http(`crawling ${url}`);
 
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      httpsAgent: new https.Agent({
+        rejectUnauthorized: false, //허가되지 않은 인증을 reject하지 않겠다!
+      }),
+    });
     const html = response.data;
     // console.log(html)
 
