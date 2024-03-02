@@ -6,14 +6,14 @@ import { auth } from "src/app/api/auth/auth";
 
 export default async function Page() {
   const session = await auth();
-
   if (!session || !session.user || !session.user.email)  notFound();
-
-  const username = session.user.email;
   
+  const username = session.user.email;
   const user = await User.findByUsername(username);
   if (!user)  notFound();
+
   
+
   const { name, birth, message } = user;
 
   return <Client username={username}></Client>;
