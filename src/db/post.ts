@@ -12,6 +12,15 @@ export class Post {
 
   static findById = (id: number) =>
     prisma.post.findUnique({
+      include: {
+        user: {
+          select: {
+            username: true,
+            connect: true,
+            generation: true,
+          },
+        },
+      },
       where: {
         id,
       },

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./mails.module.css";
 import { Post, PostQueue, UnconnectedPost, User } from "src/db";
-import { dateToStr } from "./dateToStr";
+import { dateToStr } from "src/lib/time";
 import { Nav } from "src/components";
 import { notFound } from "next/navigation";
 import { Card, DropDownCard } from "./card";
@@ -72,6 +72,7 @@ async function Mail({ username }) {
               name={post.post.name}
               rel={post.post.relationship}
               time={dateToStr(post.post.createdAt)}
+              username={post.user.username}
             />
           </div>
         ))}
@@ -96,6 +97,7 @@ async function Mail({ username }) {
               name={post.name}
               rel={post.relationship}
               time={dateToStr(post.createdAt)}
+              username={post.user.username}
             />
           </div>
         ))}
@@ -133,6 +135,7 @@ async function UnconnectedMail(parms) {
             name={post.post.name}
             rel={post.post.relationship}
             time={dateToStr(post.post.createdAt)}
+            username={post.user.username}
           />
         </div>
       ))}

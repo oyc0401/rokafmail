@@ -12,3 +12,5 @@
 // } from "./time";
 
 export * from "./time";
+
+export * from "./dateToStr";

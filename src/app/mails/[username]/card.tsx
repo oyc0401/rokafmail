@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation'
 
 import { deletePost } from "./server";
 
-export function DropDownCard({ id, title, name, rel, time }) {
+export function DropDownCard({ id, title, name, rel, time,username }) {
   const router = useRouter()
 
   // const onDelete = async () => {
@@ -34,7 +34,7 @@ export function DropDownCard({ id, title, name, rel, time }) {
   // };
 
   function moveView(){
-    router.push(`/view/${id}`);
+    router.push(`/mails/${username}/${id}`);
   }
   return (
     <Dropdown>

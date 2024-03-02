@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "./page.module.css";
-import { Post,User } from "src/db";
+import { Post, User } from "src/db";
 import { notFound } from "next/navigation";
 // import { Client } from "./client";
 import { cookies } from "next/headers";
@@ -13,9 +13,14 @@ import { PostView } from "./PostView";
 
 export default async function View({ params }) {
   const postId = Number(params.postId);
+  const username = params.username;
 
   const post = await Post.findById(postId);
   if (!post) {
+    notFound();
+  }
+
+  if (post.user.username != username) {
     notFound();
   }
   const password = post.password;
@@ -28,13 +33,9 @@ export default async function View({ params }) {
   }
 
   if (pwcookie.value == password) {
-    
-   
-    return  <PostView postId={postId} />
+    return <PostView postId={postId} />;
   }
 
   console.log("다른사람으로 로그인 되어있음");
   return <Client postId={postId} />;
 }
-
-
