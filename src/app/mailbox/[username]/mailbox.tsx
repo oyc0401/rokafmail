@@ -4,7 +4,7 @@ import crypto from "crypto";
 import { setCookie } from "./cookie";
 import { Nav } from "src/components";
 import { Post } from "src/db";
-import { dateToStr } from "./dateToStr";
+import { dateToStr } from "src/lib/time";
 
 export async function Mailbox({ username }) {
   const posts = await Post.findByUsername(username);

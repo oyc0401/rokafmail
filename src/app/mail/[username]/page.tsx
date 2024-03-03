@@ -46,30 +46,34 @@ export default async function Mail({ params }) {
 
     case Status.working:
     case Status.discharged:
-      return (
-        <div className="screen">
-          <div style={{ flex: 178 }}></div>
-          <div style={{ paddingBottom: 54 }}>
-            <h1 style={{ fontSize: 25, fontWeight: 500 }}>
-              {user.name}님
-              <br />
-              수료를 축하드립니다!
-            </h1>
-          </div>
-          <h2 style={{ fontSize: 18 }}>
-            받은 편지를 다시보고 싶으시면
-            <br />
-            아래 버튼을 눌러주세요!
-          </h2>
-          <div style={{ flex: 260 }}></div>
-          <Nav>
-            <Link className={`submit`} href={`/mailbox/${username}`}>
-              받은 편지 보기
-            </Link>
-          </Nav>
-        </div>
-      );
+      return <After name ={user.name} username={username}></After>
   }
+}
+
+function After({name, username}){
+  return (
+    <div className="screen">
+      <div style={{ flex: 178 }}></div>
+      <div style={{ paddingBottom: 54 }}>
+        <h1 style={{ fontSize: 25, fontWeight: 500 }}>
+          {name}님
+          <br />
+          수료를 축하드립니다!
+        </h1>
+      </div>
+      <h2 style={{ fontSize: 18 }}>
+        받은 편지를 다시보고 싶으시면
+        <br />
+        아래 버튼을 눌러주세요!
+      </h2>
+      <div style={{ flex: 260 }}></div>
+      <Nav>
+        <Link className={`submit`} href={`/mailbox/${username}`}>
+          받은 편지 보기
+        </Link>
+      </Nav>
+    </div>
+  );
 }
 
 async function Header({ user }) {

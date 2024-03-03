@@ -9,6 +9,7 @@ import { deleteCookie, setCookie } from "./cookie";
 import { Client } from "./client";
 import { PostView } from "./PostView";
 
+import { auth } from "src/app/api/auth/auth";
 // import {Mailbox} from './mailbox'
 
 export default async function View({ params }) {
@@ -23,8 +24,19 @@ export default async function View({ params }) {
   if (post.user.username != username) {
     notFound();
   }
-  const password = post.password;
 
+  // 세션
+  const session = await auth();
+  if (!(!session || !session.user || !session.user.email)) {
+    const sessionUsername = session.user.email;
+    const user = await User.findByUsername(sessionUsername);
+    if (user && sessionUsername == params.username) {
+      return <PostView postId={postId} />;
+    }
+  }
+
+  // 쿠키
+  const password = post.password;
   const cookieStore = cookies();
   const pwcookie = cookieStore.get("password");
 

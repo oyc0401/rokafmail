@@ -59,7 +59,6 @@ function Page() {
 
   return (
     <BasicArea>
-      
       <BasicHeader>
         아이디와 비밀번호를
         <br />
@@ -76,10 +75,12 @@ function Page() {
           label="비밀번호"
           placeholder="비밀번호를 입력해주세요"
           type="password"
-          onChange={setpassword}
+          onChange={(t) => {
+            setErrorMessage("");
+            setpassword(t);
+          }}
           helpMessage={errorMessage}
           color={"warn"}
-      
         />
       </BasicBody>
       <BasicFooter>
