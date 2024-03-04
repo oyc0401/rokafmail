@@ -11,6 +11,24 @@ export enum RepostStatus {
   fail,
 }
 
+export function statusToStr(status: RepostStatus) {
+  switch (status) {
+    case RepostStatus.success:
+      return `Complete`;
+    case RepostStatus.skip:
+      return "QueueAdded - BeforeMailTime";
+    case RepostStatus.after:
+      return `Skip - AfterMailTime`;
+    case RepostStatus.error:
+      return `QueueAdded - ServerError`;
+    case RepostStatus.fail:
+      return `QueueAdded - Fail`;
+  }
+}
+/**
+ * postId, post, user가 주어지면 편지를 보내고, 보내지면 postQueue에 있는 post를 삭제한다.
+
+**/
 export async function repost({
   postId,
   post,
@@ -72,13 +90,12 @@ export async function repost({
     case Status.ending:
     case Status.working:
     case Status.discharged:
-      // relocatePost() 할까말까 흠..
+      // await relocatePost(postId);
       return RepostStatus.after;
   }
 }
 
 async function relocatePost(postId: number) {
   await Post.update(postId, { posted: true, postAt: getNow() });
-
   await PostQueue.deleteByPostId(postId);
 }

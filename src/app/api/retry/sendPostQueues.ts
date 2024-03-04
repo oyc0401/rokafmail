@@ -1,4 +1,4 @@
-import { repost, RepostStatus } from "./repostMailOnce";
+import { repost, RepostStatus, statusToStr } from "./repostMailOnce";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("sendPostQueues");
 
@@ -59,23 +59,17 @@ export async function sendPostQueues(
           post: { name, relationship, title, contents, password, createdAt },
           user: { memberSeq, sodae, generation },
         });
-        const postLogForm = `${postId} - ${username} (${userId})`;
-
+        const postLogForm = `(${postId}) | ${username} (${userId})`;
+        logger.info(
+          `${statusMessage()}: ${postLogForm} | ${statusToStr(result)}`,
+        );
         switch (result) {
           case RepostStatus.success:
-            logger.info(`${statusMessage()}: success | ${postLogForm}`);
-            break;
           case RepostStatus.skip:
-            logger.info(`${statusMessage()}: skip | ${postLogForm}`);
-            break;
           case RepostStatus.after:
-            logger.info(`${statusMessage()}: after | ${postLogForm}`);
-            break;
           case RepostStatus.fail:
-            logger.info(`${statusMessage()}: fail | ${postLogForm}`);
             break;
           case RepostStatus.error:
-            logger.info(`${statusMessage()}: error | ${postLogForm}`);
             throw Error(`국방부 인편 서버 오류 | ${postLogForm}`);
         }
         userPostCounts[userId] = (userPostCounts[userId] || 0) + 1;

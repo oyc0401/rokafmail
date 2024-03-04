@@ -7,6 +7,25 @@ export class PostQueue {
   static insertMany = (data: { postId: number; userId: number }[]) =>
     prisma.postQueue.createMany({ data });
 
+  static findById = (id: number) =>
+  prisma.postQueue.findUnique({
+    include: {
+      user: {
+        select: {
+          username: true,
+          generation: true,
+          memberSeq: true,
+          sodae: true,
+          id: true,
+        },
+      },
+      post: true,
+    },
+    where: {
+      id,
+    },
+  });
+  
   static findAll = () =>
     prisma.postQueue.findMany({
       where: {

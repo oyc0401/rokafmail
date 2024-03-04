@@ -7,6 +7,11 @@ import { Post, PostQueue, UnconnectedPost, User } from "src/db";
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("mail");
+import {
+  repost,
+  RepostStatus,
+  statusToStr,
+} from "src/app/api/retry/repostMailOnce";
 
 /**
  * 유저 확인: 제공된 username을 사용하여 유저가 존재하는지 확인합니다.
@@ -33,6 +38,7 @@ type PostModel = {
   sodae: string | null;
   generation: number;
   connect: boolean;
+  createdAt: Date;
 };
 
 export async function mailApi(mailForm: {
@@ -69,7 +75,7 @@ export async function mailApi(mailForm: {
     }
 
     // 편지 저장
-    const newPost = await Post.insert({
+    const { id: postId, createdAt } = await Post.insert({
       userId,
       name,
       relationship,
@@ -78,24 +84,34 @@ export async function mailApi(mailForm: {
       password,
     });
 
-    const postId = newPost.id;
+    // 연결되었으면 queue에 저장한다.
+    if (connect) {
+      await PostQueue.insert({ postId, userId });
+      const postModel = {
+        userId,
+        postId,
+        username,
+        name,
+        relationship,
+        title,
+        contents,
+        password,
+        memberSeq,
+        sodae,
+        generation,
+        connect,
+        createdAt,
+      };
 
-    const postModel = {
-      userId,
-      postId,
-      username,
-      name,
-      relationship,
-      title,
-      contents,
-      password,
-      memberSeq,
-      sodae,
-      generation,
-      connect,
-    };
-
-    processPost(postModel);
+      // 큐에 저장된 메시지를 보낸다.
+      processPost(postModel);
+    } else {
+      // 미확인 유저는 따로 저장한다.
+      await UnconnectedPost.insert({ postId, userId });
+      logger.info(
+        `(${postId}) | ${username} (${userId}) | QueueAdded - Unconnected`,
+      );
+    }
 
     return ServerActionResponse({ message: "편지 전송 성공!", status: 200 });
   } catch (error) {
@@ -105,75 +121,24 @@ export async function mailApi(mailForm: {
 }
 
 async function processPost(postModel: PostModel) {
-  const { userId, postId, username, connect } = postModel;
+  const { userId, postId, generation, username, connect } = postModel;
+  const { name, relationship, title, contents, password } = postModel;
+  const { memberSeq, sodae, createdAt } = postModel;
 
-  // 인증 여부 확인
   let logMessage = "";
-  if (!connect) {
-    await UnconnectedPost.insert({
-      postId,
-      userId,
-    });
-    logMessage = "QueueAdded - Unconnected";
+
+  if (!memberSeq || !sodae) {
+    logMessage = "memberSeq or sodae is null";
   } else {
-    logMessage = await sendMail(postModel);
+    const status = await repost({
+      postId,
+      post: { name, relationship, title, contents, password, createdAt },
+      user: { memberSeq, sodae, generation },
+    });
+    logMessage = statusToStr(status);
   }
 
   logger.info(`(${postId}) | ${username} (${userId}) | ${logMessage}`);
-}
-
-async function sendMail(postModel: PostModel) {
-  const { userId, postId, generation } = postModel;
-  const { name, relationship, title, contents, password, memberSeq, sodae } =
-    postModel;
-  // 만약 편지보내기 기간이 아직 안왔으면 안보내고 post_queue에만 저장하고
-  // 편지보내기 시간이 지났으면 posted를 true로 업데이트 하되, 국방부 서버에는 보내지 말기
-
-  // 인증된 유저면 국방부에 보내보기
-
-  const status = serveStatus(generation);
-
-  // 국방부 서버 보내는건 편지쓰기 기간에만 가능, 어짜피 다른시간에 보내도 도착안함
-  switch (status) {
-    case Status.training:
-      if (!memberSeq || !sodae) {
-        logger.error(
-          `user가 connect 인데 memberSeq또는 sodae가 null이다?, memberSeq: ${memberSeq}, sodae: ${sodae}`,
-        );
-        return "user가 connect 인데 membe";
-      }
-      const response = await Rokaf.postMail({
-        name,
-        relationship,
-        title,
-        contents,
-        password,
-        memberSeq,
-        sodae,
-      });
-      //const response = { complete: false, serverOn: false }; // 편지 보내지 말고 다 오류로
-
-      // 국방서버에 보내졌으면 보내졌다고 업데이트
-      if (response.complete) {
-        await Post.update(postId, { posted: true, postAt: getNow() });
-        return "Complete";
-      } else {
-        // 안보내졌으면 편지큐에 저장
-        await PostQueue.insert({ postId, userId });
-        return "QueueAdded - ServerError";
-      }
-
-    case Status.before:
-    case Status.beginning:
-      // 안보내졌으면 편지큐에 저장
-      await PostQueue.insert({ postId, userId });
-      return "QueueAdded - BeforeMailTime";
-    case Status.ending:
-    case Status.working:
-    case Status.discharged:
-      await Post.update(postId, { posted: true, postAt: getNow() });
-      return "Skip - AfterMailTime";
-  }
 }
 
 function validateInput({

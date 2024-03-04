@@ -1,9 +1,9 @@
 .next
 node_modules
 .vercel
+.replit
 
 src/app/(admin)
-
 
 logs
 .env
