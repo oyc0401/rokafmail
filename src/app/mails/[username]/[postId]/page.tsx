@@ -1,11 +1,8 @@
-import Link from "next/link";
-import styles from "./page.module.css";
+
 import { Post, User } from "src/db";
 import { notFound } from "next/navigation";
 // import { Client } from "./client";
 import { cookies } from "next/headers";
-import crypto from "crypto";
-import { deleteCookie, setCookie } from "./cookie";
 import { Client } from "./client";
 import { PostView } from "./PostView";
 

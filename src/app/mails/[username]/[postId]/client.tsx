@@ -1,9 +1,7 @@
 "use client";
 import { useState } from "react";
 import styles from "./page.module.css";
-import Link from "next/link";
-import crypto from "crypto";
-import { setCookie,checkPassword } from "./cookie";
+import { checkPassword } from "./cookie";
 import { Nav } from "src/components";
 
 export function Client({ postId }) {
