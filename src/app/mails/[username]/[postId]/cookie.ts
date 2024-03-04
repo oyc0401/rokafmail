@@ -3,11 +3,11 @@
 import { cookies } from "next/headers";
 import { Post } from "src/db";
 
-export async function setCookie(password: string, postId:number) {
+export async function setCookie(password: string,username, postId:number) {
   cookies().set({
     name: "password",
     value: password,
-    path: `/view/${postId}`,
+    path: `/mails/${username}/${postId}`,
   });
 }
 
@@ -25,7 +25,7 @@ export async function checkPassword(postId:number, password:string) {
   const valid = oriPw == password;
 
   if(valid){
-    setCookie(password, postId);
+    setCookie(password, post.user.username,postId,);
   }
   return valid;
 }
