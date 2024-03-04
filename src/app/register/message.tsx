@@ -50,7 +50,7 @@ export default function Message() {
       .then((response) => {
         if (response.status === 200) {
           window.onbeforeunload = null;
-          router.push(`/link/${username}`);
+          router.push(`/register/link/${username}`);
         } else {
           alert(`회원가입 실패 ${response.status}, ${response.message}`);
         }

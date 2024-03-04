@@ -39,7 +39,7 @@ export function Submit({ username }) {
         if (response.status === 200) {
           alert("편지 전송 성공!");
 
-          router.push(`/complete/${username}?sc=200`);
+          router.push(`/mail/${username}/complete?sc=200`);
         } else {
           alert(`편지 전송 실패 ${response.status}, ${response.message}`);
         }
