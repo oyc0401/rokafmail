@@ -49,7 +49,6 @@ export function Footer({ postId, username, posted, url }) {
         >
           삭제하기
         </button>
-        <div style={{ width: 12 }}></div>
         <Link className={"submit"} href={`/mails/${username}`}>
           편지함
         </Link>

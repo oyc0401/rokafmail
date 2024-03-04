@@ -73,7 +73,6 @@ function After({name, username}){
         <Link className={`submit mini`} href={`/mails/${username}`}>
           편지함
         </Link>
-        <div style={{ width: 12 }}></div>
         <Link className={`submit`} href={`/auth/signin?callbackUrl=${callback}`}>
           로그인
         </Link>

@@ -59,7 +59,6 @@ export default async function Complete({ searchParams, params }) {
         <a className={`submit mini`} href={`/mails/${user.username}`}>
           편지함
         </a>
-        <div style={{ width: 12 }}></div>
         <Link className={"submit"} href={`/mail/${user.username}`}>
           다시 작성하기
         </Link>

@@ -80,7 +80,6 @@ export function Submit({ username }) {
           <a className={`submit mini`} href={`/mails/${username}`}>
             편지함
           </a>
-          <div style={{ width: 12 }}></div>
           <button
             className={canSubmit() ? "submit" : "submit disable"}
             onClick={click}

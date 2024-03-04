@@ -32,7 +32,6 @@ export default async function Mails({ params }) {
           >
             기훈단
           </Link>
-          <div style={{ width: 12 }}></div>
           <Link className={"submit"} href={`/mail/${user.username}`}>
             편지 작성
           </Link>

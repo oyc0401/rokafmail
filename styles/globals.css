@@ -119,6 +119,7 @@ a{
   width:fit-content;
   color: white;
   background: #191919;
+  margin-right:12px;
 }
 
 .submit.mini:active{

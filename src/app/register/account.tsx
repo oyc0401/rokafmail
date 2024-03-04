@@ -131,7 +131,6 @@ export default function Account() {
             <button className={`submit mini`} onClick={prev}>
               이전
             </button>
-            <div style={{ width: 12 }}></div>
             <button
               className={canSubmit() ? "submit" : "submit disable"}
               onClick={click}

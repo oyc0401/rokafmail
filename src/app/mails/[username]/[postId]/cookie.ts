@@ -3,19 +3,7 @@
 import { cookies } from "next/headers";
 import { Post } from "src/db";
 
-export async function setCookie(password: string,username, postId:number) {
-  cookies().set({
-    name: "password",
-    value: password,
-    path: `/mails/${username}/${postId}`,
-  });
-}
-
-export async function deleteCookie() {
-  cookies().delete("password");
-}
-
-export async function checkPassword(postId:number, password:string) {
+export async function checkPassword(postId: number, password: string) {
   const post = await Post.findById(postId);
   if (!post) {
     return false;
@@ -24,8 +12,12 @@ export async function checkPassword(postId:number, password:string) {
   const oriPw = post.password;
   const valid = oriPw == password;
 
-  if(valid){
-    setCookie(password, post.user.username,postId,);
+  if (valid) {
+    cookies().set({
+      name: "password",
+      value: password,
+      path: `/mails/${post.user.username}/${postId}`,
+    });
   }
   return valid;
 }
