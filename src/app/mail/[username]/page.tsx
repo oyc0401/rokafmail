@@ -51,6 +51,8 @@ export default async function Mail({ params }) {
 }
 
 function After({name, username}){
+  const callback=`https://${process.env.DOMAIN}/mails/${username}`;
+  
   return (
     <div className="screen">
       <div style={{ flex: 178 }}></div>
@@ -62,14 +64,18 @@ function After({name, username}){
         </h1>
       </div>
       <h2 style={{ fontSize: 18 }}>
-        받은 편지를 다시보고 싶으시면
+        받은 편지를 모두 열어보고 싶으시면
         <br />
-        아래 버튼을 눌러주세요!
+        로그인 버튼을 눌러주세요!
       </h2>
       <div style={{ flex: 260 }}></div>
       <Nav>
-        <Link className={`submit`} href={`/mailbox/${username}`}>
-          받은 편지 보기
+        <Link className={`submit mini`} href={`/mails/${username}`}>
+          편지함
+        </Link>
+        <div style={{ width: 12 }}></div>
+        <Link className={`submit`} href={`/auth/signin?callbackUrl=${callback}`}>
+          로그인
         </Link>
       </Nav>
     </div>
