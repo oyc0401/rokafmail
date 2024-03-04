@@ -1,7 +1,6 @@
 import styles from "./page.module.css";
 import Link from "next/link";
 import crypto from "crypto";
-import { setCookie } from "./cookie";
 import { Nav } from "src/components";
 import { Post, User } from "src/db";
 import { notFound } from "next/navigation";
