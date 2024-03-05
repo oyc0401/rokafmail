@@ -13,6 +13,7 @@ function exist(html) {
   if (SameResultList.length > 0) {
     // li 태그 안에 "교육생이 없습니다." 메시지가 포함되어 있는지 확인
     const liText = SameResultList.find("li").text();
+    //console.log(liText)
     return !liText.includes("교육생이 없습니다.");
   } else {
     console.log(".SameResultList 클래스를 갖는 요소를 찾을 수 없습니다.");
@@ -66,7 +67,7 @@ function htmlToSodae(html) {
 export async function getProfile(name: string, birth: string) {
   const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=${name}&searchBirth=${birth}`;
 
-  // console.log("-link:", url);
+  console.log("-link:", url);
   logger.http(`crawling ${url}`);
 
   try {
@@ -89,7 +90,7 @@ export async function getProfile(name: string, birth: string) {
         serverOn: true,
       };
     } else {
-      // console.log("-cannot find user.");
+      //console.log("-cannot find user.");
       return {
         member: null,
         serverOn: true,
