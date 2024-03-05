@@ -67,7 +67,7 @@ function htmlToSodae(html) {
 export async function getProfile(name: string, birth: string) {
   const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=${name}&searchBirth=${birth}`;
 
-  console.log("-link:", url);
+  // console.log("-link:", url);
   logger.http(`crawling ${url}`);
 
   try {

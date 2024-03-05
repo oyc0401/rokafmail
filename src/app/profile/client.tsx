@@ -25,7 +25,7 @@ export function DeleteUser(username) {
     ) {
       alert("삭제되었습니다.");
       await deleteUser(username);
-      signOut();
+      signOut({ callbackUrl: "/" });
     }
   }
 
