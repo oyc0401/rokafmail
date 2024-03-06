@@ -57,7 +57,7 @@ export async function mailApi(mailForm: {
     const user = await User.findByUsername(username);
 
     if (!user) {
-      return ServerActionResponse({
+      return ServerActionResponse.json({
         message: "해당 유저를 찾을 수 없습니다.",
         status: 404,
       });
@@ -68,7 +68,7 @@ export async function mailApi(mailForm: {
     // 입력 검증
     const validationResult = validateInput(mailForm);
     if (!validationResult.validate) {
-      return ServerActionResponse({
+      return ServerActionResponse.json({
         message: validationResult.message,
         status: 400,
       });
@@ -113,10 +113,10 @@ export async function mailApi(mailForm: {
       );
     }
 
-    return ServerActionResponse({ message: "편지 전송 성공!", status: 200 });
+    return ServerActionResponse.json({ message: "편지 전송 성공!", status: 200 });
   } catch (error) {
     logger.error(`편지 보내는 중 오류 발생: ${error}`);
-    return ServerActionResponse({ message: "서버 오류", status: 500 });
+    return ServerActionResponse.json({ message: "서버 오류", status: 500 });
   }
 }
 

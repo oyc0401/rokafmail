@@ -1,6 +1,6 @@
 "use client";
 import { signOut } from "next-auth/react";
-import { deleteUser } from "./server";
+import { deleteUser } from "src/app/api/profile/profile";
 import styles from "./page.module.css";
 import crypto from "crypto";
 export function SignOut() {

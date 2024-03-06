@@ -1,17 +1,9 @@
 "use client";
 import { useState } from "react";
 import styles from "./page.module.css";
-import Link from "next/link";
 import crypto from "crypto";
-// import { setCookie } from "./cookie";
-import { Nav } from "src/components";
-import { login } from "src/app/api/login/login";
-import { signIn, signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { knowTime, isDischarged } from "src/lib/time";
-import { getProfile, deleteUser, editProfile, editPassword } from "../server";
-import { useEffect, useRef } from "react";
+import { getProfile, editPassword } from "src/app/api/profile/profile";
 
 export function Client({ username }) {
   const [originPassword, setorpassword] = useState("");
@@ -24,13 +16,13 @@ export function Client({ username }) {
     if (!canSubmit()) return;
 
     const user = await getProfile(username);
-   
+
     let encryptedOrPassword = crypto
       .createHash("sha256")
       .update(originPassword)
       .digest("hex");
 
-    if (encryptedOrPassword != user!.password) {
+    if (encryptedOrPassword != user?.password) {
       return alert("비밀번호가 같지 않습니다.");
     }
 
@@ -57,9 +49,7 @@ export function Client({ username }) {
       <div className="screen">
         <div style={{ flex: 64 }}></div>
         <div className="pt-12 pb-8 w-full">
-          <h2 className={styles.title}>
-            비밀번호 재설정
-          </h2>
+          <h2 className={styles.title}>비밀번호 재설정</h2>
         </div>
 
         <div style={{ flex: 12 }}></div>

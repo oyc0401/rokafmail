@@ -25,7 +25,7 @@ export async function registerApi(registerForm: {
     // 입력 검증
     const validationResult = await validateInput(registerForm);
     if (!validationResult.validate) {
-      return ServerActionResponse({
+      return ServerActionResponse.json({
         message: validationResult.message,
         status: 400,
       });
@@ -40,10 +40,10 @@ export async function registerApi(registerForm: {
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
     processRegistration({ id, name, birth, generation, username });
 
-    return ServerActionResponse({ message: "회원가입 성공", status: 200 });
+    return ServerActionResponse.json({ message: "회원가입 성공", status: 200 });
   } catch (error) {
     logger.error(`회원가입 처리 중 오류 발생: ${error}`);
-    return ServerActionResponse({ message: "서버 오류", status: 500 });
+    return ServerActionResponse.json({ message: "서버 오류", status: 500 });
   }
 }
 
