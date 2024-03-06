@@ -15,25 +15,31 @@ export function Client({ username }) {
   async function click() {
     if (!canSubmit()) return;
 
-    const user = await getProfile(username);
+    const response = await getProfile(username);
 
-    let encryptedOrPassword = crypto
-      .createHash("sha256")
-      .update(originPassword)
-      .digest("hex");
+    if (response.message) {
+      let encryptedOrPassword = crypto
+        .createHash("sha256")
+        .update(originPassword)
+        .digest("hex");
 
-    if (encryptedOrPassword != user?.password) {
-      return alert("비밀번호가 같지 않습니다.");
+      if (encryptedOrPassword != response.message.password) {
+        return alert("비밀번호가 같지 않습니다.");
+      }
+
+      let encryptedNewPassword = crypto
+        .createHash("sha256")
+        .update(password)
+        .digest("hex");
+
+      const rsp = await editPassword(username, encryptedNewPassword);
+      if (rsp.status == 200) {
+        alert("비밀번호가 변경되었습니다!");
+        router.push("/profile");
+      }
+    } else {
+      console.log(`error: ${response.status} ${response.error}`);
     }
-
-    let encryptedNewPassword = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("hex");
-
-    await editPassword(username, encryptedNewPassword);
-    alert("비밀번호가 변경되었습니다!");
-    router.push("/profile");
   }
 
   function canSubmit() {

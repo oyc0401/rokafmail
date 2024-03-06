@@ -1,45 +1,52 @@
 import { User } from "src/db";
 import { auth } from "src/app/api/auth/auth";
 
-interface ServerActionParam<body> {
-  message: body;
+interface ServerAction<Body> {
+  message?: Body;
   status: number;
+  error: string;
 }
 
 export class ServerActionResponse {
   // server action은 plain object만 반환 가능하다.
-  static json<body>({ message, status }: ServerActionParam<body>) {
+  static json<Body = undefined>({
+    message,
+    status,
+    error,
+  }: ServerAction<Body>) {
     return {
       message,
       status,
+      error,
     };
   }
 
-  static ok(message: any = "OK") {
+  static ok<T>(message: T) {
     return ServerActionResponse.json({
-      message: message,
+      message,
       status: 200,
+      error: "OK",
     });
   }
 
-  static unauthorized(message: any = "Unauthorized") {
+  static unauthorized() {
     return ServerActionResponse.json({
-      message,
       status: 401,
+      error: "Unauthorized",
     });
   }
 
-  static forbidden(message: any = "Forbidden") {
+  static forbidden() {
     return ServerActionResponse.json({
-      message,
       status: 403,
+      error: "Forbidden",
     });
   }
 
-  static notFound(message: string = "Not Found") {
+  static notFound() {
     return ServerActionResponse.json({
-      message,
       status: 404,
+      error: "Not Found",
     });
   }
 }
@@ -49,12 +56,18 @@ interface ServerActionAuthParam {
   author?: string;
 }
 
+/**
+ * status가 200이면
+ * message가 null이 아니다.
+ **/
 export const ServerActionAuth = ({
   requireAuth = false,
   author,
 }: ServerActionAuthParam) => {
   return {
-    async response(event: Function) {
+    async action<T>(
+      event: () => Promise<ServerAction<T>>,
+    ): Promise<ServerAction<T>> {
       if (requireAuth) {
         // next-auth를 통한 유저 인증
         const session = await auth();

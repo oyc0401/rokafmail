@@ -28,9 +28,12 @@ export function DeleteUser(username) {
           .createHash("sha256")
           .update(pw)
           .digest("hex");
-        if (await deleteUser(username, encryptedOrPassword)) {
+        const response = await deleteUser(username, encryptedOrPassword);
+        if (response.message) {
           alert("삭제되었습니다.");
           signOut({ callbackUrl: "/" });
+        } else {
+          console.log(`error: ${response.status} ${response.error}`);
         }
       }
     }

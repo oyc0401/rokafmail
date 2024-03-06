@@ -10,7 +10,11 @@ import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { knowTime, isDischarged } from "src/lib/time";
-import { getProfile, deleteUser, editProfile } from "../server";
+import {
+  getProfile,
+  deleteUser,
+  editProfile,
+} from "src/app/api/profile/profile";
 import { useEffect, useRef } from "react";
 
 export function Client({ username, name, birth, message }) {
@@ -25,9 +29,17 @@ export function Client({ username, name, birth, message }) {
   const router = useRouter();
 
   const click = async () => {
-    await editProfile(username, nameForm, birthForm, messageForm);
-    router.push("/profile");
-    router.refresh();
+    const response = await editProfile(
+      username,
+      nameForm,
+      birthForm,
+      messageForm,
+    );
+    console.log(response)
+    if (response.status == 200) {
+      router.push("/profile");
+      router.refresh();
+    }
   };
 
   return (
