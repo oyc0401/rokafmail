@@ -15,13 +15,19 @@ export const getProfile = async (username: string) =>
     return ServerActionResponse.ok(user);
   });
 
-export async function deleteUser(username: string) {
+// 계정 삭제할 때 비밀번호도 받는다.
+export async function deleteUser(username: string, password: string) {
   return await ServerActionAuth({
     requireAuth: true,
     author: username,
   }).action(async () => {
-    await User.deleteByUsername(username);
-    return ServerActionResponse.ok("회원탈퇴에 성공했습니다.");
+    const user = await User.findByUsername(username);
+    if (user?.password == password) {
+      await User.deleteByUsername(username);
+      return ServerActionResponse.ok("회원탈퇴에 성공했습니다.");
+    } else {
+      return ServerActionResponse.notFound("비밀번호가 틀렸습니다.");
+    }
   });
 }
 

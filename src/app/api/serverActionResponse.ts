@@ -43,10 +43,10 @@ export class ServerActionResponse {
     });
   }
 
-  static notFound() {
+  static notFound(error = "Not Found") {
     return ServerActionResponse.json({
       status: 404,
-      error: "Not Found",
+      error,
     });
   }
 }

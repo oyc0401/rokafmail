@@ -24,16 +24,17 @@ export function DeleteUser(username) {
     ) {
       const pw = prompt("비밀번호를 입력해주세요.");
       if (pw) {
-        let encryptedOrPassword = crypto
+        let encryptedPassword = crypto
           .createHash("sha256")
           .update(pw)
           .digest("hex");
-        const response = await deleteUser(username, encryptedOrPassword);
+        
+        const response = await deleteUser(username, encryptedPassword);
         if (response.message) {
           alert("삭제되었습니다.");
           signOut({ callbackUrl: "/" });
         } else {
-          console.log(`error: ${response.status} ${response.error}`);
+           alert(`error: ${response.status} ${response.error}`);
         }
       }
     }

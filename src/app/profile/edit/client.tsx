@@ -1,21 +1,8 @@
 "use client";
 import { useState } from "react";
 import styles from "./page.module.css";
-import Link from "next/link";
-import crypto from "crypto";
-// import { setCookie } from "./cookie";
-import { Nav } from "src/components";
-import { login } from "src/app/api/login/login";
-import { signIn, signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { knowTime, isDischarged } from "src/lib/time";
-import {
-  getProfile,
-  deleteUser,
-  editProfile,
-} from "src/app/api/profile/profile";
-import { useEffect, useRef } from "react";
+import { editProfile } from "src/app/api/profile/profile";
 
 export function Client({ username, name, birth, message }) {
   const [nameForm, setName] = useState(name);
@@ -29,22 +16,18 @@ export function Client({ username, name, birth, message }) {
   const router = useRouter();
 
   const click = async () => {
-    try{
-      const response = await editProfile(
-        username,
-        nameForm,
-        birthForm,
-        messageForm,
-      );
-      console.log(response)
-      if (response.status == 200) {
-        router.push("/profile");
-        router.refresh();
-      }
-    }catch(error){
-      console.log(error.message)
+    const response = await editProfile(
+      username,
+      nameForm,
+      birthForm,
+      messageForm,
+    );
+    if (response.status == 200) {
+      router.push("/profile");
+      router.refresh();
+    } else {
+      alert(`error: ${response.status} ${response.error}`);
     }
-    
   };
 
   return (

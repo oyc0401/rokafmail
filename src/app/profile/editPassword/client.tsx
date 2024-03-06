@@ -3,7 +3,7 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import crypto from "crypto";
 import { useRouter } from "next/navigation";
-import { getProfile, editPassword } from "src/app/api/profile/profile";
+import { editPassword } from "src/app/api/profile/profile";
 
 export function Client({ username }) {
   const [originPassword, setorpassword] = useState("");
@@ -15,30 +15,17 @@ export function Client({ username }) {
   async function click() {
     if (!canSubmit()) return;
 
-    const response = await getProfile(username);
+    let encryptedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
 
-    if (response.message) {
-      let encryptedOrPassword = crypto
-        .createHash("sha256")
-        .update(originPassword)
-        .digest("hex");
-
-      if (encryptedOrPassword != response.message.password) {
-        return alert("비밀번호가 같지 않습니다.");
-      }
-
-      let encryptedNewPassword = crypto
-        .createHash("sha256")
-        .update(password)
-        .digest("hex");
-
-      const rsp = await editPassword(username, encryptedNewPassword);
-      if (rsp.status == 200) {
-        alert("비밀번호가 변경되었습니다!");
-        router.push("/profile");
-      }
+    const response = await editPassword(username, encryptedPassword);
+    if (response.status == 200) {
+      alert("비밀번호가 변경되었습니다!");
+      router.push("/profile");
     } else {
-      console.log(`error: ${response.status} ${response.error}`);
+      alert(`error: ${response.status} ${response.error}`);
     }
   }
 
