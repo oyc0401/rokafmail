@@ -29,17 +29,22 @@ export function Client({ username, name, birth, message }) {
   const router = useRouter();
 
   const click = async () => {
-    const response = await editProfile(
-      username,
-      nameForm,
-      birthForm,
-      messageForm,
-    );
-    console.log(response)
-    if (response.status == 200) {
-      router.push("/profile");
-      router.refresh();
+    try{
+      const response = await editProfile(
+        username,
+        nameForm,
+        birthForm,
+        messageForm,
+      );
+      console.log(response)
+      if (response.status == 200) {
+        router.push("/profile");
+        router.refresh();
+      }
+    }catch(error){
+      console.log(error.message)
     }
+    
   };
 
   return (
