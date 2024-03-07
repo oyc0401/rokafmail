@@ -60,6 +60,7 @@ export async function mailApi(mailForm: {
       return ServerActionResponse.json({
         message: "해당 유저를 찾을 수 없습니다.",
         status: 404,
+        
       });
     }
 

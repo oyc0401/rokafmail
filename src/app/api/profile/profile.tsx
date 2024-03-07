@@ -4,7 +4,8 @@ import {
   ServerActionResponse,
   ServerActionAuth,
 } from "../serverActionResponse";
-
+import { makeLogger } from "config/winston";
+const logger = makeLogger("Profile");
 export const getProfile = async (username: string) =>
   ServerActionAuth({
     requireAuth: true,
@@ -23,6 +24,7 @@ export async function deleteUser(username: string, password: string) {
     const user = await User.findByUsername(username);
     if (user?.password == password) {
       await User.deleteByUsername(username);
+      logger.info(`Delete User | ${username} (${user.id})`)
       return ServerActionResponse.ok("회원탈퇴에 성공했습니다.");
     } else {
       return ServerActionResponse.notFound("비밀번호가 틀렸습니다.");

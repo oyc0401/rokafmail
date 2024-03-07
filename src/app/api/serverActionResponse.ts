@@ -13,11 +13,15 @@ export class ServerActionResponse {
     message,
     status,
     error,
-  }: ServerAction<Body>) {
+  }: {
+    message?: Body;
+    status: number;
+    error?: string;
+  }) {
     return {
       message,
       status,
-      error,
+      error: error ?? "",
     };
   }
 

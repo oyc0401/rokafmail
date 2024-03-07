@@ -21,5 +21,5 @@ export async function findNotQueueNotpost(){
   const notPosted = await Post.notPosts();
 
 
-  console.log(notPosted);
+  //console.log(notPosted);
 }

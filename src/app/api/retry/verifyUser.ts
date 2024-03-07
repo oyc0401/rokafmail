@@ -46,7 +46,7 @@ export async function verifyUser() {
 
       //`${verifyLog.verify} ${userLogForm}`
       const status = await verify({ userId, generation, name, birth });
-      
+
       switch (status) {
         case VerifyStatus.verify:
           verifyCount++;
@@ -63,13 +63,16 @@ export async function verifyUser() {
         case VerifyStatus.error:
           throw Error("rokaf server error, verify Stopped.");
       }
-      logger.info(`${i}/${length} | ${statusToMsg(status)} ${userLogForm}`);
-
+      if (VerifyStatus.verify) {
+        logger.info(`${i}/${length} | ${statusToMsg(status)} ${userLogForm}`);
+      } else {
+        logger.debug(`${i}/${length} | ${statusToMsg(status)} ${userLogForm}`);
+      }
 
       i++;
     }
   } catch (error) {
-    logger.debug(`${i}/${length} | ${error}`);
+    logger.info(`${i}/${length} | ${error}`);
   }
   logger.info(
     `verify: ${verifyCount}, notfound: ${notfound}, skip: ${skip} unidentify: ${unidentify} missing:${
