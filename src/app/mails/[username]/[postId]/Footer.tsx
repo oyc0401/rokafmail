@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { deletePost } from "./server";
+import { deletePost } from "src/app/api/mails/mail";
 import Link from "next/link";
 
 export function Footer({ postId, username, posted, url }) {
@@ -11,9 +11,9 @@ export function Footer({ postId, username, posted, url }) {
     var password = prompt("편지 삭제를 위해 비밀번호를 입력해주세요.", "");
 
     if (password) {
-      const result = await deletePost(postId, password);
+      const response = await deletePost(postId, password);
 
-      if (result) {
+      if (response.status == 200) {
         if (posted) {
           // 이미 발송된 편지
           let isConfirm = confirm(
@@ -28,7 +28,7 @@ export function Footer({ postId, username, posted, url }) {
           router.back();
         }
       } else {
-        alert("잘못된 비밀번호 입니다.");
+        alert(response.error);
       }
     }
   };

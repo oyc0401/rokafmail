@@ -1,6 +1,5 @@
 "use server";
 import { User } from "src/db";
-import { auth } from "src/app/api/auth/auth";
 import {
   ServerActionResponse,
   ServerActionAuth,

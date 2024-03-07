@@ -12,8 +12,6 @@ import styles from "./mails.module.css";
 import { Menu } from "@headlessui/react";
 import { useRouter } from 'next/navigation'
 
-import { deletePost } from "./server";
-
 export function DropDownCard({ id, title, name, rel, time,username }) {
   const router = useRouter()
 
