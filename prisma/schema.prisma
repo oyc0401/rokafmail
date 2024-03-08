@@ -19,6 +19,7 @@ model User {
   memberSeq        String?
   sodae            String?
   connect          Boolean            @default(false)
+  createdAt        DateTime          @default(now())
   posts            Post[]
   postQueue        PostQueue[]
   unconnectedPosts UnconnectedPost[]
