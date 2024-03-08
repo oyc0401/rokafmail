@@ -6,7 +6,7 @@ import styles from "./page.module.css";
 import { Suspense } from "react";
 import {
   InputField,
-  BasicArea,
+  BasicFormArea,
   BasicHeader,
   BasicBody,
   BasicFooter,
@@ -37,7 +37,8 @@ function Page() {
   const [password, setpassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(errorToMsg(error));
 
-  const click = async () => {
+  const click = async (e) => {
+    e.preventDefault()
     // console.log(username);
     // console.log(password);
 
@@ -58,7 +59,7 @@ function Page() {
   };
 
   return (
-    <BasicArea>
+    <BasicFormArea>
       <BasicHeader>
         아이디와 비밀번호를
         <br />
@@ -88,7 +89,8 @@ function Page() {
           로그인
         </button>
       </BasicFooter>
-    </BasicArea>
+    
+    </BasicFormArea>
   );
 }
 

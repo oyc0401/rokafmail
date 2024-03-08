@@ -7,7 +7,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { registerApi } from "src/app/api/register/register";
 import {
   InputField,
-  BasicArea,
+  BasicFormArea,
   BasicHeader,
   BasicBody,
   BasicFooter,
@@ -60,7 +60,10 @@ export default function Message() {
       });
   }
 
-  async function click() {
+  async function click(event) {
+    event.preventDefault();
+    if (!canSubmit()) return;
+
     if (canSubmit()) {
       setProgress(true);
       await send();
@@ -79,7 +82,7 @@ export default function Message() {
       >
         <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
       </div>
-      <BasicArea>
+      <BasicFormArea>
         <BasicHeader>
           편지지에 보여질
           <br />
@@ -108,17 +111,18 @@ export default function Message() {
           </div>
         </BasicBody>
         <BasicFooter>
-            <button className={`submit mini`} onClick={prev}>
-              이전
-            </button>
-            <button
-              className={canSubmit() ? "submit" : "submit disable"}
-              onClick={click}
-            >
-              만들기
-            </button>
+          <button className={`submit mini`} onClick={prev} type="button">
+            이전
+          </button>
+          <button
+            className={canSubmit() ? "submit" : "submit disable"}
+            onClick={click}
+            type="submit"
+          >
+            만들기
+          </button>
         </BasicFooter>
-      </BasicArea>
+      </BasicFormArea>
     </>
   );
 }

@@ -1,9 +1,19 @@
 import styles from "./BasicArea.module.css";
 
 export function BasicArea({ children }) {
-  return <div className="screen">
-      {children}
-    </div>;
+  return (
+    <div className="screen">
+     {children}
+    </div>
+  );
+}
+
+export function BasicFormArea({ children }) {
+  return (
+    <div className="screen">
+      <form className="w-full h-full flex flex-col">{children}</form>
+    </div>
+  );
 }
 
 export function BasicHeader({ children }) {

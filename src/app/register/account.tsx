@@ -5,7 +5,7 @@ import { duplicateUsername } from "src/server";
 import { useStore, useStoreBase } from "./model";
 import {
   InputField,
-  BasicArea,
+  BasicFormArea,
   BasicHeader,
   BasicBody,
   BasicFooter,
@@ -36,7 +36,8 @@ export default function Account() {
     setValidUser(false);
   }
 
-  async function checkUsername() {
+  async function checkUsername(event) {
+    event.preventDefault();
     if (!validU(username).valid) return;
     if (load.current) return;
     setLoading(true);
@@ -63,7 +64,9 @@ export default function Account() {
   const canSubmit = () =>
     validUser && validP(password).valid && validR(repassword, password).valid;
 
-  const click = () => {
+  const click = (event) => {
+    event.preventDefault();
+    if (!canSubmit()) return;
     if (canSubmit()) next();
   };
 
@@ -72,73 +75,75 @@ export default function Account() {
   const repasswordValidation = validR(repassword, password);
 
   return (
-      <BasicArea>
-        <BasicHeader>
-          수료 후 편지함 확인을 위해
-          <br />
-          비밀번호를 설정해주세요
-        </BasicHeader>
-        <BasicBody>
-          <InputField
-            label="아이디"
-            placeholder="아이디를 입력해주세요"
-            value={username}
-            onChange={editUsername}
-            helpMessage={UsernameValidation.text}
-            color={UsernameValidation.color}
+    <BasicFormArea>
+      <BasicHeader>
+        수료 후 편지함 확인을 위해
+        <br />
+        비밀번호를 설정해주세요
+      </BasicHeader>
+      <BasicBody>
+        <InputField
+          label="아이디"
+          placeholder="아이디를 입력해주세요"
+          value={username}
+          onChange={editUsername}
+          helpMessage={UsernameValidation.text}
+          color={UsernameValidation.color}
+        >
+          <button
+            type="button"
+            className={
+              loading
+                ? `${styles.dupButton} ${styles.loading}`
+                : styles.dupButton
+            }
+            onClick={checkUsername}
           >
-            <button
-              className={
-                loading
-                  ? `${styles.dupButton} ${styles.loading}`
-                  : styles.dupButton
-              }
-              onClick={checkUsername}
+            <div
+              style={{
+                display: "flex",
+                textAlign: "center",
+                justifyContent: "center",
+              }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  textAlign: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {loading ? <p className={styles.animation} /> : "중복확인"}
-              </div>
-            </button>
-          </InputField>
-          <InputField
-            label="비밀번호"
-            type="password"
-            value={password}
-            autoComplete="new-password"
-            placeholder="비밀번호를 입력해주세요"
-            onChange={setPassword}
-            helpMessage={passwordValidation.text}
-            color={passwordValidation.color}
-          />
-          <InputField
-            label="비밀번호 재확인"
-            type="password"
-            value={repassword}
-            autoComplete="new-password"
-            placeholder="비밀번호를 다시 입력해주세요"
-            onChange={setRepassword}
-            helpMessage={repasswordValidation.text}
-            color={repasswordValidation.color}
-          />
-        </BasicBody>
-        <BasicFooter>
-            <button className={`submit mini`} onClick={prev}>
-              이전
-            </button>
-            <button
-              className={canSubmit() ? "submit" : "submit disable"}
-              onClick={click}
-            >
-              다음
-            </button>
-        </BasicFooter>
-      </BasicArea>
+              {loading ? <p className={styles.animation} /> : "중복확인"}
+            </div>
+          </button>
+        </InputField>
+        <InputField
+          label="비밀번호"
+          type="password"
+          value={password}
+          autoComplete="new-password"
+          placeholder="비밀번호를 입력해주세요"
+          onChange={setPassword}
+          helpMessage={passwordValidation.text}
+          color={passwordValidation.color}
+        />
+        <InputField
+          label="비밀번호 재확인"
+          type="password"
+          value={repassword}
+          autoComplete="new-password"
+          placeholder="비밀번호를 다시 입력해주세요"
+          onChange={setRepassword}
+          helpMessage={repasswordValidation.text}
+          color={repasswordValidation.color}
+        />
+      </BasicBody>
+      <BasicFooter>
+        <button className={`submit mini`} onClick={prev} type="button">
+          이전
+        </button>
+        <button
+          className={canSubmit() ? "submit" : "submit disable"}
+          onClick={click}
+          type="submit"
+        >
+          다음
+        </button>
+      </BasicFooter>
+    </BasicFormArea>
   );
 }
 

@@ -6,6 +6,7 @@ import { knowTime, isDischarged } from "src/lib/time";
 import {
   InputField,
   BasicArea,
+  BasicFormArea,
   BasicHeader,
   BasicBody,
   BasicFooter,
@@ -17,7 +18,10 @@ export default function Information() {
   const canSubmit = () =>
     validG(generation).valid && validN(name).valid && validB(birth).valid;
 
-  const click = () => {
+  const click = (event) => {
+    event.preventDefault();
+    if (!canSubmit()) return;
+    
     if (canSubmit()) next();
   };
 
@@ -26,7 +30,7 @@ export default function Information() {
   const birthValidation = validB(birth);
   return (
     <>
-      <BasicArea>
+      <BasicFormArea>
         <BasicHeader>
           편지 주소를 확인하기 위해
           <br />
@@ -66,7 +70,7 @@ export default function Information() {
             다음
           </button>
         </BasicFooter>
-      </BasicArea>
+      </BasicFormArea>
     </>
   );
 }
