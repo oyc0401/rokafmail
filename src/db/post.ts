@@ -152,4 +152,9 @@ export class Post {
         },
       },
     });
+
+  static count = () => prisma.post.count();
+
+  static generationCount = (generation) =>
+    prisma.post.count({ where: { user: { generation } } });
 }

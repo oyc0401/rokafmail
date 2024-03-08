@@ -126,4 +126,18 @@ export class User {
         password: password,
       },
     });
+
+  static count = () => prisma.user.count();
+
+  static activateCount = () =>
+    prisma.user.count({
+      where: {
+        posts: {
+          some: {},
+        },
+      },
+    });
+
+  static generationCount = (generation) =>
+    prisma.user.count({ where: { generation } });
 }
