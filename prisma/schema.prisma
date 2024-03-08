@@ -1,6 +1,5 @@
-
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
   engineType = "binary"
 }
 
@@ -10,64 +9,63 @@ datasource db {
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
-  username    String    @unique
-  password    String
-  name        String
-  birth       String
-  generation  Int
-  message     String
-  memberSeq   String? 
-  sodae       String? 
-  connect     Boolean   @default(false)
-  posts       Post[]
-  usersQueue  UsersQueue[]
-  UnidentifiedUser  UnidentifiedUser[]
-  postQueue   PostQueue[]
+  id               Int                @id @default(autoincrement())
+  username         String             @unique
+  password         String
+  name             String
+  birth            String
+  generation       Int
+  message          String
+  memberSeq        String?
+  sodae            String?
+  connect          Boolean            @default(false)
+  posts            Post[]
+  postQueue        PostQueue[]
   unconnectedPosts UnconnectedPost[]
+  UnidentifiedUser UnidentifiedUser[]
+  usersQueue       UsersQueue[]
 }
 
 model Post {
-  id          Int       @id @default(autoincrement())
-  userId      Int
-  name        String
-  relationship String
-  title       String
-  contents    String
-  password    String
-  createdAt   DateTime  @default(now())
-  posted      Boolean   @default(false)
-  postAt      DateTime?
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id               Int               @id @default(autoincrement())
+  userId           Int
+  name             String
+  relationship     String
+  title            String
+  contents         String
+  password         String
+  createdAt        DateTime          @default(now())
+  posted           Boolean           @default(false)
+  postAt           DateTime?
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postQueues       PostQueue[]
   unconnectedPosts UnconnectedPost[]
-  postQueues  PostQueue[]
 }
 
 model UnconnectedPost {
-  id          Int       @id @default(autoincrement())
-  userId      Int
-  postId      Int
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  id     Int  @id @default(autoincrement())
+  userId Int
+  postId Int
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model UsersQueue {
-  id          Int       @id @default(autoincrement())
-  userId      Int
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     Int  @id @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model UnidentifiedUser {
-  id          Int       @id @default(autoincrement())
-  userId      Int
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     Int  @id @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model PostQueue {
-  id          Int       @id @default(autoincrement())
-  userId      Int
-  postId      Int
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  id     Int  @id @default(autoincrement())
+  userId Int
+  postId Int
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
-
