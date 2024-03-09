@@ -165,7 +165,7 @@ export function DatabaseTable({ data }) {
                               <VerticalDotsIcon className="text-default-300" />
                             </Button>
                           </DropdownTrigger>
-                          <DropdownMenu>
+                          <DropdownMenu aria-label="Static Actions">
                             <DropdownSection title="Actions" showDivider>
                               <DropdownItem
                                 onClick={async () => {
