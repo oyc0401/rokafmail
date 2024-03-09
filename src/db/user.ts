@@ -40,6 +40,8 @@ export class User {
         memberSeq: true,
         sodae: true,
         connect: true,
+        createdAt:true
+        
       },
     });
 
