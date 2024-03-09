@@ -25,6 +25,9 @@ export async function forcePost(postId) {
   if (post) {
     const { name, relationship, title, contents, password, createdAt } = post;
     const { memberSeq, sodae } = post.user;
+    if(!memberSeq || !sodae){
+       return "memberSeq or sodae is null";
+    }
     let postComplete = await Rokaf.postMail(
       {
         name,
