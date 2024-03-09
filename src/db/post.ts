@@ -18,6 +18,8 @@ export class Post {
             username: true,
             connect: true,
             generation: true,
+            memberSeq: true,
+            sodae: true,
           },
         },
       },

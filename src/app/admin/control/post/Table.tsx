@@ -23,8 +23,8 @@ import { useAsyncList } from "@react-stately/data";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { enQueue } from "./server";
-import {canSearch} from'src/lib/time'
+import { enQueue, forcePost } from "./server";
+import { canSearch } from "src/lib/time";
 // import { resend } from "./server";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
@@ -177,6 +177,18 @@ export function DatabaseTable({ data }) {
                                 }}
                               >
                                 enqueue
+                              </DropdownItem>
+                              <DropdownItem
+                                onClick={async () => {
+                                  if (
+                                    confirm("편지를 강제로 보내시겠습니까?")
+                                  ) {
+                                    const response = await forcePost(item.id);
+                                    alert(response);
+                                  }
+                                }}
+                              >
+                                forcedPost
                               </DropdownItem>
                             </DropdownSection>
                             <DropdownSection title="Navigations">
