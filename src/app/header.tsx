@@ -10,10 +10,26 @@ import Image from "next/image";
 
 
 
+// export function Header() {
+//   // if (typeof window !== "undefined") {
+//   //   innerHeight = window.innerHeight;
+//   // }
+//   // const innerHeight = window.innerHeight;
+
+  
+//   return (
+//     <div className={styles.top} style={{ height: innerHeight }}>
+
 export function Header() {
-  const innerHeight = window.innerHeight;
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    const innerHeight = window.innerHeight;
+    setHeight(innerHeight);
+  }, []);
+
   return (
-    <div className={styles.top} style={{ height: innerHeight }}>
+    <div className={styles.top} style={height == 0 ? {} : { height: height }}>
       <div className="screen">
         <div style={{ flex: 90 }}></div>
 

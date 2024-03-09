@@ -4,10 +4,38 @@ import path from 'path';
 import util from 'util';
 import Link from 'next/link';
 
+// 회원가입 정보 추출 함수
+function extractRegisterInfo(line) {
+  const regex = /\[register\]\s+(\w+)\s+\((\d+)\)/;
+  const match = regex.exec(line);
+  if (!match) {
+    return null;
+  }
+
+  const id = match[1];
+  const time = new Date(line.split(" - ")[0]);
+  return { id, time };
+}
+
 export default async function Page({params}){
   const logAddress = `./logs/${params.file}`;
   const data = await readFileAndDecompress(logAddress);
 
+  const lines = data.split("\n");
+  const registerInfos = lines
+    .map((line) => extractRegisterInfo(line))
+    .filter((info) => info !== null);
+
+  // 회원가입 정보 JSON 변환
+  const jsonData = registerInfos.reduce((acc, info:{ id, time }) => {
+    acc[info.time.getHours()] = info.time.toISOString();
+    return acc;
+  }, {});
+
+  // JSON 출력
+  console.log(JSON.stringify(jsonData, null, 2));
+  
+  
   return <>
     <Link  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href='/admin/log'>Logs</Link>
     <article className='mt-6 p-4 bg-gray-100 '>

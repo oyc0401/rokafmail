@@ -99,7 +99,7 @@ a{
   width: 100%;
   color: white;
   cursor: pointer;
-  transition: 0.2s;
+  /* transition: 0.2s;*/
   font-size: 22px;
   letter-spacing: 0.88px;
   font-style: normal;
