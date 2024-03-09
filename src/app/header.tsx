@@ -8,26 +8,12 @@ import { useEffect, useState } from "react";
 import { Logo, LogoTitle } from "public/assets/index";
 import Image from "next/image";
 
+
+
 export function Header() {
-  const [height, setHeight] = useState(0);
-  // const handleScroll = () => {
-  //   const innerHeight = window.innerHeight;
-  //   setHeight(innerHeight);
-  //   console.log(innerHeight);
-  // };
-
-  useEffect(() => {
-    const innerHeight = window.innerHeight;
-
-    setHeight(innerHeight);
-    return () => {
-      // window.removeEventListener("scroll", handleScroll);
-      // window.removeEventListener("resize", handleScroll);
-    };
-  }, []);
-
+  const innerHeight = window.innerHeight;
   return (
-    <div className={styles.top} style={height == 0 ? {} : { height: height }}>
+    <div className={styles.top} style={{ height: innerHeight }}>
       <div className="screen">
         <div style={{ flex: 90 }}></div>
 
