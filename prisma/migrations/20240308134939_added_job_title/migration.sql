@@ -5,4 +5,4 @@
 
 */
 -- AlterTable
-ALTER TABLE "User" ADD COLUMN     "good" TEXT NOT NULL;
+ALTER TABLE "User" ADD COLUMN     "good" TEXT;

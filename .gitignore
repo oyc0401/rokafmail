@@ -2,6 +2,7 @@
 node_modules
 .vercel
 .replit
+next-env.d.ts
 
 src/app/(admin)
 
