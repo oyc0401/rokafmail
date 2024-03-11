@@ -50,7 +50,7 @@ export function Header() {
           </h3>
         </div>
         <Link className="submit" href={{ pathname: "/register" }}>
-          시작하기
+          편지함 만들기
         </Link>
         <div className="pt-2.5 pb-5 w-full">
           <div
