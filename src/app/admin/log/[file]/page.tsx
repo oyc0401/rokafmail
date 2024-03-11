@@ -30,7 +30,6 @@ export default async function Page({params}){
   
   // 회원가입 정보 JSON 변환
   const jsonData = registerInfos.reduce((acc, info:{ id, time }) => {
-    console.log(acc)
     acc[info.id] = info.time.toISOString();
     return acc;
   }, {});
