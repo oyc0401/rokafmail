@@ -56,13 +56,19 @@ export async function repost({
 
   // 다시보내기 할 때 편지쓰기 가능한 기간에만 보낸다.
   // 편지쓰기 이후에 보내도 일단은 그냥 스킵하고 postQueue에 그대로 두겠다.
-  // 편지가 안 보내졌다는걸 확실히 알려주기 위해서
+  // 나중에 있을 특학 편지를 위해서
 
   switch (status) {
+      // 원래 소대번호가 발견이 되야 큐에 넣어지고 이 함수를 쓸 수 있는데
+      // 스킵이 될 수가 없는데 일단 넣어놓음
+      // 스킵뜨면 오류처리하셈
+      // 스킵이 뜨려면 미래의 기수로 해놓고 소대번호가 발견이 되어야함.
+      // 그럼 해당 사람이 아니라는건데
+      // 오류가 맞지
+      // 정상적으로 화원가입 하고 이후에 기수를 바꾸면 여기 와지겠네
     case Status.before:
-      return RepostStatus.skip;
-
     case Status.beginning:
+      return RepostStatus.skip;
     case Status.training:
       let postComplete = await Rokaf.postMail(
         {
@@ -76,10 +82,10 @@ export async function repost({
         },
         createdAt,
       );
+
       // 국방서버에 보내는 요청
-      if (!postComplete.serverOn) {
-        return RepostStatus.error;
-      }
+      if (!postComplete.serverOn) return RepostStatus.error;
+
       if (postComplete.complete) {
         await relocatePost(postId);
         return RepostStatus.success;

@@ -60,18 +60,26 @@ export async function sendPostQueues(
           user: { memberSeq, sodae, generation },
         });
         const postLogForm = `(${postId}) | ${username} (${userId})`;
-        logger.info(
-          `${statusMessage()}: ${postLogForm} | ${statusToStr(result)}`,
-        );
+
         switch (result) {
-          case RepostStatus.success:
-          case RepostStatus.skip:
           case RepostStatus.after:
+            break;
+          case RepostStatus.skip:
+            // 편지쓰기 기간이 아닌데 큐에있으면 오류
+            logger.error(
+              `${statusMessage()}: ${postLogForm} | ${statusToStr(result)}`,
+            );
+            break;
+          case RepostStatus.success:
           case RepostStatus.fail:
+            logger.info(
+              `${statusMessage()}: ${postLogForm} | ${statusToStr(result)}`,
+            );
             break;
           case RepostStatus.error:
             throw Error(`국방부 인편 서버 오류 | ${postLogForm}`);
         }
+
         userPostCounts[userId] = (userPostCounts[userId] || 0) + 1;
         success++; // 보내졌으면 횟수 올리기
       } else {
