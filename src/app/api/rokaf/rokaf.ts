@@ -1,5 +1,6 @@
 import { getProfile } from "./profile";
 import { postMail } from "./postMail";
+import { getuserProfile } from "./getGunsu1Profile";
 
 export default class Rokaf {
   static getProfile(name: string, birth: string) {
@@ -18,5 +19,9 @@ export default class Rokaf {
     createdAt = new Date(),
   ) {
     return postMail(body, createdAt);
+  }
+
+  static getuserProfile(name: string, birth: string, siteId: string) {
+    return getuserProfile(name, birth, siteId);
   }
 }
