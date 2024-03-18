@@ -1,5 +1,6 @@
 import { Post, User } from "src/db";
 import { GG } from "./graph";
+import{GG856} from'./graph856';
 import { parseKorea } from "src/lib/time";
 function leftPad(value: number) {
   if (value >= 10) {
@@ -28,6 +29,13 @@ export default async function Page() {
       (dateObj[`${date.month() + 1}/${leftPad(date.date())}`] ?? 0) + 1;
   }
 
+  let dateObj856={}
+  for (const post of posts) {
+    const date = parseKorea(post.createdAt);
+      dateObj856[`${date.month() + 1}/${leftPad(date.date())}`] =
+      (dateObj856[`${date.month() + 1}/${leftPad(date.date())}`] ?? 0) + 1;
+  }
+
   return (
     <>
       <div>
@@ -48,6 +56,7 @@ export default async function Page() {
           <p className="text-xl pb-2">856기 편지: {postCount856}통</p>
         </div>
         <GG postCount={dateObj}></GG>
+        {/* <GG856 postCount={dateObj856}></GG856> */}
       </div>
     </>
   );
