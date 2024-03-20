@@ -1,6 +1,7 @@
 import { getProfile } from "./profile";
 import { postMail } from "./postMail";
-import { getuserProfile } from "./getGunsu1Profile";
+import { getSchoolProfile } from "./getSchoolProfile";
+import { postSchoolMail } from "./postSchoolMail";
 
 export default class Rokaf {
   static getProfile(name: string, birth: string) {
@@ -22,6 +23,20 @@ export default class Rokaf {
   }
 
   static getuserProfile(name: string, birth: string, siteId: string) {
-    return getuserProfile(name, birth, siteId);
+    return getSchoolProfile(name, birth, siteId);
+  }
+
+  static postSchoolMail(
+    body: {
+      name: string;
+      relationship: string;
+      title: string;
+      contents: string;
+      password: string;
+      memberSeq: string;
+    },
+    createdAt = new Date(), siteId:string
+  ) {
+    return postSchoolMail(body, createdAt,siteId);
   }
 }

@@ -77,8 +77,29 @@ export enum Status {
   case Status.discharged:
 }
  */
+export function serveStatusVer2(
+  generation: number,
+  graduateDate: Date,
+): Status {
+  if (isFuture(getEnter(generation))) {
+    return Status.before;
+  } else if (isFuture(getMailStart(generation))) {
+    return Status.beginning;
+  } else if (isFuture(getMailEnd(generation))) {
+    // 편지쓰기 가능
+    return Status.training;
+  } else if (isFuture(getCompletion(generation))) {
+    return Status.ending;
+  } else if (isFuture(parseKorea(graduateDate))) {
+    return Status.school;
+  } else if (isFuture(getDischarge(generation))) {
+    return Status.working;
+  } else {
+    return Status.discharged;
+  }
+}
 
-export function serveStatus(generation: number):Status {
+export function serveStatus(generation: number): Status {
   if (isFuture(getEnter(generation))) {
     return Status.before;
   } else if (isFuture(getMailStart(generation))) {
@@ -151,7 +172,7 @@ export function mailEnded(generation: number): boolean {
   return isPast(getMailStart(generation));
 }
 
-// Date to Datejs
+// UTC Date to Dayjs seoul
 export function parseKorea(date: Date) {
   return dayjs.utc(date).tz("Asia/Seoul");
 }

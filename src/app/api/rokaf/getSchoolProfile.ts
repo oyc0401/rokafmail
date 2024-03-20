@@ -84,7 +84,7 @@ function htmlToSodae(html) {
   return `${중대}${소대}${strnum}`;
 }
 
-export async function getuserProfile(
+export async function getSchoolProfile(
   name: string,
   birth: string,
   siteId: string,

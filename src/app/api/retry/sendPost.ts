@@ -1,5 +1,5 @@
 import Rokaf from "../rokaf/rokaf";
-import { getNow, serveStatus, Status } from "src/lib/time";
+import { getNow, serveStatus, serveStatusVer2, Status } from "src/lib/time";
 import { PostQueue, Post } from "src/db";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Send");
@@ -20,9 +20,17 @@ export async function sendPost({ queueId }): Promise<SendResponse> {
   }
 
   const postId = post.postId;
-  const { name, relationship, title, contents, password, createdAt } =
-    post.post;
-  const { memberSeq, sodae, generation } = post.user;
+  const {
+    name,
+    relationship,
+    title,
+    contents,
+    password,
+    createdAt,
+    특학memberSeq,
+    siteId,
+  } = post.post;
+  const { memberSeq, sodae, generation, graduateDate } = post.user;
 
   async function postMail() {
     // if memberSeq or sodae is null, user dosen't enter airforce
@@ -61,7 +69,7 @@ export async function sendPost({ queueId }): Promise<SendResponse> {
 
   async function postSchoolMail() {
     // if memberSeq or sodae is null, user dosen't enter airforce
-    if (!특학) {
+    if (!특학memberSeq || !siteId) {
       return {
         complete: true,
         level: "info",
@@ -69,19 +77,19 @@ export async function sendPost({ queueId }): Promise<SendResponse> {
       };
     }
 
-    let response = await Rokaf.postMail(
+    let response = await Rokaf.postSchoolMail(
       {
         name,
         relationship,
         title,
         contents,
         password,
-        memberSeq,
-        sodae,
+        특학memberSeq,
       },
       createdAt,
+      siteId,
     );
-    
+
     // 특학에 보내기
     if (!response.serverOn)
       return {
@@ -102,16 +110,13 @@ export async function sendPost({ queueId }): Promise<SendResponse> {
     }
   }
 
+  const status = serveStatusVer2(generation, graduateDate);
 
-
-  const status = serveStatus(generation);
-
-  
   switch (status) {
     // 소대번호가 있으면 보내는 시간 전에 보내도 되지 않을까?
     case Status.before:
     case Status.beginning:
-   
+
     case Status.training:
       return await postMail();
 
@@ -121,8 +126,8 @@ export async function sendPost({ queueId }): Promise<SendResponse> {
 
     case Status.working:
     case Status.discharged:
-      // await relocatePost(postId);
-      return { complete: true, level: "info", message: `Skip - AfterMailTime` };
+      await relocatePost(postId);
+      return { complete: true, level: "info", message: `End - Dequeue Post` };
   }
 }
 
