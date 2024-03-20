@@ -20,6 +20,8 @@ model User {
   sodae            String?
   connect          Boolean            @default(false)
   createdAt        DateTime          @default(now())
+  course           String?
+  graduateDate     DateTime?
   posts            Post[]
   postQueue        PostQueue[]
   unconnectedPosts UnconnectedPost[]

@@ -60,6 +60,7 @@ export enum Status {
   beginning, // 훈련 1, 2주차
   training, // 훈련 3, 4, 5주차
   ending, // 편지쓰기 기간 끝나고, 수료 전
+  school, // 특기 학교
   working, // 군 복무 중
   discharged, // 전역 후
 }
@@ -77,7 +78,7 @@ export enum Status {
 }
  */
 
-export function serveStatus(generation: number) {
+export function serveStatus(generation: number):Status {
   if (isFuture(getEnter(generation))) {
     return Status.before;
   } else if (isFuture(getMailStart(generation))) {
