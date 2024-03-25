@@ -1,13 +1,6 @@
 import { Post, User } from "src/db";
 import { InfoGraph } from './InfoGraph';
-import { parseKorea } from "src/lib/time";
 import { InfoAll } from "./InfoAll";
-function leftPad(value: number) {
-  if (value >= 10) {
-    return value;
-  }
-  return `0${value}`;
-}
 
 export default async function Page() {
   const userCount = await User.count();
@@ -19,24 +12,6 @@ export default async function Page() {
 
   const userCount856 = await User.generationCount(856);
   const postCount856 = await Post.generationCount(856);
-
-  const posts = await Post.findAll();
-  const users = await User.findAll();
-
-  let dateObj = {};
-  for (const post of posts) {
-    const date = parseKorea(post.createdAt);
-    const key = `${date.month() + 1}/${leftPad(date.date())}`;
-    dateObj[key] = (dateObj[key] ?? 0) + 1;
-  }
-
-  let userObj = {}
-  for (const user of users) {
-    const date = parseKorea(user.createdAt);
-    const key = `${date.month() + 1}/${leftPad(date.date())}`;
-    userObj[key] = (userObj[key] ?? 0) + 1;
-  }
-
 
   return (
     <>
