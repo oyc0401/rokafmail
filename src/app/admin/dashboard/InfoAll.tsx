@@ -23,7 +23,7 @@ export async function InfoAll() {
   });
   const users = await prisma.user.findMany({
     select: {
-        createdAt: true,
+      createdAt: true,
     },
   });
 
@@ -35,7 +35,7 @@ export async function InfoAll() {
   for (const post of posts) {
     const date = parseKorea(post.createdAt);
     if (ddd.isBefore(date)) {
-      const key = `${date.month() + 1}/${leftPad(date.date())}`;
+      const key = `${date.format('YYYYMMDD')}`;
       dateObj[key] = (dateObj[key] ?? 0) + 1;
     }
   }
@@ -44,7 +44,8 @@ export async function InfoAll() {
   for (const user of users) {
     const date = parseKorea(user.createdAt);
     if (ddd.isBefore(date)) {
-      const key = `${date.month() + 1}/${leftPad(date.date())}`;
+      // const key = `${date.month() + 1}/${leftPad(date.date())}`;
+      const key = `${date.format('YYYYMMDD')}`;
       userObj[key] = (userObj[key] ?? 0) + 1;
     }
 
@@ -53,7 +54,7 @@ export async function InfoAll() {
 
   return (
     <>
-      <Graph label={'전체'} postCount={dateObj} userCount={userObj}></Graph>
+      <Graph label={'전체'} postCount={dateObj} userCount={userObj} leftDate={new Date('2024-02-05')}></Graph>
     </>
   );
 }

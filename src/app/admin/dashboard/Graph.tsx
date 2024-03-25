@@ -8,8 +8,9 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
+import { parseKorea ,strToDayjs} from "src/lib/time";
 
-export function Graph({ postCount,userCount,label,leftDate }) {
+export function Graph({ postCount, userCount, label, leftDate }) {
 
   const mergedData = {};
 
@@ -31,7 +32,7 @@ export function Graph({ postCount,userCount,label,leftDate }) {
 
   let keys: string[] = [];
   for (const key in mergedData) {
-    if (key != "2/04" && key != "2/05") keys.push(key);
+   keys.push(key);
   }
   keys.sort();
 
@@ -39,30 +40,24 @@ export function Graph({ postCount,userCount,label,leftDate }) {
   let registersum = 0;
   let postsum = 0;
 
-  console.log(keys);
+ 
   // 적분
+
+  const left = parseKorea(leftDate)
+
   for (const key of keys) {
     const obj = mergedData[key];
     registersum += obj.user;
     postsum += obj.post;
-    realdata.push({ name: key, user: registersum, post: postsum });
+
+    // 자르기
+    const date = strToDayjs(key);
+     //console.log(date);
+    if (left.isBefore(date)) {
+      realdata.push({ name: date.format('YY.MM.DD'), user: registersum, post: postsum });
+    }
   }
-
-  //자르기
-  // for (const data of realdata) {
-  //   console.log(data.name);
-  //   const [mon,date]=data.name.split('/');
-    
-  // }
-
-  const data = [
-    { name: "Page A", uv: 400, pv: 2500, amt: 2500 },
-    { name: "Page B", uv: 500, pv: 2500, amt: 2500 },
-    { name: "Page C", uv: 600, pv: 2600, amt: 2600 },
-    { name: "Page D", uv: 700, pv: 2700, amt: 2700 },
-    { name: "Page E", uv: 800, pv: 2800, amt: 2800 },
-    { name: "Page F", uv: 900, pv: 2900, amt: 2900 },
-  ];
+  //console.log(realdata);
   const [html, setHtml] = useState(<>로딩중</>);
 
   useEffect(() => {
