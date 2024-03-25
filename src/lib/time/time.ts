@@ -103,11 +103,6 @@ export function knowTime(generation: number) {
   return !isEmpty(generation);
 }
 
-/**
- * @deprecated use serveStatus()
- */
-// 편지 보내는 기간인지
-
 // 전역했는지
 export function isDischarged(generation: number): boolean {
   if (generation < startGeneration) return true;
