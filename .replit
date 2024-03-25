@@ -17,3 +17,12 @@ deploymentTarget = "cloudrun"
 [[ports]]
 localPort = 3000
 externalPort = 80
+
+[rules]
+
+[rules.formatter]
+
+[rules.formatter.fileExtensions]
+
+[rules.formatter.fileExtensions.".js"]
+id = "module:nodejs-20:v30-20240319-38caddd/languageServer:typescript-language-server"

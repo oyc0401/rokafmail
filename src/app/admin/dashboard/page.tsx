@@ -1,7 +1,7 @@
 import { Post, User } from "src/db";
-import { GG } from "./graph";
-import{GG856} from'./graph856';
+import { InfoGraph } from './InfoGraph';
 import { parseKorea } from "src/lib/time";
+import { InfoAll } from "./InfoAll";
 function leftPad(value: number) {
   if (value >= 10) {
     return value;
@@ -21,20 +21,22 @@ export default async function Page() {
   const postCount856 = await Post.generationCount(856);
 
   const posts = await Post.findAll();
+  const users = await User.findAll();
 
   let dateObj = {};
   for (const post of posts) {
     const date = parseKorea(post.createdAt);
-    dateObj[`${date.month() + 1}/${leftPad(date.date())}`] =
-      (dateObj[`${date.month() + 1}/${leftPad(date.date())}`] ?? 0) + 1;
+    const key = `${date.month() + 1}/${leftPad(date.date())}`;
+    dateObj[key] = (dateObj[key] ?? 0) + 1;
   }
 
-  let dateObj856={}
-  for (const post of posts) {
-    const date = parseKorea(post.createdAt);
-      dateObj856[`${date.month() + 1}/${leftPad(date.date())}`] =
-      (dateObj856[`${date.month() + 1}/${leftPad(date.date())}`] ?? 0) + 1;
+  let userObj = {}
+  for (const user of users) {
+    const date = parseKorea(user.createdAt);
+    const key = `${date.month() + 1}/${leftPad(date.date())}`;
+    userObj[key] = (userObj[key] ?? 0) + 1;
   }
+
 
   return (
     <>
@@ -55,8 +57,10 @@ export default async function Page() {
           <p className="text-xl pb-2">856기 유저: {userCount856}명 </p>
           <p className="text-xl pb-2">856기 편지: {postCount856}통</p>
         </div>
-        <GG postCount={dateObj}></GG>
-        {/* <GG856 postCount={dateObj856}></GG856> */}
+        <InfoAll></InfoAll>
+        <InfoGraph generation={856} leftDate={new Date('2024-03-11')}></InfoGraph>
+        <InfoGraph generation={855} leftDate={new Date('2024-02-05')}></InfoGraph>
+
       </div>
     </>
   );
