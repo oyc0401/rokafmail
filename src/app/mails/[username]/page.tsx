@@ -18,15 +18,24 @@ export default async function Mails({ params }) {
   }
 
   return (
-    <div className="screen-not">
-      <Header>글자글자</Header>
-      {user.connect ? (
-        <Mail username={username} />
-      ) : (
-        <UnconnectedMail username={username} />
-      )}
-      {user.connect ? (
-        <Nav elevation={true}>
+    <>
+     
+        <Header>글자글자</Header>
+
+        <main className="container mx-auto max-w-7xl flex-1 overflow-auto">
+          <div className="flex h-full flex-col">
+            <div className="">
+              {user.connect ? (
+                <Mail username={username} />
+              ) : (
+                <UnconnectedMail username={username} />
+              )}
+            </div>
+
+          </div>
+        </main>
+      
+        <Nav>
           <Link
             className={`submit mini`}
             href={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`}
@@ -38,16 +47,20 @@ export default async function Mails({ params }) {
             편지 작성
           </Link>
         </Nav>
-      ) : (
-        <Nav>
-          <Link className={"submit"} href={`/mail/${user.username}`}>
-            편지 작성
-          </Link>
-        </Nav>
-      )}
-    </div>
+    </>
   );
 }
+
+// {/* {user.connect ? (
+
+// ) : (
+//   <Nav>
+//     <Link className={"submit"} href={`/mail/${user.username}`}>
+//       편지 작성
+//     </Link>
+//   </Nav>
+// )} */}
+
 async function Mail({ username }) {
   let posts = await Post.findPostedByUsername(username);
   let queue = await PostQueue.findByUsername(username);

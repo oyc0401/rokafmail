@@ -34,24 +34,15 @@ export function Nav({ children, elevation = false }) {
   return (
     <>
       <div style={{ height: 108, minHeight: 108, width: 1 }}></div>
-      <div
-        className={`${styles.footer} ${
-          !elevation ? "" : end ? "" : styles.end
-        }`}
+      <nav
+        className={`fixed bottom-0 w-full bg-white ${!elevation ? "" : end ? "" : styles.end
+          }`}
       >
-        {/* <p style={{ height: 30 }}>{log}</p> */}
-
-        <div
-          style={{
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 12,
-            paddingBottom: 36,
-          }}
-        >
-          <div className="row">{children}</div>
-        </div>
-      </div>
+        <footer className="container max-w-3xl mx-auto px-2 sm:px-4 md:px-8">
+          <div className="row pt-3 pb-9">
+            {children}
+          </div></footer>
+      </nav>
     </>
   );
 }
