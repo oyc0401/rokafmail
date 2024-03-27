@@ -1,3 +1,10 @@
+.titleLogo{
+  color: var(--primary);
+  font-size:52px;
+   letter-spacing: -0.04em;
+  font-weight:700;
+}
+
 .title{
   font-size:24px;
 font-weight:700;
@@ -24,13 +31,9 @@ font-weight:700;
 .logo{
    width: 173px;
   height:173px;
+  margin:auto;
 }
 
-.logoTitle{
-
-   width: 173px;
-  height:43px;
-}
 
 .top{
   /* background:gray; */

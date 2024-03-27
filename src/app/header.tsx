@@ -7,8 +7,25 @@ import { useEffect, useState } from "react";
 
 import { Logo, LogoTitle } from "public/assets/index";
 import Image from "next/image";
+import localFont from 'next/font/local'
 
-
+// Font files can be colocated inside of `pages`
+const sunBatang = localFont({
+  src: [
+    {
+      path: '../../public/fonts/SunBatang-Light.ttf',
+      weight: '300',
+    },
+    {
+      path: '../../public/fonts/SunBatang-Medium.ttf',
+      weight: '500',
+    },
+    {
+      path: '../../public/fonts/SunBatang-Bold.ttf',
+      weight: '700',
+    },
+  ],
+})
 
 // export function Header() {
 //   // if (typeof window !== "undefined") {
@@ -16,7 +33,7 @@ import Image from "next/image";
 //   // }
 //   // const innerHeight = window.innerHeight;
 
-  
+
 //   return (
 //     <div className={styles.top} style={{ height: innerHeight }}>
 
@@ -36,18 +53,20 @@ export function Header() {
         <div className="p-5">
           <Image className={styles.logo} src={Logo} alt="로고" />
           <div style={{ paddingTop: 38 }}>
-            <Image className={styles.logoTitle} src={LogoTitle} alt="로고" />
+            <h2 className={`${sunBatang.className} ${styles.titleLogo}`}>
+              하늘인편
+            </h2>
           </div>
         </div>
 
         <div style={{ flex: 130 }}></div>
 
         <div className="pt-1 pb-8 w-full">
-          <h3 className={styles.substring}>
+          <h1 className={styles.substring}>
             입대전에 인편 링크를
             <br />
             만들고 공유하세요!
-          </h3>
+          </h1>
         </div>
         <Link className="submit" href={{ pathname: "/register" }}>
           편지함 만들기
@@ -61,7 +80,7 @@ export function Header() {
             }}
           >
             <Link href="/profile" className={styles.help}>
-             로그인
+              로그인
             </Link>
           </div>
         </div>
