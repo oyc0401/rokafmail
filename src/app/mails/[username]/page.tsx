@@ -5,6 +5,7 @@ import { dateToStr } from "src/lib/time";
 import { Nav } from "src/components";
 import { notFound } from "next/navigation";
 import { Card, DropDownCard } from "./card";
+import { Header } from "src/components/Header";
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 
 export default async function Mails({ params }) {
@@ -17,7 +18,8 @@ export default async function Mails({ params }) {
   }
 
   return (
-    <div className="screen">
+    <div className="screen-not">
+      <Header>글자글자</Header>
       {user.connect ? (
         <Mail username={username} />
       ) : (

@@ -68,6 +68,13 @@ textarea,input{
   padding-right: 20px;
 }
 
+.screen-not{
+  max-width:640px;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
 
 .sized{
   width:1px;
