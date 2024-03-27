@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 import { checkPassword } from "./cookie";
 import { Nav } from "src/components";
 
-export function Client({ postId }) {
+export function LoginPage({ postId }) {
   const [pw, setPw] = useState("");
   const [message, setMessage] = useState("");
 
