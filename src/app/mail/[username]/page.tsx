@@ -18,6 +18,8 @@ import { notFound } from "next/navigation";
 
 import { ShareButton } from "./copy_button";
 
+import { NavHeader } from 'src/components/NavHeader'
+
 export default async function Mail({ params }) {
   const username = decodeURI(params.username);
   let user = await User.findByUsername(username);
@@ -36,23 +38,29 @@ export default async function Mail({ params }) {
     case Status.training:
     case Status.ending:
       return (
-        <div className="screen">
-          <Header user={user}></Header>
-          <Paper></Paper>
-          <MakeBtn></MakeBtn>
-          <Submit username={username}></Submit>
+        <div className="w-full h-full flex flex-col">
+           <NavHeader></NavHeader>
+          <div className="w-full px-4 flex flex-col">
+           
+            <Header user={user}></Header>
+            <Paper></Paper>
+            <Submit username={username}></Submit>
+          </div>
+         
+          {/* <MakeBtn></MakeBtn> */}
+         
         </div>
       );
 
     case Status.working:
     case Status.discharged:
-      return <After name ={user.name} username={username}></After>
+      return <After name={user.name} username={username}></After>
   }
 }
 
-function After({name, username}){
-  const callback=`https://${process.env.DOMAIN}/mails/${username}`;
-  
+function After({ name, username }) {
+  const callback = `https://${process.env.DOMAIN}/mails/${username}`;
+
   return (
     <div className="screen">
       <div style={{ flex: 178 }}></div>
@@ -116,6 +124,7 @@ async function Header({ user }) {
 
   return (
     <div className="pt-4 pb-3.5 w-full">
+
       <div
         style={{
           display: "flex",

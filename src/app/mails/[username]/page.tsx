@@ -7,7 +7,8 @@ import { notFound } from "next/navigation";
 import { Card, DropDownCard } from "./card";
 import { Header } from "src/components/Header";
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
-
+import { Tabss } from "./tab";
+import { Content, UnConnectedContent } from "./Content";
 export default async function Mails({ params }) {
   const username = decodeURI(params.username);
 
@@ -17,36 +18,28 @@ export default async function Mails({ params }) {
     notFound();
   }
 
+  let posts = await Post.findPostedByUsername(username);
+  let queue = await PostQueue.findByUsername(username);
+  let unconnected = await UnconnectedPost.findByUsername(username);
+
+
   return (
     <>
-     
-        <Header>글자글자</Header>
+      <Header></Header>
+      {user.connect ? <Content mails={posts} unpostMails={queue}></Content>
+        : <UnConnectedContent mails={unconnected} ></UnConnectedContent>}
 
-        <main className="container mx-auto max-w-7xl flex-1 overflow-auto">
-          <div className="flex h-full flex-col">
-            <div className="">
-              {user.connect ? (
-                <Mail username={username} />
-              ) : (
-                <UnconnectedMail username={username} />
-              )}
-            </div>
 
-          </div>
-        </main>
-      
-        <Nav>
-          <Link
-            className={`submit mini`}
-            href={`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`}
-            target="_blank"
-          >
-            기훈단
-          </Link>
-          <Link className={"submit"} href={`/mail/${user.username}`}>
-            편지 작성
-          </Link>
-        </Nav>
+      <div style={{ height: 108, minHeight: 108, width: 1 }}></div>
+      <nav className="fixed bottom-0 w-full">
+        <footer className="container max-w-5xl mx-auto px-8">
+          <div className="row pt-3 pb-9">
+            <Link className={"submit"} href={`/mail/${user.username}`}>
+              편지 작성
+            </Link>
+          </div></footer>
+      </nav>
+
     </>
   );
 }
@@ -61,107 +54,5 @@ export default async function Mails({ params }) {
 //   </Nav>
 // )} */}
 
-async function Mail({ username }) {
-  let posts = await Post.findPostedByUsername(username);
-  let queue = await PostQueue.findByUsername(username);
 
-  //console.log(posts);
-  //console.log(queue);
-  if (posts.length == 0 && queue.length == 0) {
-    return <NoPost />;
-  }
 
-  function Unposted() {
-    return (
-      <div className={styles.box}>
-        <div className="sized" style={{ height: 24 }}></div>
-        <h2 className="text-2xl font-medium">전송 대기중</h2>
-        <div className="sized" style={{ height: 24 }}></div>
-        {queue.map((post, index) => (
-          <div key={post.id}>
-            {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
-            <DropDownCard
-              id={post.postId}
-              title={post.post.title}
-              name={post.post.name}
-              rel={post.post.relationship}
-              time={dateToStr(post.post.createdAt)}
-              username={post.user.username}
-            />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  function Posted() {
-    return (
-      <div className={styles.box}>
-        <div className="sized" style={{ height: 24 }}></div>
-
-        <h2 className="text-2xl font-medium">받은 편지 목록</h2>
-
-        <div className="sized" style={{ height: 24 }}></div>
-        {posts.map((post, index) => (
-          <div key={post.id}>
-            {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
-            <DropDownCard
-              id={post.id}
-              title={post.title}
-              name={post.name}
-              rel={post.relationship}
-              time={dateToStr(post.createdAt)}
-              username={post.user.username}
-            />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <>
-      {queue.length != 0 ? <Unposted /> : <></>}
-      {posts.length != 0 ? <Posted /> : <></>}
-    </>
-  );
-}
-
-async function UnconnectedMail(parms) {
-  let unconnected = await UnconnectedPost.findByUsername(parms.username);
-
-  //console.log(unconnected);
-  if (unconnected.length == 0) {
-    return <NoPost />;
-  }
-
-  return (
-    <div className={styles.box}>
-      <div className="sized" style={{ height: 24 }}></div>
-      <h2 className="text-2xl font-medium">전송 대기중</h2>
-      <div className="sized" style={{ height: 24 }}></div>
-      {unconnected.map((post, index) => (
-        <div key={post.id}>
-          {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
-          <DropDownCard
-            id={post.postId}
-            title={post.post.title}
-            name={post.post.name}
-            rel={post.post.relationship}
-            time={dateToStr(post.post.createdAt)}
-            username={post.user.username}
-          />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function NoPost() {
-  return (
-    <>
-      <div className="sized" style={{ height: 24 }}></div>
-      <h1 className="text-2xl font-medium">받은 편지가 없습니다.</h1>
-    </>
-  );
-}
