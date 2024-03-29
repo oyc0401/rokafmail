@@ -98,7 +98,6 @@ a{
 
 /* 기본 버튼 */
 .submit{
-  display:block;
   padding: 14px 30px;
   border-radius: 50px;
   background: var(--primary);

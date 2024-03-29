@@ -8,7 +8,7 @@ export function Nav({ children, elevation = false }) {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
     const innerHeight = window.innerHeight;
-    // console.log(`${scrollHeight} / ${clientHeight} / ${scrollTop}`);
+    // console.log(`${scrollHeight} / ${scrollTop} / ${innerHeight}`);
 
     // setLog(`${scrollHeight} / ${innerHeight} / ${scrollTop + innerHeight}`);
     if (scrollTop + innerHeight + 1 >= scrollHeight) {
@@ -38,7 +38,7 @@ export function Nav({ children, elevation = false }) {
         className={`fixed bottom-0 w-full bg-white ${!elevation ? "" : end ? "" : styles.end
           }`}
       >
-        <footer className="container max-w-3xl mx-auto px-2 sm:px-4 md:px-8">
+        <footer className="container max-w-3xl mx-auto px-4">
           <div className="row pt-3 pb-9">
             {children}
           </div></footer>

@@ -17,6 +17,11 @@ module.exports = {
         fontmedium: "#808080",
         fontlight: "#ababab"
       },
+      screens: {
+        'glxfd':'300px'
+      // 'phonesm': '240px',
+      // => @media (min-width: 640px) { ... }
+      }
     },
   },
   darkMode: "class",

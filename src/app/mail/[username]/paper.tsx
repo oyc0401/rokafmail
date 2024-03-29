@@ -5,6 +5,7 @@ import { useStore } from "./model";
 import { validC,validP } from "./valid";
 import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
+import TextareaAutosize from 'react-textarea-autosize';
 export function Paper() {
   const { initial } = useStore();
   useEffect(() => {
@@ -18,7 +19,7 @@ export function Paper() {
   return (
     <div
       className='px-4 py-2 bg-[#FFFDF8] shadow-md'
-      style={{ flex: 1, display: "flex", flexDirection: "column" }}
+      style={{  }}
     >
       <div style={{ width: "100%", padding: 16 }}>
         <Image
@@ -45,7 +46,7 @@ function Title() {
   return (
     <div className="pb-4">
       <input
-        className={`${styles.form} ${styles.formTitle}`}
+        className={`${styles.form} text-xl font-medium`}
         type="text"
         placeholder="제목"
         onChange={(e) => {
@@ -65,16 +66,16 @@ function Contents() {
       className="pb-3"
       style={{ flex: 1, display: "flex", flexDirection: "column" }}
     >
-      <div style={{ flex: 1 }}>
-        <textarea
-          className={`${styles.form} ${styles.contentForm}`}
+      <div>
+        <TextareaAutosize
+          className={`${styles.form}  ${styles.contentForm} min-h-48 resize-none`}
           style={{ height: "100%" }}
           placeholder="내용"
           onChange={(e) => {
             setContents(e.target.value);
             setClick(true);
           }}
-        ></textarea>
+        ></TextareaAutosize>
       </div>
 
       <div className="row pt-0.5">
@@ -94,13 +95,13 @@ function Name() {
   return (
     <div className="pb-6">
       <div className="row">
-        <h2 className="text-lg" style={{ color: "#37271A" }}>
+        <h2 className="text-base" style={{ color: "#37271A" }}>
           보내는 사람
         </h2>
 
         <div className="flex-1 pl-2.5">
           <input
-            className={`${styles.form} ${styles.centerForm}`}
+            className={`${styles.form} text-center`}
             type="text"
             placeholder="이름"
             onChange={(e) => {
@@ -112,7 +113,7 @@ function Name() {
 
         <div className="flex-1 pl-2.5">
           <input
-            className={`${styles.form} ${styles.centerForm}`}
+            className={`${styles.form} text-center`}
             type="text"
             style={{ flex: "1" }}
             placeholder="관계"
@@ -135,14 +136,14 @@ function Password() {
       <div className="row">
         <div style={{ width: 92.16 }}></div>
         <h2
-          className="text-lg flex-1"
+          className="text-base flex-1"
           style={{ textAlign: "right", paddingLeft: 10, color: "#37271A" }}
         >
           비밀번호
         </h2>
         <div className="flex-1 pl-2.5">
           <input
-            className={`${styles.form} ${styles.centerForm}`}
+            className={`${styles.form} text-center`}
             type="password"
             autoComplete="new-password"
             placeholder="비밀번호"
