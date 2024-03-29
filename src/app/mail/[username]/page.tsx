@@ -39,16 +39,16 @@ export default async function Mail({ params }) {
     case Status.ending:
       return (
         <div className="w-full h-full flex flex-col">
-           <NavHeader></NavHeader>
+          <NavHeader></NavHeader>
           <div className="w-full px-4 flex flex-col">
-           
+
             <Header user={user}></Header>
             <Paper></Paper>
             <Submit username={username}></Submit>
           </div>
-         
+
           {/* <MakeBtn></MakeBtn> */}
-         
+
         </div>
       );
 
@@ -98,7 +98,7 @@ async function Header({ user }) {
   const domain = process.env.DOMAIN;
   const url = `https://${domain}/mail/${username}`;
 
-  function warning() {
+  function Warning() {
     if (canSearch(generation) && !connect) {
       return (
         <div
@@ -123,7 +123,7 @@ async function Header({ user }) {
   }
 
   return (
-    <div className="pt-4 pb-3.5 w-full">
+    <div className="pt-3 pb-3.5 w-full">
 
       <div
         style={{
@@ -132,7 +132,7 @@ async function Header({ user }) {
           justifyContent: "start",
         }}
       >
-        <h2 className={styles.title}>
+        <h2 className={'text-xl font-medium text-left'}>
           <span className="text-primary">{name}</span> 훈련병에게
           <br />
           편지를 보내주세요!
@@ -142,14 +142,14 @@ async function Header({ user }) {
       </div>
 
       <div className="pt-px w-full">
-        <h2 className={styles.time}>
+        <h2 className='text-sm font-medium text-left text-fontlight'>
           {startTime} ~ {compTime}
         </h2>
       </div>
       <div className="pt-2 w-full">
-        <h2 className={styles.message}>{message}</h2>
+        <h2 className='text-base text-left'>{message}</h2>
       </div>
-      {warning()}
+      <Warning></Warning>
     </div>
   );
 }

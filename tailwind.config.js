@@ -1,4 +1,4 @@
-import {nextui} from "@nextui-org/react";
+import { nextui } from "@nextui-org/react";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -13,6 +13,9 @@ module.exports = {
     extend: {
       colors: {
         primary: "#39F",
+        fontblack: "#191919",
+        fontmedium: "#808080",
+        fontlight: "#ababab"
       },
     },
   },

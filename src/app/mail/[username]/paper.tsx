@@ -14,9 +14,10 @@ export function Paper() {
     };
   }, [initial]);
 
+  
   return (
     <div
-      className={styles.paper}
+      className='px-4 py-2 bg-[#FFFDF8] shadow-md'
       style={{ flex: 1, display: "flex", flexDirection: "column" }}
     >
       <div style={{ width: "100%", padding: 16 }}>
