@@ -13,6 +13,7 @@ module.exports = {
     extend: {
       colors: {
         primary: "#39F",
+          lightaccent:"#66b3ff",
         fontblack: "#191919",
         fontmedium: "#808080",
         fontlight: "#ababab"

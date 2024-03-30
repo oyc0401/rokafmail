@@ -2,17 +2,6 @@
   width:100%;
 }
 
-
-.card{
-   width:100%;
-     background: #F9F9F9;
-  padding: 20px;
-   padding-top:16px;
-}
-.card:hover{
-  cursor:pointer;
-}
-
 .footer{
   position : fixed;
   bottom : 0;
