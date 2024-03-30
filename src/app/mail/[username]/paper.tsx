@@ -68,7 +68,7 @@ function Contents() {
     >
       <div>
         <TextareaAutosize
-          className={`${styles.form}  ${styles.contentForm} min-h-48 resize-none`}
+          className={`${styles.form}  ${styles.contentForm} min-h-36 resize-none`}
           style={{ height: "100%" }}
           placeholder="내용"
           onChange={(e) => {
