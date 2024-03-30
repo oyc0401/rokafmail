@@ -18,9 +18,7 @@ export function Paper() {
 
   return (
     <div
-      className=' px-4 py-2 mb-4 bg-[#FFFDF8] shadow-md flex flex-col'
-style={{maxHeight:100000}}
-    >
+      className=' px-4 py-2 mb-4 bg-[#FFFDF8] shadow-md flex flex-col'>
       <div style={{ width: "100%", padding: 16 }}>
         <Image
           src={rokafLogo}
@@ -67,11 +65,7 @@ function Contents() {
   };
 
   return (
-    <div
-      className="pb-3"
-      style={{ flex: 1, display: "flex", flexDirection: "column" }}
-    >
-
+    <div className="flex-1 pb-3 flex flex-col overflow-y-auto" >
       <TextareaAutosize
         className={`${styles.form}  ${styles.contentForm} min-h-36 resize-none`}
         placeholder="내용"
