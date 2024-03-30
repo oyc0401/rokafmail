@@ -65,9 +65,10 @@ function Contents() {
   };
 
   return (
+    
     <div className="flex-1 pb-3 flex flex-col" >
       <TextareaAutosize
-        className={`${styles.form}  ${styles.contentForm} min-h-36 resize-none`}
+        className={`${styles.form} text-lg ${styles.contentForm} min-h-36 resize-none`}
         placeholder="내용"
         ref={inputRef}
         onChange={(e) => {
@@ -102,7 +103,7 @@ function Name() {
 
         <div className="flex-1 pl-2.5">
           <input
-            className={`${styles.form} text-center`}
+            className={`${styles.form} text-lg text-center`}
             type="text"
             placeholder="이름"
             onChange={(e) => {
@@ -114,7 +115,7 @@ function Name() {
 
         <div className="flex-1 pl-2.5">
           <input
-            className={`${styles.form} text-center`}
+            className={`${styles.form} text-lg text-center`}
             type="text"
             style={{ flex: "1" }}
             placeholder="관계"
@@ -144,7 +145,7 @@ function Password() {
         </h2>
         <div className="flex-1 pl-2.5">
           <input
-            className={`${styles.form} text-center`}
+            className={`${styles.form} text-lg text-center`}
             type="password"
             autoComplete="new-password"
             placeholder="비밀번호"

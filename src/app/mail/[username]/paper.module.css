@@ -5,14 +5,11 @@
   outline: none;
   color: var(--font-color);
  border-color:var(--font-color);
-   font-weight: 400;
-  font-size: 16px;
   width: 100%;
   overflow: scroll;
 }
 .form::placeholder {
   color: var(--light-font);
-   font-weight: 400;
 }
 
 .contentForm{

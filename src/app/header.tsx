@@ -62,7 +62,7 @@ export function Header() {
         <div style={{ flex: 130 }}></div>
 
         <div className="pt-1 pb-8 w-full">
-          <h1 className={styles.substring}>
+          <h1 className={'text-xl'}>
             입대전에 인편 링크를
             <br />
             만들고 공유하세요!
