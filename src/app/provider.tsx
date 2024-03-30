@@ -9,7 +9,7 @@ interface Props {
 export default function Providers({ children }: Props) {
   return (
     <SessionProvider>
-      <NextUIProvider style={{height:'100%'}}>{children}</NextUIProvider>
+      <NextUIProvider className="h-full">{children}</NextUIProvider>
     </SessionProvider>
   );
 }

@@ -27,9 +27,33 @@ export default async function Mail({ params }) {
     notFound();
   }
 
-  const { generation } = user;
+  const { generation, connect, name, birth } = user;
 
   const status = serveStatus(generation);
+
+  function Banner() {
+    if (canSearch(generation) && !connect) {
+      return (
+        <div
+          className="mt-2 w-full"
+          style={{ background: "#FFF2F2", padding: 6 }}
+        >
+          <h2 className={styles.alert}>
+            ⚠️ 유저검색이 되지 않았습니다.
+            <br />
+            {`이름: ${name}, 생년월일: ${birth}`}
+            <br /> 정보가 잘못 입력되었다면{" "}
+            <a className="text-sky-500 underline " href="/profile">
+              로그인
+            </a>{" "}
+            후 정보수정 또는 oyc0401@gmail.com으로 이름과 생년월일을 보내주세요.
+          </h2>
+        </div>
+      );
+    }
+
+    return <div className="bg-[#F3F3F3] w-full p-6">{""}</div>;
+  }
 
   // 편지쓰는 기간은 입대전부터 수료까지. 수료후에 편지 쓰는건 훈련병 입장에서 안좋을듯
   switch (status) {
@@ -38,19 +62,17 @@ export default async function Mail({ params }) {
     case Status.training:
     case Status.ending:
       return (
-        <div className="w-full h-full flex flex-col max-w-3xl mx-auto">
+        <div className="w-full flex flex-col max-w-3xl mx-auto">
 
           <NavHeader></NavHeader>
-          <div className="bg-[#F3F3F3] w-full p-6">{""}</div>
-          <div className="w-full px-4 pb-4">
+          <Banner></Banner>
 
-            <Header user={user}></Header>
+          <div className="w-full px-4 flex flex-col">
+
+            <UserDescription user={user}></UserDescription>
             <Paper></Paper>
-
+            <Submit username={username}></Submit>
           </div>
-          <Submit username={username}></Submit>
-          {/* <MakeBtn></MakeBtn> */}
-
         </div>
       );
 
@@ -91,8 +113,8 @@ function After({ name, username }) {
   );
 }
 
-async function Header({ user }) {
-  const { name, message, generation, username, birth, connect } = user;
+async function UserDescription({ user }) {
+  const { name, message, generation, username } = user;
 
   const startTime = getEnter(generation).format("YY.MM.DD");
   const compTime = getCompletion(generation).format("YY.MM.DD");
@@ -100,33 +122,8 @@ async function Header({ user }) {
   const domain = process.env.DOMAIN;
   const url = `https://${domain}/mail/${username}`;
 
-  function Warning() {
-    if (canSearch(generation) && !connect) {
-      return (
-        <div
-          className="mt-2 w-full"
-          style={{ background: "#FFF2F2", padding: 6 }}
-        >
-          <h2 className={styles.alert}>
-            ⚠️ 유저검색이 되지 않았습니다.
-            <br />
-            {`이름: ${name}, 생년월일: ${birth}`}
-            <br /> 정보가 잘못 입력되었다면{" "}
-            <a className="text-sky-500 underline " href="/profile">
-              로그인
-            </a>{" "}
-            후 정보수정 또는 oyc0401@gmail.com으로 이름과 생년월일을 보내주세요.
-          </h2>
-        </div>
-      );
-    }
-
-    return null;
-  }
-
   return (
     <div className="pt-3 pb-3.5 w-full">
-
       <div
         style={{
           display: "flex",
@@ -151,7 +148,6 @@ async function Header({ user }) {
       <div className="pt-2 w-full">
         <h2 className='text-base text-left'>{message}</h2>
       </div>
-      <Warning></Warning>
     </div>
   );
 }

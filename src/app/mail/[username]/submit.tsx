@@ -69,21 +69,21 @@ export function Submit({ username }) {
 
   return (
     <>
-     <div className="flex-1"></div>
-        <footer className="container max-w-3xl mx-auto px-4">
-          <div className="row pt-3 pb-9">
-            <a className={`submit mini hidden glxfd:block`} href={`/mails/${username}`}>
-              편지함
-            </a>
-              <button
-                className={canSubmit() ? "submit" : "submit disable"}
-                onClick={click}
-              >
-                전송하기
-              </button>
-          </div>
-        </footer>
-     
+      {/* <div className="flex-1"></div> */}
+      <footer className="container max-w-3xl mx-auto">
+        <div className="row pt-3 pb-9">
+          <a className={`submit mini hidden glxfd:block`} href={`/mails/${username}`}>
+            편지함
+          </a>
+          <button
+            className={canSubmit() ? "submit" : "submit disable"}
+            onClick={click}
+          >
+            전송하기
+          </button>
+        </div>
+      </footer>
+
       {/* <Nav elevation></Nav> */}
 
 

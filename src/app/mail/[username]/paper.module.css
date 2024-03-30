@@ -17,13 +17,16 @@
 }
 
 .contentForm{
-  
+  border:none;
 }
 .contentForm::-webkit-scrollbar {
    display: none;
  }
 
-
+.formLine{
+  border-width: 0 0 1px;
+  border-color:var(--font-color);
+}
 
 
 .description{

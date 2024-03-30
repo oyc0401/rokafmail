@@ -1,8 +1,8 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./paper.module.css";
 import { useStore } from "./model";
-import { validC,validP } from "./valid";
+import { validC, validP } from "./valid";
 import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';
@@ -15,11 +15,11 @@ export function Paper() {
     };
   }, [initial]);
 
-  
+
   return (
     <div
-      className='px-4 py-2 bg-[#FFFDF8] shadow-md'
-      style={{  }}
+      className=' px-4 py-2 mb-4 bg-[#FFFDF8] shadow-md flex flex-col'
+style={{maxHeight:100000}}
     >
       <div style={{ width: "100%", padding: 16 }}>
         <Image
@@ -60,23 +60,30 @@ function Title() {
 
 function Contents() {
   const { contents, setContents, setClick } = useStore();
+  const inputRef = useRef<any>(null);
+  const handleClick = () => {
+    // input 요소에 포커스를 주기
+    inputRef.current.focus();
+  };
 
   return (
     <div
       className="pb-3"
       style={{ flex: 1, display: "flex", flexDirection: "column" }}
     >
-      <div>
-        <TextareaAutosize
-          className={`${styles.form}  ${styles.contentForm} min-h-36 resize-none`}
-          style={{ height: "100%" }}
-          placeholder="내용"
-          onChange={(e) => {
-            setContents(e.target.value);
-            setClick(true);
-          }}
-        ></TextareaAutosize>
-      </div>
+
+      <TextareaAutosize
+        className={`${styles.form}  ${styles.contentForm} min-h-36 resize-none`}
+        placeholder="내용"
+        ref={inputRef}
+        onChange={(e) => {
+          setContents(e.target.value);
+          setClick(true);
+        }}
+      ></TextareaAutosize>
+      <div className="flex-1 cursor-text" onClick={handleClick}></div>
+
+      <div className={styles.formLine}></div>
 
       <div className="row pt-0.5">
         <p className={`${styles.help} ${validC(contents).color}`}>
@@ -129,7 +136,7 @@ function Name() {
 }
 
 function Password() {
-  const {password, setPassword, setClick } = useStore();
+  const { password, setPassword, setClick } = useStore();
 
   return (
     <div className="pb-5">
@@ -152,13 +159,13 @@ function Password() {
               setClick(true);
             }}
           ></input>
-          <p className={`${styles.help} ${validP(password).color}`}>
+          <p className={`text-xs font-fontmedium text-left ${validP(password).color}`}>
             {validP(password).text}
           </p>
         </div>
       </div>
-     
-     
+
+
     </div>
   );
 }
