@@ -29,7 +29,7 @@ export default async function Mails({ params }) {
       <nav className="fixed bottom-0 w-full">
         <footer className="container max-w-3xl mx-auto px-8">
           <div className="row pt-3 pb-9">
-            <Link className={"bg-primary w-full text-white text-lg sm:text-xl font-medium  py-3 sm:py-4 px-8 rounded-full cursor-pointer active:bg-lightaccent shadow"} href={`/mail/${user.username}`}>
+            <Link className={"submit shadow"} href={`/mail/${user.username}`}>
               편지 작성
             </Link>
           </div></footer>

@@ -92,19 +92,16 @@ a{
 
 /* 기본 버튼 */
 .submit{
-  padding: 14px 30px;
+  padding: 12px 32px;
   border-radius: 50px;
   background: var(--primary);
    border: none;
   width: 100%;
   color: white;
   cursor: pointer;
-  /* transition: 0.2s;*/
-  font-size: 22px;
-  letter-spacing: 0.88px;
-  font-style: normal;
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.75rem; /* 28px */
   font-weight: 700;
-  line-height: normal;
   white-space:nowrap;
 }
 .submit:active{
@@ -124,6 +121,15 @@ a{
 
 .submit.mini:active{
   background: #2e2e2e;
+}
+
+/* sm */
+@media (min-width: 640px) {
+ .submit{
+   font-size: 1.25rem; /* 20px */
+   line-height: 1.75rem; /* 28px */
+    padding: 16px 32px;
+ }
 }
 
 

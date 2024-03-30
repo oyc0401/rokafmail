@@ -136,7 +136,7 @@ async function UserDescription({ user }) {
       </div>
 
       <div className="pt-px w-full">
-        <h2 className='text-sm font-medium text-left text-fontlight'>
+        <h2 className='text-xs font-medium text-left text-fontlight'>
           {startTime} ~ {compTime}
         </h2>
       </div>

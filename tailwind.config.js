@@ -13,15 +13,16 @@ module.exports = {
     extend: {
       colors: {
         primary: "#39F",
-          lightaccent:"#66b3ff",
+        darkbg:'#E5E5E5',
+        lightaccent: "#66b3ff",
         fontblack: "#191919",
         fontmedium: "#808080",
         fontlight: "#ababab"
       },
       screens: {
-        'glxfd':'300px'
-      // 'phonesm': '240px',
-      // => @media (min-width: 640px) { ... }
+        'glxfd': '300px'
+        // 'phonesm': '240px',
+        // => @media (min-width: 640px) { ... }
       }
     },
   },

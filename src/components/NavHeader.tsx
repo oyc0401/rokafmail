@@ -1,4 +1,4 @@
-import styles from "./Header.module.css";
+import styles from "./NavHeader.module.css";
 
 import localFont from 'next/font/local'
 import DropdownButton from './DropdownButton';
