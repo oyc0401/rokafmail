@@ -82,12 +82,6 @@ textarea,input{
   flex-shrink:0;
 }
 
-/* 플렉스 */
-.flex{
-  display: flex;
-  height: 100%;
-}
-
 h1,h2,h3{
   color: var(--font-color);
 }

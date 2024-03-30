@@ -17,8 +17,7 @@ export function Paper() {
 
 
   return (
-    <div
-      className=' px-4 py-2 mb-4 bg-[#FFFDF8] shadow-md flex flex-col'>
+    <div role='paper' className=' px-4 py-2 mx-4 mb-4 bg-[#FFFDF8] shadow-md flex-1 flex-col flex'  >
       <div style={{ width: "100%", padding: 16 }}>
         <Image
           src={rokafLogo}
@@ -35,6 +34,7 @@ export function Paper() {
       <Contents></Contents>
       <Name></Name>
       <Password></Password>
+
     </div>
   );
 }
@@ -65,7 +65,7 @@ function Contents() {
   };
 
   return (
-    <div className="flex-1 pb-3 flex flex-col overflow-y-auto" >
+    <div className="flex-1 pb-3 flex flex-col" >
       <TextareaAutosize
         className={`${styles.form}  ${styles.contentForm} min-h-36 resize-none`}
         placeholder="내용"
@@ -80,11 +80,11 @@ function Contents() {
       <div className={styles.formLine}></div>
 
       <div className="row pt-0.5">
-        <p className={`${styles.help} ${validC(contents).color}`}>
+        <p className={`text-xs font-fontmedium text-left ${validC(contents).color}`}>
           {validC(contents).text}
         </p>
         <div style={{ flex: 1 }}></div>
-        <p className={`${styles.help}`}>{`${contents.length}/1200`}</p>
+        <p className={`text-xs font-fontmedium text-left`}>{`${contents.length}/1200`}</p>
       </div>
     </div>
   );

@@ -51,7 +51,7 @@ export default async function Mail({ params }) {
         </div>
       );
     }
-
+    return <></>;
     return <div className="bg-[#F3F3F3] w-full p-6">{""}</div>;
   }
 
@@ -62,17 +62,12 @@ export default async function Mail({ params }) {
     case Status.training:
     case Status.ending:
       return (
-        <div className="w-full flex flex-col max-w-3xl mx-auto">
-
+        <div className="w-full flex flex-col max-w-3xl mx-auto h-full">
           <NavHeader></NavHeader>
           <Banner></Banner>
-
-          <div className="w-full px-4 flex flex-col">
-
-            <UserDescription user={user}></UserDescription>
-            <Paper></Paper>
-            <Submit username={username}></Submit>
-          </div>
+          <UserDescription user={user}></UserDescription>
+          <Paper></Paper>
+          <Submit username={username}></Submit>
         </div>
       );
 
@@ -123,7 +118,7 @@ async function UserDescription({ user }) {
   const url = `https://${domain}/mail/${username}`;
 
   return (
-    <div className="pt-3 pb-3.5 w-full">
+    <div className="pt-3 pb-3.5 w-full px-4">
       <div
         style={{
           display: "flex",
