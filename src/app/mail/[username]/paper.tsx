@@ -18,7 +18,7 @@ export function Paper() {
 
   return (
     <div role='paper' className=' px-4 py-2 mx-4 mb-4 bg-[#FFFDF8] shadow-md flex-1 flex-col flex'  >
-      <div style={{ width: "100%", padding: 16 }}>
+      <div className="w-full p-3">
         <Image
           src={rokafLogo}
           alt="airforce"
@@ -44,7 +44,7 @@ function Title() {
   return (
     <div className="pb-4">
       <input
-        className={`${styles.form} text-xl font-medium`}
+        className={`${styles.form} text-lg font-medium`}
         type="text"
         placeholder="제목"
         onChange={(e) => {
@@ -68,7 +68,7 @@ function Contents() {
     
     <div className="flex-1 pb-3 flex flex-col" >
       <TextareaAutosize
-        className={`${styles.form} text-lg ${styles.contentForm} min-h-36 resize-none`}
+        className={`${styles.form} text-base ${styles.contentForm} min-h-36 resize-none`}
         placeholder="내용"
         ref={inputRef}
         onChange={(e) => {
@@ -95,7 +95,7 @@ function Name() {
   const { setName, setRelationship, setClick } = useStore();
 
   return (
-    <div className="pb-6">
+    <div className="pb-5">
       <div className="row">
         <h2 className="text-base" style={{ color: "#37271A" }}>
           보내는 사람
@@ -103,7 +103,7 @@ function Name() {
 
         <div className="flex-1 pl-2.5">
           <input
-            className={`${styles.form} text-lg text-center`}
+            className={`${styles.form} text-base text-center`}
             type="text"
             placeholder="이름"
             onChange={(e) => {
@@ -115,7 +115,7 @@ function Name() {
 
         <div className="flex-1 pl-2.5">
           <input
-            className={`${styles.form} text-lg text-center`}
+            className={`${styles.form} text-base text-center`}
             type="text"
             style={{ flex: "1" }}
             placeholder="관계"
@@ -134,7 +134,7 @@ function Password() {
   const { password, setPassword, setClick } = useStore();
 
   return (
-    <div className="pb-5">
+    <div className="pb-1">
       <div className="row">
         <div style={{ width: 92.16 }}></div>
         <h2
@@ -145,7 +145,7 @@ function Password() {
         </h2>
         <div className="flex-1 pl-2.5">
           <input
-            className={`${styles.form} text-lg text-center`}
+            className={`${styles.form} text-base text-center`}
             type="password"
             autoComplete="new-password"
             placeholder="비밀번호"
@@ -154,7 +154,7 @@ function Password() {
               setClick(true);
             }}
           ></input>
-          <p className={`text-xs font-fontmedium text-left ${validP(password).color}`}>
+          <p className={`text-xs font-fontmedium text-left h-4 ${validP(password).color}`}>
             {validP(password).text}
           </p>
         </div>

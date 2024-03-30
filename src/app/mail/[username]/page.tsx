@@ -118,7 +118,7 @@ async function UserDescription({ user }) {
   const url = `https://${domain}/mail/${username}`;
 
   return (
-    <div className="pt-3 pb-3.5 w-full px-4">
+    <div role='userDescription' className="pt-3 pb-3.5 w-full px-4">
       <div
         style={{
           display: "flex",
@@ -126,7 +126,7 @@ async function UserDescription({ user }) {
           justifyContent: "start",
         }}
       >
-        <h2 className={'text-2xl font-medium text-left'}>
+        <h2 className={'text-[22px] font-medium text-left'}>
           <span className="text-primary">{name}</span> 훈련병에게
           <br />
           편지를 보내주세요!
@@ -141,7 +141,7 @@ async function UserDescription({ user }) {
         </h2>
       </div>
       <div className="pt-2 w-full">
-        <h2 className='text-lg text-left'>{message}</h2>
+        <h2 className='text-medium text-left'>{message}</h2>
       </div>
     </div>
   );

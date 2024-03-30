@@ -1,7 +1,6 @@
 'use client'
 
 import { Tabs, Tab, Chip } from "@nextui-org/react";
-import { Mail, UnconnectedMail } from "./posts";
 import { dateToStr } from "src/lib/time";
 import { PostCard } from "./card";
 export function Content({ mails, unpostMails }) {

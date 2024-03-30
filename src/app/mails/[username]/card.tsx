@@ -16,8 +16,8 @@ export function PostCard({ id, title, name, rel, time, username, contents, secre
         </div>
 
         {secret ? <></> : <p className="text-left text-sm mb-2 line-clamp-2" >{contents}</p>}
-        <div className="flex flex-row justify-between space-x-2 mt-0.5">
-          <p className="text-xs">{`${name} | ${rel}`}</p>
+        <div className="flex flex-row justify-between items-end space-x-2 mt-0.5">
+          <p className="text-sm">{`${name} | ${rel}`}</p>
           <p className="text-xs">{time}</p>
         </div>
       </div>
