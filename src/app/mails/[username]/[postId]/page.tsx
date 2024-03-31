@@ -5,12 +5,12 @@ import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { LoginPage } from "./loginPage";
 import { PostView } from "./post/PostView";
-import { MasterViewer } from './post/masterViewer'
+import { View } from './view/view'
 
 import { auth } from "src/app/api/auth/auth";
 // import {Mailbox} from './mailbox'
 
-export default async function View({ params }) {
+export default async function Page({ params }) {
   const postId = Number(params.postId);
   const username = params.username;
 
@@ -29,7 +29,7 @@ export default async function View({ params }) {
     const sessionUsername = session.user.email;
     const user = await User.findByUsername(sessionUsername);
     if (user && sessionUsername == params.username)
-      return <MasterViewer postId={postId} />;
+      return <View postId={postId} />;
 
   }
 
@@ -43,7 +43,7 @@ export default async function View({ params }) {
 
 
   if (pwcookie.value == password)
-    return <PostView postId={postId} />;
+    return <View postId={postId} writer />;
 
 
   console.log("다른사람으로 로그인 되어있음");
