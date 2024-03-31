@@ -20,9 +20,9 @@ export default function Help() {
 
 function Body() {
   return (
-    <div className="screen-not-flex">
-      <div style={{ padding: "54px 0" }}>
-        <h1 className={styles.title}>
+    <div className="screen-not-flex pb-14">
+      <div className="pt-14">
+        <h1 className='text-2xl font-medium pb-8'>
           하늘인편으로
           <br />
           손쉽게 편지를 받아보세요
@@ -63,24 +63,10 @@ function Body() {
         문제를 최소화하여, 사랑하는 사람이 보낸 소중한 편지가 당신에게 안전하게
         도착하도록 보장합니다.
       </h3>
-
-      <div style={{ paddingBottom: 52 }}>
         <h3 className={styles.content}>
           하늘인편을 통해 입대 후 받을 편지를 준비해보세요. 사랑하는 가족과
           친구들이 당신에게 마음을 쉽게 전할 수 있도록 도와드립니다.
         </h3>
-      </div>
-
-      {/* <div className='pb-8 w-full'>
-                            <Link className="submit" href={{ pathname: "/register" }}>
-                              시작하기
-                            </Link>
-                          </div> */}
-      {/* <Nav>
-                            <Link className="submit" href={{ pathname: "/register" }}>
-                              시작하기
-                            </Link>
-                          </Nav> */}
     </div>
   );
 }

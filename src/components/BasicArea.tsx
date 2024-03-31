@@ -1,4 +1,3 @@
-import styles from "./BasicArea.module.css";
 
 export function BasicArea({ children }) {
   return (
@@ -21,7 +20,7 @@ export function BasicHeader({ children }) {
   return (
     <div className="flex flex-col-reverse" style={{ flex: 10 }}>
       <div className="pt-24 pb-14 w-full">
-        <h2 className='font-semibold text-2xl'>{children}</h2>
+        <h2 className='font-medium text-2xl'>{children}</h2>
       </div>
     </div>
   );
