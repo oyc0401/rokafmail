@@ -89,7 +89,7 @@ export default function Message() {
           한줄 글을 적어주세요
         </BasicHeader>
         <BasicBody paddingBottom={false}>
-          <div className="flex flex-col">
+          <div className="flex flex-col h-full">
             <div className="pb-12 w-full">
               <InputField
                 label="한줄 글"

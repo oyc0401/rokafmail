@@ -93,13 +93,3 @@ function Page() {
     </BasicFormArea>
   );
 }
-
-function validP(password) {
-  if (password === "") return { text: "", valid: false };
-  return { text: "", color: "great", valid: true };
-}
-
-function validU(username) {
-  if (username === "") return { text: "", valid: false };
-  return { text: "", color: "great", valid: true };
-}

@@ -27,14 +27,7 @@ export function InputField({
     <div className="pb-4 w-full">
       {label ? <p className={styles.label}>{label}</p> : null}
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
+      <div className="flex flex-row w-full items-center"      >
         <input
           className={styles.form}
           type={type}
@@ -45,13 +38,13 @@ export function InputField({
             const text = e.currentTarget.value;
             if (onChange) onChange(text);
           }}
-          
+
           style={{ flex: 1 }}
         />
         {children}
       </div>
       {helpMessage != undefined ? (
-        <p className={`${styles.help} ${color}`}>{helpMessage}</p>
+        <p className={`text-xs h-4 pt-0.5 text-fontmedium w-full text-left ${color}`}>{helpMessage}</p>
       ) : null}
     </div>
   );

@@ -8,18 +8,6 @@
   padding-bottom:2px;
 }
 
-/* 회원가입할 때 경고 글씨 */
-.help{
-  width: 100%;
-  color: var(--medium-font);
-  font-size: 12px;
-  font-weight: 400;
-   text-align: left;
-  height:17px;
-  padding-top:2px;
-   transition: 0.2s;
-}
-
 /* 화원가입 입력 폼 */
 .form{
    border-width: 0 0 1px;
@@ -27,7 +15,7 @@
   outline: none;
   color: var(--font-color);
  border-color:var(--font-color);
-  font-size: 24px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 400;
   transition: 0.2s;
@@ -40,8 +28,6 @@
 /* 입력폼 힌트 메시지 */
 .form::placeholder {
   color: var(--light-font);
-  font-size: 20px;
-  font-weight: 400;
 }
 
 .form:focus {
