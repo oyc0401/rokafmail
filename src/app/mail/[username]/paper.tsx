@@ -97,8 +97,8 @@ function Name() {
   return (
     <div className="pb-5">
       <div className="row">
-        <h2 className="text-base" style={{ color: "#37271A" }}>
-          보내는 사람
+        <h2 className="text-base pl-12" style={{ color: "#37271A" }}>
+          From
         </h2>
 
         <div className="flex-1 pl-2.5">
@@ -136,7 +136,7 @@ function Password() {
   return (
     <div className="pb-1">
       <div className="row">
-        <div style={{ width: 92.16 }}></div>
+        <div style={{ width: 89.48 }}></div>
         <h2
           className="text-base flex-1"
           style={{ textAlign: "right", paddingLeft: 10, color: "#37271A" }}
@@ -148,7 +148,7 @@ function Password() {
             className={`${styles.form} text-base text-center`}
             type="password"
             autoComplete="new-password"
-            placeholder="비밀번호"
+            placeholder="4자리 이상"
             onChange={(e) => {
               setPassword(e.target.value);
               setClick(true);
