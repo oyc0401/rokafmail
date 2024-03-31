@@ -71,7 +71,7 @@ export function Submit({ username }) {
     <>
       {/* <div className="flex-1"></div> */}
       <footer className="container max-w-3xl mx-auto px-4">
-        <div className="row pt-2 sm:pt-3 pb-9">
+        <div className="row pt-2 sm:pt-3 pb-8">
           <a className={`submit mini hidden glxfd:block`} href={`/mails/${username}`}>
             편지함
           </a>
