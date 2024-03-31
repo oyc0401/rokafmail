@@ -61,9 +61,12 @@ export default async function Mail({ params }) {
     case Status.beginning:
     case Status.training:
     case Status.ending:
+
+      // case Status.working:
+      // case Status.discharged:
       return (
         <div className="w-full flex flex-col max-w-3xl mx-auto h-full">
-          <NavHeader></NavHeader>
+          <NavHeader user={user}></NavHeader>
           <Banner></Banner>
           <UserDescription user={user}></UserDescription>
           <Paper></Paper>

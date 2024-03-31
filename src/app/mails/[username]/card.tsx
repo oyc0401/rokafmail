@@ -9,7 +9,7 @@ export function PostCard({ id, title, name, rel, time, username, contents, secre
 
   return (
     <>
-      <div className='cursor-pointer bg-[#FFFDF8] mt-2.5 mx-4 p-4 shadow rounded max-w-3xl' onClick={moveView}>
+      <div className='cursor-pointer bg-[#FFFDF8] active:opacity-75 mt-2.5 mx-4 p-4 shadow-sm rounded max-w-3xl ' onClick={moveView}>
         <div className="flex flex-row justify-between space-x-2">
           <p className="text-left text-base font-medium mb-1.5 line-clamp-2 text-ellipsis">{title}</p>
           <Image className="w-10 h-4" src={RokafSmall} alt='공군마크' ></Image>
