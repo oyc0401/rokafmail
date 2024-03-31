@@ -5,38 +5,6 @@
   font-weight:700;
 }
 
-.subtitle{
-    font-size:20px;
-  font-weight:500;
-  /* text-align:start;
-  width:100%; */
-   padding-bottom:8px;
-}
-.content{
-    font-size:16px;
-  text-align:start;
-     padding-bottom:36px;
-}
-
-.blue{
-  color:var(--primary)
-}
-
-.logo{
-   width: 160px;
-  height:160px;
-  margin:auto;
-}
-
-
-.top{
-  /* background:gray; */
-  height:calc(100vh);
-  width:100%;
-  /* transition: 0.2s; */
-}
-
-
 .help{
   margin: 0 6px;
   color: #191919;
@@ -52,4 +20,17 @@
   color: var(--dark-accent);
 }
 
+/* 설명글 */
 
+.subtitle{
+    font-size:20px;
+  font-weight:500;
+  /* text-align:start;
+  width:100%; */
+   padding-bottom:8px;
+}
+.content{
+    font-size:16px;
+  text-align:start;
+     padding-bottom:36px;
+}

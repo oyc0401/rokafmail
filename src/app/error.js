@@ -3,12 +3,11 @@
 import { useEffect } from 'react'
 
 export default function Error({ error, reset }) {
-  // useEffect(() => {
-  //   // Log the error to an error reporting service
-  //   console.error("에러: ",error)
-  // }, [error])
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error("에러: ",error)
+  }, [error])
 
-  console.error("에러: ",error)
   return (
     <div>
       <h2>Something went wrong!</h2>

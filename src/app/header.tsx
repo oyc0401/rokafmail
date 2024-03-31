@@ -2,10 +2,8 @@
 
 import Link from "next/link";
 import styles from "./main.module.css";
-import { Nav } from "src/components";
 import { useEffect, useState } from "react";
-
-import { Logo, LogoTitle } from "public/assets/index";
+import { Logo } from "public/assets/index";
 import Image from "next/image";
 import localFont from 'next/font/local'
 
@@ -27,16 +25,6 @@ const sunBatang = localFont({
   ],
 })
 
-// export function Header() {
-//   // if (typeof window !== "undefined") {
-//   //   innerHeight = window.innerHeight;
-//   // }
-//   // const innerHeight = window.innerHeight;
-
-
-//   return (
-//     <div className={styles.top} style={{ height: innerHeight }}>
-
 export function Header() {
   const [height, setHeight] = useState(0);
 
@@ -46,12 +34,12 @@ export function Header() {
   }, []);
 
   return (
-    <div className={styles.top} style={height == 0 ? {} : { height: height }}>
+    <div className='w-full h-screen' style={height == 0 ? {} : { height: height }}>
       <div className="screen">
         <div style={{ flex: 90 }}></div>
 
         <div className="p-5">
-          <Image className={styles.logo} src={Logo} alt="로고" />
+          <Image className='h-40 w-40 mx-auto' src={Logo} alt="로고" />
           <div style={{ paddingTop: 38 }}>
             <h2 className={`${sunBatang.className} ${styles.titleLogo}`}>
               하늘인편
