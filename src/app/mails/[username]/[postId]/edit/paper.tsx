@@ -6,13 +6,12 @@ import { validC, validP } from "./valid";
 import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';
-export function Paper() {
+export function Paper({ updateProps }) {
+
+  const { title, contents, name, relationship } = updateProps;
   const { initial } = useStore();
   useEffect(() => {
-    initial();
-    return () => {
-      initial();
-    };
+    initial({ name, relationship, title, contents });
   }, [initial]);
 
 
@@ -96,8 +95,8 @@ function Name() {
 
   return (
     <div className="pb-5">
-      <div className="row">
-        <h2 className="text-base pl-12" style={{ color: "#37271A" }}>
+      <div className="flex flex-row">
+        <h2 className="text-base flex-1 text-right" style={{ color: "#37271A" }}>
           From
         </h2>
 
@@ -136,9 +135,9 @@ function Password() {
   return (
     <div className="pb-1">
       <div className="row">
-        <div style={{ width: 89.48 }}></div>
+        <div className="flex-1"></div>
         <h2
-          className="text-base flex-1"
+          className="text-base flex-1 text-right"
           style={{ textAlign: "right", paddingLeft: 10, color: "#37271A" }}
         >
           비밀번호

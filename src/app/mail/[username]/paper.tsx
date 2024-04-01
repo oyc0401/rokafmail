@@ -97,7 +97,7 @@ function Name() {
   return (
     <div className="pb-5">
       <div className="row">
-        <h2 className="text-base pl-12" style={{ color: "#37271A" }}>
+        <h2 className="text-base flex-1 text-right" style={{ color: "#37271A" }}>
           From
         </h2>
 
@@ -136,7 +136,7 @@ function Password() {
   return (
     <div className="pb-1">
       <div className="row">
-        <div style={{ width: 89.48 }}></div>
+        <div className="flex-1"></div>
         <h2
           className="text-base flex-1"
           style={{ textAlign: "right", paddingLeft: 10, color: "#37271A" }}

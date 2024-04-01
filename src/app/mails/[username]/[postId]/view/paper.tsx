@@ -43,7 +43,7 @@ export function Paper({ post }) {
     return (
       <div className="pb-5">
         <div className="row">
-          <h2 className="text-base pl-12" style={{ color: "#37271A" }}>
+          <h2 className="text-base flex-1 text-right" style={{ color: "#37271A" }}>
             From
           </h2>
 

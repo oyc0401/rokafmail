@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 // import { Client } from "./client";
 import { cookies } from "next/headers";
 import { LoginPage } from "./loginPage";
-import { PostView } from "./post/PostView";
 import { View } from './view/view'
 
 import { auth } from "src/app/api/auth/auth";

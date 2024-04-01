@@ -1,7 +1,12 @@
 import { create } from "zustand";
 
 interface State {
-  initial: () => void;
+  initial: ({ name, relationship, title, contents }: {
+    name: string;
+    relationship: string;
+    title: string;
+    contents: string;
+  }) => void;
 
   click: boolean;
   setClick: (click: boolean) => void;
@@ -20,8 +25,9 @@ interface State {
 }
 
 export const useStore = create<State>((set) => ({
-  initial: () =>
-    set({ name: "", relationship: "", title: "", contents: "", password: "" }),
+  // 수정 페이지 초기화
+  initial: ({ name, relationship, title, contents }) =>
+    set({ name, relationship, title, contents, password: "" }),
 
   click: false,
   setClick: (click) => set({ click: click }),

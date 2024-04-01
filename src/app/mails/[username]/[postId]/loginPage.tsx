@@ -8,40 +8,17 @@ import {
   BasicBody,
   BasicFooter,
 } from "src/components";
-import { useRouter } from "next/navigation";
 export function LoginPage({ postId }) {
   const [pw, setPw] = useState("");
   const [message, setMessage] = useState("");
-const router = useRouter();
-  function validP() {
-    // 빈칸일 때
-    if (pw == "") return { text: "", valid: false };
 
-    // 짧을 때
-    if (pw.length < 4)
-      return {
-        text: "비밀번호는 4자리 이상이여야 합니다",
-        color: "warn",
-        valid: false,
-      };
-
-    // 통과
-    return { text: "", color: "great", valid: true };
-  }
-
-  async function click() {
-
+  async function click(event) {
+     event.preventDefault();
     const result = await checkPassword(postId, pw);
 
     if (!result) {
       alert('비밀번호가 틀렸습니다.');
-    }else{
-      router.refresh();
     }
-  }
-
-  function canSubmit() {
-    return validP().valid;
   }
 
   return (
@@ -69,7 +46,6 @@ const router = useRouter();
           편지 열기
         </button>
       </BasicFooter>
-
     </BasicFormArea>
   );
 }

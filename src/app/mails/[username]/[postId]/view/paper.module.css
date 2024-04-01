@@ -13,7 +13,7 @@
   color: var(--font-color);
    border-color:#B2A18F;
   width: 100%;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 .form::placeholder {
   color: var(--light-font);
