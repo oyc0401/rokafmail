@@ -63,7 +63,7 @@ export async function verifyUser() {
         case VerifyStatus.error:
           throw Error("rokaf server error, verify Stopped.");
       }
-      if (VerifyStatus.verify) {
+      if (status==VerifyStatus.verify) {
         logger.info(`${i}/${length} | ${statusToMsg(status)} ${userLogForm}`);
       } else {
         logger.debug(`${i}/${length} | ${statusToMsg(status)} ${userLogForm}`);
