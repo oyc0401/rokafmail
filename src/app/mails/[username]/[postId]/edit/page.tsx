@@ -6,6 +6,7 @@ import { Post, User } from "src/db";
 import { notFound, redirect } from "next/navigation";
 
 import { NavHeader } from 'src/components/NavHeader'
+import{Submit} from './submit'
 
 // import { dateToStr } from "./dateToStr";
 import {
@@ -37,10 +38,12 @@ export default async function EditPage({ params }) {
 
 
   if (pwcookie && pwcookie.value == password)
-    return <>
+    return <div className="h-full flex flex-col">
       <UserDescription user={user}></UserDescription>
       <Paper updateProps={props}></Paper>
-    </>;
+      <div className="flex-1"></div>
+      <Submit username={username}></Submit>
+    </div>;
 
 
   redirect(`/mails/${username}/postId`)

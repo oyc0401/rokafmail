@@ -12,6 +12,7 @@ export function Paper({ updateProps }) {
   const { initial } = useStore();
   useEffect(() => {
     initial({ name, relationship, title, contents });
+
   }, [initial]);
 
 
@@ -39,13 +40,14 @@ export function Paper({ updateProps }) {
 }
 
 function Title() {
-  const { setTitle, setClick } = useStore();
+  const {title, setTitle, setClick } = useStore();
   return (
     <div className="pb-4">
       <input
         className={`${styles.form} text-lg font-medium`}
         type="text"
         placeholder="제목"
+         value={title}
         onChange={(e) => {
           setTitle(e.target.value);
           setClick(true);
@@ -70,6 +72,7 @@ function Contents() {
         className={`${styles.form} text-base ${styles.contentForm} min-h-36 resize-none`}
         placeholder="내용"
         ref={inputRef}
+        value={contents}
         onChange={(e) => {
           setContents(e.target.value);
           setClick(true);
@@ -91,7 +94,7 @@ function Contents() {
 }
 
 function Name() {
-  const { setName, setRelationship, setClick } = useStore();
+  const { setName,name, relationship,setRelationship, setClick } = useStore();
 
   return (
     <div className="pb-5">
@@ -105,6 +108,7 @@ function Name() {
             className={`${styles.form} text-base text-center`}
             type="text"
             placeholder="이름"
+            value={name}
             onChange={(e) => {
               setName(e.target.value);
               setClick(true);
@@ -118,6 +122,7 @@ function Name() {
             type="text"
             style={{ flex: "1" }}
             placeholder="관계"
+             value={relationship}
             onChange={(e) => {
               setRelationship(e.target.value);
               setClick(true);
@@ -135,12 +140,10 @@ function Password() {
   return (
     <div className="pb-1">
       <div className="row">
-        <div className="flex-1"></div>
         <h2
-          className="text-base flex-1 text-right"
-          style={{ textAlign: "right", paddingLeft: 10, color: "#37271A" }}
+          className="text-base flex-[2_2_0%] text-right pl-2.5 text-[#37271A]"
         >
-          비밀번호
+          비밀번호 재입력
         </h2>
         <div className="flex-1 pl-2.5">
           <input

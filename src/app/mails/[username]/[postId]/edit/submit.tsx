@@ -18,39 +18,21 @@ export function Submit({ username }) {
 
   const [progress, setProgress] = useState(false);
 
-  const canSubmit = () =>
-    validN(name).valid &&
-    validR(relationship).valid &&
-    validT(title).valid &&
-    validC(contents).valid &&
-    validP(password).valid;
+  const canSubmit = () => {
+    return validN(name).valid &&
+      validR(relationship).valid &&
+      validT(title).valid &&
+      validC(contents).valid &&
+      validP(password).valid;
+  }
 
   async function postMail() {
     setProgress(true);
-    await mailApi({
-      username: username,
-      name: name,
-      relationship: relationship,
-      title: title,
-      contents: contents,
-      password: password,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          alert("편지 전송 성공!");
 
-          router.push(`/mail/${username}/complete?sc=200`);
-        } else {
-          alert(`편지 전송 실패 ${response.status}, ${response.message}`);
-        }
-      })
-      .catch((error) => {
-        alert(`오류발생, 편지 전송 실패 ${error}`);
-        setProgress(false);
-      });
   }
 
   async function click() {
+    console.log({ name, relationship, title, contents, password });
     if (canSubmit()) postMail();
   }
 
@@ -72,14 +54,14 @@ export function Submit({ username }) {
       {/* <div className="flex-1"></div> */}
       <footer className="container max-w-3xl mx-auto px-4">
         <div className="row pt-2 sm:pt-3 pb-8">
-          <a className={`submit mini hidden glxfd:block`} href={`/mails/${username}`}>
-            편지함
-          </a>
+          <button className={`submit mini hidden glxfd:block`} style={{background:'red'}}>
+            삭제
+          </button>
           <button
             className={canSubmit() ? "submit" : "submit disable"}
             onClick={click}
           >
-            전송하기
+            수정
           </button>
         </div>
       </footer>

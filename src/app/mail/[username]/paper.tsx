@@ -136,10 +136,8 @@ function Password() {
   return (
     <div className="pb-1">
       <div className="row">
-        <div className="flex-1"></div>
         <h2
-          className="text-base flex-1"
-          style={{ textAlign: "right", paddingLeft: 10, color: "#37271A" }}
+          className="text-base flex-[2_2_0%] text-right pl-2.5 text-[#37271A]"
         >
           비밀번호
         </h2>
