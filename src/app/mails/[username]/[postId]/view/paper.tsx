@@ -9,13 +9,9 @@ export function Paper({ post }) {
   function Title() {
     return (
       <div className="pb-4">
-        <input
-          className={`${styles.form} text-lg font-medium`}
-          type="text"
-          placeholder="제목"
-          value={title}
-          readOnly
-        ></input>
+        <p className={`${styles.form} text-lg font-medium text-left`} >
+          {title}
+        </p>
       </div>
     );
   }
@@ -30,7 +26,7 @@ export function Paper({ post }) {
           value={contents}
           readOnly
         ></TextareaAutosize>
-       
+
         <div className={styles.formLine}></div>
 
         <div className="row pt-0.5">

@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
-import styles from "./page.module.css";
 import { checkPassword } from "./cookie";
-import { Nav } from "src/components";
 import {
   InputField,
   BasicFormArea,
@@ -10,10 +8,11 @@ import {
   BasicBody,
   BasicFooter,
 } from "src/components";
+import { useRouter } from "next/navigation";
 export function LoginPage({ postId }) {
   const [pw, setPw] = useState("");
   const [message, setMessage] = useState("");
-
+const router = useRouter();
   function validP() {
     // 빈칸일 때
     if (pw == "") return { text: "", valid: false };
@@ -36,6 +35,8 @@ export function LoginPage({ postId }) {
 
     if (!result) {
       alert('비밀번호가 틀렸습니다.');
+    }else{
+      router.refresh();
     }
   }
 
@@ -71,40 +72,4 @@ export function LoginPage({ postId }) {
 
     </BasicFormArea>
   );
-
-  // return (
-  //   <div className="screen">
-  //     <div style={{ flex: 100 }}></div>
-  //     <h2 className={styles.title}>
-  //       편지를 작성할 때 작성한
-  //       <br />
-  //       비밀번호를 입력해주세요
-  //     </h2>
-  //     <div style={{ height: 49 }}></div>
-
-  //     <p className={styles.formTitle}>비밀번호</p>
-  //     <div style={{ height: 2 }}></div>
-  //     <input
-  //       className={styles.form}
-  //       type="password"
-  //       placeholder="비밀번호를 입력해주세요"
-  //       onChange={(e) => {
-  //         setPw(e.target.value);
-  //         setMessage("");
-  //       }}
-  //     ></input>
-  //     <div style={{ height: 2 }}></div>
-  //     <p className={`${styles.help}`}>{message}</p>
-  //     <div style={{ flex: 340 }}></div>
-
-  //     <Nav>
-  //       <button
-  //         className={canSubmit() ? "submit" : "submit disable"}
-  //         onClick={click}
-  //       >
-  //         편지 열어보기
-  //       </button>
-  //     </Nav>
-  //   </div>
-  // );
 }

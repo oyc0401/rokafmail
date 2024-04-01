@@ -1,0 +1,25 @@
+/* 입력 폼 */
+.form{
+   border-width: 0 0 1px;
+  background-color: transparent;
+  outline: none;
+  color: var(--font-color);
+ border-color:#B2A18F;
+  width: 100%;
+  overflow: scroll;
+}
+.form::placeholder {
+  color: var(--light-font);
+}
+
+.contentForm{
+  border:none;
+}
+.contentForm::-webkit-scrollbar {
+   display: none;
+ }
+
+.formLine{
+  border-width: 0 0 1px;
+  border-color:#B2A18F;
+}

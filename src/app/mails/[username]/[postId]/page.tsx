@@ -28,9 +28,10 @@ export default async function Page({ params }) {
   if (session && session.user && session.user.email) {
     const sessionUsername = session.user.email;
     const user = await User.findByUsername(sessionUsername);
+    
+    // 본인의 편지함
     if (user && sessionUsername == params.username)
       return <View postId={postId} />;
-
   }
 
   // 쿠키
@@ -38,14 +39,8 @@ export default async function Page({ params }) {
   const cookieStore = cookies();
   const pwcookie = cookieStore.get("password");
 
-  if (pwcookie == null)
-    return <LoginPage postId={postId} />;
-
-
-  if (pwcookie.value == password)
+  if (pwcookie && pwcookie.value == password)
     return <View postId={postId} writer />;
 
-
-  console.log("다른사람으로 로그인 되어있음");
   return <LoginPage postId={postId} />;
 }

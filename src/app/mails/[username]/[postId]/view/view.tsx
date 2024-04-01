@@ -16,16 +16,25 @@ import {
   Status,
   serveStatus,
 } from "src/lib/time";
+import { UpdateButtons } from "./UpdateButtons";
 
-export async function View({ postId,writer }) {
+export async function View({ postId, writer }: { postId: number; writer?: boolean }) {
   const post = await Post.findById(postId);
-  if (!post) {
-    notFound();
-  }
+  if (!post) notFound();
+
 
   const user = await User.findById(post.userId);
-  if (!user) {
-    notFound();
+  if (!user) notFound();
+
+  const { username } = user;
+
+  function EditButton() {
+    if (writer) {
+      return <div className="w-full text-right px-4">
+        <a className="text-base underline cursor-pointer active:opacity-75 text-fontlight" href={`/mails/${username}/${postId}/edit`}>수정하기</a>
+      </div>
+    }
+    return <></>
   }
 
 
@@ -34,11 +43,11 @@ export async function View({ postId,writer }) {
       <NavHeader user={user}></NavHeader>
       <UserDescription user={user}></UserDescription>
       <Paper post={post}></Paper>
-      {writer?'수정 가능!':<></>}
+      <EditButton></EditButton>
       <div className="flex-1"></div>
       <footer className="container max-w-3xl mx-auto px-4">
         <div className="row pt-2 sm:pt-3 pb-8">
-          <Link className={"submit"} href={`/mails/${user.username}`}>
+          <Link className={"submit"} href={`/mails/${username}`}>
             편지함
           </Link>
         </div>

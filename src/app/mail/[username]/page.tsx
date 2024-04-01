@@ -1,6 +1,5 @@
 import styles from "./page.module.css";
 import { Submit } from "./submit";
-import { MakeBtn } from "./MakeBtn";
 import { Paper } from "./paper";
 import Link from "next/link";
 
