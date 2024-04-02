@@ -61,6 +61,7 @@ export function Content({ mails, unpostMails }) {
           >
             <div className="max-w-3xl mx-auto">
               <div className="bg-[#F3F3F3] w-full p-6">{""}</div>
+              {unpostMails.length==0?<>모두 전송되었습니다.</>:<></>}
               {unpostMails.map((post, index) => (
                 <div key={post.id}>
                   {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
@@ -99,6 +100,7 @@ export function UnConnectedContent({ mails }) {
     <>
       <div className="max-w-3xl mx-auto">
         <div className="bg-[#F3F3F3] w-full p-6">{""}</div>
+        {mails.length==0?<>받은 편지가 아작 없습니다.</>:<></>}
         {mails.map((post, index) => (
           <div key={post.id}>
             {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
