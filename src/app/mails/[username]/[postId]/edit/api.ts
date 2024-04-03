@@ -1,5 +1,6 @@
 'use server'
 import { Post } from "src/db";
+import { makeLogger } from "config/winston";
 const logger = makeLogger("Edit Mail");
 export async function editPost({ postId, username, name, relationship, title, contents, password }) {
 
