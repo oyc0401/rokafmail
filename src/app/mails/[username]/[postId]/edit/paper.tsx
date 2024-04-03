@@ -12,7 +12,7 @@ export function Paper({ updateProps }) {
   const { initial } = useStore();
   useEffect(() => {
     initial({ name, relationship, title, contents });
-
+return   initial({ name, relationship, title, contents });
   }, [initial]);
 
 

@@ -21,7 +21,7 @@ export default async function EditPage({ params }) {
   if (!post) notFound();
 
   const user = await User.findByUsername(username);
-
+  if (!user) notFound();
 
   const password = post.password;
   const cookieStore = cookies();

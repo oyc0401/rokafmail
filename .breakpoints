@@ -1,3 +1,12 @@
 {
-  "files": {}
+  "files": {
+    "public/fonts/THEFACESHOP+INKLIPQUID(윈도우용).ttf": [
+      {
+        "id": "80c0b86a-3fdb-4c18-9d5f-1226ad8f0c08",
+        "line": 12,
+        "version": 1,
+        "index": 1638
+      }
+    ]
+  }
 }
