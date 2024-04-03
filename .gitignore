@@ -10,3 +10,4 @@ src/app/(admin)
 logs
 .env
 
+.breakpoints

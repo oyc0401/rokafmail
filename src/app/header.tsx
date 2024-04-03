@@ -25,6 +25,13 @@ const sunBatang = localFont({
   ],
 })
 
+const INKLIPQUID = localFont({
+
+  src: [
+    { path: '../../public/fonts/INKLIPQUID.ttf' },
+  ]
+})
+
 export function Header() {
   const [height, setHeight] = useState(0);
 
@@ -41,7 +48,7 @@ export function Header() {
         <div className="p-5">
           <Image className='h-40 w-40 mx-auto' src={Logo} alt="로고" />
           <div style={{ paddingTop: 38 }}>
-            <h2 className={`${sunBatang.className} ${styles.titleLogo}`}>
+            <h2 className={`${INKLIPQUID.className} ${styles.titleLogo}`}>
               하늘인편
             </h2>
           </div>

@@ -17,6 +17,15 @@
   cursor:pointer;
 }
 
+.INKLIPQUID{
+  color: var(--primary);
+  font-size:26px;
+   letter-spacing: 0.04em;
+  line-height: 56px;
+  cursor:pointer;
+}
+
+
 .inner{
   padding-left:18px;
   text-align:end;
