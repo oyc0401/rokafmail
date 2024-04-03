@@ -96,7 +96,8 @@ export async function repost({
     case Status.ending:
     case Status.working:
     case Status.discharged:
-      // await relocatePost(postId);
+      // 특학인편 하지말자 ~
+      await relocatePost(postId);
       return RepostStatus.after;
   }
 }

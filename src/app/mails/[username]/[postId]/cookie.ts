@@ -12,8 +12,6 @@ export async function checkPassword(postId: number, password: string) {
   const valid = oriPw == password;
 
   if (valid) {
-    console.log(`/mails/${post.user.username}/${postId}`);
-
     cookies().set({
       name: "password",
       value: password,
