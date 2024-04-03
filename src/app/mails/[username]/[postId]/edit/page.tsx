@@ -6,7 +6,7 @@ import { Post, User } from "src/db";
 import { notFound, redirect } from "next/navigation";
 
 import { NavHeader } from 'src/components/NavHeader'
-import{Submit} from './submit'
+import { Submit } from './submit'
 
 // import { dateToStr } from "./dateToStr";
 import {
@@ -33,20 +33,22 @@ export default async function EditPage({ params }) {
   const cookieStore = cookies();
   const pwcookie = cookieStore.get("password");
 
-  const { title, contents, name, relationship } = post;
+  const { title, contents, name, relationship, posted } = post;
   const props = { title, contents, name, relationship };
 
+  const url = `https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`;
 
   if (pwcookie && pwcookie.value == password)
     return <div className="h-full flex flex-col">
+      <NavHeader user={user}></NavHeader>
       <UserDescription user={user}></UserDescription>
       <Paper updateProps={props}></Paper>
       <div className="flex-1"></div>
-      <Submit username={username}></Submit>
+      <Submit postId={postId} username={username} posted={posted} url={url}></Submit>
     </div>;
 
 
-  redirect(`/mails/${username}/postId`)
+  redirect(`/mails/${username}/${postId}`)
 }
 
 async function UserDescription({ user }) {
@@ -68,19 +70,10 @@ async function UserDescription({ user }) {
         }}
       >
         <h2 className={'text-[22px] font-medium text-left'}>
-          <span className="text-primary">{name}</span> 훈련병에게
+          <span className="text-primary">{name}</span> 훈련병
           <br />
-          편지를 보내주세요!
+          편지 수정하기
         </h2>
-      </div>
-
-      <div className="pt-px w-full">
-        <h2 className='text-sm font-medium text-left text-fontlight'>
-          {startTime} ~ {compTime}
-        </h2>
-      </div>
-      <div className="pt-2 w-full">
-        <h2 className='text-medium text-left'>{message}</h2>
       </div>
     </div>
   );

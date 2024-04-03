@@ -138,6 +138,23 @@ export class Post {
       data,
     });
 
+  static edit = (
+    id: number,
+    data: {
+      name: string;
+      relationship: string;
+      title: string;
+      contents: string;
+      password: string;
+    }
+  ) =>
+    prisma.post.update({
+      where: {
+        id,
+      },
+      data,
+    });
+
   static deleteById = (id: number) =>
     prisma.post.delete({
       where: {

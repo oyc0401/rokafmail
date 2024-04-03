@@ -44,7 +44,7 @@ export function Content({ mails, unpostMails }) {
                     time={dateToStr(post.createdAt)}
                     username={post.user.username}
                     contents={"내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ "}
-                    secret={false}
+                    secret={true}
                   />
                 </div>
               ))}

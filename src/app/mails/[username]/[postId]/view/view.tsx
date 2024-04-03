@@ -16,7 +16,6 @@ import {
   Status,
   serveStatus,
 } from "src/lib/time";
-import { UpdateButtons } from "./UpdateButtons";
 
 export async function View({ postId, writer }: { postId: number; writer?: boolean }) {
   const post = await Post.findById(postId);
