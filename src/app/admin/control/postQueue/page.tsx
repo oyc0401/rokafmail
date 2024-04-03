@@ -28,10 +28,10 @@ export default async function UserController({ searchParams }) {
 
   const transformedArray = data.map((item) => {
     // 각 객체에 대해 user와 post 속성을 해체하여 상위 객체에 통합
-    return {
-      ...item,
+    return{
       ...item.user,
       ...item.post,
+      ...item,
     };
   });
 
