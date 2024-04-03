@@ -53,7 +53,7 @@ export default async function Complete({ searchParams, params }) {
       {page}
       <div style={{ flex: 160 }}></div>
       <p className={styles.intro}>
-        {`${helpAdditional}편지함 > 기훈단 페이지에서 비밀번호를 사용해 수정 및 삭제가 가능합니다.`}
+        {`${helpAdditional}편지함에서 비밀번호를 사용해 수정 및 삭제가 가능합니다.`}
       </p>
       <BasicFooter>
         <a className={`submit mini`} href={`/mails/${user.username}`}>
