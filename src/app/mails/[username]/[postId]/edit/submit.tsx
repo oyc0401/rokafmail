@@ -1,24 +1,17 @@
 "use client";
-import axios from "axios";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-
-import { Nav } from "src/components";
 import { deletePost } from "src/app/api/mails/mail";
 
 import styles from "./page.module.css";
 import { useStore } from "./model";
 import { validN, validR, validC, validT, validP } from "./valid";
-import { mailApi } from "src/app/api/mail/mail";
 import { editPost } from "./api";
 
 export function Submit({ postId, username,posted, url }) {
   const { name, relationship, title, contents, password } = useStore();
 
   const router = useRouter();
-
-  const [progress, setProgress] = useState(false);
 
   const canSubmit = () => {
     return validN(name).valid &&
@@ -64,22 +57,9 @@ export function Submit({ postId, username,posted, url }) {
     }
   }
 
-  function Loading() {
-    return (
-      <div
-        className={styles.registerLoad}
-        style={{
-          display: progress ? "flex" : "none",
-        }}
-      >
-        <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
-      </div>
-    );
-  }
 
   return (
     <>
-      {/* <div className="flex-1"></div> */}
       <footer className="container max-w-3xl mx-auto px-4">
         <div className="row pt-2 sm:pt-3 pb-8">
           <button className={`submit mini hidden glxfd:block`} style={{background:'red'}} onClick={onDelete}>
@@ -93,7 +73,7 @@ export function Submit({ postId, username,posted, url }) {
           </button>
         </div>
       </footer>
-      <Loading></Loading>
+     
     </>
   );
 }

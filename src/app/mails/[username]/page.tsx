@@ -20,12 +20,12 @@ export default async function Mails({ params }) {
 
   return (
     <>
-      <NavHeader user={user}></NavHeader>
-      {user.connect ? <Content mails={posts} unpostMails={queue}></Content>
-        : <UnConnectedContent mails={unconnected} ></UnConnectedContent>}
-
-
-      <div style={{ height: 108, minHeight: 108, width: 1 }}></div>
+      <div className="h-full max-w-3xl mx-auto">
+        <NavHeader user={user}></NavHeader>
+        {user.connect ? <Content mails={posts} unpostMails={queue}></Content>
+          : <UnConnectedContent mails={unconnected} ></UnConnectedContent>}
+        <div style={{ height: 108, minHeight: 108, width: 1 }}></div>
+      </div>
       <nav className="fixed bottom-0 w-full">
         <footer className="container max-w-3xl mx-auto px-8">
           <div className="row pt-3 pb-8">
@@ -34,7 +34,6 @@ export default async function Mails({ params }) {
             </Link>
           </div></footer>
       </nav>
-
     </>
   );
 }

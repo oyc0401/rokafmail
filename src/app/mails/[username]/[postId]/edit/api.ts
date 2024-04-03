@@ -1,6 +1,5 @@
 'use server'
-import { Post, User } from "src/db";
-import crypto from "crypto";
+import { Post } from "src/db";
 export async function editPost({ postId, username, name, relationship, title, contents, password }) {
 
   const post = await Post.findById(postId);

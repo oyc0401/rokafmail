@@ -1,7 +1,6 @@
-import styles from "./page.module.css";
+
 import Link from "next/link";
-import crypto from "crypto";
-import { Nav } from "src/components";
+
 import { Post, User } from "src/db";
 import { notFound } from "next/navigation";
 import { Paper } from "./paper";
@@ -12,9 +11,6 @@ import { NavHeader } from 'src/components/NavHeader'
 import {
   getEnter,
   getCompletion,
-  knowTime,
-  Status,
-  serveStatus,
 } from "src/lib/time";
 
 export async function View({ postId, writer }: { postId: number; writer?: boolean }) {
@@ -78,7 +74,7 @@ async function UserDescription({ user }) {
           <br></br>
           전송한 편지
         </h2>
-        <div style={{ flex: 1 }}></div>
+      
       </div>
 
     </div>

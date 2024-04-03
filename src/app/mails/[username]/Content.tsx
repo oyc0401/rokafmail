@@ -12,7 +12,7 @@ export function Content({ mails, unpostMails }) {
           color="primary"
           variant="underlined"
           classNames={{
-            base: 'w-full max-w-3xl',
+            base: 'w-full',
             tabList: "w-full gap-0",
             // cursor: "w-full bg-[#22d3ee]",
             // tab: "max-w-fit px-0 h-12",
@@ -32,7 +32,10 @@ export function Content({ mails, unpostMails }) {
             }
           >
             <div className="max-w-3xl mx-auto">
-              <div className="bg-[#F3F3F3] w-full p-6">{""}</div>
+              {/* <div className="bg-[#F3F3F3] w-full p-6">{""}</div> */}
+              {mails.length == 0 ?
+              <p className="text-medium p-4 text-fontlight">받은 편지가 없습니다.</p>
+              : <></>}
               {mails.map((post, index) => (
                 <div key={post.id}>
                   {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
@@ -60,8 +63,10 @@ export function Content({ mails, unpostMails }) {
             }
           >
             <div className="max-w-3xl mx-auto">
-              <div className="bg-[#F3F3F3] w-full p-6">{""}</div>
-              {unpostMails.length==0?<>모두 전송되었습니다.</>:<></>}
+              {/* <div className="bg-[#F3F3F3] w-full p-6">{""}</div> */}
+              {unpostMails.length == 0 ?
+                <p className="text-medium p-4 text-fontlight">모두 전송되었습니다!</p>
+                : <></>}
               {unpostMails.map((post, index) => (
                 <div key={post.id}>
                   {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
@@ -99,8 +104,10 @@ export function UnConnectedContent({ mails }) {
   return (
     <>
       <div className="max-w-3xl mx-auto">
-        <div className="bg-[#F3F3F3] w-full p-6">{""}</div>
-        {mails.length==0?<>받은 편지가 아작 없습니다.</>:<></>}
+        {/* <div className="bg-[#F3F3F3] w-full p-6">{""}</div> */}
+        {mails.length == 0 ?
+          <p className="text-medium p-4 text-fontlight">받은 편지가 없습니다.</p>
+          : <></>}
         {mails.map((post, index) => (
           <div key={post.id}>
             {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}

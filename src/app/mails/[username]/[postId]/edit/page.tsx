@@ -1,7 +1,4 @@
-import styles from "./page.module.css";
-import Link from "next/link";
-import crypto from "crypto";
-import { Nav } from "src/components";
+
 import { Post, User } from "src/db";
 import { notFound, redirect } from "next/navigation";
 
@@ -12,9 +9,6 @@ import { Submit } from './submit'
 import {
   getEnter,
   getCompletion,
-  knowTime,
-  Status,
-  serveStatus,
 } from "src/lib/time";
 import { cookies } from "next/headers";
 import { Paper } from "./paper";
@@ -39,7 +33,7 @@ export default async function EditPage({ params }) {
   const url = `https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`;
 
   if (pwcookie && pwcookie.value == password)
-    return <div className="h-full flex flex-col">
+    return <div className="h-full flex flex-col max-w-3xl mx-auto">
       <NavHeader user={user}></NavHeader>
       <UserDescription user={user}></UserDescription>
       <Paper updateProps={props}></Paper>
