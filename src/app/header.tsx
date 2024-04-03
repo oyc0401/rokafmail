@@ -44,7 +44,6 @@ export function Header() {
     <div className='w-full h-screen' style={height == 0 ? {} : { height: height }}>
       <div className="screen">
         <div style={{ flex: 90 }}></div>
-
         <div className="p-5">
           <Image className='h-40 w-40 mx-auto' src={Logo} alt="로고" />
           <div style={{ paddingTop: 38 }}>
