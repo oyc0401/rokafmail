@@ -38,6 +38,7 @@ export default function RootLayout({ children }) {
           name="naver-site-verification"
           content="1b4f09dac96624b20134a08b4d3884618caaf21f"
         />
+        <meta name="google-adsense-account" content="ca-pub-3948063339127452"/>
       </head>
       <body>
         <Providers>{children}</Providers>
