@@ -38,6 +38,7 @@ model Post {
   createdAt        DateTime          @default(now())
   posted           Boolean           @default(false)
   postAt           DateTime?
+  isPublic         Boolean           @default(false)
   user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   postQueues       PostQueue[]
   unconnectedPosts UnconnectedPost[]
