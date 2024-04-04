@@ -15,13 +15,8 @@ export default async function LinkPage({ params }) {
     notFound();
   }
 
-  const domain = process.env.DOMAIN;
-  const url = `https://${domain}/mail/${username}`;
-
-  const { name, generation } = user;
-
-  function copy() {}
-
+  
+ 
   return (
     <div className="flex flex-col h-full max-w-3xl mx-auto items-center px-4">
       <div style={{ flex: 151 }}></div>
