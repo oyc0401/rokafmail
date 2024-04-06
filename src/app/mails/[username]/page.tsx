@@ -17,7 +17,6 @@ export default async function Mails({ params }) {
   let queue = await PostQueue.findByUsername(username);
   let unconnected = await UnconnectedPost.findByUsername(username);
 
-
   return (
     <>
       <div className="h-full max-w-3xl mx-auto">

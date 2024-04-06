@@ -3,8 +3,10 @@ import styles from "./paper.module.css";
 import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';
+import { Checkbox, Divider } from "@nextui-org/react";
+
 export function Paper({ post }) {
-  const { title, contents, name, relationship } = post;
+  const { title, contents, name, relationship, isPublic } = post;
 
   function Title() {
     return (
@@ -41,7 +43,7 @@ export function Paper({ post }) {
 
   function Name() {
     return (
-      <div className="pb-5">
+      <div className="pb-3">
         <div className="row">
           <h2 className="text-base flex-1 text-right" style={{ color: "#37271A" }}>
             From
@@ -72,6 +74,14 @@ export function Paper({ post }) {
     );
   }
 
+  function Password() {
+    if (isPublic) {
+      return <p className="pb-2 text-right text-xs text-fontlight">전체공개</p>
+    } else {
+      return <p className="pb-2 text-right text-xs text-fontlight">비공개</p>
+    }
+  }
+
 
   return (
     <div role='paper' className=' px-4 py-2 mx-4 mb-4 bg-[#FFFDF8] shadow-md'  >
@@ -90,6 +100,7 @@ export function Paper({ post }) {
       <Title></Title>
       <Contents></Contents>
       <Name></Name>
+      <Password></Password>
 
     </div>
   );

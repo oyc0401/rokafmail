@@ -103,11 +103,12 @@ export class Post {
       },
     });
 
+  // desperate
   // 편지함 보여주기, id 오름차 순
   static findPostedByUsername = (username: string) =>
     prisma.post.findMany({
       orderBy: {
-          id: "desc",
+        id: "desc",
       },
       include: {
         user: {
@@ -124,7 +125,44 @@ export class Post {
         },
         posted: true,
       },
-     
+
+    });
+
+  // 비공개 편지 가져오기 id 오름차 순
+  static findPrivateByUsername = (username: string) =>
+    prisma.post.findMany({
+      orderBy: {
+        id: "desc",
+      },
+      select: {
+        id: true,
+
+        userId: true,
+        name: true,
+        relationship: true,
+        title: true,
+        createdAt: true,
+        posted: true,
+        postAt: true,
+        isPublic: true,
+
+        user: {
+          select: {
+            username: true,
+            connect: true,
+            generation: true,
+          },
+        },
+
+      },
+
+      where: {
+        user: {
+          username,
+        },
+        posted: true,
+      },
+
     });
 
   static update = (
@@ -149,6 +187,7 @@ export class Post {
       title: string;
       contents: string;
       password: string;
+      isPublic: boolean;
     }
   ) =>
     prisma.post.update({

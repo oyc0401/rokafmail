@@ -6,13 +6,15 @@ import { validC, validP } from "./valid";
 import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';
+import { Checkbox, Divider } from "@nextui-org/react";
+
 export function Paper({ updateProps }) {
 
-  const { title, contents, name, relationship } = updateProps;
+  const { title, contents, name, relationship,isPublic } = updateProps;
   const { initial } = useStore();
   useEffect(() => {
-    initial({ name, relationship, title, contents });
-return   initial({ name, relationship, title, contents });
+    initial({ name, relationship, title, contents,isPublic });
+return   initial({ name, relationship, title, contents,isPublic });
   }, [initial]);
 
 
@@ -135,16 +137,23 @@ function Name() {
 }
 
 function Password() {
-  const { password, setPassword, setClick } = useStore();
+  const { password, setPassword,isPublic, setIsPublic, setClick } = useStore();
 
   return (
     <div className="pb-1">
-      <div className="row">
-        <h2
-          className="text-base flex-[2_2_0%] text-right pl-2.5 text-[#37271A]"
-        >
-          비밀번호 재입력
-        </h2>
+      <div className="flex flex-row">
+        <div className="flex-[2_2_0%] pl-2.5 flex justify-end">
+          <Checkbox
+            classNames={{ base: 'h-[24px] p-0 m-0 text-[#37271A]' }}
+            radius="full"
+            isSelected={isPublic} onValueChange={setIsPublic}
+          >전체공개</Checkbox>
+          <Divider orientation="vertical" className="mx-3" />
+          <h2 className="text-base text-right text-[#37271A]" >
+            비밀번호
+          </h2>
+        </div>
+
         <div className="flex-1 pl-2.5">
           <input
             className={`${styles.form} text-base text-center`}
@@ -156,10 +165,16 @@ function Password() {
               setClick(true);
             }}
           ></input>
-          <p className={`text-xs font-fontmedium text-left h-4 ${validP(password).color}`}>
-            {validP(password).text}
-          </p>
+
         </div>
+      </div>
+      <div className="flex flex-row">
+        <div className="flex-[2_2_0%] pl-2.5"></div>
+        <div className="flex-1 pl-2.5 text-center">
+          <p className={`text-xs font-fontmedium text-center h-4 ${validP(password).color}`}>
+            {validP(password).text}
+          </p></div>
+
       </div>
 
 

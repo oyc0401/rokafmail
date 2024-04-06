@@ -27,8 +27,8 @@ export default async function EditPage({ params }) {
   const cookieStore = cookies();
   const pwcookie = cookieStore.get("password");
 
-  const { title, contents, name, relationship, posted } = post;
-  const props = { title, contents, name, relationship };
+  const { title, contents, name, relationship, posted,isPublic } = post;
+  const props = { title, contents, name, relationship,isPublic };
 
   const url = `https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`;
 

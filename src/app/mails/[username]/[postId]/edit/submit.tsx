@@ -9,7 +9,7 @@ import { validN, validR, validC, validT, validP } from "./valid";
 import { editPost } from "./api";
 
 export function Submit({ postId, username,posted, url }) {
-  const { name, relationship, title, contents, password } = useStore();
+  const { name, relationship, title, contents, password,isPublic } = useStore();
 
   const router = useRouter();
 
@@ -22,7 +22,7 @@ export function Submit({ postId, username,posted, url }) {
   }
 
   async function click() {
-    const result = await editPost({postId, username, name, relationship, title, contents, password });
+    const result = await editPost({postId, username, name, relationship, title, contents, password,isPublic });
 
     if(result == '수정완료'){
       router.replace(`/mails/${username}/${postId}`);

@@ -25,7 +25,7 @@ export async function View({ postId, writer }: { postId: number; writer?: boolea
 
   function EditButton() {
     if (writer) {
-      return <div className="w-full text-right px-4">
+      return <div className="w-full text-right px-4 pb-4">
         <a className="text-base underline cursor-pointer active:opacity-75 text-fontlight" href={`/mails/${username}/${postId}/edit`}>수정하기</a>
       </div>
     }

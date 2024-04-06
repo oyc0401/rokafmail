@@ -9,12 +9,9 @@ export default async function Page({ params }) {
   const username = params.username;
 
   const post = await Post.findById(postId);
-  if (!post)
-    notFound();
-
-
-  if (post.user.username != username)
-    notFound();
+  if (!post) notFound();
+  
+  if (post.user.username != username) notFound();
 
 
   // 세션
@@ -36,11 +33,10 @@ export default async function Page({ params }) {
   if (pwcookie && pwcookie.value == password)
     return <View postId={postId} writer />;
 
-  if (post.isPublic) {
-    return <View postId={postId} writer />;
-  }
+  if (post.isPublic) return <View postId={postId} writer />;
 
-  const url = `https://${process.env.DOMAIN}/mails/${username}/${postId}`;
 
-  redirect(`/mails/${username}/${postId}/signin?&callbackUrl=${url}`)
+  const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}`;
+
+  redirect(`/mails/${username}/${postId}/signin?&callbackUrl=${callbackUrl}`)
 }

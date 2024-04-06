@@ -2,7 +2,7 @@
 import { Post } from "src/db";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Edit Mail");
-export async function editPost({ postId, username, name, relationship, title, contents, password }) {
+export async function editPost({ postId, username, name, relationship, title, contents, password ,isPublic}) {
 
   const post = await Post.findById(postId);
   if (!post || post.user.username != username) return 'Notfound';
@@ -12,7 +12,7 @@ export async function editPost({ postId, username, name, relationship, title, co
     return '비밀번호가 틀렸습니다.'
   }
 
-  await Post.edit(postId, { name, relationship, title, contents, password });
+  await Post.edit(postId, { name, relationship, title, contents, password ,isPublic});
 
   logger.info(
     `(${postId}) ${username} Edit | ${post.title} | ${post.name} | ${post.relationship}`,
