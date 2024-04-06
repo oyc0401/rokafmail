@@ -1,13 +1,8 @@
-
 import { Post, User } from "src/db";
-import { notFound } from "next/navigation";
-// import { Client } from "./client";
+import { notFound, redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { LoginPage } from "./loginPage";
-import { View } from './view/view'
-
 import { auth } from "src/app/api/auth/auth";
-// import {Mailbox} from './mailbox'
+import { View } from './view/view'
 
 export default async function Page({ params }) {
   const postId = Number(params.postId);
@@ -27,7 +22,7 @@ export default async function Page({ params }) {
   if (session && session.user && session.user.email) {
     const sessionUsername = session.user.email;
     const user = await User.findByUsername(sessionUsername);
-    
+
     // 본인의 편지함
     if (user && sessionUsername == params.username)
       return <View postId={postId} />;
@@ -41,9 +36,11 @@ export default async function Page({ params }) {
   if (pwcookie && pwcookie.value == password)
     return <View postId={postId} writer />;
 
-  if (post.isPublic){
-     return <View postId={postId} writer />;
+  if (post.isPublic) {
+    return <View postId={postId} writer />;
   }
 
-  return <LoginPage postId={postId} />;
+  const url = `https://${process.env.DOMAIN}/mails/${username}/${postId}`;
+
+  redirect(`/mails/${username}/${postId}/signin?&callbackUrl=${url}`)
 }

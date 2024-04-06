@@ -15,7 +15,7 @@ export async function checkPassword(postId: number, password: string) {
     cookies().set({
       name: "password",
       value: password,
-      // path: `/mails/${post.user.username}/${postId}`,
+      path: `/mails/${post.user.username}/${postId}`,
     });
   }
   return valid;

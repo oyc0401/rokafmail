@@ -41,8 +41,8 @@ export default async function EditPage({ params }) {
       <Submit postId={postId} username={username} posted={posted} url={url}></Submit>
     </div>;
 
-
-  redirect(`/mails/${username}/${postId}`)
+  const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}/edit`;
+  redirect(`/mails/${username}/${postId}/signin?callbackUrl=${callbackUrl}`)
 }
 
 async function UserDescription({ user }) {
