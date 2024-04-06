@@ -41,5 +41,9 @@ export default async function Page({ params }) {
   if (pwcookie && pwcookie.value == password)
     return <View postId={postId} writer />;
 
+  if (post.isPublic){
+     return <View postId={postId} writer />;
+  }
+
   return <LoginPage postId={postId} />;
 }

@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 import RokafSmall from 'public/assets/rokaf-small.png';
 import Image from 'next/image';
 
-export function PostCard({ id, title, name, rel, time, username, contents, secret }) {
+export function PostCard({ id, title, name, rel, time, username, contents, isPublic }) {
   const router = useRouter();
   const moveView = () => router.push(`/mails/${username}/${id}`);
 
@@ -15,7 +15,7 @@ export function PostCard({ id, title, name, rel, time, username, contents, secre
           <Image className="w-10 h-4" src={RokafSmall} alt='공군마크' ></Image>
         </div>
 
-        {secret ? <></> : <p className="text-left text-sm mb-2 line-clamp-2" >{contents}</p>}
+        {isPublic ? <p className="text-left text-sm mb-2 line-clamp-2" >{contents}</p> : <></>}
         <div className="flex flex-row justify-between items-end space-x-2 mt-0.5">
           <p className="text-sm">{`${name} | ${rel}`}</p>
           <p className="text-xs">{time}</p>

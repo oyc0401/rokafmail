@@ -11,17 +11,19 @@ interface State {
   title: string;
   contents: string;
   password: string;
+  isPublic: boolean;
 
   setName: (text: string) => void;
   setRelationship: (text: string) => void;
   setTitle: (text: string) => void;
   setContents: (text: string) => void;
   setPassword: (text: string) => void;
+  setIsPublic: (text: boolean) => void;
 }
 
 export const useStore = create<State>((set) => ({
   initial: () =>
-    set({ name: "", relationship: "", title: "", contents: "", password: "" }),
+    set({ name: "", relationship: "", title: "", contents: "", password: "", isPublic: false }),
 
   click: false,
   setClick: (click) => set({ click: click }),
@@ -31,10 +33,12 @@ export const useStore = create<State>((set) => ({
   title: "",
   contents: "",
   password: "",
+  isPublic: false,
 
   setName: (text) => set({ name: text }),
   setRelationship: (text) => set({ relationship: text }),
   setTitle: (text) => set({ title: text }),
   setContents: (text) => set({ contents: text }),
   setPassword: (text) => set({ password: text }),
+  setIsPublic: (text) => set({ isPublic: text }),
 }));

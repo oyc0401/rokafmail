@@ -12,7 +12,7 @@ import { validN, validR, validC, validT, validP } from "./valid";
 import { mailApi } from "src/app/api/mail/mail";
 
 export function Submit({ username }) {
-  const { name, relationship, title, contents, password } = useStore();
+  const { name, relationship, title, contents, password,isPublic } = useStore();
 
   const router = useRouter();
 
@@ -34,6 +34,7 @@ export function Submit({ username }) {
       title: title,
       contents: contents,
       password: password,
+      isPublic:isPublic,
     })
       .then((response) => {
         if (response.status === 200) {

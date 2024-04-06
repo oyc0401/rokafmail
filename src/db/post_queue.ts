@@ -52,6 +52,9 @@ export class PostQueue {
 
   static findByUsername = (username: string) =>
     prisma.postQueue.findMany({
+      orderBy: {
+          id: "asc",
+      },
       include: {
         user: {
           select: {
@@ -66,6 +69,7 @@ export class PostQueue {
           username,
         },
       },
+      
     });
 
   static findByUserId = (userId: number) =>

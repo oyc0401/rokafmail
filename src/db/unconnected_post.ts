@@ -6,6 +6,9 @@ export class UnconnectedPost {
 
   static findByUsername = (username: string) =>
     prisma.unconnectedPost.findMany({
+      orderBy: {
+          id: "asc",
+      },
       include: {
         user: {
           select: {

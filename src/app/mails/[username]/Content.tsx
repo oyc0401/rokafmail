@@ -46,8 +46,8 @@ export function Content({ mails, unpostMails }) {
                     rel={post.relationship}
                     time={dateToStr(post.createdAt)}
                     username={post.user.username}
-                    contents={"내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ "}
-                    secret={true}
+                    contents={post.contents}
+                    isPublic={post.isPublic}
                   />
                 </div>
               ))}
@@ -77,8 +77,8 @@ export function Content({ mails, unpostMails }) {
                     rel={post.post.relationship}
                     time={dateToStr(post.post.createdAt)}
                     username={post.user.username}
-                    contents={"내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ "}
-                    secret={true}
+                    contents={post.post.contents}
+                    isPublic={post.post.isPublic}
                   />
                 </div>
               ))}
@@ -118,8 +118,8 @@ export function UnConnectedContent({ mails }) {
               rel={post.post.relationship}
               time={dateToStr(post.post.createdAt)}
               username={post.user.username}
-              contents={"내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ 내용내용ㅎㅎ "}
-              secret={true}
+              contents={post.post.contents}
+              isPublic={post.post.isPublic}
             />
           </div>
         ))}

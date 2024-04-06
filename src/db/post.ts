@@ -8,6 +8,7 @@ export class Post {
     title: string;
     contents: string;
     password: string;
+    isPublic: boolean;
   }) => prisma.post.create({ data });
 
   static findById = (id: number) =>
@@ -102,10 +103,11 @@ export class Post {
       },
     });
 
+  // 편지함 보여주기, id 오름차 순
   static findPostedByUsername = (username: string) =>
     prisma.post.findMany({
       orderBy: {
-        createdAt: "desc",
+          id: "desc",
       },
       include: {
         user: {
@@ -122,6 +124,7 @@ export class Post {
         },
         posted: true,
       },
+     
     });
 
   static update = (

@@ -48,9 +48,10 @@ export async function mailApi(mailForm: {
   title: string;
   contents: string;
   password: string;
+  isPublic:boolean;
 }) {
   try {
-    const { username, name, relationship, title, contents, password } =
+    const { username, name, relationship, title, contents, password,isPublic } =
       mailForm;
 
     // 유저 확인
@@ -83,6 +84,7 @@ export async function mailApi(mailForm: {
       title,
       contents,
       password,
+      isPublic,
     });
 
     // 연결되었으면 queue에 저장한다.
