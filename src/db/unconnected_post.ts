@@ -25,6 +25,10 @@ export class UnconnectedPost {
       },
     });
 
+  /**
+   * [/mails] 공개 편지 가져오기
+   * 
+   */
   static findPublicByUsername = (username: string) =>
     prisma.unconnectedPost.findMany({
       include: {
@@ -57,6 +61,11 @@ export class UnconnectedPost {
       },
     });
 
+
+  /**
+   * [/mails] 비공개 편지 가져오기
+   * 
+   */
   static findPrivateByUsername = (username: string) =>
   prisma.unconnectedPost.findMany({
     include: {

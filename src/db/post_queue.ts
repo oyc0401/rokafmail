@@ -73,6 +73,10 @@ export class PostQueue {
     });
 
 
+  /**
+   * [/mails] 공개 편지 가져오기
+   * 
+   */
   static findPublicByUsername = (username: string) =>
     prisma.postQueue.findMany({
       include: {
@@ -105,6 +109,10 @@ export class PostQueue {
       },
     });
 
+  /**
+   * [/mails] 비공개 편지 가져오기
+   * 
+   */
   static findPrivateByUsername = (username: string) =>
   prisma.postQueue.findMany({
     include: {

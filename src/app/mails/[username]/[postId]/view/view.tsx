@@ -14,7 +14,7 @@ import {
 } from "src/lib/time";
 
 export async function View({ postId, writer }: { postId: number; writer?: boolean }) {
-  const post = await Post.findById(postId);
+  const post = await Post.findPublicPostById(postId);
   if (!post) notFound();
 
 
