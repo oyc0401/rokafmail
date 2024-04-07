@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import crypto from "crypto";
 import { useRouter } from "next/navigation";
 import { editPassword } from "src/app/api/profile/profile";
+import { signOut } from "next-auth/react";
 
 export function Client({ username }) {
   const [originPassword, setorpassword] = useState("");
@@ -22,8 +23,9 @@ export function Client({ username }) {
 
     const response = await editPassword(username, encryptedPassword);
     if (response.status == 200) {
-      alert("비밀번호가 변경되었습니다!");
-      router.push("/profile");
+      alert("비밀번호가 변경되었습니다! 다시 로그인 해주세요.");
+      signOut({ callbackUrl: "/" });
+      
     } else {
       alert(`error: ${response.status} ${response.error}`);
     }
