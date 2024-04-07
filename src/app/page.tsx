@@ -1,18 +1,66 @@
+import Link from "next/link";
+import Image from "next/image";
+import localFont from 'next/font/local'
+import { Logo } from "public/assets/index";
+import { FitScreen } from "src/components/FitScreen";
 
 import styles from "./main.module.css";
-import { Header } from "./header";
 import { Footer } from "./footer";
-export default function Help() {
+
+const INKLIPQUID = localFont({ src: '../../public/fonts/INKLIPQUID.ttf' });
+export default function Page() {
   return (
     <>
-      <Header></Header>
-      <Body></Body>
-      <Footer></Footer>
+      <TopView/>
+      <Body/>
+      <Footer/>
     </>
   );
 }
 
+function TopView() {
+  return (
+    <FitScreen>
+      <div className="screen">
+        <div style={{ flex: 90 }}></div>
+        <div className="p-5">
+          <Image className='h-40 w-40 mx-auto' src={Logo} alt="로고" />
+          <div style={{ paddingTop: 38 }}>
+            <h2 className={`${INKLIPQUID.className} ${styles.titleLogo}`}>
+              하늘인편
+            </h2>
+          </div>
+        </div>
 
+        <div style={{ flex: 130 }}></div>
+
+        <div className="pt-1 pb-8 w-full">
+          <h1 className={'text-xl'}>
+            입대전에 인편 링크를
+            <br />
+            만들고 공유하세요!
+          </h1>
+        </div>
+        <Link className="submit" href={{ pathname: "/register" }}>
+          편지함 만들기
+        </Link>
+        <div className="pt-2.5 pb-5 w-full">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <Link href="/profile" className={styles.help}>
+              로그인
+            </Link>
+          </div>
+        </div>
+      </div>
+    </FitScreen>
+  );
+}
 
 function Body() {
   return (
