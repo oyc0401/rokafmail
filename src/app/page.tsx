@@ -4,16 +4,16 @@ import localFont from 'next/font/local'
 import { Logo } from "public/assets/index";
 import { FitScreen } from "src/components/FitScreen";
 
-import styles from "./main.module.css";
-import { Footer } from "./footer";
+import styles from "./page.module.css";
 
 const INKLIPQUID = localFont({ src: '../../public/fonts/INKLIPQUID.ttf' });
+
 export default function Page() {
   return (
     <>
-      <TopView/>
-      <Body/>
-      <Footer/>
+      <TopView />
+      <Body />
+      <Footer />
     </>
   );
 }
@@ -52,7 +52,7 @@ function TopView() {
               justifyContent: "center",
             }}
           >
-            <Link href="/profile" className={styles.help}>
+            <Link href="/profile" className={`text-base underline hover:text-darkaccent`}>
               로그인
             </Link>
           </div>
@@ -114,5 +114,33 @@ function Body() {
       </p>
 
     </div>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className='bg-primary pt-5 pb-8'>
+      <div className="screen items-start gap-0.5">
+        <div className="w-full flex justify-between">
+          <p className='text-xs text-white'> 문의: oyc0401@gmail.com</p>
+          <Link className='text-xs text-white underline' href="/search">
+            편지함 찾기
+          </Link>
+        </div>
+        <div className="w-full flex justify-between">
+          <p className='text-xs text-white'>
+            <span className='text-xs text-white'>© </span>
+            <Link className='text-xs text-white underline'
+              href="https://github.com/oyc0401" target="_blank" >
+              yuchan
+            </Link>
+            <span className='text-xs text-white'>. All Rights Reserved.</span>
+          </p>
+          <Link className='text-xs text-white underline' href="/privacy-policy">
+            개인정보처리방침
+          </Link>
+        </div>
+      </div>
+    </footer>
   );
 }

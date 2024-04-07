@@ -1,0 +1,20 @@
+.titleLogo{
+  color: var(--primary);
+  font-size:64px;
+   letter-spacing: 0.04em;
+}
+
+/* 설명글 */
+.subtitle{
+  font-size:20px;
+  font-weight:500;
+  padding-bottom:8px;
+}
+.content{
+  font-size:16px;
+  text-align:start;
+  padding-bottom:36px;
+}
+
+
+
