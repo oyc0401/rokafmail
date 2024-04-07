@@ -7,10 +7,8 @@ export default async function Mails({ params }) {
   const username = decodeURI(params.username);
 
   let user = await User.findByUsername(username);
-
-  if (!user) {
-    notFound();
-  }
+  if (!user)  notFound();
+  
 
   const postsPrivate = await Post.findPrivateByUsername(username);
   const postsPublic = await Post.findPublicByUsername(username);

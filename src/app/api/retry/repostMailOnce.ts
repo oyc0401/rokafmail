@@ -53,6 +53,8 @@ export async function repost({
   const { memberSeq, sodae, generation } = user;
 
   const status = serveStatus(generation);
+  console.log(post)
+  console.log(user)
 
   // 다시보내기 할 때 편지쓰기 가능한 기간에만 보낸다.
   // 편지쓰기 이후에 보내도 일단은 그냥 스킵하고 postQueue에 그대로 두겠다.

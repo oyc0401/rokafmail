@@ -35,7 +35,7 @@ export async function postMail(
   data.append("memberSeq", "");
   data.append("memberSeqVal", memberSeq);
   data.append("sodaeVal", sodae);
-// 7TXYFRbyWor7fK22YBh7L4EWI8BW3WH1xt9TQkOE6VT16srxnF8pkaUT2euc9a4P.AF1302_servlet_CONT21
+  // 7TXYFRbyWor7fK22YBh7L4EWI8BW3WH1xt9TQkOE6VT16srxnF8pkaUT2euc9a4P.AF1302_servlet_CONT21
   var config = {
     method: "post",
     url: "https://www.airforce.mil.kr/user/emailPicSaveEmail.action",
@@ -47,8 +47,8 @@ export async function postMail(
     timeout: 20000,
     data: data,
     httpsAgent: new https.Agent({
-          rejectUnauthorized: false, //허가되지 않은 인증을 reject하지 않겠다!
-        }),
+      rejectUnauthorized: false, //허가되지 않은 인증을 reject하지 않겠다!
+    }),
   };
 
   // console.log(`[postMail] ${memberSeq} 편지 보내는 중...`);
@@ -59,33 +59,39 @@ export async function postMail(
     //console.log(res.data);
 
     const msgList = extractInnerText(res.data, "message");
-    console.log(msgList,password);
-
-    if(msgList[0] == '정상적으로 등록되었습니다.'){
+    if (msgList[0] == '정상적으로 등록되었습니다.') {
       return {
         complete: true,
         serverOn: true,
       };
-    }else{
+    } else {
       logger.warn(`${memberSeq} | ${msgList}`);
       return {
         complete: false,
         serverOn: true,
       };
     }
-    
+
   } catch (error) {
     if (error.response) {
-      console.log(
-        `debug - ${memberSeq} 편지 오류: ${error.message} status:${error.response.status}`,
-      );
-      logger.debug(
+      if (error.response.status == 400) {
+
+      }
+
+      logger.warn(
         `${memberSeq} 편지 오류: ${error.message} status:${error.response.status}`,
       );
-    } else {
-      console.log(`warning - ${memberSeq} 편지 오류: ${error.message}`);
-      logger.warn(`${memberSeq} 편지 오류: ${error.message}`);
+
+      return {
+        complete: false,
+        serverOn: true,
+      };
     }
+
+
+    console.log(`warning - ${memberSeq} 편지 오류: ${error.message}`);
+    logger.warn(`${memberSeq} 편지 오류: ${error.message}`);
+
     return {
       complete: false,
       serverOn: false,
