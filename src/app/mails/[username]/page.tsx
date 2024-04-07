@@ -16,7 +16,6 @@ export default async function Mails({ params }) {
   const postsPublic = await Post.findPublicByUsername(username);
   const posts = [...postsPrivate, ...postsPublic];
   const postsSorted = posts.sort((a, b) => a.id > b.id ? -1 : 1);
-  console.log(postsSorted)
 
   let queuePrivate = await PostQueue.findPrivateByUsername(username);
   let queuePublic = await PostQueue.findPublicByUsername(username);
