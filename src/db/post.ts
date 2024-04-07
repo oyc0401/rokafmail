@@ -128,15 +128,12 @@ export class Post {
 
     });
 
+  
   // 비공개 편지 가져오기 id 오름차 순
   static findPrivateByUsername = (username: string) =>
     prisma.post.findMany({
-      orderBy: {
-        id: "desc",
-      },
       select: {
         id: true,
-
         userId: true,
         name: true,
         relationship: true,
@@ -160,6 +157,41 @@ export class Post {
         user: {
           username,
         },
+         isPublic:false,
+        posted: true,
+      },
+
+    });
+
+  
+  // 공개 편지 가져오기
+  static findPublicByUsername = (username: string) =>
+    prisma.post.findMany({
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        relationship: true,
+        title: true,
+        createdAt: true,
+        posted: true,
+        postAt: true,
+        isPublic: true,
+        contents:true,
+        user: {
+          select: {
+            username: true,
+            connect: true,
+            generation: true,
+          },
+        },
+
+      },
+      where: {
+        user: {
+          username,
+        },
+        isPublic:true,
         posted: true,
       },
 

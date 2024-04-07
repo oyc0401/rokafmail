@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Post, PostQueue, UnconnectedPost, User } from "src/db";
 import { notFound } from "next/navigation";
 import { NavHeader } from "src/components/NavHeader";
-///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 import { Content, UnConnectedContent } from "./Content";
 export default async function Mails({ params }) {
   const username = decodeURI(params.username);
@@ -13,16 +12,29 @@ export default async function Mails({ params }) {
     notFound();
   }
 
-  let posts = await Post.findPostedByUsername(username);
-  let queue = await PostQueue.findByUsername(username);
-  let unconnected = await UnconnectedPost.findByUsername(username);
+  const postsPrivate = await Post.findPrivateByUsername(username);
+  const postsPublic = await Post.findPublicByUsername(username);
+  const posts = [...postsPrivate, ...postsPublic];
+  const postsSorted = posts.sort((a, b) => a.id > b.id ? -1 : 1);
+
+
+  let queuePrivate = await PostQueue.findPrivateByUsername(username);
+  let queuePublic = await PostQueue.findPublicByUsername(username);
+  const queues = [...queuePrivate, ...queuePublic];
+  const queueSorted = queues.sort((a, b) => a.id < b.id ? -1 : 1);
+
+
+  let unconnectedPrivate = await UnconnectedPost.findPrivateByUsername(username);
+  let unconnectedPublic = await UnconnectedPost.findPublicByUsername(username);
+  const unconnects = [...unconnectedPrivate, ...unconnectedPublic];
+  const unconnectsSorted = unconnects.sort((a, b) => a.id > b.id ? -1 : 1);
 
   return (
     <>
       <div className="h-full max-w-3xl mx-auto">
         <NavHeader user={user}></NavHeader>
-        {user.connect ? <Content mails={posts} unpostMails={queue}></Content>
-          : <UnConnectedContent mails={unconnected} ></UnConnectedContent>}
+        {user.connect ? <Content mails={postsSorted} unpostMails={queueSorted}></Content>
+          : <UnConnectedContent mails={unconnectsSorted} ></UnConnectedContent>}
         <div style={{ height: 108, minHeight: 108, width: 1 }}></div>
       </div>
       <nav className="fixed bottom-0 w-full">

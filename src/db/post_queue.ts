@@ -72,6 +72,70 @@ export class PostQueue {
       
     });
 
+
+  static findPublicByUsername = (username: string) =>
+    prisma.postQueue.findMany({
+      include: {
+        user: {
+          select: {
+            username: true,
+            connect: true,
+          },
+        },
+        post: {
+          select: {
+            name: true,
+            relationship: true,
+            title: true,
+            createdAt: true,
+            posted: true,
+            postAt: true,
+            isPublic: true,
+            contents:true,
+          }
+        }
+      },
+      where: {
+        user: {
+          username,
+        },
+        post: {
+          isPublic: true,
+        }
+      },
+    });
+
+  static findPrivateByUsername = (username: string) =>
+  prisma.postQueue.findMany({
+    include: {
+      user: {
+        select: {
+          username: true,
+          connect: true,
+        },
+      },
+      post: {
+        select: {
+          name: true,
+          relationship: true,
+          title: true,
+          createdAt: true,
+          posted: true,
+          postAt: true,
+          isPublic: true,
+        }
+      }
+    },
+    where: {
+      user: {
+        username,
+      },
+      post: {
+        isPublic: false,
+      }
+    },
+  });
+
   static findByUserId = (userId: number) =>
   prisma.postQueue.findMany({
     include: {
