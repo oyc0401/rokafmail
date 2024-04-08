@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-04-08T14:14:40.045Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="KxQUypgug7Vhi6y_9nnY" version="24.2.2" type="github">
+<mxfile host="app.diagrams.net" modified="2024-04-08T14:18:54.072Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="zryhcxBLEl_fFyGCxtGL" version="24.2.2" type="github">
   <diagram name="페이지-1" id="YYIqQqlZSumYDMB_ZiYN">
-    <mxGraphModel dx="1434" dy="776" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1195" dy="647" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -119,10 +119,23 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="TXcI-fBlLuWAS2TPfB02-5" value="실패시 큐 삽입" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-1" target="TXcI-fBlLuWAS2TPfB02-9">
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=30;entryDy=0;entryPerimeter=0;curved=0;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-1" target="TXcI-fBlLuWAS2TPfB02-9">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1279.91" y="280" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1280" y="295" />
+              <mxPoint x="1140" y="295" />
+              <mxPoint x="1140" y="220" />
+            </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-33" value="실패시 큐 삽입" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="TXcI-fBlLuWAS2TPfB02-5">
+          <mxGeometry x="-0.3238" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-31" value="성공시 수정" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-1" target="TXcI-fBlLuWAS2TPfB02-29">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="TXcI-fBlLuWAS2TPfB02-1" value="Send Mail" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1219.91" y="340" width="120" height="80" as="geometry" />
@@ -138,29 +151,36 @@
         <mxCell id="TXcI-fBlLuWAS2TPfB02-2" value="기훈단 서버" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1449.91" y="340" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TXcI-fBlLuWAS2TPfB02-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-9" target="TXcI-fBlLuWAS2TPfB02-10">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-9" target="TXcI-fBlLuWAS2TPfB02-27">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1449.9099999999999" y="220" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="TXcI-fBlLuWAS2TPfB02-9" value="Queue" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=30;notch=30;" vertex="1" parent="1">
           <mxGeometry x="1184.91" y="190" width="190" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="TXcI-fBlLuWAS2TPfB02-13" value="요청" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-10" target="TXcI-fBlLuWAS2TPfB02-2">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="TXcI-fBlLuWAS2TPfB02-15" value="성공시" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-10" target="TXcI-fBlLuWAS2TPfB02-14">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="TXcI-fBlLuWAS2TPfB02-16" value="요청 실패시 큐 삽입 후 중지" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=30;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-10" target="TXcI-fBlLuWAS2TPfB02-9">
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-13" value="요청" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-27" target="TXcI-fBlLuWAS2TPfB02-2">
           <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1509.91" y="140" />
-              <mxPoint x="1139.91" y="140" />
-              <mxPoint x="1139.91" y="220" />
-            </Array>
+            <mxPoint x="1509.9099999999999" y="250" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TXcI-fBlLuWAS2TPfB02-10" value="node-cron" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1449.91" y="190" width="120" height="60" as="geometry" />
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-15" value="성공시 수정" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-27" target="TXcI-fBlLuWAS2TPfB02-14">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1569.9099999999999" y="220" as="sourcePoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-16" value="요청 실패시 큐 삽입 후 중지" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=30;entryDy=0;entryPerimeter=0;curved=0;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-27" target="TXcI-fBlLuWAS2TPfB02-9">
+          <mxGeometry x="-0.0001" relative="1" as="geometry">
+            <mxPoint x="1509.9142857142856" y="190" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="1510" y="140" />
+              <mxPoint x="1140" y="140" />
+              <mxPoint x="1140" y="220" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="TXcI-fBlLuWAS2TPfB02-14" value="Post" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="1689.91" y="190" width="60" height="60" as="geometry" />
@@ -196,6 +216,12 @@
         </mxCell>
         <mxCell id="TXcI-fBlLuWAS2TPfB02-22" value="API" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1000" y="350" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-27" value="node-cron" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1429.91" y="180" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-29" value="Post" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1249.91" y="470" width="60" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
