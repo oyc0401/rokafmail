@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-04-08T14:29:32.790Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="EEj_3m9puOMdSXRLdxun" version="24.2.2" type="github">
+<mxfile host="app.diagrams.net" modified="2024-04-08T14:36:32.061Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="P0kEHfpWWUKo5fZqViwO" version="24.2.2" type="github">
   <diagram name="페이지-1" id="YYIqQqlZSumYDMB_ZiYN">
-    <mxGraphModel dx="1195" dy="647" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="776" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -135,7 +135,20 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="TXcI-fBlLuWAS2TPfB02-31" value="성공시 수정" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-1" target="TXcI-fBlLuWAS2TPfB02-29">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1270" y="455" />
+              <mxPoint x="1190" y="455" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-51" value="편지쓰기 시간 아닐 시" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-1" target="TXcI-fBlLuWAS2TPfB02-50">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1290" y="455" />
+              <mxPoint x="1405" y="455" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="TXcI-fBlLuWAS2TPfB02-1" value="Send Post" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1219.91" y="340" width="120" height="80" as="geometry" />
@@ -165,7 +178,7 @@
             <Array as="points" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TXcI-fBlLuWAS2TPfB02-9" value="Queue" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=30;notch=30;" vertex="1" parent="1">
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-9" value="Post Queue" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=30;notch=30;" vertex="1" parent="1">
           <mxGeometry x="1184.91" y="190" width="190" height="60" as="geometry" />
         </mxCell>
         <mxCell id="TXcI-fBlLuWAS2TPfB02-13" value="요청" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-27" target="TXcI-fBlLuWAS2TPfB02-2">
@@ -215,7 +228,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="TXcI-fBlLuWAS2TPfB02-22" value="API" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-22" value="Mail API" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1000" y="350" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="TXcI-fBlLuWAS2TPfB02-37" value="요청 성공시 pop" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-27" target="TXcI-fBlLuWAS2TPfB02-9">
@@ -230,7 +243,59 @@
           <mxGeometry x="1429.91" y="180" width="160" height="80" as="geometry" />
         </mxCell>
         <mxCell id="TXcI-fBlLuWAS2TPfB02-29" value="Post" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" vertex="1" parent="1">
-          <mxGeometry x="1249.91" y="470" width="60" height="60" as="geometry" />
+          <mxGeometry x="1159.91" y="490" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-50" value="&lt;span style=&quot;white-space: nowrap;&quot;&gt;Unconnected Posts&lt;/span&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1339.91" y="490" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-55" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: nowrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;회원가입&lt;/span&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
+          <mxGeometry x="-0.0893" relative="1" as="geometry">
+            <mxPoint x="1249.91" y="920" as="sourcePoint" />
+            <mxPoint x="1359.91" y="920" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-53" value="Client" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1129.91" y="900" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-54" target="TXcI-fBlLuWAS2TPfB02-56">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-59" value="Status: OK" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="940" as="sourcePoint" />
+            <mxPoint x="1249.9100000000003" y="940" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-65" value="저장" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="TXcI-fBlLuWAS2TPfB02-54" target="TXcI-fBlLuWAS2TPfB02-64">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-54" value="Register API" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="900" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-56" value="Register" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1560" y="890" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-60" value="node-cron" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1770" y="780" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-61" value="User Queue" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=30;notch=30;" vertex="1" parent="1">
+          <mxGeometry x="1624.91" y="980" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-62" value="성공시 수정" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="TXcI-fBlLuWAS2TPfB02-63">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1600.09" y="970" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="1600.09" y="1006" />
+              <mxPoint x="1520.09" y="1006" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-63" value="User" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="1041" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TXcI-fBlLuWAS2TPfB02-64" value="User" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1389.91" y="780" width="60" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
