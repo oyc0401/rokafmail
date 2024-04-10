@@ -29,7 +29,7 @@ model User {
 
 model Post {
   id               Int               @id @default(autoincrement())
-  userId           Int
+  userId           Int               
   name             String
   relationship     String
   title            String
@@ -42,6 +42,8 @@ model Post {
   user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   postQueues       PostQueue[]
   unconnectedPosts UnconnectedPost[]
+
+ @@index([userId])
 }
 
 model UnconnectedPost {
