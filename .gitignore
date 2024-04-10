@@ -5,9 +5,13 @@ node_modules
 next-env.d.ts
 .local
 
+.vscode
+
 src/app/(admin)
 
 logs
 .env
 
 .breakpoints
+
+readme_dev.md
