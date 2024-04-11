@@ -7,6 +7,14 @@
         "version": 1,
         "index": 1638
       }
+    ],
+    "src/app/Analytics.tsx": [
+      {
+        "id": "1a6fa1d2-5592-42c6-83a6-fa3fba467c8f",
+        "line": 24,
+        "version": 41,
+        "index": 518
+      }
     ]
   }
 }

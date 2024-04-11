@@ -1,7 +1,6 @@
 import "styles/globals.css";
 import { Noto_Sans_KR } from "next/font/google";
 import Providers from "./provider";
-import Analytics from "./Analytics";
 import { Suspense } from "react";
 import { GoogleAnalytics } from '@next/third-parties/google'
 

@@ -7,7 +7,6 @@ import { Nav } from "src/components";
 import {
   getEnter,
   getCompletion,
-  knowTime,
   canSearch,
   Status,
   serveStatus,
@@ -19,6 +18,14 @@ import { ShareButton } from "./copy_button";
 
 import { NavHeader } from 'src/components/NavHeader'
 
+export async function generateMetadata(
+  { params }
+) {
+  const username = decodeURI(params.username);
+  return {
+    title: `하늘인편 - ${username}`,
+  }
+}
 export default async function Mail({ params }) {
   const username = decodeURI(params.username);
   let user = await User.findByUsername(username);

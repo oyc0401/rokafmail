@@ -3,6 +3,16 @@ import { Post, PostQueue, UnconnectedPost, User } from "src/db";
 import { notFound } from "next/navigation";
 import { NavHeader } from "src/components/NavHeader";
 import { Content, UnConnectedContent } from "./Content";
+
+export async function generateMetadata(
+  { params }
+) {
+  const username = decodeURI(params.username);
+  return {
+    title: `하늘인편 - ${username}`,
+  }
+}
+
 export default async function Mails({ params }) {
   const username = decodeURI(params.username);
 
