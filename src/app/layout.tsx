@@ -3,6 +3,8 @@ import { Noto_Sans_KR } from "next/font/google";
 import Providers from "./provider";
 import Analytics from "./Analytics";
 import { Suspense } from "react";
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 
 const notoSansKr = Noto_Sans_KR({
   weight: ["400", "500", "600", "700", "800"],
@@ -42,11 +44,8 @@ export default function RootLayout({ children }) {
         />
         <meta name="google-adsense-account" content="ca-pub-3948063339127452"/>
       </head>
-      <Suspense>
-          <Analytics />
-      </Suspense>
+       <GoogleAnalytics gaId="G-BZ21V7LF0V" />
       <body>
-       
         <Providers>{children}</Providers>
       </body>
     </html>
