@@ -42,10 +42,11 @@ export default function RootLayout({ children }) {
         />
         <meta name="google-adsense-account" content="ca-pub-3948063339127452"/>
       </head>
+      <Suspense>
+          <Analytics />
+      </Suspense>
       <body>
-        <Suspense>
-            <Analytics />
-        </Suspense>
+       
         <Providers>{children}</Providers>
       </body>
     </html>
