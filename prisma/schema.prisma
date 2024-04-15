@@ -25,14 +25,6 @@ model User {
   unconnectedPosts UnconnectedPost[]
   UnidentifiedUser UnidentifiedUser[]
   usersQueue       UsersQueue[]
-  credential       Credential?
-}
-
-model Credential {
-  id               Int                @id @default(autoincrement())
-  userId           Int                @unique
-  password         String?
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Post {
