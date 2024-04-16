@@ -1,5 +1,5 @@
 "use server";
-import { Post User } from "src/db";
+import { Post, User } from "src/db";
 
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";

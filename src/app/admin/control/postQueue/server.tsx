@@ -1,8 +1,9 @@
 "use server";
 
-import { repost, RepostStatus } from "src/app/api/retry/repostMailOnce";
-import { Post} from "src/db";
+//import { repost, RepostStatus } from "src/app/api/retry/repostMailOnce";
+import { Post } from "src/db";
 import { makeLogger } from "config/winston";
+import { sendMail,SendStatus } from "src/app/api/service/sendMail";
 const logger = makeLogger("Control Post Queue");
 
 // import {} from'src/app/api/retry/'
@@ -18,33 +19,29 @@ export async function resend(postId: number) {
   const { memberSeq, sodae, generation, username } = post.user;
   if (!memberSeq || !sodae) return;
 
-  const status = await repost({
-    postId,
-    post: { name, relationship, title, contents, password, createdAt },
-    user: { memberSeq, sodae, generation },
-  });
+  const status = await sendMail(post.id);
 
   const postLogForm = `${postId} - ${username} (${userId})`;
   let msg = "";
 
   switch (status) {
-    case RepostStatus.success:
+    case SendStatus.success:
       msg = `success ${postLogForm}`;
       logger.info(msg);
       return msg;
-    case RepostStatus.skip:
+    case SendStatus.skip:
       msg = `skip ${postLogForm}`;
       logger.info(msg);
       return msg;
-    case RepostStatus.after:
+    case SendStatus.after:
       msg = `after ${postLogForm}`;
       logger.info(msg);
       return msg;
-    case RepostStatus.error:
+    case SendStatus.error:
       msg = `error ${postLogForm}`;
       logger.info(msg);
       return msg;
-    case RepostStatus.fail:
+    case SendStatus.fail:
       msg = `fail ${postLogForm}`;
       logger.info(msg);
       return msg;
