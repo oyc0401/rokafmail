@@ -6,14 +6,13 @@ import { User, Post, PostQueue } from "src/db";
 
 export default async function UserController({ searchParams }) {
   if (searchParams.userId) {
-    const data = await PostQueue.findByUserIdTable(Number(searchParams.userId));
+    const data = await Post.findByUserIdNotPosted(Number(searchParams.userId));
 
     const transformedArray = data.map((item) => {
       // 각 객체에 대해 user와 post 속성을 해체하여 상위 객체에 통합
       return {
         ...item,
         ...item.user,
-        ...item.post,
       };
     });
     return (
@@ -28,8 +27,9 @@ export default async function UserController({ searchParams }) {
 
   const transformedArray = data.map((item) => {
     // 각 객체에 대해 user와 post 속성을 해체하여 상위 객체에 통합
+    
     return{
-      ...item.user,
+      ...item.post.user,
       ...item.post,
       ...item,
     };

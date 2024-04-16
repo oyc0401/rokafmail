@@ -1,12 +1,14 @@
 import { Status, serveStatus } from "src/lib/time";
 import Rokaf from "../rokaf/rokaf";
 import {
-  UnconnectedPost,
+  // UnconnectedPost,
   PostQueue,
   UserQueue,
   User,
+  Post,
   UnidentifiedUser,
 } from "src/db";
+import { asyncPost } from "../service/asyncPost";
 
 export enum VerifyStatus {
   verify,
@@ -38,14 +40,16 @@ export async function verify({
 
       // 서버가 통신이 끊기면 바로 종료
       if (!serverOn) {
-        return VerifyStatus.error; 
+        return VerifyStatus.error;
       }
 
       // 얻었으면 업데이트
       if (member != null) {
         const { sodae, memberSeq } = member;
         await updateUser(userId, sodae, memberSeq);
-        await relocatePost(userId);
+        await sendPosts(userId)
+
+
         return VerifyStatus.verify;
       } else if (status == Status.working) {
         // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
@@ -74,11 +78,13 @@ async function updateUser(userId: number, sodae: string, memberSeq: string) {
   await UserQueue.deleteByUserId(userId);
 }
 
-// 모든 연결안된 메일들을 대기열에 올리기
-async function relocatePost(userId: number) {
-  let posts = await UnconnectedPost.findByUserId(userId);
-  await PostQueue.insertMany(posts);
 
-  // delete all
-  await UnconnectedPost.deleteByUserId(userId);
+
+// 해당 유저의 모든 미발송 편지들을 다시 보내기
+async function sendPosts(userId: number) {
+  let posts = await Post.findNotPostedByUserId(userId);
+
+  for (const post of posts) {
+    asyncPost(post.id);
+  }
 }

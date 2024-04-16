@@ -1,9 +1,11 @@
+
+
 import Rokaf from "../rokaf/rokaf";
 import { getNow, serveStatus, Status } from "src/lib/time";
 import { PostQueue, Post } from "src/db";
 import { makeLogger } from "config/winston";
 
-export enum RepostStatus {
+export enum SendStatus {
   success,
   skip,
   after,
@@ -11,27 +13,24 @@ export enum RepostStatus {
   fail,
 }
 
-export function statusToStr(status: RepostStatus) {
+export function sendStatusToStr(status: SendStatus) {
   switch (status) {
-    case RepostStatus.success:
+    case SendStatus.success:
       return `Complete`;
-    case RepostStatus.skip:
+    case SendStatus.skip:
       return "QueueAdded - BeforeMailTime";
-    case RepostStatus.after:
+    case SendStatus.after:
       return `Skip - AfterMailTime`;
-    case RepostStatus.error:
+    case SendStatus.error:
       return `QueueAdded - ServerError`;
-    case RepostStatus.fail:
+    case SendStatus.fail:
       return `QueueAdded - Fail`;
   }
 }
 /**
- * postId, post, user가 주어지면 편지를 보내고, 보내지면 postQueue에 있는 post를 삭제한다.
-
+ * 해당 id의 편지를 보내고 결과 enum 리턴하기
 **/
-export async function repost(
-  postId: number,
-) {
+export async function sendMail(postId: number): Promise<SendStatus> {
 
   const post = await Post.findById(postId);
   if (!post) throw Error('post is null');
@@ -57,8 +56,10 @@ export async function repost(
     // 정상적으로 화원가입 하고 이후에 기수를 바꾸면 여기 와지겠네
     case Status.before:
     case Status.beginning:
-      return RepostStatus.skip;
+      return SendStatus.skip;
     case Status.training:
+      if (!memberSeq || !sodae) throw Error('!memberSeq || !sodae');
+
       let postComplete = await Rokaf.postMail(
         {
           name,
@@ -73,13 +74,13 @@ export async function repost(
       );
 
       // 국방서버에 보내는 요청
-      if (!postComplete.serverOn) return RepostStatus.error;
+      if (!postComplete.serverOn) return SendStatus.error;
 
       if (postComplete.complete) {
         await updatePost(postId);
-        return RepostStatus.success;
+        return SendStatus.success;
       } else {
-        return RepostStatus.fail;
+        return SendStatus.fail;
       }
 
     case Status.ending:
@@ -87,7 +88,7 @@ export async function repost(
     case Status.discharged:
       // 특학인편 하지말자 ~
       await updatePost(postId);
-      return RepostStatus.after;
+      return SendStatus.after;
   }
 }
 

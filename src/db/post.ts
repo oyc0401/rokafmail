@@ -66,6 +66,23 @@ export class Post {
         userId,
       },
     });
+  static findByUserIdNotPosted = (userId: number) =>
+    prisma.post.findMany({
+      include: {
+        user: {
+          select: {
+            username: true,
+            connect: true,
+            generation: true,
+          },
+        },
+      },
+      where: {
+        userId,
+        posted: false,
+      },
+    });
+
 
   /**
    * 어드민 페이지
@@ -198,6 +215,76 @@ export class Post {
       },
     });
 
+
+  /**
+   * [/mails] 비공개 미발송 편지 가져오기
+   * 
+   */
+  static findPrivateNotPostedByUsername = (username: string) =>
+    prisma.post.findMany({
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        relationship: true,
+        title: true,
+        createdAt: true,
+        posted: true,
+        postAt: true,
+        isPublic: true,
+        user: {
+          select: {
+            username: true,
+            connect: true,
+            generation: true,
+          },
+        },
+      },
+
+      where: {
+        user: {
+          username,
+        },
+        isPublic: false,
+        posted: false,
+      },
+    });
+
+
+  /**
+   * [/mails] 공개 미발송 편지 가져오기
+   * 
+   */
+  static findPublicNotPostedByUsername = (username: string) =>
+    prisma.post.findMany({
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        relationship: true,
+        title: true,
+        createdAt: true,
+        posted: true,
+        postAt: true,
+        isPublic: true,
+        contents: true,
+        user: {
+          select: {
+            username: true,
+            connect: true,
+            generation: true,
+          },
+        },
+      },
+      where: {
+        user: {
+          username,
+        },
+        isPublic: true,
+        posted: false,
+      },
+    });
+
   static findPublicPostById = (id: number) =>
     prisma.post.findUnique({
       select: {
@@ -277,4 +364,32 @@ export class Post {
 
   static generationCount = (generation) =>
     prisma.post.count({ where: { user: { generation } } });
+
+
+  static findNotPostedByUserId = (userId: number) =>
+    prisma.post.findMany({
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        relationship: true,
+        title: true,
+        createdAt: true,
+        posted: true,
+        postAt: true,
+        isPublic: true,
+        contents: true,
+        user: {
+          select: {
+            username: true,
+            connect: true,
+            generation: true,
+          },
+        },
+      },
+      where: {
+        userId,
+        posted: false,
+      },
+    });
 }

@@ -11,8 +11,8 @@ export async function getPosts(username: string) {
 
 export async function getPostQueue(username: string) {
 
-  let queuePrivate = await PostQueue.findPrivateByUsername(username);
-  let queuePublic = await PostQueue.findPublicByUsername(username);
+  let queuePrivate = await Post.findPrivateNotPostedByUsername(username);
+  let queuePublic = await Post.findPublicNotPostedByUsername(username);
   const queues = [...queuePrivate, ...queuePublic];
   const queueSorted = queues.sort((a, b) => a.id < b.id ? -1 : 1);
 

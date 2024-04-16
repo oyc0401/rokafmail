@@ -1,17 +1,10 @@
 "use server";
-import { NextResponse } from "next/server";
-import { getNow, serveStatus, Status } from "src/lib/time";
-import Rokaf from "../rokaf/rokaf";
-import { Post, PostQueue, UnconnectedPost, User } from "src/db";
+import { Post User } from "src/db";
 
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("mail");
-import {
-  repost,
-  RepostStatus,
-  statusToStr,
-} from "src/app/api/retry/repostMailOnce";
+import { asyncPost } from "../service/asyncPost";
 
 /**
  * 유저 확인: 제공된 username을 사용하여 유저가 존재하는지 확인합니다.
@@ -25,22 +18,6 @@ import {
  * 편지 큐 저장: 국방부 서버로 전송하기에 적합한 시간이 아니면, PostQueue에 편지 정보를 저장합니다.
  */
 
-type PostModel = {
-  userId: number;
-  postId: number;
-  username: string;
-  name: string;
-  relationship: string;
-  title: string;
-  contents: string;
-  password: string;
-  memberSeq: string | null;
-  sodae: string | null;
-  generation: number;
-  connect: boolean;
-  createdAt: Date;
-};
-
 export async function mailApi(mailForm: {
   username: string;
   name: string;
@@ -48,26 +25,25 @@ export async function mailApi(mailForm: {
   title: string;
   contents: string;
   password: string;
-  isPublic:boolean;
+  isPublic: boolean;
 }) {
   try {
-    const { username, name, relationship, title, contents, password,isPublic } =
+    const { username, name, relationship, title, contents, password, isPublic } =
       mailForm;
 
-    // 유저 확인
+    // 유저 존재 여부 체크
     const user = await User.findByUsername(username);
 
     if (!user) {
       return ServerActionResponse.json({
         message: "해당 유저를 찾을 수 없습니다.",
         status: 404,
-        
       });
     }
 
-    const { id: userId, memberSeq, sodae, connect, generation } = user;
+    const { id: userId, connect } = user;
 
-    // 입력 검증
+    // 폼 입력 검증
     const validationResult = validateInput(mailForm);
     if (!validationResult.validate) {
       return ServerActionResponse.json({
@@ -77,7 +53,7 @@ export async function mailApi(mailForm: {
     }
 
     // 편지 저장
-    const { id: postId, createdAt } = await Post.insert({
+    const { id: postId } = await Post.insert({
       userId,
       name,
       relationship,
@@ -87,33 +63,9 @@ export async function mailApi(mailForm: {
       isPublic,
     });
 
-    // 연결되었으면 queue에 저장한다.
+    // 연결되었으면 편지를 보낸다. 
     if (connect) {
-      await PostQueue.insert({ postId, userId });
-      const postModel = {
-        userId,
-        postId,
-        username,
-        name,
-        relationship,
-        title,
-        contents,
-        password,
-        memberSeq,
-        sodae,
-        generation,
-        connect,
-        createdAt,
-      };
-
-      // 큐에 저장된 메시지를 보낸다.
-      processPost(postModel);
-    } else {
-      // 미확인 유저는 따로 저장한다.
-      await UnconnectedPost.insert({ postId, userId });
-      logger.info(
-        `(${postId}) | ${username} (${userId}) | QueueAdded - Unconnected`,
-      );
+      asyncPost(postId);
     }
 
     return ServerActionResponse.json({ message: "편지 전송 성공!", status: 200 });
@@ -123,26 +75,7 @@ export async function mailApi(mailForm: {
   }
 }
 
-async function processPost(postModel: PostModel) {
-  const { userId, postId, generation, username, connect } = postModel;
-  const { name, relationship, title, contents, password } = postModel;
-  const { memberSeq, sodae, createdAt } = postModel;
 
-  let logMessage = "";
-
-  if (!memberSeq || !sodae) {
-    logMessage = "memberSeq or sodae is null";
-  } else {
-    const status = await repost({
-      postId,
-      post: { name, relationship, title, contents, password, createdAt },
-      user: { memberSeq, sodae, generation },
-    });
-    logMessage = statusToStr(status);
-  }
-
-  logger.info(`(${postId}) | ${username} (${userId}) | ${logMessage}`);
-}
 
 function validateInput({
   username,

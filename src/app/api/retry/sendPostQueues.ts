@@ -6,12 +6,6 @@ export async function sendPostQueues(
   unposted: {
     userId: number;
     postId: number;
-    user: {
-      username: string;
-      generation: number;
-      memberSeq: string | null;
-      sodae: string | null;
-    };
     post: {
       id: number;
       userId: number;
@@ -23,6 +17,12 @@ export async function sendPostQueues(
       createdAt: Date;
       posted: boolean;
       postAt: Date | null;
+      user: {
+        username: string;
+        generation: number;
+        memberSeq: string | null;
+        sodae: string | null;
+      };
     };
   }[],
   maxCount = 10,
@@ -48,7 +48,7 @@ export async function sendPostQueues(
         const postId = unpost.postId;
         const { name, relationship, title, contents, password, createdAt } =
           unpost.post;
-        const { memberSeq, sodae, generation, username } = unpost.user;
+        const { memberSeq, sodae, generation, username } = unpost.post.user;
 
         if (!memberSeq || !sodae) {
           throw Error("유저 인증이 된 편지인데 소대번호가 없다?");

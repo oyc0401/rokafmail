@@ -1,7 +1,7 @@
 "use server";
 
 import { verify } from "src/app/api/retry/verifyUserOnce";
-import { User, PostQueue, UserQueue } from "src/db";
+import { User, PostQueue, UserQueue ,Post} from "src/db";
 import { makeLogger } from "config/winston";
 import { VerifyStatus } from "src/app/api/retry/verifyUserOnce";
 import { repost, RepostStatus } from "src/app/api/retry/repostMailOnce";
@@ -45,13 +45,13 @@ export async function userDoubleCheck(userId: number) {
 
 export async function resendUserMail(userId: number) {
   logger.info(`resend User | userId: ${userId}`);
-  const unposted = await PostQueue.findByUserId(userId);
+  const unposted = await Post.findByUserIdNotPosted(userId);
   sendPostQueues(unposted);
   return "await sendPostQueues(unposted)";
 }
 
 export async function resendPostLast(userId: number) {
    logger.info(`resendPostLast | userId: ${userId}`);
-  const unposted = await PostQueue.findByUserId(userId);
+  const unposted = await Post.findByUserIdNotPosted(userId);
   return await sendPostQueues(unposted, 1);
 }

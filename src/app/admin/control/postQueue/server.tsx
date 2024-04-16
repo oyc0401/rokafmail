@@ -1,20 +1,21 @@
 "use server";
 
 import { repost, RepostStatus } from "src/app/api/retry/repostMailOnce";
-import { Post, PostQueue, User } from "src/db";
+import { Post} from "src/db";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Control Post Queue");
 
 // import {} from'src/app/api/retry/'
 
 export async function resend(postId: number) {
-  
-  const post = await PostQueue.findByPostId(postId);
+
+  const post = await Post.findById(postId)
+
   if (!post) return;
 
-  const { name, relationship, title, contents, password, createdAt } =
-    post.post;
-  const { memberSeq, sodae, generation, username, id: userId } = post.user;
+  const { name, relationship, title, contents, password, createdAt, userId } =
+    post;
+  const { memberSeq, sodae, generation, username } = post.user;
   if (!memberSeq || !sodae) return;
 
   const status = await repost({
@@ -43,7 +44,7 @@ export async function resend(postId: number) {
       msg = `error ${postLogForm}`;
       logger.info(msg);
       return msg;
-      case RepostStatus.fail:
+    case RepostStatus.fail:
       msg = `fail ${postLogForm}`;
       logger.info(msg);
       return msg;
