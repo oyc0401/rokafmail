@@ -85,6 +85,7 @@ async function sendPosts(userId: number) {
   let posts = await Post.findNotPostedByUserId(userId);
 
   for (const post of posts) {
+    // 오류가 나면 큐에 저장하기
     asyncPost(post.id);
   }
 }

@@ -1,5 +1,5 @@
 import { verifyUser } from "src/app/api/retry/verifyUser";
-import { repostMail } from "src/app/api/retry/repostMail";
+import { sendAllMails } from "src/app/api/retry/mailQueue";
 import { makeLogger } from "config/winston";
 var cron = require("node-cron");
 const logger = makeLogger("repeat");
@@ -14,7 +14,7 @@ export class CronStore {
         try {
           logger.info("mailCron is executed");
           // Http x, 바로 호출
-          await repostMail();
+          await sendAllMails();
         } catch (e) {
           logger.error(`node-cron 중 오류발생: ${e}`);
         }

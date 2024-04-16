@@ -65,6 +65,7 @@ export async function mailApi(mailForm: {
 
     // 연결되었으면 편지를 보낸다. 
     if (connect) {
+      // 오류나면 큐에  저장하기
       asyncPost(postId);
     }
 

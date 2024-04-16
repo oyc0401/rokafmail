@@ -7,8 +7,6 @@ import { VerifyStatus } from "src/app/api/retry/verifyUserOnce";
 import { asyncPost } from "src/app/api/service/asyncPost";
 const logger = makeLogger("Control User");
 
-// import {} from'src/app/api/retry/'
-
 export async function userDoubleCheck(userId: number) {
   const userQueueElement = await UserQueue.findByUserId(userId);
   if (!userQueueElement) return;
@@ -42,20 +40,3 @@ export async function userDoubleCheck(userId: number) {
   }
 }
 
-export async function resendUserMail(userId: number) {
-  logger.info(`resend User | userId: ${userId}`);
-  const unposted = await Post.findByUserIdNotPosted(userId);
-
-  for (const post of unposted) {
-    await asyncPost(post.id);
-  }
-  return "모두 보냄";
-}
-
-export async function resendPostLast(userId: number) {
-  logger.info(`resendPostLast | userId: ${userId}`);
-  const unposted = await Post.findByUserIdNotPosted(userId);
-  const lastPost = unposted[unposted.length - 1]
-  await asyncPost(lastPost.id);
-  return;
-}

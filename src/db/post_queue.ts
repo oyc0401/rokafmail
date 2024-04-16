@@ -35,8 +35,14 @@ export class PostQueue {
       },
     });
 
+  static deleteByPostId = (postId: number) =>
+    prisma.postQueue.delete({
+      where: {
+        id: postId,
+      }
+    });
 
- 
+
 
 
 

@@ -20,7 +20,7 @@ import {
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
 import dayjs from "dayjs";
-import { userDoubleCheck, resendUserMail, resendPostLast } from "./server";
+import { userDoubleCheck,  } from "./server";
 import { useRouter } from "next/navigation";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
@@ -150,24 +150,6 @@ export function DatabaseTable({ data }) {
                                 }}
                               >
                                 Verify
-                              </DropdownItem>
-                              <DropdownItem
-                                key="sendAll"
-                                onClick={async () => {
-                                  const result = await resendUserMail(item.id);
-                                  alert(result);
-                                }}
-                              >
-                                Post All
-                              </DropdownItem>
-                              <DropdownItem
-                                key="sendFront"
-                                onClick={async () => {
-                                  const result = await resendPostLast(item.id);
-                                  alert(result);
-                                }}
-                              >
-                                Post Front
                               </DropdownItem>
                             </DropdownSection>
 

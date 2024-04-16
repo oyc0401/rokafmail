@@ -1,20 +1,20 @@
 import { NextResponse } from "next/server";
 
-import { repostMail } from "../repostMail";
+import { sendAllMails } from "../mailQueue";
 import { getNow } from "src/lib/time";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Retry Mail");
 
 export async function GET() {
-   logger.info("Start");
+  logger.info("Start");
 
   if (process.env.NODE_ENV != "production") {
-     run();
+    run();
   }
 
-  return NextResponse.json({ message: `Retry Mail 성공 ${getNow()}`}, { status: 200 });
+  return NextResponse.json({ message: `Retry Mail 성공 ${getNow()}` }, { status: 200 });
 }
 
 async function run() {
- await repostMail();
+  await sendAllMails();
 }
