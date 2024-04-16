@@ -1,9 +1,6 @@
-
-
 import Rokaf from "../rokaf/rokaf";
 import { getNow, serveStatus, Status } from "src/lib/time";
 import { PostQueue, Post } from "src/db";
-import { makeLogger } from "config/winston";
 
 export enum SendStatus {
   success,
@@ -87,6 +84,7 @@ export async function sendMail(postId: number): Promise<SendStatus> {
     case Status.working:
     case Status.discharged:
       // 특학인편 하지말자 ~
+      // 편지쓰기 기간 이후에 전송하면 보내졌다고 치기
       await updatePost(postId);
       return SendStatus.after;
   }

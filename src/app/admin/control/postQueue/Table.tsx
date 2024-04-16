@@ -21,7 +21,6 @@ import {
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
-import { resend } from "./server";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
@@ -136,25 +135,7 @@ export function DatabaseTable({ data }) {
                   return (
                     <TableCell>
                       <div className="relative flex justify-end items-center gap-2">
-                        <Dropdown>
-                          <DropdownTrigger>
-                            <Button isIconOnly size="sm" variant="light">
-                              <VerticalDotsIcon className="text-default-300" />
-                            </Button>
-                          </DropdownTrigger>
-                          <DropdownMenu>
-                            <DropdownSection title="Actions">
-                              <DropdownItem
-                                onClick={async () => {
-                                  const result = await resend(item.postId);
-                                  alert(result);
-                                }}
-                              >
-                                Send
-                              </DropdownItem>
-                            </DropdownSection>
-                          </DropdownMenu>
-                        </Dropdown>
+                      
                       </div>
                     </TableCell>
                   );

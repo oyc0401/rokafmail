@@ -44,7 +44,7 @@ export async function postMail(
         "JSESSIONID=pVmoG5hmwpHCRsLqdiV1hegWfRiH9418N4YZ3AW5cUo7pcXvxER8Lbk0XIljcEOa.AF1303_servlet_CONT31",
       ...data.getHeaders(),
     },
-    timeout: 20000,
+    timeout: 10 * 1000,
     data: data,
     httpsAgent: new https.Agent({
       rejectUnauthorized: false, //허가되지 않은 인증을 reject하지 않겠다!

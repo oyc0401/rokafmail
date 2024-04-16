@@ -19,10 +19,10 @@ dayjs.extend(isBetween);
 
 /**
  * 주어진 날짜가 속한 주의 월요일을 반환하는 함수
- * @param {dayjs.Dayjs} date - 주어진 날짜
- * @returns {dayjs.Dayjs} 해당 주의 월요일
+ * @param {Dayjs} date - 주어진 날짜
+ * @returns {Dayjs} 해당 주의 월요일
  */
-function getProgramStart(generation: number): dayjs.Dayjs {
+function getProgramStart(generation: number): Dayjs {
   const enter = getEnter(generation);
 
   let dayOfWeek = enter.day();
@@ -30,27 +30,28 @@ function getProgramStart(generation: number): dayjs.Dayjs {
 }
 
 // 입대
-export function getEnter(generation: number): dayjs.Dayjs {
+export function getEnter(generation: number): Dayjs {
   let [start] = timeDB(generation);
-  return dayjs.utc(start).tz("Asia/Seoul").add(-9, "hour"); // 시차 9시간 뺌
+  
+  return dayjs.utc(start); // 시차 9시간 뺌
 }
 // 편지 시작
-export function getMailStart(generation: number): dayjs.Dayjs {
+export function getMailStart(generation: number): Dayjs {
   return getProgramStart(generation).add(14, "day").add(9, "hour"); // 잠시만 시차 9ㅅ
 }
 
 // 편지 마감
-export function getMailEnd(generation: number): dayjs.Dayjs {
+export function getMailEnd(generation: number): Dayjs {
   return getProgramStart(generation).add(30, "day").add(17, "hour");
 }
 
 // 수료
-export function getCompletion(generation: number): dayjs.Dayjs {
+export function getCompletion(generation: number): Dayjs {
   return getProgramStart(generation).add(32, "day");
 }
 
 // 전역
-export function getDischarge(generation: number): dayjs.Dayjs {
+export function getDischarge(generation: number): Dayjs {
   let [, end] = timeDB(generation);
   return dayjs.utc(end).tz("Asia/Seoul");
 }
@@ -113,19 +114,19 @@ export function isDischarged(generation: number): boolean {
 }
 
 // 현재와 차이나는 날짜
-export function diffDay(date: dayjs.Dayjs): number {
+export function diffDay(date: Dayjs): number {
   const now = dayjs.utc().tz("Asia/Seoul");
   return date.diff(now, "day");
 }
 
 // 해당 날짜가 과거인지
-export function isPast(date: dayjs.Dayjs): boolean {
+export function isPast(date: Dayjs): boolean {
   const now = dayjs.utc().tz("Asia/Seoul");
   return date.isBefore(now);
 }
 
 // 해당 날짜가 미래인지
-export function isFuture(date: dayjs.Dayjs): boolean {
+export function isFuture(date: Dayjs): boolean {
   const now = dayjs.utc().tz("Asia/Seoul");
   return now.isBefore(date);
 }
