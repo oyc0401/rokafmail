@@ -10,11 +10,11 @@ export async function sendAllMails() {
   const unposted = await PostQueue.findAll();
 
   // 큐에 있는 모든 편지들을 한번씩 보내기
-  for (const i = 0; i < unposted; i++) {
+  for (let i = 0; i < unposted.length; i++) {
     const post = unposted[i];
     // 성공시 큐에서 제거하기
     await _repostQueue(post.id).then(msg => {
-      logger.info(`${i}/${unposted.length} (${postId}) | ${logMessage}`);
+      logger.info(`${i}/${unposted.length} ${post.id}${msg}`);
     });
   }
 }

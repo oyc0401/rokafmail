@@ -1,3 +1,4 @@
+import { describe, expect, test } from '@jest/globals';
 import { getEnter } from "./time";
 
 describe('time 라이브러리', () => {
