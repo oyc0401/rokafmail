@@ -17,8 +17,8 @@ export default async function Mails({ params }) {
   const username = decodeURI(params.username);
 
   let user = await User.findByUsername(username);
-  if (!user)  notFound();
-  
+  if (!user) notFound();
+
 
   const postsPrivate = await Post.findPrivateByUsername(username);
   const postsPublic = await Post.findPublicByUsername(username);
@@ -29,19 +29,12 @@ export default async function Mails({ params }) {
   let queuePublic = await Post.findPublicNotPostedByUsername(username);
   const queues = [...queuePrivate, ...queuePublic];
   const queueSorted = queues.sort((a, b) => a.id < b.id ? -1 : 1);
-
-
-  let unconnectedPrivate = await UnconnectedPost.findPrivateByUsername(username);
-  let unconnectedPublic = await UnconnectedPost.findPublicByUsername(username);
-  const unconnects = [...unconnectedPrivate, ...unconnectedPublic];
-  const unconnectsSorted = unconnects.sort((a, b) => a.id > b.id ? -1 : 1);
-
   return (
     <>
       <div className="h-full max-w-3xl mx-auto">
         <NavHeader user={user}></NavHeader>
         {user.connect ? <Content mails={postsSorted} unpostMails={queueSorted}></Content>
-          : <UnConnectedContent mails={unconnectsSorted} ></UnConnectedContent>}
+          : <UnConnectedContent mails={queueSorted} ></UnConnectedContent>}
         <div style={{ height: 108, minHeight: 108, width: 1 }}></div>
       </div>
       <nav className="fixed bottom-0 w-full">

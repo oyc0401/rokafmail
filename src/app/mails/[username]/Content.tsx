@@ -71,14 +71,14 @@ export function Content({ mails, unpostMails }) {
                 <div key={post.id}>
                   {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
                   <PostCard
-                    id={post.postId}
-                    title={post.post.title}
-                    name={post.post.name}
-                    rel={post.post.relationship}
-                    time={dateToStr(post.post.createdAt)}
+                    id={post.id}
+                    title={post.title}
+                    name={post.name}
+                    rel={post.relationship}
+                    time={dateToStr(post.createdAt)}
                     username={post.user.username}
-                    contents={post.post.contents}
-                    isPublic={post.post.isPublic}
+                    contents={post.contents}
+                    isPublic={post.isPublic}
                   />
                 </div>
               ))}
@@ -112,14 +112,14 @@ export function UnConnectedContent({ mails }) {
           <div key={post.id}>
             {index !== 0 && <div className="sized" style={{ height: 4 }}></div>}
             <PostCard
-              id={post.postId}
-              title={post.post.title}
-              name={post.post.name}
-              rel={post.post.relationship}
-              time={dateToStr(post.post.createdAt)}
+              id={post.id}
+              title={post.title}
+              name={post.name}
+              rel={post.relationship}
+              time={dateToStr(post.createdAt)}
               username={post.user.username}
-              contents={post.post.contents}
-              isPublic={post.post.isPublic}
+              contents={post.contents}
+              isPublic={post.isPublic}
             />
           </div>
         ))}
