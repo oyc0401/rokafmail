@@ -10,6 +10,9 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(isBetween);
 
+
+dayjs.tz.setDefault("Asia/Seoul") // tz로 dayjs를 만들면 해당시간의 나라시간이 됌
+
 /** 포맷하고 싶으면 .format("YY.MM.DD") 붙이기 */
 
 // 시간
@@ -32,12 +35,12 @@ function getProgramStart(generation: number): Dayjs {
 // 입대
 export function getEnter(generation: number): Dayjs {
   let [start] = timeDB(generation);
-  
-  return dayjs.utc(start); // 시차 9시간 뺌
+
+  return dayjs.tz(start);
 }
 // 편지 시작
 export function getMailStart(generation: number): Dayjs {
-  return getProgramStart(generation).add(14, "day").add(9, "hour"); // 잠시만 시차 9ㅅ
+  return getProgramStart(generation).add(14, "day").add(9, "hour");
 }
 
 // 편지 마감
@@ -53,7 +56,7 @@ export function getCompletion(generation: number): Dayjs {
 // 전역
 export function getDischarge(generation: number): Dayjs {
   let [, end] = timeDB(generation);
-  return dayjs.utc(end).tz("Asia/Seoul");
+  return dayjs.tz(end);
 }
 
 export enum Status {
@@ -93,6 +96,29 @@ export function serveStatus(generation: number) {
   } else {
     return Status.discharged;
   }
+}
+
+
+
+export function toStatus(generation: number, now: Date | Dayjs = new Date()): Status {
+  if (dayjs.tz(now).isBefore(getEnter(generation))) {
+    return Status.before;
+  }
+  if (dayjs.tz(now).isBefore(getMailStart(generation))) {
+    return Status.beginning;
+  }
+  if (dayjs.tz(now).isBefore(getMailEnd(generation))) {
+    return Status.training;
+  }
+  if (dayjs.tz(now).isBefore(getCompletion(generation))) {
+    return Status.ending;
+  }
+  if (dayjs.tz(now).isBefore(getDischarge(generation))) {
+    return Status.working;
+  }
+
+  return Status.discharged;
+
 }
 
 export function canSearch(generation: number) {
@@ -152,6 +178,18 @@ export function parseKorea(date: Date) {
 }
 
 
+/**
+ * string to Dayjs
+ */
 export function strToDayjs(date: string) {
-  return dayjs.utc(date).tz("Asia/Seoul");
+  return dayjs.tz(date);
 }
+
+
+/**
+ * @deprecated 서울로 설정한 dayjs.tz(koreaTimeStr).utc() 함수의 하위호환 입니다.
+ */
+export function koreanToUtc(koreaTimeStr: any) {
+  return dayjs.utc(koreaTimeStr).add(-9, "hour"); // 시차 9시간 뺌;
+}
+
