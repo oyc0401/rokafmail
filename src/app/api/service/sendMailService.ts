@@ -1,6 +1,6 @@
 import Rokaf from "../rokaf/rokaf";
-import { getNow, serveStatus, Status } from "src/lib/time";
-import { Post } from "src/db";
+import { serveStatus, Status } from "src/lib/time";
+import { PostRepository } from 'src/repository/postRepository';
 
 export enum SendStatus {
   success,
@@ -27,13 +27,15 @@ export function sendStatusToStr(status: SendStatus) {
 /**
  * 해당 id의 편지를 보내고 결과 enum 리턴하기
 **/
-export async function sendMail(postId: number): Promise<SendStatus> {
+export async function sendMail(postId: number, repository: PostRepository): Promise<SendStatus> {
 
-  const post = await Post.findById(postId);
+  const post = await repository.findByIdWithUser(postId);
   if (!post) throw Error('post is null');
 
   const { name, relationship, title, contents, password, createdAt } = post;
   const { memberSeq, sodae, generation } = post.user;
+
+  const updatePost = (postId: number) => repository.updatePostedTrue(postId);
 
   const status = serveStatus(generation);
   // console.log(post)
@@ -88,8 +90,7 @@ export async function sendMail(postId: number): Promise<SendStatus> {
       await updatePost(postId);
       return SendStatus.after;
   }
+
+
 }
 
-async function updatePost(postId) {
-  await Post.update(postId, { posted: true, postAt: getNow() });;
-}
