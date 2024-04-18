@@ -25,7 +25,7 @@ export function sendStatusToStr(status: SendStatus) {
   }
 }
 /**
- * 해당 id의 편지를 보내고 결과 enum 리턴하기
+ * 해당 id의 편지를 보내고 보내졌다고 업데이트하고, 결과 enum 리턴하기
 **/
 export async function sendMail(postId: number): Promise<SendStatus> {
 
