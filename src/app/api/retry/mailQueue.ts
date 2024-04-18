@@ -14,7 +14,7 @@ export async function sendAllMails() {
     const post = unposted[i];
     // 성공시 큐에서 제거하기
     await _repostQueue(post.id).then(msg => {
-      logger.info(`${i}/${unposted.length} ${post.id}${msg}`);
+      logger.info(`${i+1}/${unposted.length} (${post.id}) ${msg}`);
     });
   }
 }
