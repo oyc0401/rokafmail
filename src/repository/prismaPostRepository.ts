@@ -21,13 +21,16 @@ export class PrismaPostRepository implements PostRepository {
     });
 
 
-  updatePostedTrue = (id: number) =>
-    prisma.post.update({
+  updatePostedTrue = async (id: number) => {
+    await prisma.post.update({
       where: { id },
       data: {
         posted: true,
         postAt: new Date(),
       },
     });
+
+  }
+
 
 }
