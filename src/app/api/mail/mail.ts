@@ -63,10 +63,12 @@ export async function mailApi(mailForm: {
       isPublic,
     });
 
-    // 연결되었으면 편지를 보낸다. 
+    // 연결되었으면 편지를 보낸다.
     if (connect) {
-      // 오류나면 큐에  저장하기
+      // 편지를 보내다 오류가 나면 큐에 저장합니다.
       asyncPost(postId);
+    }else{
+      logger.info(`(${postId}) | QueueAdded - BeforeMailTime`)
     }
 
     return ServerActionResponse.json({ message: "편지 전송 성공!", status: 200 });

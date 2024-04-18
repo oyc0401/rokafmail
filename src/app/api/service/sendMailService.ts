@@ -14,8 +14,6 @@ export function sendStatusToStr(status: SendStatus) {
   switch (status) {
     case SendStatus.success:
       return `Complete`;
-    case SendStatus.skip:
-      return "QueueAdded - BeforeMailTime";
     case SendStatus.after:
       return `Skip - AfterMailTime`;
     case SendStatus.error:
@@ -55,7 +53,7 @@ export async function sendMail(postId: number, repository: PostRepository): Prom
     // 정상적으로 화원가입 하고 이후에 기수를 바꾸면 여기 와지겠네
     case Status.before:
     case Status.beginning:
-      return SendStatus.skip;
+      throw Error(`현재 ${generation}기는 편지를 보낼 수 없습니다.`)
     case Status.training:
       if (!memberSeq || !sodae) throw Error('!memberSeq || !sodae');
 

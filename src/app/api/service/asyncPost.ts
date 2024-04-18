@@ -23,7 +23,6 @@ export async function asyncPost(postId: number) {
     // 편지쓰기 이전에 보낸 편지들은 나중에 소대번호가 발견되면 다시 한번 보내질 것이고
     // 성공하거나 이후에 보낸 편지는 posted = true로 업데이트가 될 것이다.
     case SendStatus.success:
-    case SendStatus.skip:
     case SendStatus.after:
       break;
     case SendStatus.error:

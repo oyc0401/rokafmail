@@ -14,8 +14,6 @@ export function sendStatusToStr(status: SendStatus) {
   switch (status) {
     case SendStatus.success:
       return `Complete`;
-    case SendStatus.skip:
-      return "QueueAdded - BeforeMailTime";
     case SendStatus.after:
       return `Skip - AfterMailTime`;
     case SendStatus.error:
@@ -26,36 +24,26 @@ export function sendStatusToStr(status: SendStatus) {
 }
 /**
  * 해당 id의 편지를 보내고 보내졌다고 업데이트하고, 결과 enum 리턴하기
+ * 주의사항:
+ * 해당 id를 가진 Post가 DB에 있어야합니다.
+ * 편지가능 기간 이전에 해당 함수를 호출하면 안됩니다.
 **/
 export async function sendMail(postId: number): Promise<SendStatus> {
 
   const post = await Post.findById(postId);
-  if (!post) throw Error('post is null');
+  if (!post) throw Error(`id가 ${postId}인 편지를 찾을 수 없습니다.`);
 
   const { name, relationship, title, contents, password, createdAt } = post;
   const { memberSeq, sodae, generation } = post.user;
 
   const status = serveStatus(generation);
-  // console.log(post)
-  // console.log(user)
-
-  // 다시보내기 할 때 편지쓰기 가능한 기간에만 보낸다.
-  // 편지쓰기 이후에 보내도 일단은 그냥 스킵하고 postQueue에 그대로 두겠다.
-  // 나중에 있을 특학 편지를 위해서
 
   switch (status) {
-    // 원래 소대번호가 발견이 되야 큐에 넣어지고 이 함수를 쓸 수 있는데
-    // 스킵이 될 수가 없는데 일단 넣어놓음
-    // 스킵뜨면 오류처리하셈
-    // 스킵이 뜨려면 미래의 기수로 해놓고 소대번호가 발견이 되어야함.
-    // 그럼 해당 사람이 아니라는건데
-    // 오류가 맞지
-    // 정상적으로 화원가입 하고 이후에 기수를 바꾸면 여기 와지겠네
     case Status.before:
     case Status.beginning:
-      return SendStatus.skip;
+      throw Error(`현재 ${generation}기는 편지를 보낼 수 없습니다.`)
     case Status.training:
-      if (!memberSeq || !sodae) throw Error('!memberSeq || !sodae');
+      if (!memberSeq || !sodae) throw Error('memberSeq 또는 sodae가 null입니다.');
 
       let postComplete = await Rokaf.postMail(
         {
