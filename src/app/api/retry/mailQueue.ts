@@ -13,16 +13,17 @@ export async function sendAllMails() {
   for (let i = 0; i < unposted.length; i++) {
     const post = unposted[i];
     // 성공시 큐에서 제거하기
-    await _repostQueue(post.id).then(msg => {
+    await _repostMail(post.id).then(msg => {
       logger.info(`${i+1}/${unposted.length} (${post.id}) ${msg}`);
     });
   }
 }
 
 /**
- *  해당 id의 편지를 보내고, 실패시 큐에 넣기
+ * 해당 id의 편지를 보내고, 성공시 큐에서 제거
+ * ※ asyncPost와 구조가 비슷합니다.
  */
-async function _repostQueue(postId: number) {
+async function _repostMail(postId: number) {
 
   // 편지를 보내고 결과값을 받는다.
   const status = await sendMail(postId);
