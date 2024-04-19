@@ -1,18 +1,18 @@
 "use server";
-import Rokaf from "../rokaf/rokaf";
-import { serveStatus, Status } from "src/lib/time";
-import { UserQueue, User } from "src/db";
+import { asyncRegister } from "./asyncRegister";
+import { User } from "src/db";
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
 import { duplicateUsername, validB, validG } from "./valid";
 const logger = makeLogger("register");
+
+
 /**
  * 입력 검증: 사용자의 세대, 생일, 아이디 중복, 비밀번호 길이, 이름 길이, 메시지 길이를 검증합니다.
  * 유저 생성: 검증을 통과하면 사용자 정보를 데이터베이스에 저장합니다.
  * 사용자 확인: 저장된 사용자 정보를 바탕으로, 국방부 사이트에서 사용자의 존재 여부를 확인합니다.
  * 상태에 따른 처리: 사용자의 세대에 따라 국방부 사이트에서의 존재 여부를 확인하고, 존재 여부에 따라 사용자를 UserQueue에 추가하거나 사용자 정보를 업데이트합니다.
  */
-
 export async function registerApi(registerForm: {
   username: string;
   password: string;
@@ -38,7 +38,7 @@ export async function registerApi(registerForm: {
     const { name, birth, generation, username } = registerForm;
 
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
-    processRegistration({ id, name, birth, generation, username });
+    asyncRegister({ id, name, birth, generation, username });
 
     return ServerActionResponse.json({ message: "회원가입 성공", status: 200 });
   } catch (error) {
@@ -47,50 +47,7 @@ export async function registerApi(registerForm: {
   }
 }
 
-async function processRegistration({ id, name, birth, generation, username }) {
-  const status = serveStatus(generation);
 
-  let logMessage = "";
-
-  switch (status) {
-    // 입대 전에는 유저큐에서 인편 열리기를 기다린다.
-    case Status.before:
-    case Status.beginning:
-      logMessage = await insertQueue(id);
-      break;
-    // 전역 후에도 회원가입은 가능하다. 다만 편지를 못쓸 뿐
-    case Status.training:
-    case Status.ending:
-    case Status.working:
-    case Status.discharged:
-      logMessage = await findAndSaveUser(id, name, birth);
-      break;
-  }
-
-  logger.info(`${username} (${id}) | ${logMessage}`);
-
-  return;
-}
-
-async function insertQueue(userId: number) {
-  await UserQueue.insert({ userId });
-  return "QueueAdded - BeforeMailTime";
-}
-
-async function findAndSaveUser(userId: number, name: string, birth: string) {
-  const { member } = await Rokaf.getProfile(name, birth);
-  if (member) {
-    await User.update(userId, {
-      memberSeq: member.memberSeq,
-      sodae: member.sodae,
-      connect: true,
-    });
-    return `Complete - {seq:${member.memberSeq}, sodae:${member.sodae}}`;
-  } else {
-    await UserQueue.insert({ userId });
-    return "QueueAdded - ServerConnectionFalse";
-  }
-}
 
 async function validateInput({
   username,

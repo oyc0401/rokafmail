@@ -27,6 +27,7 @@ export function sendStatusToStr(status: SendStatus) {
  * 주의사항:
  * 해당 id를 가진 Post가 DB에 있어야합니다.
  * 편지가능 기간 이전에 해당 함수를 호출하면 안됩니다.
+ * 에러 다수 던짐
 **/
 export async function sendMail(postId: number): Promise<SendStatus> {
 

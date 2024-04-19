@@ -1,82 +1,70 @@
-import { UserQueue } from "src/db";
-import { verify } from "./verifyUserOnce";
 import { makeLogger } from "config/winston";
-import { VerifyStatus } from "./verifyUserOnce";
-const logger = makeLogger("verifyUser");
+import { Post, UserQueue,UnidentifiedUser } from "src/db";
+import { Status, serveStatus } from "src/lib/time";
+import { updateProfile, updateStatus } from "../service/updateProfile";
+import { asyncPost } from "../service/asyncPost";
 
-const verifyLog = {
-  verify: "verify    ",
-  notfound: "notfound  ",
-  skip: "skip      ",
-  unidentify: "unidentify",
-  error: "error",
-};
-function statusToMsg(status: VerifyStatus) {
-  switch (status) {
-    case VerifyStatus.verify:
-      return verifyLog.verify;
-    case VerifyStatus.notfound:
-      return verifyLog.notfound;
-    case VerifyStatus.skip:
-      return verifyLog.skip;
-    case VerifyStatus.unidentify:
-      return verifyLog.unidentify;
-    case VerifyStatus.error:
-      return verifyLog.error;
-  }
-}
+const logger = makeLogger("verifyUser");
 
 export async function verifyUser() {
   // 미인증 유저들
-  const unconnected = await UserQueue.findAll();
+  const userQueue = await UserQueue.findAll();
 
-  const length = unconnected.length;
-  logger.debug(`count: ${length}`);
+  for (let i = 0; i < userQueue.length; i++) {
+    const unconnect = userQueue[i];
 
-  let verifyCount = 0;
-  let notfound = 0;
-  let skip = 0;
-  let unidentify = 0;
-  let i = 1;
-  try {
-    for (const unconnect of unconnected) {
+    try {
       const { userId } = unconnect;
       const { username, generation, name, birth } = unconnect.user;
-      const userLogForm = `${username} (${userId}) ${name} ${birth} ${generation}`;
+      const msg = await _verifyProgram({ userId, generation, name, birth });
+      logger.info(`${i}/${userQueue.length}: (${userId}) | ${msg}`);
 
-      //`${verifyLog.verify} ${userLogForm}`
-      const status = await verify({ userId, generation, name, birth });
-
-      switch (status) {
-        case VerifyStatus.verify:
-          verifyCount++;
-          break;
-        case VerifyStatus.notfound:
-          notfound++;
-          break;
-        case VerifyStatus.skip:
-          skip++;
-          break;
-        case VerifyStatus.unidentify:
-          unidentify++;
-          break;
-        case VerifyStatus.error:
-          throw Error("rokaf server error, verify Stopped.");
-      }
-      if (status==VerifyStatus.verify) {
-        logger.info(`${i}/${length} | ${statusToMsg(status)} ${userLogForm}`);
-      } else {
-        logger.debug(`${i}/${length} | ${statusToMsg(status)} ${userLogForm}`);
-      }
-
-      i++;
+    } catch (error) {
+      logger.error(`${i}/${userQueue.length}: (${unconnect.userId}) | ${error}`);
+      break;
     }
-  } catch (error) {
-    logger.info(`${i}/${length} | ${error}`);
   }
-  logger.info(
-    `verify: ${verifyCount}, notfound: ${notfound}, skip: ${skip} unidentify: ${unidentify} missing:${
-      length - verifyCount - notfound - skip - unidentify
-    }`,
-  );
+
+}
+
+
+async function _verifyProgram({ userId, generation, name, birth }) {
+  const status = await updateProfile({ id: userId, generation, name, birth })
+
+  switch (status) {
+    case updateStatus.before:
+      return 'QueueAdded - BeforeMailTime'
+    case updateStatus.complete:
+      await sendPosts(userId);
+      return 'Complete'
+    case updateStatus.error:
+      throw Error("Stop - ServerConnectionFalse");
+    case updateStatus.fail:
+      // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
+      if (serveStatus(generation) == Status.working) {
+        await moveUnidentify(userId);
+        return 'Shift - Unidentify'
+      }
+      return 'QueueAdded - Fail'
+  }
+}
+
+// 해당 유저의 모든 미발송 편지들을 다시 보내기
+async function sendPosts(userId: number) {
+  let posts = await Post.findNotPostedByUserId(userId);
+
+  for (const post of posts) {
+    // 오류가 나면 큐에 저장하기
+    await asyncPost(post.id);
+  }
+
+}
+
+// 미등록 사용자 모음에 넣음
+async function moveUnidentify(userId: number) {
+  await UnidentifiedUser.insert({ userId });
+
+  // 유저큐에서 삭제
+  // 쿼리 너무 느려요 이거!
+  await UserQueue.deleteByUserId(userId);
 }

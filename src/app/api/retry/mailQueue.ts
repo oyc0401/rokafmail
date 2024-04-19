@@ -9,14 +9,21 @@ import { sendMail, SendStatus, sendStatusToStr } from "src/app/api/service/sendM
 export async function sendAllMails() {
   const unposted = await PostQueue.findAll();
 
+
   // 큐에 있는 모든 편지들을 한번씩 보내기
   for (let i = 0; i < unposted.length; i++) {
     const post = unposted[i];
-    // 성공시 큐에서 제거하기
-    await _repostMail(post.id).then(msg => {
-      logger.info(`${i+1}/${unposted.length} (${post.id}) ${msg}`);
-    });
+    try {
+      // 성공시 큐에서 제거하기
+      await _repostMail(post.id).then(msg => {
+        logger.info(`${i + 1}/${unposted.length} (${post.id}) | ${msg}`);
+      });
+    } catch (error) {
+      logger.error(`${i + 1}/${unposted.length} (${post.id}) | ${error}`)
+    }
   }
+
+
 }
 
 /**
