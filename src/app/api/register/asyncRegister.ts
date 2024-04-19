@@ -1,15 +1,18 @@
 
 import { UserQueue } from "src/db";
 import { makeLogger } from "config/winston";
-import { updateProfile, updateStatus } from "src/app/api/service/updateProfile";
+import { ProfileUpdater, updateStatus } from "src/app/api/service/profileUpdater";
 const logger = makeLogger("asyncRegister");
 
+export async function asyncRegister(id: number) {
 
+  // 유저의 현재상태를 체크해야함
+  // 각각의 상태마다 다른 로직 필요.
+  // 실패시 큐에 넣는 로직, 성공시 큐에서 빼는 로직 두개가 있음.
 
+  const profile = await ProfileUpdater.dbInitialze(id);
 
-export async function asyncRegister({ id, name, birth, generation, username }) {
-
-  const status = await updateProfile({ id, name, birth, generation });
+  const status = await profile.update();
 
   let logMessage = '';
 
@@ -31,6 +34,6 @@ export async function asyncRegister({ id, name, birth, generation, username }) {
       break;
   }
 
-  logger.info(`${username} (${id}) | ${logMessage}`);
+  logger.info(`${profile.getUsername()} (${id}) | ${logMessage}`);
 }
 

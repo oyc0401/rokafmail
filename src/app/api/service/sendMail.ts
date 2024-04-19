@@ -3,19 +3,21 @@ import { getNow, serveStatus, Status } from "src/lib/time";
 import { Post } from "src/db";
 
 export enum SendStatus {
+  before,
+  notfound,
   success,
-  skip,
-  after,
   error,
   fail,
 }
 
 export function sendStatusToStr(status: SendStatus) {
   switch (status) {
+    case SendStatus.before:
+      return `QueueAdded - BeforeMailTime`;
+    case SendStatus.notfound:
+      return `QueueAdded - ProfileNotFound`;
     case SendStatus.success:
       return `Complete`;
-    case SendStatus.after:
-      return `Skip - AfterMailTime`;
     case SendStatus.error:
       return `QueueAdded - ServerError`;
     case SendStatus.fail:
@@ -42,9 +44,11 @@ export async function sendMail(postId: number): Promise<SendStatus> {
   switch (status) {
     case Status.before:
     case Status.beginning:
-      throw Error(`현재 ${generation}기는 편지를 보낼 수 없습니다.`)
+      return SendStatus.before;
     case Status.training:
-      if (!memberSeq || !sodae) throw Error('memberSeq 또는 sodae가 null입니다.');
+      if (!memberSeq || !sodae) {
+        return SendStatus.notfound;
+      }
 
       let postComplete = await Rokaf.postMail(
         {
@@ -72,10 +76,13 @@ export async function sendMail(postId: number): Promise<SendStatus> {
     case Status.ending:
     case Status.working:
     case Status.discharged:
+      if (!memberSeq || !sodae) {
+        return SendStatus.notfound;
+      }
       // 특학인편 하지말자 ~
       // 편지쓰기 기간 이후에 전송하면 보내졌다고 치기
       await updatePost(postId);
-      return SendStatus.after;
+      return SendStatus.success;
   }
 }
 

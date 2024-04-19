@@ -1,7 +1,7 @@
 import { makeLogger } from "config/winston";
-import { Post, UserQueue,UnidentifiedUser } from "src/db";
+import { Post, UserQueue, UnidentifiedUser } from "src/db";
 import { Status, serveStatus } from "src/lib/time";
-import { updateProfile, updateStatus } from "../service/updateProfile";
+import { updateStatus, ProfileUpdater } from "../service/profileUpdater";
 import { asyncPost } from "../service/asyncPost";
 
 const logger = makeLogger("verifyUser");
@@ -15,8 +15,7 @@ export async function verifyUser() {
 
     try {
       const { userId } = unconnect;
-      const { username, generation, name, birth } = unconnect.user;
-      const msg = await _verifyProgram({ userId, generation, name, birth });
+      const msg = await _verifyProgram(userId);
       logger.info(`${i}/${userQueue.length}: (${userId}) | ${msg}`);
 
     } catch (error) {
@@ -28,8 +27,11 @@ export async function verifyUser() {
 }
 
 
-async function _verifyProgram({ userId, generation, name, birth }) {
-  const status = await updateProfile({ id: userId, generation, name, birth })
+async function _verifyProgram(userId) {
+
+  const profile = await ProfileUpdater.dbInitialze(userId);
+
+  const status = await profile.update();
 
   switch (status) {
     case updateStatus.before:
@@ -41,7 +43,7 @@ async function _verifyProgram({ userId, generation, name, birth }) {
       throw Error("Stop - ServerConnectionFalse");
     case updateStatus.fail:
       // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
-      if (serveStatus(generation) == Status.working) {
+      if (serveStatus(profile.getGeneration()) == Status.working) {
         await moveUnidentify(userId);
         return 'Shift - Unidentify'
       }

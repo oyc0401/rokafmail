@@ -32,13 +32,10 @@ export async function registerApi(registerForm: {
     }
 
     // 유저 생성
-    const newUser = await User.insert(registerForm);
-    const id = newUser.id;
-
-    const { name, birth, generation, username } = registerForm;
+    const { id } = await User.insert(registerForm);
 
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
-    asyncRegister({ id, name, birth, generation, username });
+    asyncRegister(id);
 
     return ServerActionResponse.json({ message: "회원가입 성공", status: 200 });
   } catch (error) {
