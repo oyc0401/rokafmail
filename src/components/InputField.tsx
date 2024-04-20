@@ -17,7 +17,7 @@ export function InputField({
   value?: string;
   placeholder?: string;
   autoComplete?: string;
-  onChange?: (event: string) => any;
+  onChange?: (e: string) => any;
   helpMessage?: string;
   color?: string;
   children?: React.ReactNode;
@@ -37,7 +37,7 @@ export function InputField({
           autoComplete={autoComplete}
           onInput={(e: React.FormEvent<HTMLInputElement>) => {
             const text = e.currentTarget.value;
-            if (onChange) onChange(text);
+            if (onChange != null) onChange(text);
           }}
 
           style={{ flex: 1 }}

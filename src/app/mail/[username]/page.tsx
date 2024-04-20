@@ -28,7 +28,7 @@ export async function generateMetadata(
 }
 export default async function Mail({ params }) {
   const username = decodeURI(params.username);
-  let user = await User.findByUsername(username);
+  const user = await User.findByUsername(username);
   if (!user) {
     notFound();
   }
@@ -58,7 +58,7 @@ export default async function Mail({ params }) {
       );
     }
     return <></>;
-    return <div className="bg-[#F3F3F3] w-full p-6">{""}</div>;
+    // return <div className="bg-[#F3F3F3] w-full p-6">{""}</div>;
   }
 
   // 편지쓰는 기간은 입대전부터 수료까지. 수료후에 편지 쓰는건 훈련병 입장에서 안좋을듯

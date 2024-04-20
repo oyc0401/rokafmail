@@ -2,7 +2,7 @@ import Rokaf from "../rokaf/rokaf";
 import { getNow, serveStatus, Status } from "src/lib/time";
 import { Post } from "src/db";
 
-export enum SendResponse { before, notfound, success, fail, error };
+export enum SendResponse { before, notfound, success, fail, error }
 
 /**
  * 해당 id의 편지를 보내고 보내졌다고 업데이트하고, 결과 enum 리턴하기
@@ -30,7 +30,7 @@ export async function sendMail(postId: number): Promise<SendResponse> {
         return SendResponse.notfound;
       }
 
-      let postComplete = await Rokaf.postMail(
+      const postComplete = await Rokaf.postMail(
         {
           name,
           relationship,
@@ -67,7 +67,7 @@ export async function sendMail(postId: number): Promise<SendResponse> {
 }
 
 async function updatePost(postId) {
-  await Post.update(postId, { posted: true, postAt: getNow() });;
+  await Post.update(postId, { posted: true, postAt: getNow() });
 }
 
 export function sendStatusToStr(status: SendResponse) {

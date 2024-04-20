@@ -29,15 +29,15 @@ function htmlToMemberSeq(html) {
   // 여기에서는 가져온 HTML을 파싱하거나 원하는 작업을 수행합니다.
   const root = parse(html);
   // 예제: 클래스가 "choice"인 요소를 찾아서 onclick 속성 값 추출
-  let buttonElement = root.querySelector(".choice");
+  const buttonElement = root.querySelector(".choice");
   if (buttonElement == null) {
     throw Error("no .choice");
   } else {
-    let onclickAttributeValue = buttonElement.getAttribute("onclick");
+    const onclickAttributeValue = buttonElement.getAttribute("onclick");
     if (onclickAttributeValue == null) {
       throw Error("no onclickAttributeValue");
     } else {
-      let functionName = onclickAttributeValue
+      const functionName = onclickAttributeValue
         .replace("resultSelect('", "")
         .replace("')", "");
       return functionName;
@@ -47,18 +47,18 @@ function htmlToMemberSeq(html) {
 
 function htmlToSodae(html) {
   const doc = cheerio.load(html);
-  let sosok = doc(".first").find("dd").text();
+  const sosok = doc(".first").find("dd").text();
   //console.log(sosok);
 
-  let inputString = sosok;
-  let numbers = inputString.match(/\b\d{1,3}\b/g);
+  const inputString = sosok;
+  const numbers = inputString.match(/\b\d{1,3}\b/g);
 
-  let numberList = numbers!.map(Number); // 문자열을 숫자로 변환
-  let [대대, 중대, 소대, 호실, 번] = numberList;
+  const numberList = numbers!.map(Number); // 문자열을 숫자로 변환
+  const [대대, 중대, 소대, 호실, 번] = numberList;
 
   //console.log(`${대대}대대 ${중대}중대 ${소대}소대 ${호실}호실 ${번}번`);
 
-  let strnum = `${번}`;
+  const strnum = `${번}`;
   if (번 < 10) strnum = `0${번}`;
 
   return `${중대}${소대}${strnum}`;
@@ -89,8 +89,8 @@ export async function getProfile(name: string, birth: string): Promise<RokafProf
     // console.log(html)
 
     if (exist(html)) {
-      let memberSeq = htmlToMemberSeq(html);
-      let sodae = htmlToSodae(html);
+      const memberSeq = htmlToMemberSeq(html);
+      const sodae = htmlToSodae(html);
       return {
         member: {
           memberSeq: memberSeq,

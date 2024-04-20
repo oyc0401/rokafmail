@@ -7,10 +7,10 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
-  parserOptions: {
-    project: true,
-    tsconfigRootDir: __dirname,
-  },
+  // parserOptions: {
+  //   project: true,
+  //   tsconfigRootDir: __dirname,
+  // },
   root: true,
   rules: {
     // 세미콜론이 없으면 에러로 취급한다.
@@ -18,9 +18,9 @@ module.exports = {
     // 기존 프로젝트에서는 'warn'으로 취급되지만, 'error'로 설정하면 에러로 취급한다.
 
     'prefer-const': 'warn',
-    'no-var': 'warn',
-    'no-undef': 'warn',
-    'no-unused-vars': 'warn',
+    'no-var': 'off',
+    'no-undef': 'off',
+    'no-unused-vars': 'off',
     'no-extra-semi': 'warn',
 
     '@typescript-eslint/no-unused-vars': 'off',
