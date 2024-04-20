@@ -1,5 +1,5 @@
 import { User } from "src/db";
-
+import { Profile } from './types'
 /**
  * DB에서 해당 유저의 정보를 불러온다.
  */

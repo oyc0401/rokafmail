@@ -35,6 +35,6 @@ export async function asyncRegister(id: number) {
       break;
   }
 
-  logger.info(`${profile.getUsername()} (${id}) | ${logMessage}`);
+  logger.info(`${profile.username} (${id}) | ${logMessage}`);
 }
 

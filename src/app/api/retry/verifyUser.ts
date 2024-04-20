@@ -44,7 +44,7 @@ async function _verifyProgram(userId) {
       throw Error("Stop - ServerConnectionFalse");
     case updateStatus.fail:
       // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
-      if (serveStatus(profile.getGeneration()) == Status.working) {
+      if (serveStatus(profile.generation) == Status.working) {
         await moveUnidentify(userId);
         return 'Shift - Unidentify'
       }
