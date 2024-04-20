@@ -2,7 +2,7 @@ import { makeLogger } from "config/winston";
 import { Post, UserQueue, UnidentifiedUser } from "src/db";
 import { Status, serveStatus } from "src/lib/time";
 import { loadProfileFromDB } from 'src/type/factory';
-import { updateStatus, parseAndUpdateRokafValue } from "../service/parseAndUpdateRokafValue";
+import { syncResponse, syncProfile } from "../service/syncProfile";
 import { asyncPost } from "../service/asyncPost";
 
 const logger = makeLogger("verifyUser");
@@ -32,17 +32,17 @@ async function _verifyProgram(userId) {
 
   const profile = await loadProfileFromDB(userId);
 
-  const status = await parseAndUpdateRokafValue(profile);
+  const status = await syncProfile(profile);
 
   switch (status) {
-    case updateStatus.before:
+    case syncResponse.before:
       return 'QueueAdded - BeforeMailTime'
-    case updateStatus.complete:
+    case syncResponse.complete:
       await sendPosts(userId);
       return 'Complete'
-    case updateStatus.error:
+    case syncResponse.error:
       throw Error("Stop - ServerConnectionFalse");
-    case updateStatus.fail:
+    case syncResponse.fail:
       // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
       if (serveStatus(profile.generation) == Status.working) {
         await moveUnidentify(userId);

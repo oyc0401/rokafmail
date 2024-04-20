@@ -2,28 +2,8 @@ import Rokaf from "../rokaf/rokaf";
 import { getNow, serveStatus, Status } from "src/lib/time";
 import { Post } from "src/db";
 
-export enum SendStatus {
-  before,
-  notfound,
-  success,
-  error,
-  fail,
-}
+export enum SendResponse { before, notfound, success, fail, error };
 
-export function sendStatusToStr(status: SendStatus) {
-  switch (status) {
-    case SendStatus.before:
-      return `QueueAdded - BeforeMailTime`;
-    case SendStatus.notfound:
-      return `QueueAdded - ProfileNotFound`;
-    case SendStatus.success:
-      return `Complete`;
-    case SendStatus.error:
-      return `QueueAdded - ServerError`;
-    case SendStatus.fail:
-      return `QueueAdded - Fail`;
-  }
-}
 /**
  * 해당 id의 편지를 보내고 보내졌다고 업데이트하고, 결과 enum 리턴하기
  * 주의사항:
@@ -31,7 +11,7 @@ export function sendStatusToStr(status: SendStatus) {
  * 편지가능 기간 이전에 해당 함수를 호출하면 안됩니다.
  * 에러 다수 던짐
 **/
-export async function sendMail(postId: number): Promise<SendStatus> {
+export async function sendMail(postId: number): Promise<SendResponse> {
 
   const post = await Post.findById(postId);
   if (!post) throw Error(`id가 ${postId}인 편지를 찾을 수 없습니다.`);
@@ -44,10 +24,10 @@ export async function sendMail(postId: number): Promise<SendStatus> {
   switch (status) {
     case Status.before:
     case Status.beginning:
-      return SendStatus.before;
+      return SendResponse.before;
     case Status.training:
       if (!memberSeq || !sodae) {
-        return SendStatus.notfound;
+        return SendResponse.notfound;
       }
 
       let postComplete = await Rokaf.postMail(
@@ -64,28 +44,43 @@ export async function sendMail(postId: number): Promise<SendStatus> {
       );
 
       // 국방서버에 보내는 요청
-      if (!postComplete.serverOn) return SendStatus.error;
+      if (!postComplete.serverOn) return SendResponse.error;
 
       if (postComplete.complete) {
         await updatePost(postId);
-        return SendStatus.success;
+        return SendResponse.success;
       } else {
-        return SendStatus.fail;
+        return SendResponse.fail;
       }
 
     case Status.ending:
     case Status.working:
     case Status.discharged:
       if (!memberSeq || !sodae) {
-        return SendStatus.notfound;
+        return SendResponse.notfound;
       }
       // 특학인편 하지말자 ~
       // 편지쓰기 기간 이후에 전송하면 보내졌다고 치기
       await updatePost(postId);
-      return SendStatus.success;
+      return SendResponse.success;
   }
 }
 
 async function updatePost(postId) {
   await Post.update(postId, { posted: true, postAt: getNow() });;
+}
+
+export function sendStatusToStr(status: SendResponse) {
+  switch (status) {
+    case SendResponse.before:
+      return `QueueAdded - BeforeMailTime`;
+    case SendResponse.notfound:
+      return `QueueAdded - ProfileNotFound`;
+    case SendResponse.success:
+      return `Complete`;
+    case SendResponse.error:
+      return `QueueAdded - ServerError`;
+    case SendResponse.fail:
+      return `QueueAdded - Fail`;
+  }
 }

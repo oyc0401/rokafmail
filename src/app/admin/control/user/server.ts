@@ -1,7 +1,7 @@
 "use server";
 
 import { makeLogger } from "config/winston";
-import { parseAndUpdateRokafValue, updateStatus } from "src/app/api/service/parseAndUpdateRokafValue";
+import { syncProfile, updateStatus } from "src/app/api/service/parseAndUpdateRokafValue";
 const logger = makeLogger("Control User");
 import { loadProfileFromDB } from 'src/type/factory';
 
@@ -11,7 +11,7 @@ export async function userDoubleCheck(userId: number) {
 
   const { username, name, generation, birth } = profile;
 
-  const status = await parseAndUpdateRokafValue(profile);
+  const status = await syncProfile(profile);
 
   const userLogForm = `| ${username} (${userId}) ${name} ${birth} ${generation}`;
   let msg = "";

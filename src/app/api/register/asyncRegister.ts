@@ -2,7 +2,7 @@
 import { UserQueue } from "src/db";
 import { makeLogger } from "config/winston";
 import { loadProfileFromDB } from 'src/type/factory';
-import { parseAndUpdateRokafValue, updateStatus } from "src/app/api/service/parseAndUpdateRokafValue";
+import { syncProfile, syncResponse } from "src/app/api/service/syncProfile";
 const logger = makeLogger("asyncRegister");
 
 export async function asyncRegister(id: number) {
@@ -13,23 +13,23 @@ export async function asyncRegister(id: number) {
 
   const profile = await loadProfileFromDB(id);
 
-  const status = await parseAndUpdateRokafValue(profile);
+  const status = await syncProfile(profile);
 
   let logMessage = '';
 
   switch (status) {
-    case updateStatus.before:
+    case syncResponse.before:
       await UserQueue.insert({ userId: id });
       logMessage = "QueueAdded - BeforeMailTime";
       break;
-    case updateStatus.complete:
+    case syncResponse.complete:
       logMessage = `Complete`;
       break;
-    case updateStatus.error:
+    case syncResponse.error:
       await UserQueue.insert({ userId: id });
       logMessage = "QueueAdded - ServerConnectionFalse";
       break;
-    case updateStatus.fail:
+    case syncResponse.fail:
       await UserQueue.insert({ userId: id });
       logMessage = "QueueAdded - Fail";
       break;
