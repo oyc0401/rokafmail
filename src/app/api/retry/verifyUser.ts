@@ -1,7 +1,8 @@
 import { makeLogger } from "config/winston";
 import { Post, UserQueue, UnidentifiedUser } from "src/db";
 import { Status, serveStatus } from "src/lib/time";
-import { updateStatus, ProfileUpdater } from "../service/profileUpdater";
+import { loadProfileFromDB } from 'src/type/factory';
+import { updateStatus, parseAndUpdateRokafValue } from "../service/parseAndUpdateRokafValue";
 import { asyncPost } from "../service/asyncPost";
 
 const logger = makeLogger("verifyUser");
@@ -29,9 +30,9 @@ export async function verifyUser() {
 
 async function _verifyProgram(userId) {
 
-  const profile = await ProfileUpdater.dbInitialze(userId);
+  const profile = await loadProfileFromDB(userId);
 
-  const status = await profile.update();
+  const status = await parseAndUpdateRokafValue(profile);
 
   switch (status) {
     case updateStatus.before:

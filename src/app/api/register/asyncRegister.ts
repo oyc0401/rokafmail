@@ -1,7 +1,8 @@
 
 import { UserQueue } from "src/db";
 import { makeLogger } from "config/winston";
-import { ProfileUpdater, updateStatus } from "src/app/api/service/profileUpdater";
+import { loadProfileFromDB } from 'src/type/factory';
+import { parseAndUpdateRokafValue, updateStatus } from "src/app/api/service/parseAndUpdateRokafValue";
 const logger = makeLogger("asyncRegister");
 
 export async function asyncRegister(id: number) {
@@ -10,9 +11,9 @@ export async function asyncRegister(id: number) {
   // 각각의 상태마다 다른 로직 필요.
   // 실패시 큐에 넣는 로직, 성공시 큐에서 빼는 로직 두개가 있음.
 
-  const profile = await ProfileUpdater.dbInitialze(id);
+  const profile = await loadProfileFromDB(id);
 
-  const status = await profile.update();
+  const status = await parseAndUpdateRokafValue(profile);
 
   let logMessage = '';
 
