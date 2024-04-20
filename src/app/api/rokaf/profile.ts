@@ -64,7 +64,16 @@ function htmlToSodae(html) {
   return `${중대}${소대}${strnum}`;
 }
 
-export async function getProfile(name: string, birth: string) {
+
+interface RokafProfileResponse {
+  serverOn: boolean,
+  member?: {
+    memberSeq: string,
+    sodae: string,
+  }
+}
+
+export async function getProfile(name: string, birth: string): Promise<RokafProfileResponse> {
   const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=${name}&searchBirth=${birth}`;
 
   // console.log("-link:", url);
@@ -92,7 +101,6 @@ export async function getProfile(name: string, birth: string) {
     } else {
       //console.log("-cannot find user.");
       return {
-        member: null,
         serverOn: true,
       };
     }
@@ -100,7 +108,6 @@ export async function getProfile(name: string, birth: string) {
     logger.warn(`error:, ${error.message}`);
     // console.log(`-error:`, error.message);
     return {
-      member: null,
       serverOn: false,
     };
   }

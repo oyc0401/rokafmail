@@ -1,7 +1,7 @@
 "use server";
 
 import { makeLogger } from "config/winston";
-import { syncProfile, updateStatus } from "src/app/api/service/parseAndUpdateRokafValue";
+import { syncProfile, syncResponse } from "src/app/api/service/syncProfile";
 const logger = makeLogger("Control User");
 import { loadProfileFromDB } from 'src/type/factory';
 
@@ -16,19 +16,19 @@ export async function userDoubleCheck(userId: number) {
   const userLogForm = `| ${username} (${userId}) ${name} ${birth} ${generation}`;
   let msg = "";
   switch (status) {
-    case updateStatus.complete:
+    case syncResponse.complete:
       msg = `verify ${userLogForm}`;
       logger.info(msg);
       return msg;
-    case updateStatus.before:
+    case syncResponse.before:
       msg = `before ${userLogForm}`;
       logger.info(msg);
       return msg;
-    case updateStatus.fail:
+    case syncResponse.fail:
       msg = `fail ${userLogForm}`;
       logger.info(msg);
       return msg;
-    case updateStatus.error:
+    case syncResponse.error:
       msg = `error ${userLogForm}`;
       logger.info(msg);
       return msg;
