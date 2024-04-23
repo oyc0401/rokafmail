@@ -43,6 +43,9 @@ export class PostQueue {
     });
 
 
+  static top = () =>
+    prisma.postQueue.findFirst();
+
 
 
 
