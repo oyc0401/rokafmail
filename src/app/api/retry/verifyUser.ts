@@ -1,5 +1,5 @@
 import { makeLogger } from "config/winston";
-import { Post, UserQueue, UnidentifiedUser } from "src/db";
+import { Post, UserQueue, UnidentifiedUser, PostQueue } from "src/db";
 import { Status, serveStatus } from "src/lib/time";
 import { loadProfileFromDB } from 'src/type/factory';
 import { syncResponse, syncProfile } from "../service/syncProfile";
@@ -54,7 +54,19 @@ async function _verifyProgram(userId) {
 
 // 해당 유저의 모든 미발송 편지들을 다시 보내기
 async function sendPosts(userId: number) {
+  const MAX_COUNT = 10;
   let posts = await Post.findNotPostedByUserId(userId);
+
+  for (let i = 0; i < posts.length; i++) {
+    const post = posts[i];
+
+    if (i < MAX_COUNT) {
+      await asyncPost(post.id);
+    } else {
+      // 한번에 많이 보내지 않게 나머지는 큐에 넣음
+      PostQueue.insert({ postId: post.id, userId: post.userId });
+    }
+  }
 
   for (const post of posts) {
     // 오류가 나면 큐에 저장하기
