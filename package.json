@@ -43,6 +43,7 @@
     "react-dom": "18.2.0",
     "react-textarea-autosize": "^8.5.3",
     "recharts": "^2.12.2",
+    "redis": "^4.6.13",
     "sharp": "^0.33.1",
     "ts-node": "^10.9.2",
     "winston": "^3.11.0",
