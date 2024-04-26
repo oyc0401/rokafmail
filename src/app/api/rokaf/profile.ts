@@ -58,7 +58,7 @@ function htmlToSodae(html) {
 
   //console.log(`${대대}대대 ${중대}중대 ${소대}소대 ${호실}호실 ${번}번`);
 
-  const strnum = `${번}`;
+  let strnum = `${번}`;
   if (번 < 10) strnum = `0${번}`;
 
   return `${중대}${소대}${strnum}`;
