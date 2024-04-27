@@ -1,6 +1,6 @@
 "use server";
 import { verifyUser } from "src/app/api/retry/verifyUser";
-import { traversePostQueue } from "src/app/api/retry/mailQueue";
+import { traversePostQueue } from "src/app/api/retry/traversePostQueue";
 import { Post, PostQueue } from "src/db";
 
 export async function repost() {

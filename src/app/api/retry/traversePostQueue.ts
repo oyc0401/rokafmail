@@ -19,15 +19,13 @@ export async function traversePostQueue() {
     try {
       if (top.post.posted) {
         logger.info(`${i + 1}/${unposted.length} (${top.postId}) | 이미 보내졌습니다`);
-        
+
       } else if (userCountMap[top.userId] ?? 0 < MAX_POSTCOUNT) {
-        
-        const status = await sendMail(postId);
         const msg = await _repostMail(top.postId, top.userId);
-        
+
         logger.info(`${i + 1}/${unposted.length} (${top.id}) | ${msg}`);
         userCountMap[top.userId] = userCountMap[top.userId] ?? 0 + 1;
-        
+
       }
       else {
         // 나중에 다시 검사하게 insert

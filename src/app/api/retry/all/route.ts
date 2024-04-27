@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { verifyUser } from "../verifyUser";
-import { traversePostQueue } from "../mailQueue";
+import { traversePostQueue } from "../traversePostQueue";
 import { getNow } from "src/lib/time";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Retry All");
