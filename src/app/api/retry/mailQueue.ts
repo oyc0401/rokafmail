@@ -16,31 +16,37 @@ export async function sendAllMails() {
   // 큐에 있는 모든 편지들을 한번씩 보내기
   for (let i = 0; i < unposted.length; i++) {
     const MAX_POSTCOUNT = 10;
-    const post = unposted[i];
+    const top = unposted[i];
+
     try {
-      if (userCountMap[post.userId] ?? 0 < MAX_POSTCOUNT) {
+      if (top.post.posted) {
+        logger.info(`${i + 1}/${unposted.length} (${top.postId}) | 이미 보내졌습니다`);
+      } else if (userCountMap[top.userId] ?? 0 < MAX_POSTCOUNT) {
         // 성공시 큐에서 제거하기
-        await _repostMail(post.id, post.userId).then(msg => {
-          logger.info(`${i + 1}/${unposted.length} (${post.id}) | ${msg}`);
-        });
-        userCountMap[post.userId] = userCountMap[post.userId] ?? 0 + 1;
-      } else {
-        // pop하고, insert해서 맨 뒤로 가게 하기
-        await PostQueue.deleteByPostId(post.id);
-        await PostQueue.insert({ postId: post.id, userId: post.userId });
+        const status = await sendMail(postId);
+        const msg = await _repostMail(top.postId, top.userId);
+        logger.info(`${i + 1}/${unposted.length} (${top.id}) | ${msg}`);
+        userCountMap[top.userId] = userCountMap[top.userId] ?? 0 + 1;
+      }
+      else {
+        // 나중에 다시 검사하게 insert
+        logger.info(`${i + 1}/${unposted.length} (${top.postId}) | 한도 초과`);
+        await PostQueue.insert({ postId: top.postId, userId: top.userId });
       }
 
+      // queue.pop()
+      await PostQueue.deleteById(top.id);
+
     } catch (error) {
-      logger.error(`${i + 1}/${unposted.length} (${post.id}) | ${error}`)
+      logger.error(`${i + 1}/${unposted.length} (${top.id}) | ${error}`)
     }
   }
-
 
 }
 
 /**
- * 해당 id의 편지를 보내고, 성공시 큐에서 제거
- * ※ asyncPost와 구조가 비슷합니다.
+ * 해당 id의 편지를 보내기
+ * 
  */
 async function _repostMail(postId: number, userId: number) {
 
@@ -53,13 +59,9 @@ async function _repostMail(postId: number, userId: number) {
     // 성공하거나 이후에 보낸 편지는 posted = true로 업데이트가 될 것이다.
     case SendResponse.before:
     case SendResponse.success:
-      // 성공하면 큐에서 제거한다.
-      await PostQueue.deleteByPostId(postId);
       break;
     case SendResponse.error:
     case SendResponse.fail:
-      // pop하고, insert해서 맨 뒤로 가게 하기
-      await PostQueue.deleteByPostId(postId);
       await PostQueue.insert({ postId, userId });
       break;
   }
