@@ -1,5 +1,5 @@
 import { verifyUser } from "src/app/api/retry/verifyUser";
-import { sendAllMails } from "src/app/api/retry/mailQueue";
+import { traversePostQueue } from "src/app/api/retry/traversePostQueue";
 import { makeLogger } from "config/winston";
 var cron = require("node-cron");
 const logger = makeLogger("repeat");
@@ -14,7 +14,7 @@ export class CronStore {
         try {
           logger.info("mailCron is executed");
           // Http x, 바로 호출
-          await sendAllMails();
+          await traversePostQueue();
         } catch (e) {
           logger.error(`node-cron 중 오류발생: ${e}`);
         }
@@ -58,8 +58,8 @@ class Cron {
       this.task = cron.schedule(
 
         //3초마다
-         // "*/3 * * * * *",
-        
+        // "*/3 * * * * *",
+
         // 10분 마다
         // "*/10 * * * *",
 

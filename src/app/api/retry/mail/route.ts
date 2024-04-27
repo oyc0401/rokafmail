@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { sendAllMails } from "../mailQueue";
+import { traversePostQueue } from "../traversePostQueue";
 import { getNow } from "src/lib/time";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Retry Mail");
@@ -16,5 +16,5 @@ export async function GET() {
 }
 
 async function run() {
-  await sendAllMails();
+  await traversePostQueue();
 }

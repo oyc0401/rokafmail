@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { verifyUser } from "../verifyUser";
-import { sendAllMails } from "../mailQueue";
+import { traversePostQueue } from "../mailQueue";
 import { getNow } from "src/lib/time";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Retry All");
@@ -18,5 +18,5 @@ export async function GET() {
 
 async function run() {
   await verifyUser();
-  await sendAllMails();
+  await traversePostQueue();
 }

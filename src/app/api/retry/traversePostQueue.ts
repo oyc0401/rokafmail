@@ -6,12 +6,10 @@ import { sendMail, SendResponse, sendStatusToStr } from "src/app/api/service/sen
 /**
  * 큐에 있는 모든 편지 보내기
  */
-export async function sendAllMails() {
+export async function traversePostQueue() {
   const unposted = await PostQueue.findAll();
 
   const userCountMap = {};
-
-
 
   // 큐에 있는 모든 편지들을 한번씩 보내기
   for (let i = 0; i < unposted.length; i++) {
@@ -21,12 +19,15 @@ export async function sendAllMails() {
     try {
       if (top.post.posted) {
         logger.info(`${i + 1}/${unposted.length} (${top.postId}) | 이미 보내졌습니다`);
+        
       } else if (userCountMap[top.userId] ?? 0 < MAX_POSTCOUNT) {
-        // 성공시 큐에서 제거하기
+        
         const status = await sendMail(postId);
         const msg = await _repostMail(top.postId, top.userId);
+        
         logger.info(`${i + 1}/${unposted.length} (${top.id}) | ${msg}`);
         userCountMap[top.userId] = userCountMap[top.userId] ?? 0 + 1;
+        
       }
       else {
         // 나중에 다시 검사하게 insert
