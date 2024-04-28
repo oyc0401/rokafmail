@@ -55,5 +55,33 @@ export class PostQueue {
 
 
 
+  static findAllAdmin = () =>
+  prisma.postQueue.findMany({
+    where: {
+      user: {
+        NOT: {
+          sodae: null,
+          memberSeq: null,
+        },
+      },
+    },
+    include: {
+      user: true,
+      post: {
+        include: {
+          user: {
+            select: {
+              username: true,
+              generation: true,
+              memberSeq: true,
+              sodae: true,
+              id: true,
+            },
+          },
+        }
+      }
+    },
+  });
+
 
 }

@@ -19,9 +19,7 @@ export async function verifyUser() {
       const msg = await _verifyProgram(userId);
       logger.info(`${i}/${userQueue.length}: (${userId}) | ${msg}`);
 
-
-      PostQueue.deleteById(top.id)
-
+      UserQueue.deleteById(top.id)
     }
   } catch (error) {
     logger.error(`traverseUserQueue | ${error}`);

@@ -52,27 +52,35 @@ async function Status({ userId }) {
       <p>연결여부: {user.connect ? 'True' : 'False'}</p>
       <p>소대번호: {user.sodae}</p>
       <p>멤버번호: {user.memberSeq}</p>
-      <p>미등록 유저: {unidentify ? 'True' : 'False'}</p>
-      <p>유저큐 등록:{queueLength != 0 ? `${queueLength}개` : 'False'}</p>
-      {user.connect ? <></>
-        : <>
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
-            프로필 검색 후 업데이트</button>
-          <br />
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
-            미발송 편지 10개 보내기</button>
-          <br />
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
-            유저 큐 삽입</button>
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
-            유저 큐 빼기</button>
-          <br />
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
-            미등록 유저 설정</button>
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
-            미등록 유저 해제</button>
 
-        </>}
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
+        프로필 검색 후 업데이트</button>
+      <br />
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
+        기훈단 프로필 바로가기</button>
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
+        기훈단 인편 바로가기</button>
+      <br />
+      {user.connect ? <>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
+          미발송 편지 10개 보내기</button>
+        <br />
+      </> : <></>}
+      
+      <p>미등록 유저: {unidentify ? 'True' : 'False'}</p>
+      <p>유저큐 등록: {queueLength != 0 ? `${queueLength}개` : 'False'}</p>
+      {user.connect ? <></> : <>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
+          유저 큐 삽입</button>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
+          유저 큐 빼기</button>
+        <br />
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
+          미등록 유저 설정</button>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2">
+          미등록 유저 해제</button>
+      </>}
+
 
     </div>
   )
