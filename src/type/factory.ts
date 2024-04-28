@@ -10,6 +10,6 @@ export async function loadProfileFromDB(userId): Promise<Profile> {
   return createProfile({ userId, name, birth, generation, username });
 }
 
-function createProfile({ userId, name, birth, generation, username }) {
+export function createProfile({ userId, name, birth, generation, username }) {
   return { userId, name, birth, generation, username }
 }
