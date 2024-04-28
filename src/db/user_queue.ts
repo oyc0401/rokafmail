@@ -20,8 +20,8 @@ export class UserQueue {
       },
     });
 
-  static findByUserId = async (userId: number) => {
-    const result = await prisma.usersQueue.findMany({
+  static findByUserId = async (userId: number) =>
+    prisma.usersQueue.findMany({
       include: {
         user: {
           select: {
@@ -39,16 +39,6 @@ export class UserQueue {
       }
     });
 
-    if (result.length == 0) {
-      return null;
-    }
-    if (result.length > 1) {
-      throw Error(
-        "UserQueue 안에 같은 userId를 가진 요소가 여러개 들어있습니다.",
-      );
-    }
-    return result[0];
-  };
 
 
 

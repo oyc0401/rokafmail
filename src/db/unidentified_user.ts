@@ -5,7 +5,7 @@ export class UnidentifiedUser {
     prisma.unidentifiedUser.create({ data });
 
 
-  
+
   static findAll = () =>
     prisma.unidentifiedUser.findMany({
       include: {
@@ -15,11 +15,16 @@ export class UnidentifiedUser {
             birth: true,
             sodae: true,
             memberSeq: true,
-            generation:true,
-            username:true,
+            generation: true,
+            username: true,
           },
         },
       },
+    });
+
+  static findByUserId = (userId: number) =>
+    prisma.unidentifiedUser.findMany({
+      where: { userId: userId },
     });
 
   static deleteByUserId = (userId: number) =>

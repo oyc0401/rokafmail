@@ -3,7 +3,7 @@ import { Post, User } from "src/db";
 
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
-const logger = makeLogger("mail");
+const logger = makeLogger("Mail");
 import { asyncPost } from "../service/asyncPost";
 
 /**
@@ -68,7 +68,7 @@ export async function mailApi(mailForm: {
       // 편지를 보내다 오류가 나면 큐에 저장합니다.
       asyncPost(postId);
     }else{
-      logger.info(`(${postId}) | QueueAdded - BeforeMailTime`)
+      logger.info(`(${postId}) | BeforeMailTime`)
     }
 
     return ServerActionResponse.json({ message: "편지 전송 성공!", status: 200 });
