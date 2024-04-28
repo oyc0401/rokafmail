@@ -26,6 +26,9 @@ export async function sendMail(postId: number): Promise<SendResponse> {
     case Status.beginning:
       return SendResponse.before;
     case Status.training:
+    // 테스트 편하게 풀어놓기
+    case Status.ending:
+    case Status.working:
       if (!memberSeq || !sodae) {
         return SendResponse.notfound;
       }
@@ -53,8 +56,8 @@ export async function sendMail(postId: number): Promise<SendResponse> {
         return SendResponse.fail;
       }
 
-    case Status.ending:
-    case Status.working:
+    // case Status.ending:
+    // case Status.working:
     case Status.discharged:
       if (!memberSeq || !sodae) {
         return SendResponse.notfound;
