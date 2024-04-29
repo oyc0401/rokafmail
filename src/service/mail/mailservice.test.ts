@@ -1,13 +1,13 @@
 import { describe, expect, test } from '@jest/globals';
 import { MailService, SendResponse } from './MailService';
 import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
-import MockRokafApiClient from '../rokafApi/MockRokafApiClient';
+import MockRokafClient from '../rokafClient/MockRokafClient';
 
 describe('serviceTest', () => {
 
   test('mail service before', async () => {
-    // MockRokafApiClient 준비
-    const rokafClient = new MockRokafApiClient();
+    // MockRokafClient 준비
+    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetPostMailResponse({
       serverOn: true,
       complete: true,
@@ -35,8 +35,8 @@ describe('serviceTest', () => {
   });
 
   test('mail service 성공', async () => {
-    // MockRokafApiClient 준비
-    const rokafClient = new MockRokafApiClient();
+    // MockRokafClient 준비
+    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetPostMailResponse({
       serverOn: true,
       complete: true,
@@ -68,8 +68,8 @@ describe('serviceTest', () => {
   });
 
   test('MailService 실패 상황', async () => {
-    // MockRokafApiClient 준비
-    const rokafClient = new MockRokafApiClient();
+    // MockRokafClient 준비
+    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetPostMailResponse({
       serverOn: true,
       complete: false,

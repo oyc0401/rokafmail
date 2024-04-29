@@ -1,7 +1,7 @@
 import { getProfile } from "./profile";
 import { postMail } from "./postMail";
 
-export default class RokafApiClient {
+export default class RokafClient {
   async getProfile(name: string, birth: string) {
     return await getProfile(name, birth);
   }

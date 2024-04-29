@@ -1,4 +1,4 @@
-export default class MockRokafApiClient {
+export default class MockRokafClient {
 
   private getProfileResponse: {
     member: {
