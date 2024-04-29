@@ -4,13 +4,13 @@ import { PrismaPostRepository } from "src/repository/post/prismaPostRepository";
 import RokafApiClient from "src/service/rokafApi/RokafApiClient";
 
 class BeanConfig {
-  static storage = null;
+  static storage: any;
 
   static getStorage() {
     if (!BeanConfig.storage) BeanConfig.storage = BeanConfig.bean();
     return BeanConfig.storage;
   }
-  
+
   static bean() {
     return {
       postRepository: new PrismaPostRepository(),
