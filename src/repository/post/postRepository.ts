@@ -2,6 +2,7 @@ export interface PostWithUser {
   name: string; relationship: string;
   title: string; contents: string;
   password: string; createdAt: Date;
+  posted: boolean; postAt: Date;
   user: {
     username: string;
     connect: boolean;

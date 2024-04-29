@@ -2,6 +2,8 @@ import { Post, PostQueue } from "src/db";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Async Post");
 import { sendMail, SendResponse, sendStatusToStr } from "./sendMail";
+import { MailService } from "src/service/mail/MailService";
+import { bean } from "src/bean/bean";
 
 /**
  *  해당 id의 편지를 보내고, 실패시 큐에 넣기
@@ -9,7 +11,9 @@ import { sendMail, SendResponse, sendStatusToStr } from "./sendMail";
 export async function asyncPost(postId: number) {
 
   // 편지를 보내고 결과값을 받는다.
-  const status = await sendMail(postId);
+  const mailService = new MailService(bean);
+
+  const status = await mailService.sendMail(postId);
 
   // 받은 상태에 때른 문자열 메시지 치환
   const logMessage = sendStatusToStr(status);
