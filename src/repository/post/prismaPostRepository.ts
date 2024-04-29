@@ -2,7 +2,7 @@ import prisma from "src/db/prisma";
 import { PostRepository } from './postRepository';
 
 export class PrismaPostRepository implements PostRepository {
-  insert = (data: {
+  async insert(data: {
     userId: number;
     name: string;
     relationship: string;
@@ -10,10 +10,12 @@ export class PrismaPostRepository implements PostRepository {
     contents: string;
     password: string;
     isPublic: boolean;
-  }) => prisma.post.create({ data });
+  }) {
+    return await prisma.post.create({ data });
+  }
 
-  findById = (id: number) =>
-    prisma.post.findUnique({
+  async findById(id: number) {
+    return await prisma.post.findUnique({
       include: {
         user: {
           select: {
@@ -29,52 +31,13 @@ export class PrismaPostRepository implements PostRepository {
         id,
       },
     });
+  }
 
-  update = (
-    id: number,
-    data: {
-      posted: boolean;
-      postAt: Date;
-    },
-  ) =>
+  update = (id: number, data) =>
     prisma.post.update({
-      where: {
-        id,
-      },
+      where: { id },
       data,
     });
-
-
-
-  findByIdWithUser = (id: number) =>
-    prisma.post.findUnique({
-      include: {
-        user: {
-          select: {
-            username: true,
-            connect: true,
-            generation: true,
-            memberSeq: true,
-            sodae: true,
-          },
-        },
-      },
-      where: {
-        id,
-      },
-    });
-
-
-  updatePostedTrue = async (id: number) => {
-    await prisma.post.update({
-      where: { id },
-      data: {
-        posted: true,
-        postAt: new Date(),
-      },
-    });
-
-  }
 
 
 }
