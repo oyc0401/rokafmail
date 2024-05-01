@@ -1,5 +1,6 @@
 import { Post, User, UserQueue, PostQueue, UnidentifiedUser } from "src/db"
 import { PrismaPostRepository } from "src/repository/post/prismaPostRepository";
+import { PrismaPostQueueRepository } from "src/repository/postQueue/prismaPostQueueRepository";
 import RokafClient from "src/service/rokafClient/RokafClient";
 
 class BeanConfig {
@@ -14,7 +15,7 @@ class BeanConfig {
     return {
       postRepository: new PrismaPostRepository(),
       userRepository: User,
-      postQueueRepository: PostQueue,
+      postQueueRepository: new PrismaPostQueueRepository(),
       userQueueRepository: UserQueue,
       undifrinedRepository: UnidentifiedUser,
       rokafClient: new RokafClient(),

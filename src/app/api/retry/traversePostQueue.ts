@@ -47,24 +47,3 @@ export async function traversePostQueue() {
  * 해당 id의 편지를 보내기
  * 
  */
-async function _repostMail(postId: number, userId: number) {
-
-  // 편지를 보내고 결과값을 받는다.
-  const status = await sendMail(postId);
-
-  switch (status) {
-    // 편지쓰기 이전, 성공, 수료 후에 편지를 쓰면 그냥 둔다.
-    // 편지쓰기 이전에 보낸 편지들은 나중에 소대번호가 발견되면 다시 한번 보내질 것이고
-    // 성공하거나 이후에 보낸 편지는 posted = true로 업데이트가 될 것이다.
-    case SendResponse.before:
-    case SendResponse.success:
-      break;
-    case SendResponse.error:
-    case SendResponse.fail:
-      await PostQueue.insert({ postId, userId });
-      break;
-  }
-
-  // 받은 상태에 때른 문자열 메시지 치환
-  return sendStatusToStr(status);
-}
