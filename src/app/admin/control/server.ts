@@ -1,10 +1,12 @@
 "use server";
 import { verifyUser } from "src/app/api/retry/verifyUser";
-import { traversePostQueue } from "src/app/api/retry/traversePostQueue";
 import { Post, PostQueue } from "src/db";
+import { MailService } from "src/service/mail/MailService";
+import { bean } from "src/bean/bean";
 
 export async function repost() {
-  traversePostQueue();
+  const mailservice = new MailService(bean);
+  await mailservice.traversePostQueue();
 }
 
 export async function verify() {

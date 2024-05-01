@@ -1,6 +1,7 @@
 import { verifyUser } from "src/app/api/retry/verifyUser";
-import { traversePostQueue } from "src/app/api/retry/traversePostQueue";
 import { makeLogger } from "config/winston";
+import { MailService } from "src/service/mail/MailService";
+import { bean } from "src/bean/bean";
 var cron = require("node-cron");
 const logger = makeLogger("repeat");
 
@@ -14,7 +15,9 @@ export class CronStore {
         try {
           logger.info("mailCron is executed");
           // Http x, 바로 호출
-          await traversePostQueue();
+
+          const mailservice = new MailService(bean);
+          await mailservice.traversePostQueue();
         } catch (e) {
           logger.error(`node-cron 중 오류발생: ${e}`);
         }
