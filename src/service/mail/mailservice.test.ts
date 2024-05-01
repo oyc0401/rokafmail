@@ -4,6 +4,8 @@ import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
 import MockRokafClient from '../rokafClient/MockRokafClient';
 import { PrismaPostQueueRepository } from 'src/repository/postQueue/prismaPostQueueRepository';
 import { MemoryPostQueueRepository } from 'src/repository/postQueue/memoryPostQueueRepository';
+import { LogConfig } from 'config/logger';
+import { MemoryLogger } from 'config/memoryLogger';
 
 describe('serviceTest', () => {
 
@@ -106,6 +108,9 @@ describe('serviceTest', () => {
 
 
   test('MailService 편지 큐', async () => {
+    const logger = new MemoryLogger();
+    LogConfig.setLogger(logger);
+    
     // MockRokafClient 준비
     const rokafClient = new MockRokafClient();
     rokafClient.forcedSetPostMailResponse({
@@ -144,6 +149,7 @@ describe('serviceTest', () => {
 
     expect(await postQueueRepository.findAll()).toEqual([]);
     expect(resultPost.postAt).not.toBe(null);
+    console.log(logger.cat());
   });
 
   test('테스트 이름', () => {
