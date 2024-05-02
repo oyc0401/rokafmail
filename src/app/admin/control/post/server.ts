@@ -2,7 +2,7 @@
 
 import { Post, PostQueue, User } from "src/db";
 import { makeLogger } from "config/winston";
-import Rokaf from "src/app/api/rokaf/rokaf";
+import RokafClient from "src/service/rokafClient/RokafClient";
 const logger = makeLogger("Control Post");
 
 // import {} from'src/app/api/retry/'
@@ -24,10 +24,11 @@ export async function forcePost(postId) {
   if (post) {
     const { name, relationship, title, contents, password, createdAt } = post;
     const { memberSeq, sodae } = post.user;
-    if(!memberSeq || !sodae){
-       return "memberSeq or sodae is null";
+    if (!memberSeq || !sodae) {
+      return "memberSeq or sodae is null";
     }
-    let postComplete = await Rokaf.postMail(
+    const rokafClient = new RokafClient();
+    let postComplete = await rokafClient.postMail(
       {
         name,
         relationship,

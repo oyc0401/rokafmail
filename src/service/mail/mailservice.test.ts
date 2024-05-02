@@ -149,6 +149,7 @@ describe('serviceTest', () => {
 
     expect(await postQueueRepository.findAll()).toEqual([]);
     expect(resultPost.postAt).not.toBe(null);
+    
     console.log(logger.cat());
   });
 

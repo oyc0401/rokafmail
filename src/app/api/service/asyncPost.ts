@@ -1,8 +1,7 @@
 import { Post, PostQueue } from "src/db";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Async Post");
-import { sendMail, SendResponse, sendStatusToStr } from "./sendMail";
-import { MailService } from "src/service/mail/MailService";
+import { MailService, SendResponse, sendStatusToStr } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
 
 /**
