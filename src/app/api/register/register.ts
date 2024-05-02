@@ -1,9 +1,10 @@
 "use server";
-import { asyncRegister } from "./asyncRegister";
 import { User } from "src/db";
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
 import { duplicateUsername, validB, validG } from "./valid";
+import { syncProfile, syncResponseToStr } from "../service/syncProfile";
+import { ProfileFactory } from "src/type/factory";
 const logger = makeLogger("register");
 
 
@@ -32,10 +33,17 @@ export async function registerApi(registerForm: {
     }
 
     // 유저 생성
-    const { id } = await User.insert(registerForm);
+    const { id: userId, name, birth, generation, username } = await User.insert(registerForm);
 
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
-    asyncRegister(id);
+
+    const profile = ProfileFactory.create({ userId, name, birth, generation, username });
+
+    syncProfile(profile, {
+      onFalse: async (queue) => await queue.insert({ userId })
+    })
+      .then((response) =>
+        logger.info(`${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
 
     return ServerActionResponse.json({ message: "회원가입 성공", status: 200 });
   } catch (error) {
