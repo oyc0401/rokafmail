@@ -1,7 +1,5 @@
 import { serveStatus, Status } from "src/lib/time";
 import { Profile } from "src/type";
-import RokafClient from "src/service/rokafClient/RokafClient";
-
 
 
 export class UserService {
@@ -24,8 +22,7 @@ export class UserService {
       return syncResponse.before;
     }
 
-    const rokafClient = new RokafClient();
-    const result = await rokafClient.getProfile(profile.name, profile.birth);
+    const result = await this.rokafClient.getProfile(profile.name, profile.birth);
 
     // 기훈단 서버 오류
     if (!result.serverOn) {
