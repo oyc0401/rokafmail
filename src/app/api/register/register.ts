@@ -36,14 +36,15 @@ export async function registerApi(registerForm: {
     const { id: userId, name, birth, generation, username } = await User.insert(registerForm);
 
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
-
     const profile = ProfileFactory.create({ userId, name, birth, generation, username });
+    const pushQueue = async (queue) => await queue.insert({ userId });
 
     syncProfile(profile, {
-      onFalse: async (queue) => await queue.insert({ userId })
-    })
-      .then((response) =>
-        logger.info(`${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
+      onBefore: pushQueue,
+      onError: pushQueue,
+      onFail: pushQueue,
+    }).then((response) =>
+      logger.info(`${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
 
     return ServerActionResponse.json({ message: "회원가입 성공", status: 200 });
   } catch (error) {

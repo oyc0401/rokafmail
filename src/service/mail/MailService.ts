@@ -24,7 +24,7 @@ export class MailService {
    * 에러 다수 던짐
   **/
   async sendMail(postId: number,
-    event: { onFalse?: (postQueue) => void } = {}): Promise<SendResponse> {
+    event: { onFalse?: (postQueue) => Promise<any> } = {}): Promise<SendResponse> {
     const post = await this.postRepository.findById(postId);
     if (!post) throw Error(`id가 ${postId}인 편지를 찾을 수 없습니다.`);
 
@@ -64,9 +64,7 @@ export class MailService {
 
         // 국방서버에 보내는 요청
         if (!postComplete.serverOn) {
-          if (event.onFalse) {
-            event.onFalse(this.postQueueRepository);
-          }
+          await event.onFalse?.(this.postQueueRepository);
           return SendResponse.error;
         }
 
@@ -74,9 +72,7 @@ export class MailService {
           await updatePost(postId);
           return SendResponse.success;
         } else {
-          if (event.onFalse) {
-            event.onFalse(this.postQueueRepository);
-          }
+          await event.onFalse?.(this.postQueueRepository);
           return SendResponse.fail;
         }
 

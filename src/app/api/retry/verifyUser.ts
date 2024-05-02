@@ -1,8 +1,8 @@
 import { makeLogger } from "config/winston";
 import { Post, UserQueue, UnidentifiedUser, PostQueue } from "src/db";
 import { Status, serveStatus } from "src/lib/time";
-import { loadProfileFromDB, createProfile } from 'src/type/factory';
-import { syncResponse, syncProfile } from "../service/syncProfile";
+import { loadProfileFromDB, createProfile, ProfileFactory } from 'src/type/factory';
+import { syncResponse, syncProfile, syncResponseToStr } from "../service/syncProfile";
 import { MailService, sendStatusToStr } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
 
@@ -30,34 +30,26 @@ async function processUserQueue(top, progres) {
   const { userId } = top;
   const { name, birth, generation, username } = top.user;
 
-  const profile = createProfile({ userId, name, birth, generation, username });
-  const status = await syncProfile(profile);
+  const profile = ProfileFactory.create({ userId, name, birth, generation, username });
 
-  const loggingInfo = (msg) => logger.info(`${progres}: (${userId}) | ${msg}`);
-  const loggerError = (msg) => logger.error(`${progres}: (${userId}) | ${msg}`);
-  switch (status) {
-    case syncResponse.before:
-      loggingInfo('BeforeMailTime')
-      break;
-    case syncResponse.complete:
-      loggingInfo('Complete')
-      await sendPosts(userId);
-      break;
-    case syncResponse.error:
-      loggerError('Stop - ServerConnectionFalse')
-      throw Error("Stop - ServerConnectionFalse");
-    case syncResponse.fail:
-
-      if (serveStatus(profile.generation) == Status.working) {
-        // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
-        await UnidentifiedUser.insert({ userId });
-        loggingInfo('Shift - Unidentify')
-      } else {
-        // 유저의 오기입
-        loggingInfo('Fail')
-      }
-      break;
+  const onFail = async (_) => {
+    if (serveStatus(profile.generation) == Status.working) {
+      // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
+      await UnidentifiedUser.insert({ userId });
+    }
   }
+
+  const status = await syncProfile(profile, {
+    onComplete: async (_) => await sendPosts(userId),
+    onError: async (_) => {
+      const errorMessage = 'Stop - ServerConnectionFalse';
+      logger.error(`${progres}: (${userId}) | ${errorMessage}`)
+      throw Error("errorMessage");
+    },
+    onFail: onFail,
+  });
+
+  logger.info(`${progres}: (${userId}) | ${syncResponseToStr(status)}`)
 }
 
 
