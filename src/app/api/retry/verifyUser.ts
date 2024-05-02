@@ -3,7 +3,8 @@ import { Post, UserQueue, UnidentifiedUser, PostQueue } from "src/db";
 import { Status, serveStatus } from "src/lib/time";
 import { loadProfileFromDB, createProfile } from 'src/type/factory';
 import { syncResponse, syncProfile } from "../service/syncProfile";
-import { asyncPost } from "../service/asyncPost";
+import { MailService, sendStatusToStr } from "src/service/mail/MailService";
+import { bean } from "src/bean/bean";
 
 const logger = makeLogger("verifyUser");
 
@@ -69,12 +70,14 @@ export async function sendPosts(userId: number) {
     const post = posts[i];
 
     if (i < MAX_COUNT) {
-      try {
-        await asyncPost(post.id);
-      } catch (e) {
-        logger.error(`asyncPost (${userId}) | ${e}`);
-        PostQueue.insert({ postId: post.id, userId: post.userId });
-      }
+      const mailService = new MailService(bean);
+
+      const response = await mailService.sendMail(post.id, {
+        onFalse: async (queue) =>
+          await queue.insert({ postId: post.id, userId: post.userId })
+      })
+      logger.info(`(${post.id}) | ${sendStatusToStr(response)}`)
+
     } else {
       // 한번에 많이 보내지 않게 나머지는 큐에 넣음
       PostQueue.insert({ postId: post.id, userId: post.userId });

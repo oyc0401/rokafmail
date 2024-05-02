@@ -4,7 +4,8 @@ import { Post, User } from "src/db";
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Mail");
-import { asyncPost } from "../service/asyncPost";
+import { MailService, SendResponse, sendStatusToStr } from "src/service/mail/MailService";
+import { bean } from "src/bean/bean";
 
 /**
  * 유저 확인: 제공된 username을 사용하여 유저가 존재하는지 확인합니다.
@@ -64,10 +65,20 @@ export async function mailApi(mailForm: {
     });
 
     // 연결되었으면 편지를 보낸다.
+    // 편지를 보내다 오류가 나면 큐에 저장합니다.
     if (connect) {
-      // 편지를 보내다 오류가 나면 큐에 저장합니다.
-      asyncPost(postId);
-    }else{
+      const mailService = new MailService(bean);
+      const logStatus = (status: SendResponse) =>
+        logger.info(`(${postId}) | ${sendStatusToStr(status)}`);
+
+      mailService.sendMail(postId, {
+        onFalse: async (queue) => {
+          // 오류가 나거나 실패하면 큐에 넣는다.
+          await queue.insert({ postId, userId: userId });
+        }
+      }).then(logStatus)
+
+    } else {
       logger.info(`(${postId}) | BeforeMailTime`)
     }
 
