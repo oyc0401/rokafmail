@@ -110,7 +110,7 @@ describe('serviceTest', () => {
   test('MailService 편지 큐', async () => {
     const logger = new MemoryLogger();
     LogConfig.setLogger(logger);
-    
+
     // MockRokafClient 준비
     const rokafClient = new MockRokafClient();
     rokafClient.forcedSetPostMailResponse({
@@ -149,8 +149,108 @@ describe('serviceTest', () => {
 
     expect(await postQueueRepository.findAll()).toEqual([]);
     expect(resultPost.postAt).not.toBe(null);
-    
+
     console.log(logger.cat());
+  });
+
+
+
+
+
+  test('sendUnpostedMails 테스트', async () => {
+    // MockRokafClient 준비
+    const rokafClient = new MockRokafClient();
+    rokafClient.forcedSetPostMailResponse({
+      serverOn: true,
+      complete: true,
+    });
+
+    // 메모리 리포지토리 설정
+    let postRepository = new MemoryPostRepository();
+    const post = {
+      userId: 2,
+      name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
+      password: '0000', createdAt: new Date(), postAt: null, posted: false,
+      user: {
+        id: 2,
+        generation: 856,
+        sodae: '1234',
+        memberSeq: '12341234',
+      }
+    };
+    const newPost = await postRepository.insert(post);
+
+    const postQueueRepository = new MemoryPostQueueRepository();
+    const mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
+
+
+    // then
+    await mailService.sendUnpostedMails(post.userId);
+
+    // 결과 검증
+    const updated = await postRepository.findById(newPost.id);
+    expect(updated.posted).toBe(true);
+  });
+
+  test('sendUnpostedMails 한계 테스트', async () => {
+    // MockRokafClient 준비
+    const rokafClient = new MockRokafClient();
+    rokafClient.forcedSetPostMailResponse({
+      serverOn: true,
+      complete: true,
+    });
+
+    // 메모리 리포지토리 설정
+    let postRepository = new MemoryPostRepository();
+    const posts: any[] = [];
+    for (let i = 0; i < 15; i++) {
+      const post = {
+        userId: 2,
+        name: '유찬', relationship: '친구', title: `test${i}`, contents: 'contents',
+        password: '0000', createdAt: new Date(), postAt: null, posted: false,
+        user: {
+          id: 2,
+          generation: 856,
+          sodae: '1234',
+          memberSeq: '12341234',
+        }
+      };
+      posts.push(post)
+    }
+
+    const newPosts: any[] = [];
+    for (let i = 0; i < 15; i++) {
+      const newPost = await postRepository.insert(posts[i]);
+      newPosts.push(newPost);
+    }
+
+
+    const postQueueRepository = new MemoryPostQueueRepository();
+    const mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
+
+
+    // then
+    await mailService.sendUnpostedMails(posts[0].userId);
+
+    // 결과 검증
+    for (let i = 0; i < 15; i++) {
+      const updated = await postRepository.findById(newPosts[i].id);
+      if (i < 10) {
+        expect(updated.posted).toBe(true);
+      } else {
+        expect(updated.posted).toBe(false);
+      }
+    }
+    const items = [
+      { id: 1, postId: 11, userId: 2 },
+      { id: 2, postId: 12, userId: 2 },
+      { id: 3, postId: 13, userId: 2 },
+      { id: 4, postId: 14, userId: 2 },
+      { id: 5, postId: 15, userId: 2 }
+    ];
+    expect(postQueueRepository.postQueue).toEqual(items);
+
+
   });
 
   test('테스트 이름', () => {
