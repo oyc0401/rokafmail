@@ -1,37 +1,25 @@
 "use server";
 
 import { makeLogger } from "config/winston";
-import { syncProfile, syncResponse } from "src/app/api/service/syncProfile";
 const logger = makeLogger("Control User");
-import { loadProfileFromDB } from 'src/type/factory';
+import { ProfileFactory } from 'src/type/factory';
+import { UserService, syncResponseToStr } from "src/service/user/UserService";
+import { bean } from "src/bean/bean";
+
 
 export async function userDoubleCheck(userId: number) {
 
-  const profile = await loadProfileFromDB(userId);
+  const profile = await ProfileFactory.loadFromDB(userId);
 
-  const { username, name, generation, birth } = profile;
+  const { username } = profile;
 
-  const status = await syncProfile(profile);
+  const userService = new UserService(bean);
+  const status = await userService.syncProfile(profile);
 
-  const userLogForm = `| ${username} (${userId}) ${name} ${birth} ${generation}`;
-  let msg = "";
-  switch (status) {
-    case syncResponse.complete:
-      msg = `verify ${userLogForm}`;
-      logger.info(msg);
-      return msg;
-    case syncResponse.before:
-      msg = `before ${userLogForm}`;
-      logger.info(msg);
-      return msg;
-    case syncResponse.fail:
-      msg = `fail ${userLogForm}`;
-      logger.info(msg);
-      return msg;
-    case syncResponse.error:
-      msg = `error ${userLogForm}`;
-      logger.info(msg);
-      return msg;
-  }
+  const log = `${username} (${userId}) | ${syncResponseToStr(status)}`;
+  logger.info(log);
+  return log;
+
 }
+
 

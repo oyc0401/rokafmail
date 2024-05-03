@@ -39,5 +39,13 @@ export class PrismaPostRepository implements PostRepository {
       data,
     });
 
+  findNotPostedByUserId = (userId: number) =>
+    prisma.post.findMany({
+      where: {
+        userId,
+        posted: false,
+      },
+    });
+
 
 }

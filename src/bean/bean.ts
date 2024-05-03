@@ -1,6 +1,7 @@
 import { Post, User, UserQueue, PostQueue, UnidentifiedUser } from "src/db"
 import { PrismaPostRepository } from "src/repository/post/prismaPostRepository";
 import { PrismaPostQueueRepository } from "src/repository/postQueue/prismaPostQueueRepository";
+import { PrismaUserRepository } from "src/repository/user/prismaUserRespository";
 import MockRokafClient from "src/service/rokafClient/MockRokafClient";
 import RokafClient from "src/service/rokafClient/RokafClient";
 
@@ -26,7 +27,7 @@ class BeanConfig {
     });
     return {
       postRepository: new PrismaPostRepository(),
-      userRepository: User,
+      userRepository: new PrismaUserRepository(),
       postQueueRepository: new PrismaPostQueueRepository(),
       userQueueRepository: UserQueue,
       undifrinedRepository: UnidentifiedUser,

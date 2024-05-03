@@ -3,8 +3,9 @@ import { User } from "src/db";
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
 import { duplicateUsername, validB, validG } from "./valid";
-import { syncProfile, syncResponseToStr } from "../service/syncProfile";
 import { ProfileFactory } from "src/type/factory";
+import { UserService,syncResponseToStr } from "src/service/user/UserService";
+import { bean } from "src/bean/bean";
 const logger = makeLogger("register");
 
 
@@ -39,7 +40,9 @@ export async function registerApi(registerForm: {
     const profile = ProfileFactory.create({ userId, name, birth, generation, username });
     const pushQueue = async (queue) => await queue.insert({ userId });
 
-    syncProfile(profile, {
+    const userService = new UserService(bean);
+
+    userService.syncProfile(profile, {
       onBefore: pushQueue,
       onError: pushQueue,
       onFail: pushQueue,

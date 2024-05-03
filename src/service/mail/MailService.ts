@@ -3,6 +3,8 @@ import { PostRepository } from "src/repository/post/postRepository";
 import { createLogger } from "config/logger";
 const logger = createLogger("MailService");
 
+const MAX_COUNT = 10;
+
 export enum SendResponse { before, notfound, success, fail, error }
 
 export class MailService {
@@ -131,6 +133,31 @@ export class MailService {
     }
 
   }
+
+
+  // 해당 유저의 모든 미발송 편지들을 다시 보내기
+  async sendUnpostedMails(userId: number) {
+    let posts = await this.postRepository.findNotPostedByUserId(userId);
+
+    for (let i = 0; i < posts.length; i++) {
+      const post = posts[i];
+
+      if (i < MAX_COUNT) {
+        const response = await this.sendMail(post.id, {
+          onFalse: async (queue) =>
+            await queue.insert({ postId: post.id, userId: post.userId })
+        })
+        logger.info(`(${post.id}) | ${sendStatusToStr(response)}`)
+
+      } else {
+        // 한번에 많이 보내지 않게 나머지는 큐에 넣음
+        await this.postQueueRepository.insert({ postId: post.id, userId: post.userId });
+        logger.info(`(${post.id}) | Limit`)
+      }
+    }
+
+  }
+
 
 }
 

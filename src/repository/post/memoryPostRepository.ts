@@ -1,13 +1,16 @@
-import prisma from "src/db/prisma";
-import { PostRepository } from './postRepository';
 
 export class MemoryPostRepository {
   posts;
   currentId;
+  userRepository;
 
   constructor() {
     this.posts = []; // 데이터 저장을 위한 배열
     this.currentId = 1; // 간단한 ID 할당을 위한 변수
+  }
+
+  join(userRepository) {
+    this.userRepository = userRepository;
   }
 
   async insert(post) {
@@ -30,5 +33,10 @@ export class MemoryPostRepository {
       return this.posts[postIndex];
     }
     return null; // 게시물이 없는 경우 null 반환
+  }
+
+
+  async findNotPostedByUserId(userId) {
+    return this.posts.filter(post => post.userId === userId && !post.posted);
   }
 }
