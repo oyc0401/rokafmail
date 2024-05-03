@@ -1,15 +1,23 @@
 import { serveStatus, Status } from "src/lib/time";
 import { Profile } from "src/type";
+import { ProfileFactory } from 'src/type/factory';
+import { createLogger } from "config/logger";
 
+const logger = createLogger("UserService");
 
 export class UserService {
   private rokafClient;
   private userRepository;
+  private unidentifiedUserRepository;
   private userQueue;
-  constructor({ userRepository, userQueue, rokafClient }) {
+  private mailService;
+
+  constructor({ userRepository, userQueue, rokafClient, mailService, unidentifiedUserRepository }) {
     this.userRepository = userRepository;
     this.userQueue = userQueue;
     this.rokafClient = rokafClient;
+    this.mailService = mailService;
+    this.unidentifiedUserRepository = unidentifiedUserRepository;
   }
 
 
@@ -43,6 +51,49 @@ export class UserService {
       await event.onFail?.(this.userQueue);
       return syncResponse.fail;
     }
+  }
+
+  async verifyUser() {
+    // 미인증 유저들
+    const userQueue = await this.userQueue.findAllWithUser();
+
+    try {
+      for (let i = 0; i < userQueue.length; i++) {
+        const top = userQueue[i];
+        await this.processUserQueue(top, `${i + 1}/${userQueue.length}`);
+        await this.userQueue.deleteById(top.id)
+      }
+    } catch (error) {
+      logger.error(`traverseUserQueue | ${error}`);
+      throw error
+    }
+
+  }
+
+  async processUserQueue(top, progres) {
+    const { userId } = top;
+    const { name, birth, generation, username } = top.user;
+
+    const profile = ProfileFactory.create({ userId, name, birth, generation, username });
+
+    const onFail = async (_) => {
+      if (serveStatus(profile.generation) == Status.working) {
+        // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
+        await this.unidentifiedUserRepository.insert({ userId });
+      }
+    }
+
+    const status = await this.syncProfile(profile, {
+      onComplete: async (_) => await this.mailService.sendUnpostedMails(userId),
+      onError: async (_) => {
+        const errorMessage = 'Stop - ServerConnectionFalse';
+        logger.error(`${progres}: (${userId}) | ${errorMessage}`)
+        throw Error("errorMessage");
+      },
+      onFail: onFail,
+    });
+
+    logger.info(`${progres}: (${userId}) | ${syncResponseToStr(status)}`)
   }
 
 }

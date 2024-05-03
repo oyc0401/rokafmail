@@ -1,39 +1,66 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test, beforeAll, beforeEach } from '@jest/globals';
 import { MailService, SendResponse } from './MailService';
 import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
 import MockRokafClient from '../rokafClient/MockRokafClient';
-import { PrismaPostQueueRepository } from 'src/repository/postQueue/prismaPostQueueRepository';
 import { MemoryPostQueueRepository } from 'src/repository/postQueue/memoryPostQueueRepository';
 import { LogConfig } from 'config/logger';
 import { MemoryLogger } from 'config/memoryLogger';
+import { MemoryUserRepository } from 'src/repository/user/memoryUserRepository';
 
 describe('serviceTest', () => {
+  const rokafClient = new MockRokafClient();
+
+  let postRepository = new MemoryPostRepository();
+  let postQueueRepository = new MemoryPostQueueRepository();
+  let mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
+
+  let userRepository = new MemoryUserRepository();
+
+  postQueueRepository.join(postRepository);
+  postRepository.join(userRepository);
+
+  beforeEach(async () => {
+    postRepository = new MemoryPostRepository();
+    postQueueRepository = new MemoryPostQueueRepository();
+    mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
+
+    userRepository = new MemoryUserRepository();
+
+    postQueueRepository.join(postRepository);
+    postRepository.join(userRepository);
+
+  })
+
+
+  beforeAll(() => {
+    const logger = new MemoryLogger();
+    LogConfig.setLogger(logger);
+  })
+
 
   test('mail service before', async () => {
-    // MockRokafClient 준비
-    const rokafClient = new MockRokafClient();
+    // MockRokafClient
     rokafClient.forcedSetPostMailResponse({
       serverOn: true,
       complete: true,
     });
 
     // 메모리 리포지토리 설정
-    let postRepository = new MemoryPostRepository();
+    await userRepository.insert({
+      generation: 863,
+      sodae: '1234',
+      memberSeq: '12341234',
+    })
+
     const post = {
-      name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
+      userId: 1, name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
       password: '0000', createdAt: new Date(), postAt: null, posted: false,
-      user: {
-        generation: 862,
-        sodae: '1234',
-        memberSeq: '12341234',
-      }
     };
 
     const newPost = await postRepository.insert(post);
-    const postQueueRepository = new MemoryPostQueueRepository();
+
 
     // 메일 서비스 인스턴스화 및 메일 전송 시도
-    const mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
     const response = await mailService.sendMail(newPost.id);
 
     // 결과 검증
@@ -42,29 +69,27 @@ describe('serviceTest', () => {
 
   test('mail service 성공', async () => {
     // MockRokafClient 준비
-    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetPostMailResponse({
       serverOn: true,
       complete: true,
     });
 
     // 메모리 리포지토리 설정
-    let postRepository = new MemoryPostRepository();
+
+    await userRepository.insert({
+      generation: 850,
+      sodae: '1234',
+      memberSeq: '12341234',
+    })
+
     const post = {
-      name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
+      userId: 1, name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
       password: '0000', createdAt: new Date(), postAt: null, posted: false,
-      user: {
-        generation: 856,
-        sodae: '1234',
-        memberSeq: '12341234',
-      }
     };
+
     const newPost = await postRepository.insert(post);
 
-    const postQueueRepository = new MemoryPostQueueRepository();
-
     // 메일 서비스 인스턴스화 및 메일 전송 시도
-    const mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
     const response = await mailService.sendMail(newPost.id);
 
     // 결과 검증
@@ -77,29 +102,26 @@ describe('serviceTest', () => {
 
   test('MailService 실패 상황', async () => {
     // MockRokafClient 준비
-    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetPostMailResponse({
       serverOn: true,
       complete: false,
     });
 
     // 메모리 리포지토리 설정
-    let postRepository = new MemoryPostRepository();
+    await userRepository.insert({
+      generation: 850,
+      sodae: '1234',
+      memberSeq: '12341234',
+    })
+
     const post = {
-      name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
+      userId: 1, name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
       password: '0000', createdAt: new Date(), postAt: null, posted: false,
-      user: {
-        generation: 856,
-        sodae: '1234',
-        memberSeq: '12341234',
-      }
     };
+
     const newPost = await postRepository.insert(post);
 
-    const postQueueRepository = new MemoryPostQueueRepository();
-
     // 메일 서비스 인스턴스화 및 메일 전송 시도
-    const mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
     const sendStatus = await mailService.sendMail(newPost.id);
 
     // 결과 검증
@@ -112,34 +134,28 @@ describe('serviceTest', () => {
     LogConfig.setLogger(logger);
 
     // MockRokafClient 준비
-    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetPostMailResponse({
       serverOn: true,
       complete: true,
     });
 
     // 메모리 리포지토리 설정
-    let postRepository = new MemoryPostRepository();
+    await userRepository.insert({
+      generation: 850,
+      sodae: '1234',
+      memberSeq: '12341234',
+    })
+
     const post = {
-      name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
+      userId: 1, name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
       password: '0000', createdAt: new Date(), postAt: null, posted: false,
-      user: {
-        id: 1,
-        generation: 856,
-        sodae: '1234',
-        memberSeq: '12341234',
-      }
     };
     const newPost = await postRepository.insert(post);
 
     // postQueueRepository 설정
-    const postQueueRepository = new MemoryPostQueueRepository();
-    postQueueRepository.join(postRepository);
-
-    postQueueRepository.insert({ postId: newPost.id, userId: newPost.user.id })
+    postQueueRepository.insert({ postId: newPost.id, userId: newPost.userId })
 
     // when
-    const mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
     await mailService.traversePostQueue();
 
     // then
@@ -159,30 +175,23 @@ describe('serviceTest', () => {
 
   test('sendUnpostedMails 테스트', async () => {
     // MockRokafClient 준비
-    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetPostMailResponse({
       serverOn: true,
       complete: true,
     });
 
+    await userRepository.insert({
+      generation: 850,
+      sodae: '1234',
+      memberSeq: '12341234',
+    })
+
     // 메모리 리포지토리 설정
-    let postRepository = new MemoryPostRepository();
     const post = {
-      userId: 2,
-      name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
+      userId: 1, name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
       password: '0000', createdAt: new Date(), postAt: null, posted: false,
-      user: {
-        id: 2,
-        generation: 856,
-        sodae: '1234',
-        memberSeq: '12341234',
-      }
     };
     const newPost = await postRepository.insert(post);
-
-    const postQueueRepository = new MemoryPostQueueRepository();
-    const mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
-
 
     // then
     await mailService.sendUnpostedMails(post.userId);
@@ -194,27 +203,25 @@ describe('serviceTest', () => {
 
   test('sendUnpostedMails 한계 테스트', async () => {
     // MockRokafClient 준비
-    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetPostMailResponse({
       serverOn: true,
       complete: true,
     });
 
+    await userRepository.insert({
+      generation: 850,
+      sodae: '1234',
+      memberSeq: '12341234',
+    })
+
     // 메모리 리포지토리 설정
-    let postRepository = new MemoryPostRepository();
     const posts: any[] = [];
     for (let i = 0; i < 15; i++) {
       const post = {
-        userId: 2,
-        name: '유찬', relationship: '친구', title: `test${i}`, contents: 'contents',
+        userId: 1, name: '유찬', relationship: '친구', title: `test${i}`, contents: 'contents',
         password: '0000', createdAt: new Date(), postAt: null, posted: false,
-        user: {
-          id: 2,
-          generation: 856,
-          sodae: '1234',
-          memberSeq: '12341234',
-        }
       };
+
       posts.push(post)
     }
 
@@ -223,10 +230,6 @@ describe('serviceTest', () => {
       const newPost = await postRepository.insert(posts[i]);
       newPosts.push(newPost);
     }
-
-
-    const postQueueRepository = new MemoryPostQueueRepository();
-    const mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
 
 
     // then
@@ -242,11 +245,11 @@ describe('serviceTest', () => {
       }
     }
     const items = [
-      { id: 1, postId: 11, userId: 2 },
-      { id: 2, postId: 12, userId: 2 },
-      { id: 3, postId: 13, userId: 2 },
-      { id: 4, postId: 14, userId: 2 },
-      { id: 5, postId: 15, userId: 2 }
+      { id: 1, postId: 11, userId: 1 },
+      { id: 2, postId: 12, userId: 1 },
+      { id: 3, postId: 13, userId: 1 },
+      { id: 4, postId: 14, userId: 1 },
+      { id: 5, postId: 15, userId: 1 }
     ];
     expect(postQueueRepository.postQueue).toEqual(items);
 

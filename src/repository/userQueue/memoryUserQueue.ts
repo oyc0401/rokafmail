@@ -3,35 +3,35 @@ interface queue {
 }
 
 export class MemoryUserQueue {
-  postQueue: queue[];
+  userQueue: queue[];
   currentId;
-  postRepository;
+  userRepository;
 
   constructor() {
-    this.postQueue = []; // 데이터 저장을 위한 배열
+    this.userQueue = []; // 데이터 저장을 위한 배열
     this.currentId = 1; // 간단한 ID 할당을 위한 변수
   }
-  join(postRepository) {
-    this.postRepository = postRepository;
+  join(userRepository) {
+    this.userRepository = userRepository;
   }
 
   async insert(data) {
     // 새 게시물에 ID를 할당하고 배열에 추가
     const newObj = { id: this.currentId++, ...data };
-    this.postQueue.push(newObj);
+    this.userQueue.push(newObj);
     return newObj;
   }
 
-  findAll = async () => {
+  findAllWithUser = async () => {
     let result: any[] = [];
-    for (let q of this.postQueue) {
-      const post = await this.postRepository.findById(q.postId);
-      result.push({ ...q, post: { ...post } });
+    for (let q of this.userQueue) {
+      const user = await this.userRepository.findById(q.userId);
+      result.push({ ...q, user: { ...user } });
     }
     return result;
   }
 
   deleteById = (id: number) => {
-    return this.postQueue.splice(id - 1, 1);
+    return this.userQueue.splice(id - 1, 1);
   }
 }

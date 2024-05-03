@@ -1,6 +1,7 @@
 export interface PostRepository {
   insert: (data: InsertPost) => Promise<Post>;
-  findById: (id: number) => Promise<(Post & { user: Profile }) | null>;
+  findById: (id: number) => Promise<Post | null>;
+  findByIdWithUser: (id: number) => Promise<(Post & { user: Profile }) | null>;
   update: (id: number, data: UpdateType) => Promise<Post>;
   findNotPostedByUserId: (userId: number) => Promise<Post[]>;
 }

@@ -1,8 +1,8 @@
 import { makeLogger } from "config/winston";
-import { Post, UserQueue, UnidentifiedUser, PostQueue } from "src/db";
+import { UserQueue, UnidentifiedUser } from "src/db";
 import { Status, serveStatus } from "src/lib/time";
 import { ProfileFactory } from 'src/type/factory';
-import { MailService, sendStatusToStr } from "src/service/mail/MailService";
+import { MailService } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
 import { UserService, syncResponseToStr } from "src/service/user/UserService";
 

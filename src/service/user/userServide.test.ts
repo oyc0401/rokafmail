@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test, beforeEach } from '@jest/globals';
 import MockRokafClient from '../rokafClient/MockRokafClient';
 import { MemoryUserRepository } from 'src/repository/user/memoryUserRepository';
 import { UserService, syncResponse } from './UserService';
@@ -6,11 +6,39 @@ import { MemoryUserQueue } from 'src/repository/userQueue/memoryUserQueue';
 import { ProfileFactory } from 'src/type/factory';
 import { LogConfig } from 'config/logger';
 import { MemoryLogger } from 'config/memoryLogger';
+import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
+import { MemoryPostQueueRepository } from 'src/repository/postQueue/memoryPostQueueRepository';
+import { MailService } from '../mail/MailService';
+import { MemoryUnidentifiedUserRepository } from 'src/repository/unidentifiedUserRepository/memoryUnidentifiedUserRepository';
 
 describe('User Service Test', () => {
 
+
+  let postRepository = new MemoryPostRepository();
+  let postQueueRepository = new MemoryPostQueueRepository();
+  const rokafClient = new MockRokafClient();
+  let mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
+
+  let userRepository = new MemoryUserRepository();
+  let userQueue = new MemoryUserQueue();
+  let unidentifiedUserRepository = new MemoryUnidentifiedUserRepository();
+
+  let userService = new UserService({ userRepository, userQueue, rokafClient, mailService, unidentifiedUserRepository });
+
+  beforeEach(() => {
+    postRepository = new MemoryPostRepository();
+    postQueueRepository = new MemoryPostQueueRepository();
+    mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
+
+    userRepository = new MemoryUserRepository();
+    userQueue = new MemoryUserQueue();
+    unidentifiedUserRepository = new MemoryUnidentifiedUserRepository();
+
+    userService = new UserService({ userRepository, userQueue, rokafClient, mailService, unidentifiedUserRepository });
+  });
+
+
   test('syncProfile before test', async () => {
-    const userRepository = new MemoryUserRepository();
     const user = await userRepository.insert({
       username: 'test',
       password: '0000',
@@ -20,10 +48,7 @@ describe('User Service Test', () => {
       message: '잘 다녀오겠습니다!',
     });
 
-    const userQueue = new MemoryUserQueue();
-
     // MockRokafClient 준비
-    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetGetProfileResponse({
       member: {
         memberSeq: '12341234',
@@ -31,8 +56,6 @@ describe('User Service Test', () => {
       },
       serverOn: true,
     });
-
-    const userService = new UserService({ userRepository, userQueue, rokafClient });
 
     const profile = ProfileFactory.create({
       userId: user.id, name: user.id,
@@ -49,8 +72,7 @@ describe('User Service Test', () => {
   test('syncProfile complete test', async () => {
     const logger = new MemoryLogger();
     LogConfig.setLogger(logger);
-
-    const userRepository = new MemoryUserRepository();
+    
     const user = await userRepository.insert({
       username: 'test',
       password: '0000',
@@ -60,10 +82,7 @@ describe('User Service Test', () => {
       message: '잘 다녀오겠습니다!',
     });
 
-    const userQueue = new MemoryUserQueue();
-
     // MockRokafClient 준비
-    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetGetProfileResponse({
       member: {
         memberSeq: '12341234',
@@ -71,8 +90,6 @@ describe('User Service Test', () => {
       },
       serverOn: true,
     });
-
-    const userService = new UserService({ userRepository, userQueue, rokafClient });
 
     const profile = ProfileFactory.create({
       userId: user.id, name: user.id,
@@ -89,7 +106,6 @@ describe('User Service Test', () => {
     const logger = new MemoryLogger();
     LogConfig.setLogger(logger);
 
-    const userRepository = new MemoryUserRepository();
     const user = await userRepository.insert({
       username: 'test',
       password: '0000',
@@ -99,15 +115,10 @@ describe('User Service Test', () => {
       message: '잘 다녀오겠습니다!',
     });
 
-    const userQueue = new MemoryUserQueue();
-
     // MockRokafClient 준비
-    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetGetProfileResponse({
       serverOn: false,
     });
-
-    const userService = new UserService({ userRepository, userQueue, rokafClient });
 
     const profile = ProfileFactory.create({
       userId: user.id, name: user.id,
@@ -124,7 +135,6 @@ describe('User Service Test', () => {
     const logger = new MemoryLogger();
     LogConfig.setLogger(logger);
 
-    const userRepository = new MemoryUserRepository();
     const user = await userRepository.insert({
       username: 'test',
       password: '0000',
@@ -134,15 +144,10 @@ describe('User Service Test', () => {
       message: '잘 다녀오겠습니다!',
     });
 
-    const userQueue = new MemoryUserQueue();
-
     // MockRokafClient 준비
-    const rokafClient = new MockRokafClient();
     rokafClient.forcedSetGetProfileResponse({
       serverOn: true,
     });
-
-    const userService = new UserService({ userRepository, userQueue, rokafClient });
 
     const profile = ProfileFactory.create({
       userId: user.id, name: user.id,

@@ -25,6 +25,13 @@ export class MemoryPostRepository {
     return this.posts.find(post => post.id === postId);
   }
 
+  async findByIdWithUser(postId) {
+    // joid User Table
+    const post = this.posts.find(post => post.id === postId);
+    const user = await this.userRepository.findById(post.userId);
+    return { ...post, user: { ...user } };
+  }
+
   async update(postId, updatedPost) {
     // 해당 ID의 게시물을 찾아 정보 업데이트
     const postIndex = this.posts.findIndex(post => post.id === postId);

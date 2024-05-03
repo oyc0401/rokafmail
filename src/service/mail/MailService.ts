@@ -27,7 +27,7 @@ export class MailService {
   **/
   async sendMail(postId: number,
     event: { onFalse?: (postQueue) => Promise<any> } = {}): Promise<SendResponse> {
-    const post = await this.postRepository.findById(postId);
+    const post = await this.postRepository.findByIdWithUser(postId);
     if (!post) throw Error(`id가 ${postId}인 편지를 찾을 수 없습니다.`);
 
     const { name, relationship, title, contents, password, createdAt } = post;
