@@ -9,5 +9,5 @@ export function IsLoading({ children }) {
     return children;
   }
 
-  return <></>;
+  return undefined;
 }

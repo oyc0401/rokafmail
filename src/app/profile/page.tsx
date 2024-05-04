@@ -17,7 +17,6 @@ export default async function Page() {
   if (!user) redirect("/auth/signin");
 
   const { name, birth, generation, message } = user;
-
   return (
     <div className={`screen ${styles.profile}`}>
       <div style={{ height: 24 }}></div>

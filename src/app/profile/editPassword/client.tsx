@@ -25,7 +25,7 @@ export function Client({ username }) {
     if (response.status == 200) {
       alert("비밀번호가 변경되었습니다! 다시 로그인 해주세요.");
       signOut({ callbackUrl: "/" });
-      
+
     } else {
       alert(`error: ${response.status} ${response.error}`);
     }

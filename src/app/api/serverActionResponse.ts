@@ -55,44 +55,40 @@ export class ServerActionResponse {
   }
 }
 
-interface ServerActionAuthParam {
-  requireAuth: boolean;
-  author?: string;
-}
+export async function ensureUserMatch(username: string) {
+  // next-auth를 통한 유저 인증
+  const session = await auth();
 
-/**
- * status가 200이면
- * message가 null이 아니다.
- **/
-export const ServerActionAuth = ({
-  requireAuth = false,
-  author,
-}: ServerActionAuthParam) => {
-  return {
-    async action<T>(
-      event: () => Promise<ServerAction<T>>,
-    ): Promise<ServerAction<T>> {
-      if (requireAuth) {
-        // next-auth를 통한 유저 인증
-        const session = await auth();
+  // 로그인이 되어있지 않으면 unauthorized (401)
+  if (!session || !session.user || !session.user.email) {
+    return {
+      valid: false,
+      errorResponse: ServerActionResponse.unauthorized()
+    }
+  }
 
-        // 로그인이 되어있지 않으면 unauthorized (401)
-        if (!session || !session.user || !session.user.email)
-          return ServerActionResponse.unauthorized();
+  // 해당 유저 정보가 없으면 notFound (404)
+  const sessionUsername = session.user.email;
+  const user = await User.findByUsername(sessionUsername);
+  if (!user) {
+    return {
+      valid: false,
+      errorResponse: ServerActionResponse.notFound()
+    }
+  }
 
-        // 해당 유저 정보가 없으면 notFound (404)
-        const sessionUsername = session.user.email;
-        const user = await User.findByUsername(sessionUsername);
-        if (!user) return ServerActionResponse.notFound();
-
-        if (author) {
-          // 본인이 아닌 다른사람 정보에 접근하려고하면 forbidden (403)
-          if (author != sessionUsername)
-            return ServerActionResponse.forbidden();
-        }
+  if (username) {
+    // 본인이 아닌 다른사람 정보에 접근하려고하면 forbidden (403)
+    if (username != sessionUsername) {
+      return {
+        valid: false,
+        errorResponse: ServerActionResponse.forbidden()
       }
+    }
+  }
 
-      return await event();
-    },
-  };
-};
+  return {
+    valid: true,
+    errorResponse: ServerActionResponse.ok('접근 가능')
+  }
+}

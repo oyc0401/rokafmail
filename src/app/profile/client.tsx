@@ -17,7 +17,7 @@ export function SignOut() {
   );
 }
 
-export function DeleteUser(username) {
+export function DeleteUser({ username }) {
   async function onclickDelete() {
     if (
       confirm("정말로 계정을 삭제하시겠습니까? 작성된 모든 편지가 사라집니다.")
@@ -28,13 +28,13 @@ export function DeleteUser(username) {
           .createHash("sha256")
           .update(pw)
           .digest("hex");
-        
+
         const response = await deleteUser(username, encryptedPassword);
         if (response.message) {
           alert("삭제되었습니다.");
           signOut({ callbackUrl: "/" });
         } else {
-           alert(`error: ${response.status} ${response.error}`);
+          alert(`error: ${response.status} ${response.error}`);
         }
       }
     }

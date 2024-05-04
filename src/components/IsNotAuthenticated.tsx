@@ -9,5 +9,5 @@ export function IsNotAuthenticated({ children }) {
     return children;
   }
 
-  return <></>;
+  return undefined;
 }
