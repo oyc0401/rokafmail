@@ -14,7 +14,15 @@ export class PrismaPostRepository implements PostRepository {
     return await prisma.post.create({ data });
   }
 
+
+
   async findById(id: number) {
+    return await prisma.post.findUnique({
+      where: { id },
+    });
+  }
+
+  async findByIdWithUser(id: number) {
     return await prisma.post.findUnique({
       include: {
         user: {
@@ -27,9 +35,7 @@ export class PrismaPostRepository implements PostRepository {
           },
         },
       },
-      where: {
-        id,
-      },
+      where: { id },
     });
   }
 
