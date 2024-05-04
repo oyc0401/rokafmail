@@ -5,6 +5,9 @@ import { Logo } from "public/assets/index";
 import { FitScreen } from "src/components/FitScreen";
 
 import styles from "./page.module.css";
+import { IsAuthenticated } from "src/components/IsAuthenticated";
+import { IsNotAuthenticated } from "src/components/IsNotAuthenticated";
+import { IsLoading } from "src/components/IsLoading";
 
 const INKLIPQUID = localFont({ src: '../../public/fonts/INKLIPQUID.ttf' });
 
@@ -52,9 +55,11 @@ function TopView() {
               justifyContent: "center",
             }}
           >
-            <Link href="/profile" className={`text-base underline hover:text-darkaccent`}>
-              로그인
-            </Link>
+            <a href="/profile" className={`text-base underline hover:text-darkaccent`}>
+              <IsAuthenticated>내 정보</IsAuthenticated>
+              <IsNotAuthenticated>로그인</IsNotAuthenticated>
+              <IsLoading>로그인</IsLoading>
+            </a>
           </div>
         </div>
       </div>
