@@ -1,7 +1,7 @@
-import { verifyUser } from "src/app/api/retry/verifyUser";
 import { makeLogger } from "config/winston";
 import { MailService } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
+import { UserService } from "src/service/user/UserService";
 var cron = require("node-cron");
 const logger = makeLogger("repeat");
 
@@ -32,7 +32,9 @@ export class CronStore {
         try {
           logger.info("userCron is executed");
           // Http x, 바로 호출
-          await verifyUser();
+
+          const userService = new UserService(bean);
+          await userService.traverseUserQueue();
         } catch (e) {
           logger.error(`node-cron 중 오류발생: ${e}`);
         }

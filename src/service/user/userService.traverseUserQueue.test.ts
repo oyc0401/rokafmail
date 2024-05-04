@@ -47,7 +47,7 @@ describe('User Service Test', () => {
     const logger = new MemoryLogger();
     LogConfig.setLogger(logger);
   })
-  
+
   test('traverseUserQueue() 유저큐에 한명일 때', async () => {
     const logger = new MemoryLogger();
     LogConfig.setLogger(logger);
@@ -113,7 +113,7 @@ describe('User Service Test', () => {
     });
 
     // 작업 시작
-    await userService.verifyUser();
+    await userService.traverseUserQueue();
 
     // 결과 검증
     for (let i = 0; i < 15; i++) {

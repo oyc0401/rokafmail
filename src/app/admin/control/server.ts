@@ -1,8 +1,8 @@
 "use server";
-import { verifyUser } from "src/app/api/retry/verifyUser";
 import { Post, PostQueue } from "src/db";
 import { MailService } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
+import { UserService } from "src/service/user/UserService";
 
 export async function repost() {
   const mailservice = new MailService(bean);
@@ -10,7 +10,8 @@ export async function repost() {
 }
 
 export async function verify() {
-  verifyUser();
+  const userService = new UserService(bean);
+  await userService.traverseUserQueue();
 }
 
 export async function findNotQueueNotpost() {

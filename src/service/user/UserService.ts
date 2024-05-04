@@ -53,7 +53,7 @@ export class UserService {
     }
   }
 
-  async verifyUser() {
+  async traverseUserQueue() {
     // 미인증 유저들
     const userQueue = await this.userQueue.findAllWithUser();
 
