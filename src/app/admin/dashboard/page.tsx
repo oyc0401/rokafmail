@@ -7,11 +7,11 @@ export default async function Page() {
   const activateUserCount = await User.activateCount();
   const postCount = await Post.count();
 
-  const userCount855 = await User.generationCount(855);
-  const postCount855 = await Post.generationCount(855);
-
   const userCount856 = await User.generationCount(856);
   const postCount856 = await Post.generationCount(856);
+
+  const userCount857 = await User.generationCount(857);
+  const postCount857 = await Post.generationCount(857);
 
   return (
     <>
@@ -26,15 +26,15 @@ export default async function Page() {
 
           <p className="text-xl pb-2">편지 수: {postCount}통</p>
 
-          <p className="text-xl pb-2">855기 유저: {userCount855}명 </p>
-          <p className="text-xl pb-2">855기 편지: {postCount855}통</p>
-
           <p className="text-xl pb-2">856기 유저: {userCount856}명 </p>
           <p className="text-xl pb-2">856기 편지: {postCount856}통</p>
+
+          <p className="text-xl pb-2">857기 유저: {userCount857}명 </p>
+          <p className="text-xl pb-2">857기 편지: {postCount857}통</p>
         </div>
         <InfoAll></InfoAll>
+        <InfoGraph generation={857} leftDate={new Date('2024-04-15')}></InfoGraph>
         <InfoGraph generation={856} leftDate={new Date('2024-03-11')}></InfoGraph>
-        <InfoGraph generation={855} leftDate={new Date('2024-02-05')}></InfoGraph>
 
       </div>
     </>

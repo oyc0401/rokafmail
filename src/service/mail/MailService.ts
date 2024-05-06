@@ -100,29 +100,26 @@ export class MailService {
     for (let i = 0; i < unposted.length; i++) {
       const MAX_POSTCOUNT = 10;
       const top = unposted[i];
-
       try {
         if (top.post.posted) {
           logger.info(`${i + 1}/${unposted.length} (${top.postId}) | 이미 보내졌습니다`);
 
         } else if (userCountMap[top.userId] ?? 0 < MAX_POSTCOUNT) {
-          const msg = await this.sendMail(
+          const response = await this.sendMail(
             top.postId,
             {
               onFalse: async (postQueue) => {
                 await postQueue.insert({ postId: top.postId, userId: top.userId })
               }
             });
-
-          logger.info(`${i + 1}/${unposted.length} (${top.id}) | ${msg}`);
-          userCountMap[top.userId] = userCountMap[top.userId] ?? 0 + 1;
-
-        }
-        else {
+          logger.info(`${i + 1}/${unposted.length} (${top.id}) | ${sendStatusToStr(response)}`);
+        } else {
           // 나중에 다시 검사하게 insert
           logger.info(`${i + 1}/${unposted.length} (${top.postId}) | 한도 초과`);
           await this.postQueueRepository.insert({ postId: top.postId, userId: top.userId });
         }
+        
+        userCountMap[top.userId] = (userCountMap[top.userId] ?? 0) + 1;
 
         // queue.pop()
         await this.postQueueRepository.deleteById(top.id);
