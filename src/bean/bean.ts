@@ -3,6 +3,7 @@ import { PrismaPostRepository } from "src/repository/post/prismaPostRepository";
 import { PrismaPostQueueRepository } from "src/repository/postQueue/prismaPostQueueRepository";
 import { PrismaUserRepository } from "src/repository/user/prismaUserRespository";
 import { PrismaUserQueue } from "src/repository/userQueue/prismaUserQueue";
+import { MailService } from "src/service/mail/MailService";
 import MockRokafClient from "src/service/rokafClient/MockRokafClient";
 import RokafClient from "src/service/rokafClient/RokafClient";
 
@@ -26,14 +27,20 @@ class BeanConfig {
       serverOn: true,
       complete: true,
     });
-    return {
+
+
+    const repository = {
       postRepository: new PrismaPostRepository(),
       userRepository: new PrismaUserRepository(),
       postQueueRepository: new PrismaPostQueueRepository(),
-      userQueueRepository: new PrismaUserQueue(),
+      userQueue: new PrismaUserQueue(),
       unidentifiedUserRepository: UnidentifiedUser,
       rokafClient: new RokafClient(),
       // rokafClient: mockRokafClient,
+    };
+    return {
+      ...repository,
+      mailService: new MailService(repository),
     }
   }
 }

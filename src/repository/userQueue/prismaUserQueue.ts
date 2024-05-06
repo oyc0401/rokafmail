@@ -16,14 +16,15 @@ export class PrismaUserQueue {
             memberSeq: true,
             generation: true,
             username: true,
+            connect:true,
           },
         },
       },
     });
 
-  deleteByUserId = (userId: number) =>
+  deleteById = (id: number) =>
     prisma.usersQueue.deleteMany({
-      where: { userId: userId },
+      where: { id },
     });
 
 }

@@ -72,7 +72,7 @@ export class UserService {
 
   async processUserQueue(top, progres) {
     const { userId } = top;
-    const { name, birth, generation, username } = top.user;
+    const { name, birth, generation, username, connect } = top.user;
 
     const profile = ProfileFactory.create({ userId, name, birth, generation, username });
 
@@ -82,18 +82,25 @@ export class UserService {
         await this.unidentifiedUserRepository.insert({ userId });
       }
     }
+    
+    if (!connect) {
+      const status = await this.syncProfile(profile, {
+        onComplete: async (_) => await this.mailService.sendUnpostedMails(userId),
+        onError: async (_) => {
+          const errorMessage = 'Stop - ServerConnectionFalse';
+          logger.error(`${progres}: (${userId}) | ${errorMessage}`)
+          throw Error("errorMessage");
+        },
+        onFail: onFail,
+      });
 
-    const status = await this.syncProfile(profile, {
-      onComplete: async (_) => await this.mailService.sendUnpostedMails(userId),
-      onError: async (_) => {
-        const errorMessage = 'Stop - ServerConnectionFalse';
-        logger.error(`${progres}: (${userId}) | ${errorMessage}`)
-        throw Error("errorMessage");
-      },
-      onFail: onFail,
-    });
+      logger.info(`${progres}: (${userId}) | ${syncResponseToStr(status)}`)
+    }else{
+      logger.info(`${progres}: (${userId}) | 이미 연결 됌`)
+    }
 
-    logger.info(`${progres}: (${userId}) | ${syncResponseToStr(status)}`)
+
+
   }
 
 }
