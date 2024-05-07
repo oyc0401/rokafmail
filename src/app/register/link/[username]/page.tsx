@@ -1,11 +1,13 @@
-import { CopyButton } from "./copy_button";
-
 import Image from "next/image";
 
 import { CheckCircle } from "public/assets/index";
 import { User } from "src/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+
+export const metadata = {
+  title: "하늘인편 - 편지함 생성",
+};
 
 export default async function LinkPage({ params }) {
   const username = decodeURI(params.username);

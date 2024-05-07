@@ -4,14 +4,9 @@ import { notFound } from "next/navigation";
 import { NavHeader } from "src/components/NavHeader";
 import { Content, UnConnectedContent } from "./Content";
 
-export async function generateMetadata(
-  { params }
-) {
-  const username = decodeURI(params.username);
-  return {
-    title: `하늘인편 - ${username}`,
-  }
-}
+export const metadata = {
+  title: "하늘인편 - 받은 편지함",
+};
 
 export default async function Mails({ params }) {
   const username = decodeURI(params.username);

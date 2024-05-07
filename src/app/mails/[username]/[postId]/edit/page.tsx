@@ -13,6 +13,10 @@ import {
 import { cookies } from "next/headers";
 import { Paper } from "./paper";
 
+export const metadata = {
+  title: "하늘인편 - 편지 수정",
+};
+
 export default async function EditPage({ params }) {
   const postId = Number(params.postId);
   const username = params.username;

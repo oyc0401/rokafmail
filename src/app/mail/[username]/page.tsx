@@ -18,14 +18,13 @@ import { ShareButton } from "./copy_button";
 
 import { NavHeader } from 'src/components/NavHeader'
 
-export async function generateMetadata(
-  { params }
-) {
-  const username = decodeURI(params.username);
-  return {
-    title: `하늘인편 - ${username}`,
-  }
-}
+
+export const metadata = {
+  title: "하늘인편 - 편지 작성",
+};
+
+
+
 export default async function Mail({ params }) {
   const username = decodeURI(params.username);
   const user = await User.findByUsername(username);
