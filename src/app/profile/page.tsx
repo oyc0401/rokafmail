@@ -2,7 +2,6 @@ import { auth } from "src/app/api/auth/auth";
 import { User } from "src/db";
 
 import { redirect } from "next/navigation";
-import styles from "./page.module.css";
 import Link from "next/link";
 import { DeleteUser, SignOut } from "./client";
 import { NavHeader } from "src/components/NavHeader";
@@ -19,7 +18,6 @@ export default async function Page() {
   const { name, birth, generation, message, memberSeq, connect } = user;
   return (
     <>
-
       <div className={`max-w-3xl mx-auto h-full flex flex-col`}>
         <NavHeader user={{ username, name, birth, memberSeq, connect }}></NavHeader>
         <div className="flex-1 flex flex-col px-4">
@@ -33,7 +31,7 @@ export default async function Page() {
           <div style={{ height: 20 }}></div>
           <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
             <ProfileArea title="기수" text={generation} />
-            <Link className={styles.editButton} href={"/profile/edit"}>
+            <Link className='text-base underline whitespace-nowrap' href={"/profile/edit"}>
               정보수정
             </Link>
           </div>
@@ -51,7 +49,7 @@ export default async function Page() {
           <div style={{ flex: 1 }}></div>
 
           <div style={{ height: 26 }}></div>
-          <Link className={styles.textButton} href={"/profile/editPassword"}>
+          <Link className='text-base underline' href={"/profile/editPassword"}>
             비밀번호 변경
           </Link>
 

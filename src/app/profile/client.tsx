@@ -1,7 +1,6 @@
 "use client";
 import { signOut } from "next-auth/react";
 import { deleteUser } from "src/app/api/profile/profile";
-import styles from "./page.module.css";
 import crypto from "crypto";
 export function SignOut() {
   async function onclickSignout() {
@@ -11,7 +10,7 @@ export function SignOut() {
   }
 
   return (
-    <button className={styles.textButton} onClick={onclickSignout}>
+    <button className='text-base underline' onClick={onclickSignout}>
       로그아웃
     </button>
   );
@@ -41,7 +40,7 @@ export function DeleteUser({ username }) {
   }
 
   return (
-    <button className={styles.delete} onClick={onclickDelete}>
+    <button className='text-base underline text-[#E6E6E6]' onClick={onclickDelete}>
       회원삭제
     </button>
   );

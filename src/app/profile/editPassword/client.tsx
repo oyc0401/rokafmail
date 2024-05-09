@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import styles from "./page.module.css";
 import crypto from "crypto";
 import { useRouter } from "next/navigation";
 import { editPassword } from "src/app/api/profile/profile";

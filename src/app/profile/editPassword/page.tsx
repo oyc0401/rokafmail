@@ -14,7 +14,5 @@ export default async function Page() {
   const user = await User.findByUsername(username);
   if (!user)  notFound();
   
-  const { name, birth, message } = user;
-
   return <Client username={username}></Client>;
 }
