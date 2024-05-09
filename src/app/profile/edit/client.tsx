@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { editProfile } from "src/app/api/profile/profile";
+import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
 
 export function Client({ username, name, birth, message }) {
   const [nameForm, setName] = useState(name);
@@ -15,7 +15,8 @@ export function Client({ username, name, birth, message }) {
 
   const router = useRouter();
 
-  const click = async () => {
+  const click = async (e) => {
+    e.preventDefault();
     const response = await editProfile(
       username,
       nameForm,
@@ -30,82 +31,56 @@ export function Client({ username, name, birth, message }) {
     }
   };
 
-  return (
-    <div className="screen">
-      <div style={{ flex: 64 }}></div>
-      <div className="pt-12 pb-8 w-full">
-        <h2 className={styles.title}>
-          정보 수정
-          <br />
-        </h2>
-      </div>
-
-      <div style={{ flex: 12 }}></div>
-
-      <div className="pb-4 w-full">
-        <p className={styles.formTitle}>이름</p>
-        <div style={{ height: 2 }}></div>
-        <input
-          className={styles.form}
-          value={nameForm}
+  return (<>
+    <BasicFormArea>
+      <BasicHeader>
+        수정 할 정보를 입력해주세요
+      </BasicHeader>
+      <BasicBody>
+        <InputField
+          label="이름"
           type="text"
+          value={nameForm}
           placeholder="이름을 입력해주세요"
           onChange={(e) => {
-            setName(e.target.value);
+            setName(e);
           }}
-        ></input>
-        <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validN(nameForm).color}`}>
-          {validN(nameForm).text}
-        </p>
-      </div>
-
-      <div className="pb-4 w-full">
-        <p className={styles.formTitle}>생년월일</p>
-        <div style={{ height: 2 }}></div>
-        <input
-          className={styles.form}
-          value={birthForm}
+          helpMessage={validN(nameForm).text}
+          color={validN(nameForm).color}
+        />
+        <InputField
+          label="생년월일"
           type="text"
+          value={birthForm}
           placeholder="생년월일 8자리를 입력해주세요"
           onChange={(e) => {
-            setBirth(e.target.value);
+            setBirth(e);
           }}
-        ></input>
-        <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validB(birthForm).color}`}>
-          {validB(birthForm).text}
-        </p>
-      </div>
-
-      <div className="pb-4 w-full">
-        <p className={styles.formTitle}>메시지</p>
-        <div style={{ height: 2 }}></div>
-        <input
-          className={styles.form}
-          value={messageForm}
+          helpMessage={validB(birthForm).text}
+          color={validB(birthForm).color}
+        />
+        <InputField
+          label="메시지"
           type="text"
+          value={messageForm}
           placeholder="메시지를 입력해주세요"
           onChange={(e) => {
-            setmessage(e.target.value);
+            setmessage(e);
           }}
-        ></input>
-        <div style={{ height: 2 }}></div>
-        <p className={`${styles.help} ${validM(messageForm).color}`}>
-          {validM(messageForm).text}
-        </p>
-      </div>
-
-      <div style={{ flex: 90 }}></div>
-      <div className="pb-8 pt-6 w-full">
+          helpMessage={validM(messageForm).text}
+          color={validM(messageForm).color}
+        />
+      </BasicBody>
+      <BasicFooter>
         <button
           className={canSubmit() ? "submit" : "submit disable"}
           onClick={click}
         >
           수정하기
         </button>
-      </div>
-    </div>
+      </BasicFooter>
+    </BasicFormArea>
+  </>
   );
 }
 

@@ -5,6 +5,7 @@ import crypto from "crypto";
 import { useRouter } from "next/navigation";
 import { editPassword } from "src/app/api/profile/profile";
 import { signOut } from "next-auth/react";
+import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
 
 export function Client({ username }) {
   const [originPassword, setorpassword] = useState("");
@@ -13,15 +14,21 @@ export function Client({ username }) {
   const [repassword, setrepassword] = useState("");
   const router = useRouter();
 
-  async function click() {
+  async function click(e) {
+    e.preventDefault();
     if (!canSubmit()) return;
+
+    let encryptedOriginPassword = crypto
+      .createHash("sha256")
+      .update(originPassword)
+      .digest("hex");
 
     let encryptedPassword = crypto
       .createHash("sha256")
       .update(password)
       .digest("hex");
 
-    const response = await editPassword(username, encryptedPassword);
+    const response = await editPassword(username, encryptedOriginPassword, encryptedPassword);
     if (response.status == 200) {
       alert("비밀번호가 변경되었습니다! 다시 로그인 해주세요.");
       signOut({ callbackUrl: "/" });
@@ -41,68 +48,55 @@ export function Client({ username }) {
 
   return (
     <>
-      <div className="screen">
-        <div style={{ flex: 64 }}></div>
-        <div className="pt-12 pb-8 w-full">
-          <h2 className={styles.title}>비밀번호 재설정</h2>
-        </div>
-
-        <div style={{ flex: 12 }}></div>
-
-        <div className="pb-4 w-full">
-          <p className={styles.formTitle}>기존 비밀번호</p>
-          <div style={{ height: 2 }}></div>
-          <input
-            className={styles.form}
+      <BasicFormArea>
+        <BasicHeader>
+          비밀번호 변경
+        </BasicHeader>
+        <BasicBody>
+          <InputField
+            label="비밀번호"
             type="password"
+            autoComplete="new-password"
+            value={originPassword}
             placeholder="비밀번호를 입력해주세요"
-            onChange={(e) => {
-              setorpassword(e.target.value);
-            }}
-          ></input>
-          <div style={{ height: 19 }}></div>
-        </div>
-
-        <div className="pb-4 w-full">
-          <p className={styles.formTitle}>새로운 비밀번호</p>
-          <div style={{ height: 2 }}></div>
-          <input
-            className={styles.form}
+            onChange={setorpassword}
+            helpMessage={validP(originPassword).text}
+            color={validP(originPassword).color}
+          />
+          <InputField
+            label="새로운 비밀번호"
             type="password"
-            placeholder="비밀번호를 입력해주세요"
-            onChange={(e) => {
-              setpassword(e.target.value);
-            }}
-          ></input>
-          <div style={{ height: 19 }}></div>
-        </div>
-
-        <div className="pb-4 w-full">
-          <p className={styles.formTitle}>비밀번호 재확인</p>
-          <div style={{ height: 2 }}></div>
-          <input
-            className={styles.form}
+            autoComplete="new-password"
+            value={password}
+            placeholder="새 비밀번호를 입력해주세요"
+            onChange={setpassword}
+            helpMessage={validP(password).text}
+            color={validP(password).color}
+          />
+          <InputField
+            label="비밀번호 재확인"
             type="password"
-            placeholder="비밀번호를 입력해주세요"
-            onChange={(e) => {
-              setrepassword(e.target.value);
-            }}
-          ></input>
-          <div style={{ height: 19 }}></div>
-        </div>
-
-        <div style={{ flex: 90 }}></div>
-        <div className="pb-8 pt-6 w-full">
+            autoComplete="new-password"
+            value={repassword}
+            placeholder="비밀번호를 다시 입력해주세요"
+            onChange={setrepassword}
+            helpMessage={validR(repassword, password).text}
+            color={validR(repassword, password).color}
+          />
+        </BasicBody>
+        <BasicFooter>
           <button
             className={canSubmit() ? "submit" : "submit disable"}
             onClick={click}
           >
-            비밀번호 변경
+            변경하기
           </button>
-        </div>
-      </div>
+        </BasicFooter>
+      </BasicFormArea>
     </>
   );
+
+
 }
 
 function validP(password) {

@@ -45,10 +45,16 @@ export async function editProfile(username, name, birth, message) {
 
 export async function editPassword(
   username: string,
+  encryptedOriginPassword: string,
   encryptedPassword: string,
 ) {
   const { valid, errorResponse } = await ensureUserMatch(username);
   if (!valid) return errorResponse;
+
+  const user = await User.findByUsername(username);
+  if (encryptedOriginPassword != user?.password) {
+    return ServerActionResponse.notFound("비밀번호를 다시 입력해주세요.");
+  }
 
   await User.editPassword({ username, password: encryptedPassword });
   return ServerActionResponse.ok("비밀번호 수정에 성공했습니다.");
