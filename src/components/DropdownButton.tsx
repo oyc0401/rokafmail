@@ -1,12 +1,10 @@
 'use client'
 
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, DropdownSection } from "@nextui-org/react";
 import MenuIcon from "public/assets/menuIcon.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { IsAuthenticated } from "./IsAuthenticated";
-import { IsNotAuthenticated } from "./IsNotAuthenticated";
-import { IsLoading } from "./IsLoading";
+
 import { useSession } from "next-auth/react";
 export default function DropdownButton({ username, name, birth, memberSeq, connect }) {
   const router = useRouter();
@@ -24,6 +22,13 @@ export default function DropdownButton({ username, name, birth, memberSeq, conne
       onClick={() => router.push(`/auth/signin?callbackUrl=${window.location.href}`)}>로그인</DropdownItem>
   }
 
+  function rokafDropdownItem() {
+    if (connect) {
+      return <DropdownItem className="text-left" key="rokaf" onClick={() => window.open(rokafUrl)}>기훈단 사이트</DropdownItem >
+    }
+    return <DropdownItem className="p-0"></DropdownItem>
+  }
+
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -33,13 +38,17 @@ export default function DropdownButton({ username, name, birth, memberSeq, conne
         </Button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
-        <DropdownItem className="text-left" key="mail" onClick={() => router.push(`/mail/${username}`)}>편지 작성</DropdownItem>
-
-        <DropdownItem className="text-left" key="mails" onClick={() => router.push(`/mails/${username}`)}>받은 편지함</DropdownItem>
-        {profileDropdownItem()}
-
-        {connect ? <DropdownItem className="text-left" key="rokaf" onClick={() => window.open(rokafUrl)}>기훈단 사이트</DropdownItem >
-          : <DropdownItem className="p-0"></DropdownItem>}
+        <DropdownSection showDivider>
+          {profileDropdownItem()}
+          <DropdownItem className="text-left" key="mail" onClick={() => router.push(`/mail/${username}`)}>편지 작성</DropdownItem>
+          <DropdownItem className="text-left" key="mails" onClick={() => router.push(`/mails/${username}`)}>받은 편지함</DropdownItem>
+          {rokafDropdownItem()}
+        </DropdownSection>
+        <DropdownSection>
+          <DropdownItem className="text-left" key="report" onClick={() => router.push(`/report`)}>문의사항</DropdownItem>
+          <DropdownItem className="text-left" key="privacy-policy" onClick={() => router.push(`/privacy-policy`)}>개인정보처리방침</DropdownItem>
+          <DropdownItem className="text-left" key="developer" onClick={() => window.open(`https://github.com/oyc0401`)}>개발자 정보</DropdownItem>
+        </DropdownSection>
 
       </DropdownMenu>
     </Dropdown>

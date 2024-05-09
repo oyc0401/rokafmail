@@ -1,6 +1,8 @@
 import styles from "./InputField.module.css";
 import React from 'react';
 
+import TextareaAutosize from 'react-textarea-autosize';
+
 export function InputField({
   label,
   type = "text",
@@ -50,3 +52,53 @@ export function InputField({
     </div>
   );
 }
+
+export function InputAutoSize({
+  label,
+  value,
+  placeholder,
+  autoComplete,
+  onChange,
+  helpMessage,
+  color,
+  children,
+}: {
+  label?: string;
+  type?: string;
+  value?: string;
+  placeholder?: string;
+  autoComplete?: string;
+  onChange?: (e: string) => any;
+  helpMessage?: string;
+  color?: string;
+  children?: React.ReactNode;
+}) {
+
+
+  return (
+    <div className="pb-4 w-full">
+      {label ? <p className={styles.label}>{label}</p> : null}
+
+      <div className="flex flex-row w-full items-center"      >
+        <textarea
+          className={`${styles.textArea} min-h-[150px]`}
+          value={value}
+          placeholder={placeholder}
+          autoComplete={autoComplete}
+          onInput={(e) => {
+            const text = e.currentTarget.value;
+            if (onChange != null) onChange(text);
+          }}
+
+          style={{ flex: 1 }}
+        />
+        {children}
+      </div>
+      {helpMessage != undefined ? (
+        <p className={`text-xs h-4 pt-0.5 text-fontmedium w-full text-left ${color}`}>{helpMessage}</p>
+      ) : null}
+    </div>
+  );
+}
+
+
