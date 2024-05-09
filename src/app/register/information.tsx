@@ -11,6 +11,7 @@ import {
   BasicBody,
   BasicFooter,
 } from "src/components";
+import { NavHeaderHome } from "src/components/NavHeaderHome";
 export default function Information() {
   const { generation, name, birth, setGeneration, setName, setBirth, next } =
     useStoreBase();
@@ -30,37 +31,46 @@ export default function Information() {
   const birthValidation = validB(birth);
   return (
     <>
+     
       <BasicFormArea>
         <BasicHeader>
           편지 주소를 확인하기 위해
           <br />
           이름과 생년월일이 필요해요
         </BasicHeader>
-        <BasicBody>
-          <InputField
-            label="기수"
-            placeholder="기수를 입력해주세요 예시) 856"
-            value={generation}
-            onChange={setGeneration}
-            helpMessage={generationValidation.text}
-            color={generationValidation.color}
-          />
-          <InputField
-            label="이름"
-            placeholder="이름을 입력해주세요"
-            value={name}
-            onChange={setName}
-            helpMessage={nameValidation.text}
-            color={nameValidation.color}
-          />
-          <InputField
-            label="생년월일"
-            placeholder="생년월일 8자리를 입력해주세요"
-            value={birth}
-            onChange={setBirth}
-            helpMessage={birthValidation.text}
-            color={birthValidation.color}
-          />
+        <BasicBody paddingBottom={false}>
+          <div className="flex flex-col h-full">
+            <div className="pb-12 w-full">
+              <InputField
+                label="기수"
+                placeholder="기수를 입력해주세요 예시) 857"
+                value={generation}
+                onChange={setGeneration}
+                helpMessage={generationValidation.text}
+                color={generationValidation.color}
+              />
+              <InputField
+                label="이름"
+                placeholder="이름을 입력해주세요"
+                value={name}
+                onChange={setName}
+                helpMessage={nameValidation.text}
+                color={nameValidation.color}
+              />
+              <InputField
+                label="생년월일"
+                placeholder="생년월일 8자리를 입력해주세요"
+                value={birth}
+                onChange={setBirth}
+                helpMessage={birthValidation.text}
+                color={birthValidation.color}
+              />
+            </div>
+            <div style={{ flex: 1 }}></div>
+            <p className="text-sm text-fontmedium">
+              다음을 누르시면 <a href="/privacy-policy" target="_blank" className="underline">개인정보처리방침</a>에 동의합니다
+            </p>
+          </div>
         </BasicBody>
         <BasicFooter>
           <button
@@ -77,7 +87,7 @@ export default function Information() {
 
 function validG(generation) {
   // 빈칸일 때
-  if (generation == "") return { text: "예시) 856", valid: false };
+  if (generation == "") return { text: "예시) 857", valid: false };
 
   // 숫자가 아닌 다른문자 입력
   if (!/^\d+$/.test(generation))
@@ -93,7 +103,7 @@ function validG(generation) {
     return { text: "입영기수가 아니예요", color: "warn", valid: false };
 
   // 통과
-  return { text: "예시) 856", valid: true };
+  return { text: "예시) 857", valid: true };
 }
 
 function validN(name) {
