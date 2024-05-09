@@ -20,7 +20,7 @@ import { NavHeader } from 'src/components/NavHeader'
 
 
 export const metadata = {
-  title: "하늘인편 - 편지 작성",
+  title: "하늘인편 | 편지 작성",
 };
 
 

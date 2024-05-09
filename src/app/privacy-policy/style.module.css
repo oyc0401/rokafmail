@@ -1,10 +1,15 @@
-.privacy{
-  padding-top:50px;
-  padding-bottom:50px;
+.privacy{}
+
+.privacy>h1{
+  font-size:24px;
+  font-weight:bold;
 }
 
 .privacy>h2{
   font-weight:bold;
+  font-size:20px;
+   padding-top:24px;
+  padding-bottom:8px;
 }
 
 .privacy>ul{list-style:disc}

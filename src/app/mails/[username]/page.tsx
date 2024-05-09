@@ -5,7 +5,7 @@ import { NavHeader } from "src/components/NavHeader";
 import { Content, UnConnectedContent } from "./Content";
 
 export const metadata = {
-  title: "하늘인편 - 받은 편지함",
+  title: "하늘인편 | 받은 편지함",
 };
 
 export default async function Mails({ params }) {

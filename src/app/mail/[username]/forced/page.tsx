@@ -23,7 +23,7 @@ export async function generateMetadata(
 ) {
   const username = decodeURI(params.username);
   return {
-    title: `하늘인편 - ${username}`,
+    title: `하늘인편 | ${username}`,
   }
 }
 export default async function Mail({ params }) {

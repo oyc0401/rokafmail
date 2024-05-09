@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 
 export const metadata = {
-  title: "하늘인편 - 편지함 생성",
+  title: "하늘인편 | 편지함 생성",
 };
 
 export default async function LinkPage({ params }) {
