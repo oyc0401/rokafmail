@@ -11,14 +11,9 @@ export default function Report() {
     e.preventDefault();
     await sendEmail(message);
     alert('소중한 의견 감사합니다!');
-    history.back();
-    // if (response) {
-
-    // } else {
-    //   alert('알 수 없는 오류가 발생했습니다. 버그가 또 발생했네요...ㅜㅜ oyc0401@gmail.com으로 해당 문제를 알려주시면 감사하겠습니다.')
-    // }
-
+    setMessage('');
   }
+
   return (<>
     <BasicFormArea>
       <BasicHeader>
@@ -26,7 +21,7 @@ export default function Report() {
         <p className="text-base pt-3 font-normal">버그 또는 개선사항을 적어주세요!</p>
       </BasicHeader>
       <BasicBody>
-         
+
         <InputAutoSize
           label="내용"
           type="text"
