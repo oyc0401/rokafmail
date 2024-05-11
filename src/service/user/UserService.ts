@@ -80,6 +80,9 @@ export class UserService {
       if (serveStatus(profile.generation) == Status.working) {
         // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
         await this.unidentifiedUserRepository.insert({ userId });
+      }else{
+        // 안나오면 나중에 다시 검색
+        await this.userQueue.insert({ userId });
       }
     }
     
@@ -88,7 +91,10 @@ export class UserService {
         onComplete: async (_) => await this.mailService.sendUnpostedMails(userId),
         onError: async (_) => {
           const errorMessage = 'Stop - ServerConnectionFalse';
-          logger.error(`${progres}: (${userId}) | ${errorMessage}`)
+          logger.error(`${progres}: (${userId}) | ${errorMessage}`);
+
+          // 오류면 나중에 다시 검색
+          await this.userQueue.insert({ userId });
           throw Error("errorMessage");
         },
         onFail: onFail,
