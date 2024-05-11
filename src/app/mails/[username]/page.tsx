@@ -3,6 +3,7 @@ import { Post, User } from "src/db";
 import { notFound } from "next/navigation";
 import { NavHeader } from "src/components/NavHeader";
 import { LetterList } from "./LetterList";
+import { TabBar } from "./TabBar";
 
 export const metadata = {
   title: "하늘인편 | 받은 편지함",
@@ -44,21 +45,21 @@ export default async function Mails({ params, searchParams }) {
     const letters = await getPostedPosts(username);
     content = (
       <>
-        <Bar username={username} active={0}></Bar>
+        <TabBar username={username} active={0}></TabBar>
         <LetterList letters={letters}></LetterList>
       </>
     );
   } else if (pageState == 'wait') {
     const unposteds = await getNotPostedPosts(username);
     content = <>
-      <Bar username={username} active={1}></Bar>
+      <TabBar username={username} active={1}></TabBar>
       <LetterList letters={unposteds}></LetterList>
     </>
   } else {
     const letters = await getPostedPosts(username);
     content = (
       <>
-        <Bar username={username} active={0}></Bar>
+        <TabBar username={username} active={0}></TabBar>
         <LetterList letters={letters}></LetterList>
       </>
     );
@@ -83,19 +84,3 @@ export default async function Mails({ params, searchParams }) {
   );
 }
 
-function Bar({ username, active }) {
-  return <div className="h-[56px] w-full flex p-1">
-    <Link href={`/mails/${username}?page=complete`}
-      className={`w-full px-3 relative flex justify-center items-center cursor-pointer text-base ${active == 0 ? ' text-primary' : 'text-fontmedium hover:text-fontlight'}`}
-    >
-      전송 완료
-      <span className={`absolute z-0 h-[2px] w-[80%] bottom-0 bg-primary rounded-none ${active == 0 ? '' : 'opacity-0'}`}></span>
-    </Link>
-    <Link href={`/mails/${username}?page=wait`}
-      className={`w-full px-3 relative flex justify-center items-center cursor-pointer text-base ${active == 1 ? ' text-primary' : 'text-fontmedium hover:text-fontlight'}`}
-    >
-      전송 대기중
-      <span className={`absolute z-0 h-[2px] w-[80%] bottom-0 bg-primary rounded-none ${active == 1 ? '' : 'opacity-0'}`}></span>
-    </Link>
-  </div>
-}
