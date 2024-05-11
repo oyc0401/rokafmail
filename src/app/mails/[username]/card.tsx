@@ -1,11 +1,11 @@
-import { useRouter } from 'next/navigation'
 import RokafSmall from 'public/assets/rokaf-small.png';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function PostCard({ id, title, name, rel, time, username, contents, isPublic }) {
   return (
     <div className='mt-2.5 mx-4'>
-      <a href={`/mails/${username}/${id}`}>
+      <Link href={`/mails/${username}/${id}`}>
         <div className='cursor-pointer bg-[#FFFDF8] active:opacity-75 p-4 shadow-sm rounded max-w-3xl '>
 
           <div className="flex flex-row justify-between space-x-2">
@@ -20,7 +20,7 @@ export function PostCard({ id, title, name, rel, time, username, contents, isPub
           </div>
 
         </div>
-      </a>
+      </Link>
     </div>
   );
 }
