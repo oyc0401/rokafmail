@@ -86,7 +86,7 @@ function Contents() {
           {validC(contents).text}
         </p>
         <div style={{ flex: 1 }}></div>
-        <p className={`text-xs font-fontmedium text-left`}>{`${contents.length}/1200`}</p>
+        <p className={`text-xs font-fontmedium text-left text-[#37271A]`}>{`${contents.length}/1200`}</p>
       </div>
     </div>
   );
@@ -142,7 +142,10 @@ function Password() {
             classNames={{ base: 'h-[24px] p-0 m-0 text-[#37271A]' }}
             radius="full"
             isSelected={isPublic} onValueChange={setIsPublic}
-          >전체공개</Checkbox>
+            className="text-[#37271A]"
+          >
+            <p className="text-base text-[#37271A]">전체공개</p>
+          </Checkbox>
           <Divider orientation="vertical" className="mx-3" />
           <h2 className="text-base text-right text-[#37271A]" >
             비밀번호

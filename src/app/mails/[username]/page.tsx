@@ -39,28 +39,28 @@ export default async function Mails({ params, searchParams }) {
   if (!user.connect) {
     const unposteds = await getNotPostedPosts(username);
     content = <>
-      <LetterList letters={unposteds}></LetterList>
+      <LetterList letters={unposteds} emptyMessage='받은 편지가 없습니다.'></LetterList>
     </>
   } else if (pageState == 'complete') {
     const letters = await getPostedPosts(username);
     content = (
       <>
         <TabBar username={username} active={0}></TabBar>
-        <LetterList letters={letters}></LetterList>
+        <LetterList letters={letters} emptyMessage='받은 편지가 없습니다.'></LetterList>
       </>
     );
   } else if (pageState == 'wait') {
     const unposteds = await getNotPostedPosts(username);
     content = <>
       <TabBar username={username} active={1}></TabBar>
-      <LetterList letters={unposteds}></LetterList>
+      <LetterList letters={unposteds} emptyMessage='모든 편지가 보내졌습니다.'></LetterList>
     </>
   } else {
     const letters = await getPostedPosts(username);
     content = (
       <>
         <TabBar username={username} active={0}></TabBar>
-        <LetterList letters={letters}></LetterList>
+        <LetterList letters={letters} emptyMessage='받은 편지가 없습니다.'></LetterList>
       </>
     );
   }

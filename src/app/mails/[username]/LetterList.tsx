@@ -1,10 +1,10 @@
 import { dateToStr } from "src/lib/time";
 import { PostCard } from "./card";
 
-export function LetterList({ letters }) {
+export function LetterList({ letters, emptyMessage }) {
   return <>
     <div className="max-w-3xl mx-auto">
-      {letters.length == 0 && <p className="text-medium p-4 text-fontlight">받은 편지가 없습니다.</p>}
+      {letters.length == 0 && <p className="text-medium p-4 text-fontlight">{emptyMessage}</p>}
 
       {letters.map((post, index) => (
         <div key={post.id}>
