@@ -10,7 +10,7 @@ export async function repost() {
 
 export async function verify() {
   const userService = new UserService(bean);
-  await userService.traverseUserQueue();
+  await userService.retryGetProfile();
 }
 
 export async function findNotQueueNotpost() {

@@ -4,7 +4,7 @@ import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
 import { duplicateUsername, validB, validG } from "./valid";
 import { ProfileFactory } from "src/type/factory";
-import { UserService,syncResponseToStr } from "src/service/user/UserService";
+import { UserService, syncResponseToStr } from "src/service/user/UserService";
 import { bean } from "src/bean/bean";
 const logger = makeLogger("register");
 
@@ -38,15 +38,10 @@ export async function registerApi(registerForm: {
 
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
     const profile = ProfileFactory.create({ userId, name, birth, generation, username });
-    const pushQueue = async (queue) => await queue.insert({ userId });
 
     const userService = new UserService(bean);
 
-    userService.syncProfile(profile, {
-      onBefore: pushQueue,
-      onError: pushQueue,
-      onFail: pushQueue,
-    }).then((response) =>
+    userService.searchProfileFailEnqueue(profile).then((response) =>
       logger.info(`${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
 
     return ServerActionResponse.json({ message: "회원가입 성공", status: 200 });

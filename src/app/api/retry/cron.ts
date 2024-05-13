@@ -34,7 +34,7 @@ export class CronStore {
           // Http x, 바로 호출
 
           const userService = new UserService(bean);
-          await userService.traverseUserQueue();
+          await userService.retryGetProfile();
         } catch (e) {
           logger.error(`node-cron 중 오류발생: ${e}`);
         }

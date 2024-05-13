@@ -116,22 +116,17 @@ export class MailService {
         i++;
 
         const front = await this.postQueue.front();
+        if (front.createdAt > now) break;
 
-        if (front.createdAt > now) {
-          // 차이가 1시간 미만인지 확인
-          // if (dayjs(front.createdAt).diff(now, 'minute') < 60) {
-          break;
-        }
         const post = (await this.postRepository.findById(front.postId))!;
 
-
         if (post.posted) {
-          logger.info(`${i + 1}/${queueSize} (${front.postId}) | 이미 보내졌습니다`);
+          logger.info(`${i}/${queueSize} (${front.postId}) | 이미 보내졌습니다`);
         } else if ((userCountMap[post.userId] ?? 0) < MAX_POSTCOUNT) {
           const response = await this.sendMailFalseEnqueue(front.postId);
-          logger.info(`${i + 1}/${queueSize} (${front.id}) | ${sendStatusToStr(response)}`);
+          logger.info(`${i}/${queueSize} (${front.id}) | ${sendStatusToStr(response)}`);
         } else {
-          logger.info(`${i + 1}/${queueSize} (${front.postId}) | 한도 초과`);
+          logger.info(`${i}/${queueSize} (${front.postId}) | 한도 초과`);
           await this.postQueue.insert(front.postId);
         }
 
@@ -141,9 +136,8 @@ export class MailService {
       }
 
     } catch (error) {
-      logger.error(`${i + 1}/${queueSize} | ${error}`)
+      logger.error(`${i}/${queueSize} | ${error}`)
     }
-
   }
 
 

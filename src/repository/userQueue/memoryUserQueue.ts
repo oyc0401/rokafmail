@@ -1,37 +1,43 @@
-interface queue {
-  id; postId, userId;
-}
+import { UserQueue, UserQueueObject } from "./userQueue";
 
-export class MemoryUserQueue {
-  userQueue: queue[];
-  currentId;
-  userRepository;
+export class MemoryUserQueue implements UserQueue {
+  private queue: UserQueueObject[];
+  private nextId: number;
 
   constructor() {
-    this.userQueue = []; // 데이터 저장을 위한 배열
-    this.currentId = 1; // 간단한 ID 할당을 위한 변수
-  }
-  join(userRepository) {
-    this.userRepository = userRepository;
+    this.queue = [];
+    this.nextId = 1;
   }
 
-  async insert(data) {
-    // 새 게시물에 ID를 할당하고 배열에 추가
-    const newObj = { id: this.currentId++, ...data, createdAt: new Date() };
-    this.userQueue.push(newObj);
-    return newObj;
+  async insert(userId: number): Promise<UserQueueObject> {
+    const newUserQueueObject: UserQueueObject = {
+      id: this.nextId++,
+      userId,
+      createdAt: new Date()
+    };
+    this.queue.push(newUserQueueObject);
+    return newUserQueueObject;
   }
 
-  findAllWithUser = async () => {
-    let result: any[] = [];
-    for (let q of this.userQueue) {
-      const user = await this.userRepository.findById(q.userId);
-      result.push({ ...q, user: { ...user } });
+  async front(): Promise<UserQueueObject> {
+    if (this.queue.length === 0) {
+      throw new Error('Queue is empty');
     }
-    return result;
+    return this.queue[0];
   }
 
-  deleteById = (id: number) => {
-    return this.userQueue.splice(id - 1, 1);
+  async pop(): Promise<UserQueueObject> {
+    if (this.queue.length === 0) {
+      throw new Error('Queue is empty');
+    }
+    return this.queue.shift()!;
+  }
+
+  async empty() {
+    return this.queue.length === 0;
+  }
+
+  async size() {
+    return this.queue.length;
   }
 }

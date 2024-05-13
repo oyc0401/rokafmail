@@ -24,7 +24,6 @@ describe('User Service Test', () => {
   let unidentifiedUserRepository = new MemoryUnidentifiedUserRepository();
   let userService = new UserService({ userRepository, userQueue, rokafClient, mailService, unidentifiedUserRepository });
 
-  userQueue.join(userRepository);
   postRepository.join(userRepository);
 
   beforeEach(() => {
@@ -38,7 +37,6 @@ describe('User Service Test', () => {
     userService = new UserService({ userRepository, userQueue, rokafClient, mailService, unidentifiedUserRepository });
 
     postRepository.join(userRepository);
-    userQueue.join(userRepository);
   });
 
   beforeAll(() => {
@@ -64,7 +62,7 @@ describe('User Service Test', () => {
       password: '0000',
       name: '김공군',
       birth: '20030101',
-      generation: 852,
+      generation: 857,
       message: '잘 다녀오겠습니다!',
     }
     const newUser = await userRepository.insert(user);
@@ -76,13 +74,7 @@ describe('User Service Test', () => {
       username: newUser.username,
     });
 
-    const pushQueue = async (queue) => await queue.insert({ userId: newUser.id });
-
-    await userService.syncProfile(profile, {
-      onBefore: pushQueue,
-      onError: pushQueue,
-      onFail: pushQueue,
-    });
+    await userService.searchProfileFailEnqueue(profile);
 
     // 인증 전 편지 보내기
     const posts: any[] = [];
@@ -111,9 +103,11 @@ describe('User Service Test', () => {
     });
 
     // 작업 시작
-    await userService.traverseUserQueue();
+    await userService.retryGetProfile();
 
-    // 결과 검증
+    // 인증이 되어서 유저큐는 비어있어야 한다.
+    expect(await userQueue.size()).toBe(0);
+
     for (let i = 0; i < 15; i++) {
       const updated = await postRepository.findById(newPosts[i].id);
       if (i < 10) {

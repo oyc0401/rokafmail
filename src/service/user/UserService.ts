@@ -2,6 +2,7 @@ import { serveStatus, Status } from "src/lib/time";
 import { Profile } from "src/type";
 import { ProfileFactory } from 'src/type/factory';
 import { createLogger } from "config/logger";
+import { UserQueue } from "src/repository/userQueue/userQueue";
 
 const logger = createLogger("UserService");
 
@@ -9,7 +10,7 @@ export class UserService {
   private rokafClient;
   private userRepository;
   private unidentifiedUserRepository;
-  private userQueue;
+  private userQueue: UserQueue;
   private mailService;
 
   constructor({ userRepository, userQueue, rokafClient, mailService, unidentifiedUserRepository }) {
@@ -53,62 +54,64 @@ export class UserService {
     }
   }
 
-  async traverseUserQueue() {
-    // 미인증 유저들
-    const userQueue = await this.userQueue.findAllWithUser();
+  async searchProfileFailEnqueue(profile: Profile) {
+    const userId = profile.userId;
+    return await this.syncProfile(profile, {
+      onBefore: async (_) => {
+        await this.userQueue.insert(userId);
+      },
+      onError: async (_) => {
+        await this.userQueue.insert(userId);
+      },
+      onFail: async (_) => {
+        if (serveStatus(profile.generation) == Status.working) {
+          // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
+          await this.unidentifiedUserRepository.insert(userId);
+        } else {
+          // 안나오면 나중에 다시 검색
+          await this.userQueue.insert(userId);
+        }
+      },
+    });
+  }
+
+  async retryGetProfile() {
+    const now = new Date();
+
+    let i = 0;
+    let queueSize = await this.userQueue.size();
 
     try {
-      for (let i = 0; i < userQueue.length; i++) {
-        const top = userQueue[i];
-        await this.processUserQueue(top, `${i + 1}/${userQueue.length}`);
-        await this.userQueue.deleteById(top.id)
+      while (!(await this.userQueue.empty())) {
+        i++;
+
+        const front = await this.userQueue.front();
+        if (front.createdAt > now) break;
+
+        const userId = front.userId;
+
+        const user = await this.userRepository.findById(userId);
+
+        const { name, birth, generation, username, connect } = user;
+        const profile = ProfileFactory.create({ userId, name, birth, generation, username });
+
+        if (connect) {
+          logger.info(`${i}/${queueSize}: (${userId}) | 이미 연결 됌`)
+        } else {
+          const status = await this.searchProfileFailEnqueue(profile);
+          if (status == syncResponse.complete) {
+            await this.mailService.sendUnpostedMails(userId)
+          }
+          logger.info(`${i}/${queueSize}: (${userId}) | ${syncResponseToStr(status)}`)
+        }
+
+        await this.userQueue.pop();
       }
+
     } catch (error) {
-      logger.error(`traverseUserQueue | ${error}`);
-      throw error
+      logger.error(`${i + 1}/${queueSize} | ${error}`)
     }
-
   }
-
-  async processUserQueue(top, progres) {
-    const { userId } = top;
-    const { name, birth, generation, username, connect } = top.user;
-
-    const profile = ProfileFactory.create({ userId, name, birth, generation, username });
-
-    const onFail = async (_) => {
-      if (serveStatus(profile.generation) == Status.working) {
-        // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
-        await this.unidentifiedUserRepository.insert({ userId });
-      }else{
-        // 안나오면 나중에 다시 검색
-        await this.userQueue.insert({ userId });
-      }
-    }
-    
-    if (!connect) {
-      const status = await this.syncProfile(profile, {
-        onComplete: async (_) => await this.mailService.sendUnpostedMails(userId),
-        onError: async (_) => {
-          const errorMessage = 'Stop - ServerConnectionFalse';
-          logger.error(`${progres}: (${userId}) | ${errorMessage}`);
-
-          // 오류면 나중에 다시 검색
-          await this.userQueue.insert({ userId });
-          throw Error("errorMessage");
-        },
-        onFail: onFail,
-      });
-
-      logger.info(`${progres}: (${userId}) | ${syncResponseToStr(status)}`)
-    }else{
-      logger.info(`${progres}: (${userId}) | 이미 연결 됌`)
-    }
-
-
-
-  }
-
 }
 
 
