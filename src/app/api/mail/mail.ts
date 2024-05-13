@@ -71,12 +71,7 @@ export async function mailApi(mailForm: {
       const logStatus = (status: SendResponse) =>
         logger.info(`(${postId}) | ${sendStatusToStr(status)}`);
 
-      mailService.sendMail(postId, {
-        onFalse: async (queue) => {
-          // 오류가 나거나 실패하면 큐에 넣는다.
-          await queue.insert({ postId, userId: userId });
-        }
-      }).then(logStatus)
+      mailService.sendMailFalseEnqueue(postId,userId).then(logStatus);
 
     } else {
       logger.info(`(${postId}) | BeforeMailTime`)

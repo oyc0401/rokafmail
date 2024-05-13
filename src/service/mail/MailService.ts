@@ -91,6 +91,15 @@ export class MailService {
     }
   }
 
+  async sendMailFalseEnqueue(postId: number, userId) {
+    return await this.sendMail(postId, {
+      onFalse: async (queue) => {
+        // 오류가 나거나 실패하면 큐에 넣는다.
+        await queue.insert({ postId, userId });
+      }
+    });
+  }
+  
   async traversePostQueue() {
     const unposted = await this.postQueueRepository.findAll();
 
@@ -105,20 +114,16 @@ export class MailService {
           logger.info(`${i + 1}/${unposted.length} (${top.postId}) | 이미 보내졌습니다`);
 
         } else if (userCountMap[top.userId] ?? 0 < MAX_POSTCOUNT) {
-          const response = await this.sendMail(
-            top.postId,
-            {
-              onFalse: async (postQueue) => {
-                await postQueue.insert({ postId: top.postId, userId: top.userId })
-              }
-            });
+
+          const response = await this.sendMailFalseEnqueue(top.postId, top.userId);
+
           logger.info(`${i + 1}/${unposted.length} (${top.id}) | ${sendStatusToStr(response)}`);
         } else {
           // 나중에 다시 검사하게 insert
           logger.info(`${i + 1}/${unposted.length} (${top.postId}) | 한도 초과`);
           await this.postQueueRepository.insert({ postId: top.postId, userId: top.userId });
         }
-        
+
         userCountMap[top.userId] = (userCountMap[top.userId] ?? 0) + 1;
 
         // queue.pop()
