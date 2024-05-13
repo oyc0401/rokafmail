@@ -1,25 +1,22 @@
 import prisma from "src/db/prisma";
+import { InputUser, RokafProfile, UserRepository } from "./userRepository";
 
 
-export class PrismaUserRepository {
+export class PrismaUserRepository implements UserRepository {
 
-  insert = (data: {
-    username: string;
-    password: string;
-    name: string;
-    birth: string;
-    generation: number;
-    message: string;
-  }) => prisma.user.create({ data });
-
+  insert = (data: InputUser) => prisma.user.create({ data });
 
   findById = (id: number) =>
     prisma.user.findUnique({ where: { id }, });
 
-  update = (id: number, { memberSeq, sodae, connect }
-    : { memberSeq: string; sodae: string; connect: boolean },
-  ) => prisma.user.update({
-    where: { id },
-    data: { memberSeq, sodae, connect },
-  });
+
+  updateRokafProfile = (id: number, rokafProfile: RokafProfile) =>
+    prisma.user.update({
+      where: { id },
+      data: {
+        memberSeq: rokafProfile.memberSeq,
+        sodae: rokafProfile.sodae,
+        connect: true
+      },
+    });
 }

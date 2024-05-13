@@ -1,20 +1,10 @@
 import prisma from "src/db/prisma";
-import { PostRepository } from './postRepository';
+import { InputPost, PostRepository, UpdateType } from './postRepository';
 
 export class PrismaPostRepository implements PostRepository {
-  async insert(data: {
-    userId: number;
-    name: string;
-    relationship: string;
-    title: string;
-    contents: string;
-    password: string;
-    isPublic: boolean;
-  }) {
+  async insert(data:InputPost) {
     return await prisma.post.create({ data });
   }
-
-
 
   async findById(id: number) {
     return await prisma.post.findUnique({
@@ -39,7 +29,7 @@ export class PrismaPostRepository implements PostRepository {
     });
   }
 
-  update = (id: number, data) =>
+  update = (id: number, data: UpdateType) =>
     prisma.post.update({
       where: { id },
       data,

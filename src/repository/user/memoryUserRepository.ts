@@ -1,41 +1,46 @@
-export class MemoryUserRepository {
-  users;
-  currentId;
-  postRepository;
+
+import { InputUser, RokafProfile, User, UserRepository } from "./userRepository";
+
+export class MemoryUserRepository implements UserRepository {
+  users: User[];
+  currentId: number;
   constructor() {
     this.users = []; // 데이터 저장을 위한 배열
     this.currentId = 1; // 간단한 ID 할당을 위한 변수
-
-  }
-  join(postRepository) {
-    this.postRepository = postRepository;
   }
 
-  async insert(data) {
+  async insert(data: InputUser) {
     // 새 게시물에 ID를 할당하고 배열에 추가
-    const newUser = { id: this.currentId++, ...data };
+    const newUser: User = {
+      id: this.currentId++,
+      createdAt: new Date(),
+      connect: false,
+      sodae: null,
+      memberSeq: null,
+      ...data
+    };
     this.users.push(newUser);
     return newUser;
   }
 
-  async findById(userId) {
+  async findById(userId: number) {
     // ID로 유저를 찾아 반환
-    return this.users.find(user => user.id === userId);
+    const user = this.users.find(user => user.id === userId);
+    return user || null;
   }
 
-  async update(userId, updatedUser) {
+  async updateRokafProfile(userId: number, profile: RokafProfile) {
     // 해당 ID의 유저를 찾아 정보 업데이트
-    const userIndex = this.users.findIndex(user => user.id === userId);
-    if (userIndex !== -1) {
-      this.users[userIndex] = { ...this.users[userIndex], ...updatedUser };
-      return this.users[userIndex];
+    const userIndex = this.users.findIndex(user => user.id == userId);
+    if (userIndex == -1) {
+      throw new Error('해당 유저가 없습니다.')
     }
-    return null; // 유저가 없는 경우 null 반환
-  }
-
-  findAll = () => this.users;
-
-  deleteById = (id: number) => {
-    return this.users.splice(id, 1);
+    this.users[userIndex] = {
+      ...this.users[userIndex],
+      connect: true,
+      sodae: profile.sodae,
+      memberSeq: profile.memberSeq
+    };
+    return this.users[userIndex];
   }
 }

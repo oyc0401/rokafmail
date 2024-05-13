@@ -44,16 +44,25 @@ describe('serviceTest', () => {
     });
 
     // 메모리 리포지토리 설정
-    await userRepository.insert({
+    const newUser = await userRepository.insert({
       generation: 863,
-      sodae: '1234',
+      message: '하이',
+      name: '김공군',
+      password: '123213',
+      username: 'rokaf',
+      birth: '20034001',
+    });
+
+    await userRepository.updateRokafProfile(newUser.id, {
       memberSeq: '12341234',
-    })
+      sodae: '1234'
+    });
 
     const post = {
-      userId: 1, name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
-      password: '0000', createdAt: new Date(), postAt: null, posted: false,
-    };
+      userId: 1, name: '유찬', relationship: '친구',
+      title: '제목', contents: 'contents',
+      password: '0000', isPublic: true,
+    }
 
     const newPost = await postRepository.insert(post);
 
@@ -74,16 +83,25 @@ describe('serviceTest', () => {
 
     // 메모리 리포지토리 설정
 
-    await userRepository.insert({
+    const newUser = await userRepository.insert({
       generation: 850,
-      sodae: '1234',
+      message: '하이',
+      name: '김공군',
+      password: '123213',
+      username: 'rokaf',
+      birth: '20034001',
+    });
+
+    await userRepository.updateRokafProfile(newUser.id, {
       memberSeq: '12341234',
-    })
+      sodae: '1234'
+    });
 
     const post = {
-      userId: 1, name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
-      password: '0000', createdAt: new Date(), postAt: null, posted: false,
-    };
+      userId: 1, name: '유찬', relationship: '친구',
+      title: '제목', contents: 'contents',
+      password: '0000', isPublic: true,
+    }
 
     const newPost = await postRepository.insert(post);
 
@@ -95,7 +113,7 @@ describe('serviceTest', () => {
 
     // 보내졌다고 업데이트
     const updated = await postRepository.findById(newPost.id);
-    expect(updated.posted).toBe(true);
+    expect(updated!.posted).toBe(true);
   });
 
   test('MailService 실패 상황', async () => {
@@ -106,16 +124,26 @@ describe('serviceTest', () => {
     });
 
     // 메모리 리포지토리 설정
-    await userRepository.insert({
+    const newUser = await userRepository.insert({
       generation: 850,
-      sodae: '1234',
+      message: '하이',
+      name: '김공군',
+      password: '123213',
+      username: 'rokaf',
+      birth: '20034001',
+    });
+
+    await userRepository.updateRokafProfile(newUser.id, {
       memberSeq: '12341234',
-    })
+      sodae: '1234'
+    });
+
 
     const post = {
-      userId: 1, name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
-      password: '0000', createdAt: new Date(), postAt: null, posted: false,
-    };
+      userId: 1, name: '유찬', relationship: '친구',
+      title: '제목', contents: 'contents',
+      password: '0000', isPublic: true,
+    }
 
     const newPost = await postRepository.insert(post);
 
@@ -138,16 +166,25 @@ describe('serviceTest', () => {
     });
 
     // 메모리 리포지토리 설정
-    await userRepository.insert({
+    const newUser = await userRepository.insert({
       generation: 850,
-      sodae: '1234',
+      message: '하이',
+      name: '김공군',
+      password: '123213',
+      username: 'rokaf',
+      birth: '20034001',
+    });
+
+    await userRepository.updateRokafProfile(newUser.id, {
       memberSeq: '12341234',
-    })
+      sodae: '1234'
+    });
 
     const post = {
-      userId: 1, name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
-      password: '0000', createdAt: new Date(), postAt: null, posted: false,
-    };
+      userId: 1, name: '유찬', relationship: '친구',
+      title: '제목', contents: 'contents',
+      password: '0000', isPublic: true,
+    }
     const newPost = await postRepository.insert(post);
 
     // postQueue 설정
@@ -159,10 +196,10 @@ describe('serviceTest', () => {
     // then
     const resultPost = await postRepository.findById(newPost.id);
 
-    expect(resultPost.posted).toBe(true);
+    expect(resultPost!.posted).toBe(true);
 
     expect(await postQueue.empty()).toEqual(true);
-    expect(resultPost.postAt).not.toBe(null);
+    expect(resultPost!.postAt).not.toBe(null);
 
     console.log(logger.cat());
   });
@@ -177,18 +214,26 @@ describe('serviceTest', () => {
       serverOn: true,
       complete: true,
     });
-
-    await userRepository.insert({
+    const newUser = await userRepository.insert({
       generation: 850,
-      sodae: '1234',
+      message: '하이',
+      name: '김공군',
+      password: '123213',
+      username: 'rokaf',
+      birth: '20034001',
+    });
+
+    await userRepository.updateRokafProfile(newUser.id, {
       memberSeq: '12341234',
-    })
+      sodae: '1234'
+    });
 
     // 메모리 리포지토리 설정
     const post = {
-      userId: 1, name: '유찬', relationship: '친구', title: '제목', contents: 'contents',
-      password: '0000', createdAt: new Date(), postAt: null, posted: false,
-    };
+      userId: 1, name: '유찬', relationship: '친구',
+      title: '제목', contents: 'contents',
+      password: '0000', isPublic: true,
+    }
     const newPost = await postRepository.insert(post);
 
     // then
@@ -196,7 +241,7 @@ describe('serviceTest', () => {
 
     // 결과 검증
     const updated = await postRepository.findById(newPost.id);
-    expect(updated.posted).toBe(true);
+    expect(updated!.posted).toBe(true);
   });
 
   test('sendUnpostedMails 한계 테스트', async () => {
@@ -205,12 +250,20 @@ describe('serviceTest', () => {
       serverOn: true,
       complete: true,
     });
-
-    await userRepository.insert({
+    const newUser = await userRepository.insert({
       generation: 850,
-      sodae: '1234',
+      message: '하이',
+      name: '김공군',
+      password: '123213',
+      username: 'rokaf',
+      birth: '20034001',
+    });
+
+    await userRepository.updateRokafProfile(newUser.id, {
       memberSeq: '12341234',
-    })
+      sodae: '1234'
+    });
+
 
     // 메모리 리포지토리 설정
     const posts: any[] = [];
@@ -237,9 +290,9 @@ describe('serviceTest', () => {
     for (let i = 0; i < 15; i++) {
       const updated = await postRepository.findById(newPosts[i].id);
       if (i < 10) {
-        expect(updated.posted).toBe(true);
+        expect(updated!.posted).toBe(true);
       } else {
-        expect(updated.posted).toBe(false);
+        expect(updated!.posted).toBe(false);
       }
     }
     // const items = [

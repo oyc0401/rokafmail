@@ -9,7 +9,6 @@ import { MemoryLogger } from 'config/memoryLogger';
 import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
 import { MemoryPostQueue } from 'src/repository/postQueue/memoryPostQueue';
 import { MailService } from '../mail/MailService';
-import { MemoryUnidentifiedUserRepository } from 'src/repository/unidentifiedUserRepository/memoryUnidentifiedUserRepository';
 
 describe('User Service Test', () => {
 
@@ -21,9 +20,8 @@ describe('User Service Test', () => {
 
   let userRepository = new MemoryUserRepository();
   let userQueue = new MemoryUserQueue();
-  let unidentifiedUserRepository = new MemoryUnidentifiedUserRepository();
 
-  let userService = new UserService({ userRepository, userQueue, rokafClient, mailService, unidentifiedUserRepository });
+  let userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
 
   beforeEach(() => {
     postRepository = new MemoryPostRepository();
@@ -32,9 +30,8 @@ describe('User Service Test', () => {
 
     userRepository = new MemoryUserRepository();
     userQueue = new MemoryUserQueue();
-    unidentifiedUserRepository = new MemoryUnidentifiedUserRepository();
 
-    userService = new UserService({ userRepository, userQueue, rokafClient, mailService, unidentifiedUserRepository });
+    userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
   });
 
 
@@ -72,7 +69,7 @@ describe('User Service Test', () => {
   test('syncProfile complete test', async () => {
     const logger = new MemoryLogger();
     LogConfig.setLogger(logger);
-    
+
     const user = await userRepository.insert({
       username: 'test',
       password: '0000',

@@ -3,12 +3,13 @@ import { Profile } from "src/type";
 import { ProfileFactory } from 'src/type/factory';
 import { createLogger } from "config/logger";
 import { UserQueue } from "src/repository/userQueue/userQueue";
+import { UserRepository } from "src/repository/user/userRepository";
 
 const logger = createLogger("UserService");
 
 export class UserService {
   private rokafClient;
-  private userRepository;
+  private userRepository: UserRepository;
   private userQueue: UserQueue;
   private mailService;
 
@@ -39,10 +40,9 @@ export class UserService {
 
     // 소대번호, 멤버번호를 업데이트하고 연결됬다고 알려줌
     if (result.member) {
-      await this.userRepository.update(profile.userId, {
+      await this.userRepository.updateRokafProfile(profile.userId, {
         memberSeq: result.member.memberSeq,
-        sodae: result.member.sodae,
-        connect: true,
+        sodae: result.member.sodae
       });
       await event.onComplete?.(this.userQueue);
       return syncResponse.complete;
@@ -88,6 +88,8 @@ export class UserService {
         const userId = front.userId;
 
         const user = await this.userRepository.findById(userId);
+        if (!user) throw new Error('유저 정보가 없습니다.');
+
 
         const { name, birth, generation, username, connect } = user;
         const profile = ProfileFactory.create({ userId, name, birth, generation, username });

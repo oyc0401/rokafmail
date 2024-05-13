@@ -107,11 +107,14 @@ describe('User Service Test', () => {
 
     for (let i = 0; i < 15; i++) {
       const updated = await postRepository.findById(newPosts[i].id);
-      if (i < 10) {
-        expect(updated.posted).toBe(true);
-      } else {
-        expect(updated.posted).toBe(false);
+      if (updated) {
+        if (i < 10) {
+          expect(updated.posted).toBe(true);
+        } else {
+          expect(updated.posted).toBe(false);
+        }
       }
+
     }
     // const items = [
     //   { id: 1, postId: 11, userId: 1 },

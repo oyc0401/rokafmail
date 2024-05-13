@@ -1,12 +1,12 @@
 export interface PostRepository {
-  insert: (data: InsertPost) => Promise<Post>;
+  insert: (data: InputPost) => Promise<Post>;
   findById: (id: number) => Promise<Post | null>;
   findByIdWithUser: (id: number) => Promise<(Post & { user: Profile }) | null>;
   update: (id: number, data: UpdateType) => Promise<Post>;
   findNotPostedByUserId: (userId: number) => Promise<Post[]>;
 }
 
-interface Post {
+export interface Post {
   id: number; userId: number;
   name: string; relationship: string;
   title: string; contents: string;
@@ -15,7 +15,7 @@ interface Post {
   isPublic: boolean;
 }
 
-interface Profile {
+export interface Profile {
   username: string;
   connect: boolean;
   generation: number;
@@ -23,7 +23,7 @@ interface Profile {
   sodae: string | null;
 }
 
-interface InsertPost {
+export interface InputPost {
   userId: number;
   name: string;
   relationship: string;
@@ -33,7 +33,7 @@ interface InsertPost {
   isPublic: boolean;
 }
 
-interface UpdateType {
+export interface UpdateType {
   name?: string; relationship?: string;
   title?: string; contents?: string;
   password?: string; posted?: boolean;
