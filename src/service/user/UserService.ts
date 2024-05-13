@@ -9,16 +9,14 @@ const logger = createLogger("UserService");
 export class UserService {
   private rokafClient;
   private userRepository;
-  private unidentifiedUserRepository;
   private userQueue: UserQueue;
   private mailService;
 
-  constructor({ userRepository, userQueue, rokafClient, mailService, unidentifiedUserRepository }) {
+  constructor({ userRepository, userQueue, rokafClient, mailService }) {
     this.userRepository = userRepository;
     this.userQueue = userQueue;
     this.rokafClient = rokafClient;
     this.mailService = mailService;
-    this.unidentifiedUserRepository = unidentifiedUserRepository;
   }
 
 
@@ -65,8 +63,7 @@ export class UserService {
       },
       onFail: async (_) => {
         if (serveStatus(profile.generation) == Status.working) {
-          // 수료를 했는데도 못찾으면 없는 유저로 판단하고 보내버린다.
-          await this.unidentifiedUserRepository.insert(userId);
+          // 수료를 했는데도 못찾으면 없는 유저로 판단하고 큐에 넣지 않는다.
         } else {
           // 안나오면 나중에 다시 검색
           await this.userQueue.insert(userId);

@@ -10,7 +10,6 @@ import { before, beforeEach } from 'node:test';
 import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
 import { MemoryPostQueue } from 'src/repository/postQueue/memoryPostQueue';
 import { MailService } from '../mail/MailService';
-import { MemoryUnidentifiedUserRepository } from 'src/repository/unidentifiedUserRepository/memoryUnidentifiedUserRepository';
 
 describe('User Service Test', () => {
   const rokafClient = new MockRokafClient();
@@ -21,8 +20,7 @@ describe('User Service Test', () => {
 
   let userRepository = new MemoryUserRepository();
   let userQueue = new MemoryUserQueue();
-  let unidentifiedUserRepository = new MemoryUnidentifiedUserRepository();
-  let userService = new UserService({ userRepository, userQueue, rokafClient, mailService, unidentifiedUserRepository });
+  let userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
 
   postRepository.join(userRepository);
 
@@ -33,8 +31,7 @@ describe('User Service Test', () => {
 
     userRepository = new MemoryUserRepository();
     userQueue = new MemoryUserQueue();
-    unidentifiedUserRepository = new MemoryUnidentifiedUserRepository();
-    userService = new UserService({ userRepository, userQueue, rokafClient, mailService, unidentifiedUserRepository });
+    userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
 
     postRepository.join(userRepository);
   });
