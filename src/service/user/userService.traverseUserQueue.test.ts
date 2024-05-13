@@ -8,7 +8,7 @@ import { LogConfig } from 'config/logger';
 import { MemoryLogger } from 'config/memoryLogger';
 import { before, beforeEach } from 'node:test';
 import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
-import { MemoryPostQueue } from 'src/repository/postQueue/memoryPostQueueRepository';
+import { MemoryPostQueue } from 'src/repository/postQueue/memoryPostQueue';
 import { MailService } from '../mail/MailService';
 import { MemoryUnidentifiedUserRepository } from 'src/repository/unidentifiedUserRepository/memoryUnidentifiedUserRepository';
 
@@ -16,8 +16,8 @@ describe('User Service Test', () => {
   const rokafClient = new MockRokafClient();
 
   let postRepository = new MemoryPostRepository();
-  let postQueueRepository = new MemoryPostQueue();
-  let mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
+  let postQueue = new MemoryPostQueue();
+  let mailService = new MailService({ postRepository, postQueue, rokafClient });
 
   let userRepository = new MemoryUserRepository();
   let userQueue = new MemoryUserQueue();
@@ -29,8 +29,8 @@ describe('User Service Test', () => {
 
   beforeEach(() => {
     postRepository = new MemoryPostRepository();
-    postQueueRepository = new MemoryPostQueue();
-    mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
+    postQueue = new MemoryPostQueue();
+    mailService = new MailService({ postRepository, postQueue, rokafClient });
 
     userRepository = new MemoryUserRepository();
     userQueue = new MemoryUserQueue();
@@ -129,7 +129,7 @@ describe('User Service Test', () => {
     //   { id: 4, postId: 14, userId: 1 },
     //   { id: 5, postId: 15, userId: 1 }
     // ];
-    // expect(postQueueRepository.postQueue).toEqual(items);
+    // expectpostQueue).toEqual(items);
   });
 
   test('테스트 이름', () => {

@@ -13,9 +13,9 @@ export class MailService {
   private rokafClient;
   private postRepository: PostRepository;
   private postQueue: PostQueue;
-  constructor({ postRepository, postQueueRepository, rokafClient }) {
+  constructor({ postRepository, postQueue, rokafClient }) {
     this.postRepository = postRepository;
-    this.postQueue = postQueueRepository;
+    this.postQueue = postQueue;
     this.rokafClient = rokafClient;
   }
 

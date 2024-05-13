@@ -2,7 +2,7 @@ import { describe, expect, test, beforeAll, beforeEach } from '@jest/globals';
 import { MailService, SendResponse } from './MailService';
 import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
 import MockRokafClient from '../rokafClient/MockRokafClient';
-import { MemoryPostQueue } from 'src/repository/postQueue/memoryPostQueueRepository';
+import { MemoryPostQueue } from 'src/repository/postQueue/memoryPostQueue';
 import { LogConfig } from 'config/logger';
 import { MemoryLogger } from 'config/memoryLogger';
 import { MemoryUserRepository } from 'src/repository/user/memoryUserRepository';
@@ -12,7 +12,7 @@ describe('serviceTest', () => {
 
   let postRepository = new MemoryPostRepository();
   let postQueue = new MemoryPostQueue();
-  let mailService = new MailService({ postRepository, postQueueRepository: postQueue, rokafClient });
+  let mailService = new MailService({ postRepository, postQueue, rokafClient });
 
   let userRepository = new MemoryUserRepository();
 
@@ -21,7 +21,7 @@ describe('serviceTest', () => {
   beforeEach(async () => {
     postRepository = new MemoryPostRepository();
     postQueue = new MemoryPostQueue();
-    mailService = new MailService({ postRepository, postQueueRepository: postQueue, rokafClient });
+    mailService = new MailService({ postRepository, postQueue, rokafClient });
 
     userRepository = new MemoryUserRepository();
 
@@ -150,7 +150,7 @@ describe('serviceTest', () => {
     };
     const newPost = await postRepository.insert(post);
 
-    // postQueueRepository 설정
+    // postQueue 설정
     await postQueue.insert(newPost.id)
 
     // when
@@ -249,7 +249,7 @@ describe('serviceTest', () => {
     //   { id: 4, postId: 14, userId: 1 },
     //   { id: 5, postId: 15, userId: 1 }
     // ];
-    // expect(postQueueRepository.postQueue).toEqual(items);
+    // expect(postQueue.postQueue).toEqual(items);
 
 
   });
