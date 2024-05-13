@@ -1,12 +1,36 @@
-import { PrismaClient } from "@prisma/client";
+
 import prisma from "src/db/prisma";
-import { useRouter } from "next/router";
 import { DatabaseTable } from "./Table";
 import { User, Post, PostQueue } from "src/db";
 
 export default async function UserController({ searchParams }) {
   if (searchParams.userId) {
-    const data = await PostQueue.findAllAdmin();
+    const data = await prisma.postQueue.findMany({
+      where: {
+        user: {
+          NOT: {
+            sodae: null,
+            memberSeq: null,
+          },
+        },
+      },
+      include: {
+        user: true,
+        post: {
+          include: {
+            user: {
+              select: {
+                username: true,
+                generation: true,
+                memberSeq: true,
+                sodae: true,
+                id: true,
+              },
+            },
+          }
+        }
+      },
+    });
 
     const transformedArray = data.map((item) => {
       // 각 객체에 대해 user와 post 속성을 해체하여 상위 객체에 통합
@@ -23,7 +47,33 @@ export default async function UserController({ searchParams }) {
     );
   }
 
-  const data = await PostQueue.findAll();
+  const data = await prisma.postQueue.findMany({
+    where: {
+
+      user: {
+        NOT: {
+          sodae: null,
+          memberSeq: null,
+        },
+      },
+    },
+    include: {
+      user: false,
+      post: {
+        include: {
+          user: {
+            select: {
+              username: true,
+              generation: true,
+              memberSeq: true,
+              sodae: true,
+              id: true,
+            },
+          },
+        }
+      }
+    },
+  });
 
   const transformedArray = data.map((item) => {
     // 각 객체에 대해 user와 post 속성을 해체하여 상위 객체에 통합

@@ -15,9 +15,6 @@ export async function verify() {
 }
 
 export async function findNotQueueNotpost() {
-  const queue = await PostQueue.findAll();
-  const notPosted = await Post.notPosts();
-
 
   //console.log(notPosted);
 }
