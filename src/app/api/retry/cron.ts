@@ -17,7 +17,7 @@ export class CronStore {
           // Http x, 바로 호출
 
           const mailservice = new MailService(bean);
-          await mailservice.traversePostQueue();
+          await mailservice.retryDelayedMail();
         } catch (e) {
           logger.error(`node-cron 중 오류발생: ${e}`);
         }

@@ -1,4 +1,4 @@
-import { Post, PostQueue, UnconnectedPost } from "src/db";
+import { Post, UnconnectedPost } from "src/db";
 
 
 export async function getPosts(username: string) {

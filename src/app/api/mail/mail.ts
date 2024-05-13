@@ -71,7 +71,7 @@ export async function mailApi(mailForm: {
       const logStatus = (status: SendResponse) =>
         logger.info(`(${postId}) | ${sendStatusToStr(status)}`);
 
-      mailService.sendMailFalseEnqueue(postId,userId).then(logStatus);
+      mailService.sendMailFalseEnqueue(postId).then(logStatus);
 
     } else {
       logger.info(`(${postId}) | BeforeMailTime`)

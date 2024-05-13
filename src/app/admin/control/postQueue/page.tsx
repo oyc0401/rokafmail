@@ -1,7 +1,6 @@
 
 import prisma from "src/db/prisma";
 import { DatabaseTable } from "./Table";
-import { User, Post, PostQueue } from "src/db";
 
 export default async function UserController({ searchParams }) {
   if (searchParams.userId) {

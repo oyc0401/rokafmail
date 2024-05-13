@@ -1,9 +1,8 @@
 "use server";
 
-import { Post, PostQueue, User } from "src/db";
+import { Post } from "src/db";
 import { makeLogger } from "config/winston";
 import RokafClient from "src/service/rokafClient/RokafClient";
-import { bean } from "src/bean/bean";
 import { PrismaPostQueue } from "src/repository/postQueue/prismaPostQueueRepository";
 const logger = makeLogger("Control Post");
 
