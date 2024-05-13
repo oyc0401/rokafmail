@@ -1,6 +1,8 @@
 import { getNow, serveStatus, Status } from "src/lib/time";
 import { PostRepository } from "src/repository/post/postRepository";
 import { createLogger } from "config/logger";
+import { PostQueue } from "src/repository/postQueue/postQueue";
+import dayjs from "dayjs";
 const logger = createLogger("MailService");
 
 const MAX_COUNT = 10;
@@ -10,10 +12,10 @@ export enum SendResponse { before, notfound, success, fail, error }
 export class MailService {
   private rokafClient;
   private postRepository: PostRepository;
-  private postQueueRepository;
+  private postQueue: PostQueue;
   constructor({ postRepository, postQueueRepository, rokafClient }) {
     this.postRepository = postRepository;
-    this.postQueueRepository = postQueueRepository;
+    this.postQueue = postQueueRepository;
     this.rokafClient = rokafClient;
   }
 
@@ -66,7 +68,7 @@ export class MailService {
 
         // 국방서버에 보내는 요청
         if (!postComplete.serverOn) {
-          await event.onFalse?.(this.postQueueRepository);
+          await event.onFalse?.(this.postQueue);
           return SendResponse.error;
         }
 
@@ -74,7 +76,7 @@ export class MailService {
           await updatePost(postId);
           return SendResponse.success;
         } else {
-          await event.onFalse?.(this.postQueueRepository);
+          await event.onFalse?.(this.postQueue);
           return SendResponse.fail;
         }
 
@@ -91,47 +93,55 @@ export class MailService {
     }
   }
 
-  async sendMailFalseEnqueue(postId: number, userId) {
+  async sendMailFalseEnqueue(postId: number) {
     return await this.sendMail(postId, {
       onFalse: async (queue) => {
         // 오류가 나거나 실패하면 큐에 넣는다.
-        await queue.insert({ postId, userId });
+        await queue.insert(postId);
       }
     });
   }
-  
-  async traversePostQueue() {
-    const unposted = await this.postQueueRepository.findAll();
+
+  async retryDelayedMail() {
 
     const userCountMap = {};
+    const MAX_POSTCOUNT = 10;
+    const now = new Date();
 
-    // 큐에 있는 모든 편지들을 한번씩 보내기
-    for (let i = 0; i < unposted.length; i++) {
-      const MAX_POSTCOUNT = 10;
-      const top = unposted[i];
-      try {
-        if (top.post.posted) {
-          logger.info(`${i + 1}/${unposted.length} (${top.postId}) | 이미 보내졌습니다`);
+    let i = 0;
+    let queueSize = await this.postQueue.size();
 
-        } else if (userCountMap[top.userId] ?? 0 < MAX_POSTCOUNT) {
+    try {
+      while (!(await this.postQueue.empty())) {
+        i++;
 
-          const response = await this.sendMailFalseEnqueue(top.postId, top.userId);
+        const front = await this.postQueue.front();
 
-          logger.info(`${i + 1}/${unposted.length} (${top.id}) | ${sendStatusToStr(response)}`);
+        if (front.createdAt > now) {
+          // 차이가 1시간 미만인지 확인
+          // if (dayjs(front.createdAt).diff(now, 'minute') < 60) {
+          break;
+        }
+        const post = (await this.postRepository.findById(front.postId))!;
+
+
+        if (post.posted) {
+          logger.info(`${i + 1}/${queueSize} (${front.postId}) | 이미 보내졌습니다`);
+        } else if ((userCountMap[post.userId] ?? 0) < MAX_POSTCOUNT) {
+          const response = await this.sendMailFalseEnqueue(front.postId);
+          logger.info(`${i + 1}/${queueSize} (${front.id}) | ${sendStatusToStr(response)}`);
         } else {
-          // 나중에 다시 검사하게 insert
-          logger.info(`${i + 1}/${unposted.length} (${top.postId}) | 한도 초과`);
-          await this.postQueueRepository.insert({ postId: top.postId, userId: top.userId });
+          logger.info(`${i + 1}/${queueSize} (${front.postId}) | 한도 초과`);
+          await this.postQueue.insert(front.postId);
         }
 
-        userCountMap[top.userId] = (userCountMap[top.userId] ?? 0) + 1;
+        userCountMap[post.userId] = (userCountMap[post.userId] ?? 0) + 1;
 
-        // queue.pop()
-        await this.postQueueRepository.deleteById(top.id);
-
-      } catch (error) {
-        logger.error(`${i + 1}/${unposted.length} (${top.id}) | ${error}`)
+        await this.postQueue.pop();
       }
+
+    } catch (error) {
+      logger.error(`${i + 1}/${queueSize} | ${error}`)
     }
 
   }
@@ -153,7 +163,7 @@ export class MailService {
 
       } else {
         // 한번에 많이 보내지 않게 나머지는 큐에 넣음
-        await this.postQueueRepository.insert({ postId: post.id, userId: post.userId });
+        await this.postQueue.insert(post.id);
         logger.info(`(${post.id}) | Limit`)
       }
     }

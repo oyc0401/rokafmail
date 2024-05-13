@@ -17,7 +17,7 @@ export class MemoryUserQueue {
 
   async insert(data) {
     // 새 게시물에 ID를 할당하고 배열에 추가
-    const newObj = { id: this.currentId++, ...data };
+    const newObj = { id: this.currentId++, ...data, createdAt: new Date() };
     this.userQueue.push(newObj);
     return newObj;
   }

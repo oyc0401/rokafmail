@@ -7,7 +7,7 @@ import { ProfileFactory } from 'src/type/factory';
 import { LogConfig } from 'config/logger';
 import { MemoryLogger } from 'config/memoryLogger';
 import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
-import { MemoryPostQueueRepository } from 'src/repository/postQueue/memoryPostQueueRepository';
+import { MemoryPostQueue } from 'src/repository/postQueue/memoryPostQueueRepository';
 import { MailService } from '../mail/MailService';
 import { MemoryUnidentifiedUserRepository } from 'src/repository/unidentifiedUserRepository/memoryUnidentifiedUserRepository';
 
@@ -15,7 +15,7 @@ describe('User Service Test', () => {
 
 
   let postRepository = new MemoryPostRepository();
-  let postQueueRepository = new MemoryPostQueueRepository();
+  let postQueueRepository = new MemoryPostQueue();
   const rokafClient = new MockRokafClient();
   let mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
 
@@ -27,7 +27,7 @@ describe('User Service Test', () => {
 
   beforeEach(() => {
     postRepository = new MemoryPostRepository();
-    postQueueRepository = new MemoryPostQueueRepository();
+    postQueueRepository = new MemoryPostQueue();
     mailService = new MailService({ postRepository, postQueueRepository, rokafClient });
 
     userRepository = new MemoryUserRepository();

@@ -1,44 +1,52 @@
 import prisma from "src/db/prisma";
+import { Post } from "src/db";
 
 
-export class PrismaPostQueueRepository {
+export class PrismaPostQueue {
 
-  insert = (data: { postId: number; userId: number }) =>
-    prisma.postQueue.create({ data });
-
-  findAll = () =>
-    prisma.postQueue.findMany({
-      where: {
-        user: {
-          NOT: {
-            sodae: null,
-            memberSeq: null,
-          },
-        },
-      },
-      include: {
-        user: false,
-        post: {
-          include: {
-            user: {
-              select: {
-                username: true,
-                generation: true,
-                memberSeq: true,
-                sodae: true,
-                id: true,
-              },
-            },
-          }
-        }
-      },
-    });
-
-
-  deleteById = (id: number) =>
-    prisma.postQueue.delete({
-      where: {
-        id
+  async insert(postId: number) {
+    // 나중에 지워라
+    const post = await Post.findById(postId);
+    const { userId } = post!;
+    return prisma.postQueue.create({
+      data: {
+        postId,
+        userId,
       }
     });
+  }
+
+  async front() {
+    const result = await prisma.postQueue.findFirst({
+      orderBy: {
+        id: 'asc'
+      }
+    });
+    if (!result) throw new Error('Queue is empty');
+    return result;
+  }
+
+
+  async pop() {
+    const record = await this.front();
+    if (!record) throw new Error('Queue is empty');
+
+    await prisma.postQueue.delete({
+      where: {
+        id: record.id
+      }
+    });
+
+    return record;
+  }
+
+  async empty() {
+    const count = await prisma.postQueue.count();
+    return count === 0;
+  }
+
+  async size() {
+    return await prisma.postQueue.count();
+  }
+
 }

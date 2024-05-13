@@ -1,6 +1,6 @@
 import { UnidentifiedUser } from "src/db"
 import { PrismaPostRepository } from "src/repository/post/prismaPostRepository";
-import { PrismaPostQueueRepository } from "src/repository/postQueue/prismaPostQueueRepository";
+import { PrismaPostQueue } from "src/repository/postQueue/prismaPostQueueRepository";
 import { PrismaUserRepository } from "src/repository/user/prismaUserRespository";
 import { PrismaUserQueue } from "src/repository/userQueue/prismaUserQueue";
 import { MailService } from "src/service/mail/MailService";
@@ -32,7 +32,7 @@ class BeanConfig {
     const repository = {
       postRepository: new PrismaPostRepository(),
       userRepository: new PrismaUserRepository(),
-      postQueueRepository: new PrismaPostQueueRepository(),
+      postQueueRepository: new PrismaPostQueue(),
       userQueue: new PrismaUserQueue(),
       unidentifiedUserRepository: UnidentifiedUser,
       rokafClient: new RokafClient(),
