@@ -1,0 +1,20 @@
+1. 개발 브랜치 접속
+
+1. 스키마 변경
+
+2. npx prisma migrate dev --name 하고싶은이름
+
+3. npx prisma generate 입력
+
+
+4. 프로덕션 브랜치 접속
+
+npx prisma migrate deploy
+입력
+
+npx prisma generate 입력
+
+5. 
+배포서버
+
+npx prisma generate 입력

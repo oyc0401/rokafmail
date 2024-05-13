@@ -10,6 +10,7 @@ export class PostQueue {
   static findAll = () =>
     prisma.postQueue.findMany({
       where: {
+        
         user: {
           NOT: {
             sodae: null,
