@@ -7,12 +7,11 @@ export class MemoryPostQueue implements PostQueue {
 
   private postRepository: PostRepository;
 
-  constructor() {
+  constructor(postRepository: PostRepository) {
     this.queue = [];
     this.nextId = 1;
-  }
 
-  join(postRepository) {
+    // join post
     this.postRepository = postRepository;
   }
 
@@ -55,11 +54,9 @@ export class MemoryPostQueue implements PostQueue {
 
     const front = this.queue[0];
     const post = await this.postRepository.findById(front.id);
+    const { posted, userId } = post!;
     return {
-      ...front, post: {
-        posted: post!.posted,
-        userId: post!.userId,
-      }
+      ...front, post: { posted, userId }
     }
   }
 }

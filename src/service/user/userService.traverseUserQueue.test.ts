@@ -15,22 +15,22 @@ describe('User Service Test', () => {
   const rokafClient = new MockRokafClient();
 
   let postRepository = new MemoryPostRepository();
-  let postQueue = new MemoryPostQueue();
+  let postQueue = new MemoryPostQueue(postRepository);
   let mailService = new MailService({ postRepository, postQueue, rokafClient });
 
   let userRepository = new MemoryUserRepository();
-  let userQueue = new MemoryUserQueue();
+  let userQueue = new MemoryUserQueue(userRepository);
   let userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
 
   postRepository.join(userRepository);
 
   beforeEach(() => {
     postRepository = new MemoryPostRepository();
-    postQueue = new MemoryPostQueue();
+    postQueue = new MemoryPostQueue(postRepository);
     mailService = new MailService({ postRepository, postQueue, rokafClient });
 
     userRepository = new MemoryUserRepository();
-    userQueue = new MemoryUserQueue();
+    userQueue = new MemoryUserQueue(userRepository);
     userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
 
     postRepository.join(userRepository);

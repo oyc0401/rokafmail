@@ -11,7 +11,7 @@ describe('serviceTest', () => {
   const rokafClient = new MockRokafClient();
 
   let postRepository = new MemoryPostRepository();
-  let postQueue = new MemoryPostQueue();
+  let postQueue = new MemoryPostQueue(postRepository);
   let mailService = new MailService({ postRepository, postQueue, rokafClient });
 
   let userRepository = new MemoryUserRepository();
@@ -20,7 +20,7 @@ describe('serviceTest', () => {
 
   beforeEach(async () => {
     postRepository = new MemoryPostRepository();
-    postQueue = new MemoryPostQueue();
+    postQueue = new MemoryPostQueue(postRepository);
     mailService = new MailService({ postRepository, postQueue, rokafClient });
 
     userRepository = new MemoryUserRepository();

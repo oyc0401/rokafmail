@@ -1,19 +1,20 @@
-import { getNow, serveStatus, Status } from "src/lib/time";
-import { PostRepository } from "src/repository/post/postRepository";
 import { createLogger } from "config/logger";
 import { PostQueue } from "src/repository/postQueue/postQueue";
-import dayjs from "dayjs";
 import { MailService, sendStatusToStr } from "../mail/MailService";
-import { UserService } from "../user/UserService";
+import { UserService, syncResponse, syncResponseToStr } from "../user/UserService";
+import { UserQueue } from "src/repository/userQueue/userQueue";
+import { ProfileFactory } from "src/type/factory";
 const logger = createLogger("MailService");
 
 export class RetryService {
 
   private postQueue: PostQueue;
+  private userQueue: UserQueue;
   private mailService: MailService;
   private userService: UserService;
-  constructor({ postQueue, mailService, userService }) {
+  constructor({ postQueue, userQueue, mailService, userService }) {
     this.postQueue = postQueue;
+    this.userQueue = userQueue;
     this.mailService = mailService;
     this.userService = userService;
   }
@@ -59,6 +60,43 @@ export class RetryService {
 
     } catch (error) {
       logger.error(`${i}/${queueSize} | ${error}`)
+    }
+  }
+
+
+  async retryGetProfile() {
+    const now = new Date();
+
+    let i = 0;
+    let queueSize = await this.userQueue.size();
+
+    try {
+      while (!(await this.userQueue.empty())) {
+        i++;
+
+        const front = await this.userQueue.frontWithUser();
+        if (front.createdAt > now) break;
+
+        const userId = front.userId;
+
+        const { name, birth, generation, username, connect } = front.user;
+        const profile = ProfileFactory.create({ userId, name, birth, generation, username });
+
+        if (connect) {
+          logger.info(`${i}/${queueSize}: (${userId}) | 이미 연결 됌`)
+        } else {
+          const status = await this.userService.searchProfileFailEnqueue(profile);
+          if (status == syncResponse.complete) {
+            await this.mailService.sendUnpostedMails(userId)
+          }
+          logger.info(`${i}/${queueSize}: (${userId}) | ${syncResponseToStr(status)}`)
+        }
+
+        await this.userQueue.pop();
+      }
+
+    } catch (error) {
+      logger.error(`${i + 1}/${queueSize} | ${error}`)
     }
   }
 
