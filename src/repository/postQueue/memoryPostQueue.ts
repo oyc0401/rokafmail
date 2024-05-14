@@ -1,19 +1,26 @@
+import { PostRepository } from "../post/postRepository";
 import { PostQueue, PostQueueObject } from "./postQueue";
 
 export class MemoryPostQueue implements PostQueue {
   private queue: PostQueueObject[];
   private nextId: number;
 
+  private postRepository: PostRepository;
+
   constructor() {
     this.queue = [];
     this.nextId = 1;
+  }
+
+  join(postRepository) {
+    this.postRepository = postRepository;
   }
 
   async insert(postId: number): Promise<PostQueueObject> {
     const newPostQueueObject: PostQueueObject = {
       id: this.nextId++,
       postId,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
     this.queue.push(newPostQueueObject);
     return newPostQueueObject;
@@ -39,5 +46,20 @@ export class MemoryPostQueue implements PostQueue {
 
   async size() {
     return this.queue.length;
+  }
+
+  async frontWithPost() {
+    if (this.queue.length === 0) {
+      throw new Error('Queue is empty');
+    }
+
+    const front = this.queue[0];
+    const post = await this.postRepository.findById(front.id);
+    return {
+      ...front, post: {
+        posted: post!.posted,
+        userId: post!.userId,
+      }
+    }
   }
 }

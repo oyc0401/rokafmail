@@ -4,10 +4,21 @@ export interface PostQueue {
   pop: () => Promise<PostQueueObject>;
   empty: () => Promise<boolean>;
   size: () => Promise<number>;
+  frontWithPost: () => Promise<PostQueueObjectJoin>;
 }
 
 export interface PostQueueObject {
   id: number;
   postId: number;
   createdAt: Date;
+}
+
+export interface PostQueueObjectJoin {
+  id: number;
+  postId: number;
+  createdAt: Date;
+  post: {
+    posted: boolean;
+    userId: number;
+  }
 }

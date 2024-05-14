@@ -1,8 +1,9 @@
 import prisma from "src/db/prisma";
 import { Post } from "src/db";
+import { PostQueue } from "@prisma/client";
 
-
-export class PrismaPostQueue {
+// implements PostQueue
+export class PrismaPostQueue  {
 
   async insert(postId: number) {
     // 나중에 지워라
@@ -48,5 +49,25 @@ export class PrismaPostQueue {
   async size() {
     return await prisma.postQueue.count();
   }
+
+  async frontWithPost() {
+    const result = await prisma.postQueue.findFirst({
+      orderBy: {
+        id: 'asc'
+      },
+      include: {
+        post: {
+          select: {
+            posted: true,
+            userId: true,
+          }
+        }
+      }
+    });
+    if (!result) throw new Error('Queue is empty');
+    return result;
+  }
+
+
 
 }
