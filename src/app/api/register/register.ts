@@ -1,7 +1,7 @@
 "use server";
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
-import { validB, validG } from "./valid";
+import { ValidateError, validateBirth, validateGeneration, validateHashedPassword, validateMessage, validateName, validatePassword, validateUsername } from "./valid";
 import { RegisterProps, UserService } from "src/service/user/UserService";
 import { bean } from "src/bean/bean";
 const logger = makeLogger("register");
@@ -16,19 +16,16 @@ const logger = makeLogger("register");
 export async function registerApi(registerProps: RegisterProps) {
   try {
     // 입력 검증
-    const validationResult = await validateInput(registerProps);
-    if (!validationResult.validate) {
-      return ServerActionResponse.json({
-        message: validationResult.message,
-        status: 400,
-      });
-    }
+    validateProps(registerProps);
 
     const userService = new UserService(bean);
     await userService.register(registerProps);
 
     return ServerActionResponse.json({ message: "회원가입 성공", status: 200 });
   } catch (error) {
+    if (error instanceof ValidateError) {
+      return ServerActionResponse.json({ message: `${error.message}`, status: 400 });
+    }
     logger.error(`회원가입 처리 중 오류 발생: ${error}`);
     return ServerActionResponse.json({ message: `서버 오류: ${error}`, status: 500 });
   }
@@ -36,7 +33,7 @@ export async function registerApi(registerProps: RegisterProps) {
 
 
 
-async function validateInput({
+function validateProps({
   username,
   password,
   name,
@@ -44,16 +41,10 @@ async function validateInput({
   generation,
   message,
 }) {
-  if (!validG(generation).valid)
-    return { message: validG(generation).text, validate: false };
-  if (!validB(birth).valid)
-    return { message: validB(birth).text, validate: false };
-  if (password.length < 4)
-    return { message: "비밀번호는 4자리 이상이여야합니다.", validate: false };
-  if (name.length > 100)
-    return { message: "이름은 100자 이하여야합니다.", validate: false };
-  if (message.length > 500)
-    return { message: "메시지는 500자 이하여야합니다.", validate: false };
-
-  return { message: "유효한 데이터 형식입니다.", validate: true };
+  validateUsername(username);
+  validateHashedPassword(password);
+  validateGeneration(generation);
+  validateBirth(birth);
+  validateName(name);
+  validateMessage(message);
 }
