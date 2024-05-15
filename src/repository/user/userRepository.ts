@@ -1,6 +1,7 @@
 export interface UserRepository {
   insert: (data: InputUser) => Promise<User>;
   findById: (userId: number) => Promise<User | null>;
+  findByUsername: (username: string) => Promise<User | null>;
   updateRokafProfile: (userId: number, profile: RokafProfile) => Promise<User>;
 }
 

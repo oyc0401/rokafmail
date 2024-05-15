@@ -39,13 +39,3 @@ export function validB(birth:string) {
   // 통과
   return { text: "예시) 20020101", valid: true };
 }
-
-export async function duplicateUsername(username) {
-  console.log("아이디 중복확인 중...");
-  const duplicate = (await User.countUsername(username)) != 0;
-  console.log("아이디 중복확인 완료!", !duplicate);
-
-  //중복이면 true
-
-  return duplicate;
-}

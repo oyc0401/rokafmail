@@ -13,6 +13,10 @@
 
 24.05.11(일) 17:20 피크타임이라 트래픽 몰릴때 cpu 40%까지 올라가더라. 추후 주의 필요함
 
+## Doing
+이제 RetryService 테스트 만드는 중
+
+로그 보니깐 유저 인증 실패해도 편지 보내는거같던데? - 아니구나 째네 왜 저기있냐
 
 ## Todo
 traversePostQueue 테스트코드 작성하기, 서비스코드 빠진 테스트 추가 작성하기
@@ -35,7 +39,7 @@ repository interface 안한거 추가하기
 
 openimage 디자인 업데이트
 
-## Doing
+
 
 
 

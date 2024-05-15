@@ -1,10 +1,8 @@
 "use server";
-import { User } from "src/db";
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
-import { duplicateUsername, validB, validG } from "./valid";
-import { ProfileFactory } from "src/type/factory";
-import { UserService, syncResponseToStr } from "src/service/user/UserService";
+import { validB, validG } from "./valid";
+import { RegisterProps, UserService } from "src/service/user/UserService";
 import { bean } from "src/bean/bean";
 const logger = makeLogger("register");
 
@@ -15,17 +13,10 @@ const logger = makeLogger("register");
  * 사용자 확인: 저장된 사용자 정보를 바탕으로, 국방부 사이트에서 사용자의 존재 여부를 확인합니다.
  * 상태에 따른 처리: 사용자의 세대에 따라 국방부 사이트에서의 존재 여부를 확인하고, 존재 여부에 따라 사용자를 UserQueue에 추가하거나 사용자 정보를 업데이트합니다.
  */
-export async function registerApi(registerForm: {
-  username: string;
-  password: string;
-  name: string;
-  birth: string;
-  generation: number;
-  message: string;
-}) {
+export async function registerApi(registerProps: RegisterProps) {
   try {
     // 입력 검증
-    const validationResult = await validateInput(registerForm);
+    const validationResult = await validateInput(registerProps);
     if (!validationResult.validate) {
       return ServerActionResponse.json({
         message: validationResult.message,
@@ -33,21 +24,13 @@ export async function registerApi(registerForm: {
       });
     }
 
-    // 유저 생성
-    const { id: userId, name, birth, generation, username } = await User.insert(registerForm);
-
-    // 빠른 응답을 위해 남은 로직은 비동기에서 진행
-    const profile = ProfileFactory.create({ userId, name, birth, generation, username });
-
     const userService = new UserService(bean);
-
-    userService.searchProfileFailEnqueue(profile).then((response) =>
-      logger.info(`${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
+    await userService.register(registerProps);
 
     return ServerActionResponse.json({ message: "회원가입 성공", status: 200 });
   } catch (error) {
     logger.error(`회원가입 처리 중 오류 발생: ${error}`);
-    return ServerActionResponse.json({ message: "서버 오류", status: 500 });
+    return ServerActionResponse.json({ message: `서버 오류: ${error}`, status: 500 });
   }
 }
 
@@ -65,8 +48,6 @@ async function validateInput({
     return { message: validG(generation).text, validate: false };
   if (!validB(birth).valid)
     return { message: validB(birth).text, validate: false };
-  if (await duplicateUsername(username))
-    return { message: "아이디가 중복되었습니다.", validate: false };
   if (password.length < 4)
     return { message: "비밀번호는 4자리 이상이여야합니다.", validate: false };
   if (name.length > 100)

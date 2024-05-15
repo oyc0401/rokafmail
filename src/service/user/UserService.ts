@@ -20,6 +20,27 @@ export class UserService {
     this.mailService = mailService;
   }
 
+  async existUsername(username: string) {
+    const user = await this.userRepository.findByUsername(username);
+    return user != null;
+  }
+
+  async register(registerProps: RegisterProps) {
+    if (await this.existUsername(registerProps.username)) {
+      throw new Error('아이디가 중복되었습니다.');
+    }
+
+    // 유저 생성
+    const newUser = await this.userRepository.insert(registerProps);
+    const { id: userId, name, birth, generation, username } = newUser
+
+    // 빠른 응답을 위해 남은 로직은 비동기에서 진행
+    const profile = ProfileFactory.create({ userId, name, birth, generation, username });
+
+    this.searchProfileFailEnqueue(profile).then((response) =>
+      logger.info(`${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
+  }
+
 
   async syncProfile(profile: Profile,
     event: ProfileCallBack = {}) {
@@ -129,7 +150,14 @@ export function syncResponseToStr(response: syncResponse) {
 
 export enum syncResponse { before, complete, error, fail }
 
-
+export interface RegisterProps {
+  username: string;
+  password: string;
+  name: string;
+  birth: string;
+  generation: number;
+  message: string;
+}
 
 interface ProfileCallBack {
   onBefore?: (queue) => Promise<any>;

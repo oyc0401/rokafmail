@@ -9,6 +9,8 @@ export class PrismaUserRepository implements UserRepository {
   findById = (id: number) =>
     prisma.user.findUnique({ where: { id }, });
 
+  findByUsername = (username: string) =>
+    prisma.user.findUnique({ where: { username }, });
 
   updateRokafProfile = (id: number, rokafProfile: RokafProfile) =>
     prisma.user.update({

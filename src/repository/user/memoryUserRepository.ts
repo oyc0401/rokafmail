@@ -29,6 +29,12 @@ export class MemoryUserRepository implements UserRepository {
     return user || null;
   }
 
+  async findByUsername(username: string) {
+    // username으로 유저를 찾아 반환
+    const user = this.users.find(user => user.username === username);
+    return user || null;
+  }
+
   async updateRokafProfile(userId: number, profile: RokafProfile) {
     // 해당 ID의 유저를 찾아 정보 업데이트
     const userIndex = this.users.findIndex(user => user.id == userId);
