@@ -1,6 +1,5 @@
-
 import { knowTime, isDischarged } from "src/lib/time";
-
+import { ValidateError } from "./validateErrorType";
 
 export function validateGeneration(generation: number) {
   if (isDischarged(generation)) throw new ValidateError("이미 전역한 기수예요");
@@ -39,7 +38,6 @@ export function validateHashedPassword(hashedPassword: string) {
   }
 }
 
-
 export function validateName(name: string) {
   if (name.length > 50) {
     throw new ValidateError("이름은 50자 미만이여야합니다.");
@@ -51,12 +49,5 @@ export function validateName(name: string) {
 export function validateMessage(message: string) {
   if (message.length > 500) {
     throw new ValidateError("메시지는 500자 미만이여야합니다.");
-  }
-}
-
-export class ValidateError extends Error {
-  constructor(message) {
-    super(message); // 부모 클래스의 생성자를 호출
-    this.name = "ValidateError"; // 오류 이름 설정
   }
 }

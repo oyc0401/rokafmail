@@ -1,11 +1,10 @@
 "use server";
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
-import { ValidateError, validateBirth, validateGeneration, validateHashedPassword, validateMessage, validateName, validatePassword, validateUsername } from "./valid";
+import { ValidateError, validateBirth, validateGeneration, validateHashedPassword, validateMessage, validateName, validateUsername } from "src/utils/validate";
 import { RegisterProps, UserService } from "src/service/user/UserService";
 import { bean } from "src/bean/bean";
 const logger = makeLogger("register");
-
 
 /**
  * 입력 검증: 사용자의 세대, 생일, 아이디 중복, 비밀번호 길이, 이름 길이, 메시지 길이를 검증합니다.
@@ -16,7 +15,7 @@ const logger = makeLogger("register");
 export async function registerApi(registerProps: RegisterProps) {
   try {
     // 입력 검증
-    validateProps(registerProps);
+    validateInput(registerProps);
 
     const userService = new UserService(bean);
     await userService.register(registerProps);
@@ -33,14 +32,14 @@ export async function registerApi(registerProps: RegisterProps) {
 
 
 
-function validateProps({
+function validateInput({
   username,
   password,
   name,
   birth,
   generation,
   message,
-}) {
+}: RegisterProps) {
   validateUsername(username);
   validateHashedPassword(password);
   validateGeneration(generation);
