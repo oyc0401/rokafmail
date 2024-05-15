@@ -46,10 +46,10 @@ describe('User Service Test', () => {
     LogConfig.setLogger(logger);
 
     // MockRokafClient
-    rokafClient.forcedSetGetProfileResponse({
+    rokafClient.changeGetProfileReturnValue({
       serverOn: false,
     });
-    rokafClient.forcedSetPostMailResponse({
+    rokafClient.changePostMailReturnValue({
       serverOn: true,
       complete: true,
     });
@@ -91,7 +91,7 @@ describe('User Service Test', () => {
     }
 
     // 이후에 서버가 정상회 되었음
-    rokafClient.forcedSetGetProfileResponse({
+    rokafClient.changeGetProfileReturnValue({
       member: {
         memberSeq: '12341234',
         sodae: '1111',

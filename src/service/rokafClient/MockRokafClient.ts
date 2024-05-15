@@ -8,7 +8,7 @@ export default class MockRokafClient {
     serverOn: true,
   }
 
-  forcedSetGetProfileResponse(response) {
+  changeGetProfileReturnValue(response) {
     this.getProfileResponse = response;
   }
 
@@ -21,7 +21,7 @@ export default class MockRokafClient {
     serverOn: true,
   }
 
-  forcedSetPostMailResponse(response) {
+  changePostMailReturnValue(response) {
     this.postMailResponse = response;
   }
   async postMail(

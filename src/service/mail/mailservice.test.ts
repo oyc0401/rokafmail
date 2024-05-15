@@ -38,7 +38,7 @@ describe('serviceTest', () => {
 
   test('mail service before', async () => {
     // MockRokafClient
-    rokafClient.forcedSetPostMailResponse({
+    rokafClient.changePostMailReturnValue({
       serverOn: true,
       complete: true,
     });
@@ -76,7 +76,7 @@ describe('serviceTest', () => {
 
   test('mail service 성공', async () => {
     // MockRokafClient 준비
-    rokafClient.forcedSetPostMailResponse({
+    rokafClient.changePostMailReturnValue({
       serverOn: true,
       complete: true,
     });
@@ -118,7 +118,7 @@ describe('serviceTest', () => {
 
   test('MailService 실패 상황', async () => {
     // MockRokafClient 준비
-    rokafClient.forcedSetPostMailResponse({
+    rokafClient.changePostMailReturnValue({
       serverOn: true,
       complete: false,
     });
@@ -160,7 +160,7 @@ describe('serviceTest', () => {
     LogConfig.setLogger(logger);
 
     // MockRokafClient 준비
-    rokafClient.forcedSetPostMailResponse({
+    rokafClient.changePostMailReturnValue({
       serverOn: true,
       complete: true,
     });
@@ -210,7 +210,7 @@ describe('serviceTest', () => {
 
   test('sendUnpostedMails 테스트', async () => {
     // MockRokafClient 준비
-    rokafClient.forcedSetPostMailResponse({
+    rokafClient.changePostMailReturnValue({
       serverOn: true,
       complete: true,
     });
@@ -246,7 +246,7 @@ describe('serviceTest', () => {
 
   test('sendUnpostedMails 한계 테스트', async () => {
     // MockRokafClient 준비
-    rokafClient.forcedSetPostMailResponse({
+    rokafClient.changePostMailReturnValue({
       serverOn: true,
       complete: true,
     });

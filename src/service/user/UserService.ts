@@ -4,6 +4,7 @@ import { ProfileFactory } from 'src/type/factory';
 import { createLogger } from "config/logger";
 import { UserQueue } from "src/repository/userQueue/userQueue";
 import { UserRepository } from "src/repository/user/userRepository";
+import { ValidateError } from "src/utils/validate";
 
 const logger = createLogger("UserService");
 
@@ -27,7 +28,7 @@ export class UserService {
 
   async register(registerProps: RegisterProps) {
     if (await this.existUsername(registerProps.username)) {
-      throw new Error('아이디가 중복되었습니다.');
+      throw new ValidateError('아이디가 중복되었습니다.');
     }
 
     // 유저 생성
@@ -42,12 +43,13 @@ export class UserService {
   }
 
 
-  async syncProfile(profile: Profile,
-    event: ProfileCallBack = {}) {
-    const status = serveStatus(profile.generation);
+  /**
+   * 유저의 소대번호, 멤버번호를 불러오고, 엡디
+   */
+  async syncProfile(profile: Profile) {
+    const status = profile.getStatus();
 
     if (status == Status.before || status == Status.beginning) {
-      await event.onBefore?.(this.userQueue);
       return syncResponse.before;
     }
 
@@ -55,7 +57,6 @@ export class UserService {
 
     // 기훈단 서버 오류
     if (!result.serverOn) {
-      await event.onError?.(this.userQueue);
       return syncResponse.error;
     }
 
@@ -65,32 +66,36 @@ export class UserService {
         memberSeq: result.member.memberSeq,
         sodae: result.member.sodae
       });
-      await event.onComplete?.(this.userQueue);
       return syncResponse.complete;
     } else {
-      await event.onFail?.(this.userQueue);
       return syncResponse.fail;
     }
   }
 
   async searchProfileFailEnqueue(profile: Profile) {
     const userId = profile.userId;
-    return await this.syncProfile(profile, {
-      onBefore: async (_) => {
+    const response = await this.syncProfile(profile);
+
+    switch (response) {
+      case syncResponse.before:
         await this.userQueue.insert(userId);
-      },
-      onError: async (_) => {
+        break;
+      case syncResponse.complete:
+        break;
+      case syncResponse.error:
         await this.userQueue.insert(userId);
-      },
-      onFail: async (_) => {
-        if (serveStatus(profile.generation) == Status.working) {
+        break;
+      case syncResponse.fail:
+        const status = serveStatus(profile.generation);
+        if (status == Status.working || status == Status.discharged) {
           // 수료를 했는데도 못찾으면 없는 유저로 판단하고 큐에 넣지 않는다.
         } else {
           // 안나오면 나중에 다시 검색
           await this.userQueue.insert(userId);
         }
-      },
-    });
+        break;
+    }
+    return response;
   }
 
   async retryGetProfile() {

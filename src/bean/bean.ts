@@ -22,7 +22,7 @@ class BeanConfig {
 
   static bean() {
     const mockRokafClient = new MockRokafClient();
-    mockRokafClient.forcedSetPostMailResponse({
+    mockRokafClient.changePostMailReturnValue({
       serverOn: true,
       complete: true,
     });
