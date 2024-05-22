@@ -7,12 +7,13 @@ import cheerio from "cheerio";
 import { parse } from "node-html-parser";
 
 import { makeLogger } from "config/winston";
+import { RokafMail } from "./RokafClientInterface";
 const logger = makeLogger("Rokaf");
 
 export async function postMail(
   { name, relationship, title, contents, password, memberSeq, sodae },
   createdAt: Date,
-) {
+): Promise<RokafMail> {
   let data = new FormData();
 
   const dateJs = parseKorea(createdAt);

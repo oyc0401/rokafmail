@@ -3,6 +3,7 @@ import https from "https";
 import cheerio from "cheerio";
 import { parse } from "node-html-parser";
 import { makeLogger } from "config/winston";
+import { RokafProfile } from "./RokafClientInterface";
 const logger = makeLogger("Rokaf");
 
 function exist(html) {
@@ -65,15 +66,7 @@ function htmlToSodae(html) {
 }
 
 
-interface RokafProfileResponse {
-  serverOn: boolean,
-  member?: {
-    memberSeq: string,
-    sodae: string,
-  }
-}
-
-export async function getProfile(name: string, birth: string): Promise<RokafProfileResponse> {
+export async function getProfile(name: string, birth: string): Promise<RokafProfile> {
   const url = `https://www.airforce.mil.kr/user/emailPicViewSameMembers.action?siteId=last2&searchName=${name}&searchBirth=${birth}`;
 
   // console.log("-link:", url);

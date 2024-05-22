@@ -111,6 +111,10 @@ describe('User Service Test', () => {
       const result = await userService.syncProfile(profile);
 
       expect(result).toBe(syncResponse.before);
+
+      // 유저 정보 검증
+      const updatedUser = await userRepository.findById(profile.userId);
+      expect(updatedUser?.connect).toBe(false);
     });
 
     test('syncProfile - server error', async () => {
@@ -122,16 +126,18 @@ describe('User Service Test', () => {
         generation: 857,
         message: '잘 다녀오겠습니다!',
       });
-      
+
       const profile = ProfileFactory.FromUser(user);
       jest.spyOn(profile, 'getStatus').mockReturnValue(Status.working);
-      rokafClient.changeGetProfileReturnValue({
-        serverOn: false,
-      });
+      rokafClient.setRokafServerError();
 
       const result = await userService.syncProfile(profile);
 
       expect(result).toBe(syncResponse.error);
+
+      // 유저 정보 검증
+      const updatedUser = await userRepository.findById(profile.userId);
+      expect(updatedUser?.connect).toBe(false);
     });
 
     test('syncProfile - complete response', async () => {
@@ -156,7 +162,10 @@ describe('User Service Test', () => {
       const result = await userService.syncProfile(profile);
 
       expect(result).toBe(syncResponse.complete);
+
+      // 유저 정보 검증
       const updatedUser = await userRepository.findById(profile.userId);
+      expect(updatedUser?.connect).toBe(true);
       expect(updatedUser?.memberSeq).toBe('12341234');
       expect(updatedUser?.sodae).toBe('1111');
     });
@@ -180,6 +189,10 @@ describe('User Service Test', () => {
       const result = await userService.syncProfile(profile);
 
       expect(result).toBe(syncResponse.fail);
+
+      // 유저 정보 검증
+      const updatedUser = await userRepository.findById(profile.userId);
+      expect(updatedUser?.connect).toBe(false);
     });
   });
 

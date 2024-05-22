@@ -1,14 +1,20 @@
-export default class MockRokafClient {
+import { RokafMail, RokafProfile, RokafClientInterface } from "./RokafClientInterface";
 
-  private getProfileResponse: {
-    member: {
-      memberSeq: '12345678',
-      sodae: '1234',
-    },
-    serverOn: true,
+export default class MockRokafClient implements RokafClientInterface {
+
+  private getProfileResponse: RokafProfile;
+  private postMailResponse: RokafMail;
+
+  setRokafServerError() {
+    this.getProfileResponse = { serverOn: false };
+    this.postMailResponse = { serverOn: false, complete: false };
   }
 
-  changeGetProfileReturnValue(response) {
+  changePostMailReturnValue(response: RokafMail) {
+    this.postMailResponse = response;
+  }
+
+  changeGetProfileReturnValue(response: RokafProfile) {
     this.getProfileResponse = response;
   }
 
@@ -16,14 +22,6 @@ export default class MockRokafClient {
     return this.getProfileResponse;
   }
 
-  private postMailResponse: {
-    complete: false,
-    serverOn: true,
-  }
-
-  changePostMailReturnValue(response) {
-    this.postMailResponse = response;
-  }
   async postMail(
     body: {
       name: string;

@@ -4,6 +4,7 @@ import cheerio from "cheerio";
 import { parse } from "node-html-parser";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Rokaf");
+// 공군 특기학교 프로필 가져오는 거
 
 function exist(html) {
   const $ = cheerio.load(html);
