@@ -3,8 +3,10 @@ import { PrismaPostQueue } from "src/repository/postQueue/prismaPostQueue";
 import { PrismaUserRepository } from "src/repository/user/prismaUserRespository";
 import { PrismaUserQueue } from "src/repository/userQueue/prismaUserQueue";
 import { MailService } from "src/service/mail/MailService";
+import { RetryService } from "src/service/retry/retryService";
 import MockRokafClient from "src/service/rokafClient/MockRokafClient";
 import RokafClient from "src/service/rokafClient/RokafClient";
+import { UserService } from "src/service/user/UserService";
 
 class BeanConfig {
   static storage: any;
@@ -21,12 +23,11 @@ class BeanConfig {
   }
 
   static bean() {
-    const mockRokafClient = new MockRokafClient();
-    mockRokafClient.changePostMailReturnValue({
-      serverOn: true,
-      complete: true,
-    });
-
+    // const mockRokafClient = new MockRokafClient();
+    // mockRokafClient.changePostMailReturnValue({
+    //   serverOn: true,
+    //   complete: true,
+    // });
 
     const repository = {
       postRepository: new PrismaPostRepository(),
@@ -36,9 +37,14 @@ class BeanConfig {
       rokafClient: new RokafClient(),
       // rokafClient: mockRokafClient,
     };
+    const mailService = new MailService(repository);
+    const userService = new UserService({ ...repository, mailService });
+    const retryService = new RetryService({ ...repository, mailService, userService });
     return {
       ...repository,
-      mailService: new MailService(repository),
+      mailService,
+      userService,
+      retryService,
     }
   }
 }
