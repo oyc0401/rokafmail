@@ -3,7 +3,7 @@ import { Submit } from "./submit";
 import { Paper } from "./paper";
 import Link from "next/link";
 
-import { ShadowNavigationBar } from "src/components";
+import { BasicFooter } from "src/components";
 import {
   getEnter,
   getCompletion,
@@ -22,8 +22,6 @@ import { NavHeader } from 'src/components'
 export const metadata = {
   title: "하늘인편 | 편지 작성",
 };
-
-
 
 export default async function Mail({ params }) {
   const username = decodeURI(params.username);
@@ -81,39 +79,8 @@ export default async function Mail({ params }) {
 
     case Status.working:
     case Status.discharged:
-      return <After name={user.name} username={username}></After>
+      return <After user={user}></After>
   }
-}
-
-function After({ name, username }) {
-  const callback = `https://${process.env.DOMAIN}/mails/${username}`;
-
-  return (
-    <div className="screen">
-      <div style={{ flex: 178 }}></div>
-      <div style={{ paddingBottom: 54 }}>
-        <h1 style={{ fontSize: 25, fontWeight: 500 }}>
-          {name}님
-          <br />
-          수료를 축하드립니다!
-        </h1>
-      </div>
-      <h2 style={{ fontSize: 18 }}>
-        받은 편지를 모두 열어보고 싶으시면
-        <br />
-        로그인 버튼을 눌러주세요!
-      </h2>
-      <div style={{ flex: 260 }}></div>
-      <ShadowNavigationBar>
-        <Link className={`submit mini`} href={`/mails/${username}`}>
-          편지함
-        </Link>
-        <Link className={`submit`} href={`/auth/signin?callbackUrl=${callback}`}>
-          로그인
-        </Link>
-      </ShadowNavigationBar>
-    </div>
-  );
 }
 
 async function UserDescription({ user }) {
@@ -153,4 +120,37 @@ async function UserDescription({ user }) {
       </div>
     </div>
   );
+}
+
+function After({ user }) {
+  const { name, username } = user;
+  const callback = `https://${process.env.DOMAIN}/mails/${username}`;
+
+  return (
+    <div className="w-full h-full flex flex-col max-w-3xl mx-auto">
+      <NavHeader user={user}></NavHeader>
+      <div style={{ flex: 178 }}></div>
+      <div style={{ paddingBottom: 54 }}>
+        <h1 style={{ fontSize: 25, fontWeight: 500 }}>
+          {name}님
+          <br />
+          수료를 축하드립니다!
+        </h1>
+      </div>
+      <h2 style={{ fontSize: 18 }}>
+        받은 편지를 모두 열어보고 싶으시면
+        <br />
+        로그인 버튼을 눌러주세요!
+      </h2>
+      <div style={{ flex: 260 }}></div>
+      <BasicFooter>
+        <Link className={`submit mini`} href={`/mails/${username}`}>
+          편지함
+        </Link>
+        <Link className={`submit`} href={`/auth/signin?callbackUrl=${callback}`}>
+          로그인
+        </Link>
+      </BasicFooter>
+    </div>
+  )
 }

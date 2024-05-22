@@ -2,8 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { User } from "src/db";
-import styles from "./complete.module.css";
-import { BasicFooter } from "src/components";
+import { BasicFooter, NavHeader } from "src/components";
 
 import {
   mailStartIsFuture,
@@ -39,11 +38,16 @@ export default async function Complete({ searchParams, params }) {
     helpAdditional = `${start.format("YY.MM.DD")}부터 `;
   }
 
-  return (
-    <div className="screen">
-      <div style={{ flex: 130 }}></div>
+  const { name, birth, memberSeq, connect } = user;
+  const userForm = { username, name, birth, memberSeq, connect };
 
-      <Image className={styles.icon} src={CheckCircle} alt="아이콘" />
+  return (
+    <div className="w-full h-full flex flex-col max-w-3xl mx-auto">
+      <NavHeader user={userForm}></NavHeader>
+      <div style={{ flex: 130 }}></div>
+      <div className="w-full">
+        <Image className='w-[128px] h-[128px] mx-auto' src={CheckCircle} alt="아이콘" />
+      </div>
 
       <div style={{ height: 28 }}></div>
       <h2 className="font-bold text-2xl">
@@ -52,9 +56,6 @@ export default async function Complete({ searchParams, params }) {
       <div style={{ flex: 28 }}></div>
       {page}
       <div style={{ flex: 160 }}></div>
-      <p className={styles.intro}>
-        {/* {`${helpAdditional}편지함에서 비밀번호를 사용해 수정 및 삭제가 가능합니다.`} */}
-      </p>
       <BasicFooter>
         <a className={`submit mini`} href={`/mails/${user.username}`}>
           편지함
@@ -68,20 +69,20 @@ export default async function Complete({ searchParams, params }) {
 }
 
 // 여러 텍스트 컴포넌트 만들기
-function Good(props) {
+function Good({ name }) {
   return (
-    <p className="font-medium text-xl">
-      1일 이내에 <span className={styles.name}>{props.name}</span> 훈련병에게
+    <p className="text-xl">
+      1일 이내에 <span className='text-primary'>{name}</span> 훈련병에게
       <br />
       편지가 전달됩니다!
     </p>
   );
 }
 
-function Later(props) {
+function Later({ day, name }) {
   return (
-    <p className="font-medium text-xl">
-      {props.day}일 뒤에 <span className={styles.name}>{props.name}</span>{" "}
+    <p className="text-xl">
+      {day}일 뒤에 <span className='text-primary'>{name}</span>{" "}
       훈련병에게
       <br />
       편지가 전달됩니다!
