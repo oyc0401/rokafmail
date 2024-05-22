@@ -5,13 +5,12 @@ import { knowTime, isDischarged } from "src/lib/time";
 
 import {
   InputField,
-  BasicArea,
   BasicFormArea,
   BasicHeader,
   BasicBody,
   BasicFooter,
 } from "src/components";
-import { NavHeaderHome } from "src/components/NavHeaderHome";
+import { NavHeaderHome } from "src/components";
 export default function Information() {
   const { generation, name, birth, setGeneration, setName, setBirth, next } =
     useStoreBase();

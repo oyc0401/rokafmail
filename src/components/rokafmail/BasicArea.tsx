@@ -1,14 +1,5 @@
 import { NavHeaderHome } from "./NavHeaderHome";
 
-export function BasicArea({ children }) {
-  return (
-    <div className="screen">
-      {children}
-    </div>
-  );
-}
-
-
 export function BasicFormArea({ children }) {
   return (
     <div className="max-w-3xl mx-auto h-full">

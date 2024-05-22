@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 import Link from "next/link";
-import { BasicArea, BasicBody, BasicFormArea, BasicHeader } from "src/components";
+import { BasicBody, BasicFormArea, BasicHeader } from "src/components";
 import { User } from "src/db";
 
 
 export const metadata = {
-  title: "하늘인편 | 룬련병 사진",
+  title: "하늘인편 | 훈련병 사진",
 };
 
 

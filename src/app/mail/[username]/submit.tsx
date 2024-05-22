@@ -1,10 +1,6 @@
 "use client";
-import axios from "axios";
-import { useRef, useState } from "react";
+import {  useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-
-import { Nav } from "src/components";
 
 import styles from "./page.module.css";
 import { useStore } from "./model";

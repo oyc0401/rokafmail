@@ -2,7 +2,7 @@
 import { Post, User } from "src/db";
 import { notFound, redirect } from "next/navigation";
 
-import { NavHeader } from 'src/components/NavHeader'
+import { NavHeader } from 'src/components'
 import { Submit } from './submit'
 
 // import { dateToStr } from "./dateToStr";

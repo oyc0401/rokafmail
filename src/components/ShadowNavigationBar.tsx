@@ -1,9 +1,9 @@
 "use client";
-import styles from "./components.module.css";
+import styles from "./ShadowNavigationBar.module.css";
 import { useEffect, useState } from "react";
 
 // 바닥으로 내려가면 그림자가 사라지는 네비게이션 바
-export function Nav({ children, elevation = false }) {
+export function ShadowNavigationBar({ children, elevation = false }) {
   const handleScroll = () => {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;

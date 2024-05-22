@@ -5,9 +5,7 @@ import { Logo } from "public/assets/index";
 import { FitScreen } from "src/components/FitScreen";
 
 import styles from "./page.module.css";
-import { IsAuthenticated } from "src/components/IsAuthenticated";
-import { IsNotAuthenticated } from "src/components/IsNotAuthenticated";
-import { IsLoading } from "src/components/IsLoading";
+import { IsAuthenticated, IsLoading, IsNotAuthenticated } from "src/components";
 
 const INKLIPQUID = localFont({ src: '../../public/fonts/INKLIPQUID.ttf' });
 

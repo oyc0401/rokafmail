@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { User } from "src/db";
 import styles from "./complete.module.css";
-import { BasicFooter, Nav } from "src/components";
+import { BasicFooter } from "src/components";
 
 import {
   mailStartIsFuture,

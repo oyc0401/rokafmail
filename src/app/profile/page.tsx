@@ -4,7 +4,7 @@ import { User } from "src/db";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { DeleteUser, SignOut } from "./client";
-import { NavHeader } from "src/components/NavHeader";
+import { NavHeader } from "src/components";
 
 export default async function Page() {
   const session = await auth();

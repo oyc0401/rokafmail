@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Post, User } from "src/db";
 import { notFound } from "next/navigation";
-import { NavHeader } from "src/components/NavHeader";
+import { NavHeader } from "src/components";
 import { LetterList } from "./LetterList";
 import { TabBar } from "./TabBar";
 

@@ -3,7 +3,7 @@ import { Submit } from "./submit";
 import { Paper } from "./paper";
 import Link from "next/link";
 
-import { Nav } from "src/components";
+import { ShadowNavigationBar } from "src/components";
 import {
   getEnter,
   getCompletion,
@@ -16,7 +16,7 @@ import { notFound } from "next/navigation";
 
 import { ShareButton } from "./copy_button";
 
-import { NavHeader } from 'src/components/NavHeader'
+import { NavHeader } from 'src/components'
 
 
 export const metadata = {
@@ -104,14 +104,14 @@ function After({ name, username }) {
         로그인 버튼을 눌러주세요!
       </h2>
       <div style={{ flex: 260 }}></div>
-      <Nav>
+      <ShadowNavigationBar>
         <Link className={`submit mini`} href={`/mails/${username}`}>
           편지함
         </Link>
         <Link className={`submit`} href={`/auth/signin?callbackUrl=${callback}`}>
           로그인
         </Link>
-      </Nav>
+      </ShadowNavigationBar>
     </div>
   );
 }

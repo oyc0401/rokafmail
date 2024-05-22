@@ -5,7 +5,7 @@ import { Post, User } from "src/db";
 import { notFound } from "next/navigation";
 import { Paper } from "./paper";
 
-import { NavHeader } from 'src/components/NavHeader'
+import { NavHeader } from 'src/components'
 
 // import { dateToStr } from "./dateToStr";
 import {
