@@ -161,8 +161,7 @@ describe('User Service Test', () => {
       const profile = ProfileFactory.FromUser(user);
       jest.spyOn(profile, 'getStatus').mockReturnValue(Status.working);
       rokafClient.changeGetProfileReturnValue({
-        serverOn: true,
-        member: null
+        serverOn: true
       });
 
       const result = await userService.syncProfile(profile);

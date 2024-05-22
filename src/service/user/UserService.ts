@@ -100,45 +100,6 @@ export class UserService {
     return response;
   }
 
-  // async retryGetProfile() {
-  //   const now = new Date();
-
-  //   let i = 0;
-  //   let queueSize = await this.userQueue.size();
-
-  //   try {
-  //     while (!(await this.userQueue.empty())) {
-  //       i++;
-
-  //       const front = await this.userQueue.front();
-  //       if (front.createdAt > now) break;
-
-  //       const userId = front.userId;
-
-  //       const user = await this.userRepository.findById(userId);
-  //       if (!user) throw new Error('유저 정보가 없습니다.');
-
-
-  //       const { name, birth, generation, username, connect } = user;
-  //       const profile = ProfileFactory.create({ userId, name, birth, generation, username });
-
-  //       if (connect) {
-  //         logger.info(`${i}/${queueSize}: (${userId}) | 이미 연결 됌`)
-  //       } else {
-  //         const status = await this.searchProfileFailEnqueue(profile);
-  //         if (status == syncResponse.complete) {
-  //           await this.mailService.sendUnpostedMails(userId)
-  //         }
-  //         logger.info(`${i}/${queueSize}: (${userId}) | ${syncResponseToStr(status)}`)
-  //       }
-
-  //       await this.userQueue.pop();
-  //     }
-
-  //   } catch (error) {
-  //     logger.error(`${i + 1}/${queueSize} | ${error}`)
-  //   }
-  // }
 }
 
 
