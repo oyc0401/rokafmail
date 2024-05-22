@@ -40,7 +40,9 @@ const store: { [key: number]: [string, string] } = {
 export const startGeneration: number = 830;
 
 export function timeDB(generation: number): [string, string] {
-  return store[generation];
+  const value = store[generation];
+  if (!value) throw new Error('해당 기수의 정보가 없습니다.')
+  return value;
 }
 
 export function isEmpty(generation: number) {
