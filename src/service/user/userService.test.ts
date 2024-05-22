@@ -1,44 +1,23 @@
 import { describe, expect, test, beforeEach, jest } from '@jest/globals';
-import MockRokafClient from '../rokafClient/MockRokafClient';
-import { MemoryUserRepository } from 'src/repository/user/memoryUserRepository';
 import { UserService, syncResponse } from './UserService';
-import { MemoryUserQueue } from 'src/repository/userQueue/memoryUserQueue';
 import { ProfileFactory } from 'src/type/factory';
-import { LogConfig } from 'config/logger';
-import { MemoryLogger } from 'config/memoryLogger';
-import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
-import { MemoryPostQueue } from 'src/repository/postQueue/memoryPostQueue';
-import { MailService } from '../mail/MailService';
 import { ValidateError } from 'src/utils/validate';
 import { Status } from 'src/lib/time';
+import { testBean } from '../testConfig';
 
 describe('User Service Test', () => {
+  let {
+    postRepository, userRepository, postQueue, userQueue,
+    rokafClient, mailService, userService, retryService,
+    logger,
+  } = testBean();
 
-  let postRepository = new MemoryPostRepository();
-  let postQueue = new MemoryPostQueue(postRepository);
-  const rokafClient = new MockRokafClient();
-  let mailService = new MailService({ postRepository, postQueue, rokafClient });
-
-  let userRepository = new MemoryUserRepository();
-  let userQueue = new MemoryUserQueue(userRepository);
-
-  let userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
-
-  let logger = new MemoryLogger();
   beforeEach(() => {
-
-
-    postRepository = new MemoryPostRepository();
-    postQueue = new MemoryPostQueue(postRepository);
-    mailService = new MailService({ postRepository, postQueue, rokafClient });
-
-    userRepository = new MemoryUserRepository();
-    userQueue = new MemoryUserQueue(userRepository);
-
-    userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
-
-    logger = new MemoryLogger();
-    LogConfig.setLogger(logger);
+    ({
+      postRepository, userRepository, postQueue, userQueue,
+      rokafClient, mailService, userService, retryService,
+      logger
+    } = testBean());
   });
 
   describe('회원가입 테스트', () => {

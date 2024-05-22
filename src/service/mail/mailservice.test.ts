@@ -1,33 +1,23 @@
 import { describe, expect, test, beforeAll, beforeEach } from '@jest/globals';
 import { MailService, SendResponse } from './MailService';
-import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
-import MockRokafClient from '../rokafClient/MockRokafClient';
-import { MemoryPostQueue } from 'src/repository/postQueue/memoryPostQueue';
 import { LogConfig } from 'config/logger';
 import { MemoryLogger } from 'config/memoryLogger';
-import { MemoryUserRepository } from 'src/repository/user/memoryUserRepository';
+import { testBean } from '../testConfig';
 
 describe('serviceTest', () => {
-  const rokafClient = new MockRokafClient();
+  let {
+    postRepository, userRepository, postQueue, userQueue,
+    rokafClient, mailService, userService, retryService,
+    logger,
+  } = testBean();
 
-  let postRepository = new MemoryPostRepository();
-  let postQueue = new MemoryPostQueue(postRepository);
-  let mailService = new MailService({ postRepository, postQueue, rokafClient });
-
-  let userRepository = new MemoryUserRepository();
-
-  postRepository.join(userRepository);
-
-  beforeEach(async () => {
-    postRepository = new MemoryPostRepository();
-    postQueue = new MemoryPostQueue(postRepository);
-    mailService = new MailService({ postRepository, postQueue, rokafClient });
-
-    userRepository = new MemoryUserRepository();
-
-    postRepository.join(userRepository);
-
-  })
+  beforeEach(() => {
+    ({
+      postRepository, userRepository, postQueue, userQueue,
+      rokafClient, mailService, userService, retryService,
+      logger
+    } = testBean());
+  });
 
 
   beforeAll(() => {
@@ -154,58 +144,6 @@ describe('serviceTest', () => {
     expect(sendStatus).toBe(SendResponse.fail);
   });
 
-
-  test('MailService 편지 큐', async () => {
-    const logger = new MemoryLogger();
-    LogConfig.setLogger(logger);
-
-    // MockRokafClient 준비
-    rokafClient.changePostMailReturnValue({
-      serverOn: true,
-      complete: true,
-    });
-
-    // 메모리 리포지토리 설정
-    const newUser = await userRepository.insert({
-      generation: 850,
-      message: '하이',
-      name: '김공군',
-      password: '123213',
-      username: 'rokaf',
-      birth: '20034001',
-    });
-
-    await userRepository.updateRokafProfile(newUser.id, {
-      memberSeq: '12341234',
-      sodae: '1234'
-    });
-
-    const post = {
-      userId: 1, name: '유찬', relationship: '친구',
-      title: '제목', contents: 'contents',
-      password: '0000', isPublic: true,
-    }
-    const newPost = await postRepository.insert(post);
-
-    // postQueue 설정
-    await postQueue.insert(newPost.id)
-
-    // when
-    await mailService.retryDelayedMail();
-
-    // then
-    const resultPost = await postRepository.findById(newPost.id);
-
-    expect(resultPost!.posted).toBe(true);
-
-    expect(await postQueue.empty()).toEqual(true);
-    expect(resultPost?.postAt).not.toBe(null);
-  });
-
-
-
-
-
   test('sendUnpostedMails 테스트', async () => {
     // MockRokafClient 준비
     rokafClient.changePostMailReturnValue({
@@ -296,8 +234,5 @@ describe('serviceTest', () => {
 
   });
 
-  test('테스트 이름', () => {
-    expect(1).toBe(1);
-    expect(1).toEqual(1);
-  });
+
 })

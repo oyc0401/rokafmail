@@ -1,45 +1,22 @@
 import { describe, expect, test, beforeEach, jest } from '@jest/globals';
-import MockRokafClient from '../rokafClient/MockRokafClient';
-import { MemoryUserRepository } from 'src/repository/user/memoryUserRepository';
-import { UserService } from '../user/UserService';
-import { MemoryUserQueue } from 'src/repository/userQueue/memoryUserQueue';
+
 import { ProfileFactory } from 'src/type/factory';
-import { LogConfig } from 'config/logger';
-import { MemoryLogger } from 'config/memoryLogger';
-import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
-import { MemoryPostQueue } from 'src/repository/postQueue/memoryPostQueue';
-import { MailService } from '../mail/MailService';
-import { RetryService } from './retryService';
+
+import { testBean } from '../testConfig';
 
 describe('Retry Service Test', () => {
-
-  let postRepository = new MemoryPostRepository();
-  let postQueue = new MemoryPostQueue(postRepository);
-  const rokafClient = new MockRokafClient();
-  let mailService = new MailService({ postRepository, postQueue, rokafClient });
-  let userRepository = new MemoryUserRepository();
-  let userQueue = new MemoryUserQueue(userRepository);
-  postRepository.join(userRepository);
-  let userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
-  let retryService = new RetryService({ mailService, userService, postQueue, userQueue });
-  let logger = new MemoryLogger();
+  let {
+    postRepository, userRepository, postQueue, userQueue,
+    rokafClient, mailService, userService, retryService,
+    logger,
+  } = testBean();
 
   beforeEach(() => {
-    postRepository = new MemoryPostRepository();
-    postQueue = new MemoryPostQueue(postRepository);
-    mailService = new MailService({ postRepository, postQueue, rokafClient });
-
-    userRepository = new MemoryUserRepository();
-    userQueue = new MemoryUserQueue(userRepository);
-
-    userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
-
-    retryService = new RetryService({ mailService, userService, postQueue, userQueue });
-
-    postRepository.join(userRepository);
-
-    logger = new MemoryLogger();
-    LogConfig.setLogger(logger);
+    ({
+      postRepository, userRepository, postQueue, userQueue,
+      rokafClient, mailService, userService, retryService,
+      logger
+    } = testBean());
   });
 
   describe('retryDelayedMail', () => {
