@@ -4,6 +4,7 @@ node_modules
 .replit
 next-env.d.ts
 .local
+.breakpoints
 
 .vscode
 

@@ -3,6 +3,7 @@ import { PostRepository } from "src/repository/post/postRepository";
 import { createLogger } from "config/logger";
 import { PostQueue } from "src/repository/postQueue/postQueue";
 import dayjs from "dayjs";
+import { RokafClientInterface } from "../rokafClient/RokafClientInterface";
 const logger = createLogger("MailService");
 
 const MAX_COUNT = 10;
@@ -10,7 +11,7 @@ const MAX_COUNT = 10;
 export enum SendResponse { before, notfound, success, fail, error }
 
 export class MailService {
-  private rokafClient;
+  private rokafClient: RokafClientInterface;
   private postRepository: PostRepository;
   private postQueue: PostQueue;
   constructor({ postRepository, postQueue, rokafClient }) {
@@ -102,43 +103,43 @@ export class MailService {
     });
   }
 
-  async retryDelayedMail() {
+  // async retryDelayedMail() {
 
-    const userCountMap = {};
-    const MAX_POSTCOUNT = 10;
-    const now = new Date();
+  //   const userCountMap = {};
+  //   const MAX_POSTCOUNT = 10;
+  //   const now = new Date();
 
-    let i = 0;
-    let queueSize = await this.postQueue.size();
+  //   let i = 0;
+  //   let queueSize = await this.postQueue.size();
 
-    try {
-      while (!(await this.postQueue.empty())) {
-        i++;
+  //   try {
+  //     while (!(await this.postQueue.empty())) {
+  //       i++;
 
-        const front = await this.postQueue.front();
-        if (front.createdAt > now) break;
+  //       const front = await this.postQueue.front();
+  //       if (front.createdAt > now) break;
 
-        const post = (await this.postRepository.findById(front.postId))!;
+  //       const post = (await this.postRepository.findById(front.postId))!;
 
-        if (post.posted) {
-          logger.info(`${i}/${queueSize} (${front.postId}) | 이미 보내졌습니다`);
-        } else if ((userCountMap[post.userId] ?? 0) < MAX_POSTCOUNT) {
-          const response = await this.sendMailFalseEnqueue(front.postId);
-          logger.info(`${i}/${queueSize} (${front.id}) | ${sendStatusToStr(response)}`);
-        } else {
-          logger.info(`${i}/${queueSize} (${front.postId}) | 한도 초과`);
-          await this.postQueue.insert(front.postId);
-        }
+  //       if (post.posted) {
+  //         logger.info(`${i}/${queueSize} (${front.postId}) | 이미 보내졌습니다`);
+  //       } else if ((userCountMap[post.userId] ?? 0) < MAX_POSTCOUNT) {
+  //         const response = await this.sendMailFalseEnqueue(front.postId);
+  //         logger.info(`${i}/${queueSize} (${front.id}) | ${sendStatusToStr(response)}`);
+  //       } else {
+  //         logger.info(`${i}/${queueSize} (${front.postId}) | 한도 초과`);
+  //         await this.postQueue.insert(front.postId);
+  //       }
 
-        userCountMap[post.userId] = (userCountMap[post.userId] ?? 0) + 1;
+  //       userCountMap[post.userId] = (userCountMap[post.userId] ?? 0) + 1;
 
-        await this.postQueue.pop();
-      }
+  //       await this.postQueue.pop();
+  //     }
 
-    } catch (error) {
-      logger.error(`${i}/${queueSize} | ${error}`)
-    }
-  }
+  //   } catch (error) {
+  //     logger.error(`${i}/${queueSize} | ${error}`)
+  //   }
+  // }
 
 
   // 해당 유저의 모든 미발송 편지들을 다시 보내기

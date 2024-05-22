@@ -1,16 +1,15 @@
 "use server";
-import { MailService } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
-import { UserService } from "src/service/user/UserService";
+import { RetryService } from "src/service/retry/retryService";
 
 export async function repost() {
-  const mailservice = new MailService(bean);
-  await mailservice.retryDelayedMail();
+  const retryService = new RetryService(bean);
+  await retryService.retryDelayedMail();
 }
 
 export async function verify() {
-  const userService = new UserService(bean);
-  await userService.retryGetProfile();
+  const retryService = new RetryService(bean);
+  await retryService.retryGetProfile();
 }
 
 export async function findNotQueueNotpost() {

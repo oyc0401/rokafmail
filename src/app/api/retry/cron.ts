@@ -2,6 +2,7 @@ import { makeLogger } from "config/winston";
 import { MailService } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
 import { UserService } from "src/service/user/UserService";
+import { RetryService } from "src/service/retry/retryService";
 var cron = require("node-cron");
 const logger = makeLogger("repeat");
 
@@ -16,8 +17,8 @@ export class CronStore {
           logger.info("mailCron is executed");
           // Http x, 바로 호출
 
-          const mailservice = new MailService(bean);
-          await mailservice.retryDelayedMail();
+          const retryService = new RetryService(bean);
+          await retryService.retryDelayedMail();
         } catch (e) {
           logger.error(`node-cron 중 오류발생: ${e}`);
         }
@@ -33,8 +34,8 @@ export class CronStore {
           logger.info("userCron is executed");
           // Http x, 바로 호출
 
-          const userService = new UserService(bean);
-          await userService.retryGetProfile();
+          const retryService = new RetryService(bean);
+          await retryService.retryGetProfile();
         } catch (e) {
           logger.error(`node-cron 중 오류발생: ${e}`);
         }

@@ -5,14 +5,16 @@ import { createLogger } from "config/logger";
 import { UserQueue } from "src/repository/userQueue/userQueue";
 import { UserRepository } from "src/repository/user/userRepository";
 import { ValidateError } from "src/utils/validate";
+import { RokafClientInterface } from "../rokafClient/RokafClientInterface";
+import { MailService } from "../mail/MailService";
 
 const logger = createLogger("UserService");
 
 export class UserService {
-  private rokafClient;
+  private rokafClient: RokafClientInterface;
   private userRepository: UserRepository;
   private userQueue: UserQueue;
-  private mailService;
+  private mailService: MailService;
 
   constructor({ userRepository, userQueue, rokafClient, mailService }) {
     this.userRepository = userRepository;
@@ -98,45 +100,45 @@ export class UserService {
     return response;
   }
 
-  async retryGetProfile() {
-    const now = new Date();
+  // async retryGetProfile() {
+  //   const now = new Date();
 
-    let i = 0;
-    let queueSize = await this.userQueue.size();
+  //   let i = 0;
+  //   let queueSize = await this.userQueue.size();
 
-    try {
-      while (!(await this.userQueue.empty())) {
-        i++;
+  //   try {
+  //     while (!(await this.userQueue.empty())) {
+  //       i++;
 
-        const front = await this.userQueue.front();
-        if (front.createdAt > now) break;
+  //       const front = await this.userQueue.front();
+  //       if (front.createdAt > now) break;
 
-        const userId = front.userId;
+  //       const userId = front.userId;
 
-        const user = await this.userRepository.findById(userId);
-        if (!user) throw new Error('유저 정보가 없습니다.');
+  //       const user = await this.userRepository.findById(userId);
+  //       if (!user) throw new Error('유저 정보가 없습니다.');
 
 
-        const { name, birth, generation, username, connect } = user;
-        const profile = ProfileFactory.create({ userId, name, birth, generation, username });
+  //       const { name, birth, generation, username, connect } = user;
+  //       const profile = ProfileFactory.create({ userId, name, birth, generation, username });
 
-        if (connect) {
-          logger.info(`${i}/${queueSize}: (${userId}) | 이미 연결 됌`)
-        } else {
-          const status = await this.searchProfileFailEnqueue(profile);
-          if (status == syncResponse.complete) {
-            await this.mailService.sendUnpostedMails(userId)
-          }
-          logger.info(`${i}/${queueSize}: (${userId}) | ${syncResponseToStr(status)}`)
-        }
+  //       if (connect) {
+  //         logger.info(`${i}/${queueSize}: (${userId}) | 이미 연결 됌`)
+  //       } else {
+  //         const status = await this.searchProfileFailEnqueue(profile);
+  //         if (status == syncResponse.complete) {
+  //           await this.mailService.sendUnpostedMails(userId)
+  //         }
+  //         logger.info(`${i}/${queueSize}: (${userId}) | ${syncResponseToStr(status)}`)
+  //       }
 
-        await this.userQueue.pop();
-      }
+  //       await this.userQueue.pop();
+  //     }
 
-    } catch (error) {
-      logger.error(`${i + 1}/${queueSize} | ${error}`)
-    }
-  }
+  //   } catch (error) {
+  //     logger.error(`${i + 1}/${queueSize} | ${error}`)
+  //   }
+  // }
 }
 
 

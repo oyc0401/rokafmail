@@ -199,9 +199,7 @@ describe('serviceTest', () => {
     expect(resultPost!.posted).toBe(true);
 
     expect(await postQueue.empty()).toEqual(true);
-    expect(resultPost!.postAt).not.toBe(null);
-
-    console.log(logger.cat());
+    expect(resultPost?.postAt).not.toBe(null);
   });
 
 
@@ -295,15 +293,6 @@ describe('serviceTest', () => {
         expect(updated!.posted).toBe(false);
       }
     }
-    // const items = [
-    //   { id: 1, postId: 11, userId: 1 },
-    //   { id: 2, postId: 12, userId: 1 },
-    //   { id: 3, postId: 13, userId: 1 },
-    //   { id: 4, postId: 14, userId: 1 },
-    //   { id: 5, postId: 15, userId: 1 }
-    // ];
-    // expect(postQueue.postQueue).toEqual(items);
-
 
   });
 
