@@ -24,7 +24,7 @@ export default function DropdownButton({ username, name, birth, memberSeq, conne
 
   function rokafDropdownItem() {
     if (connect) {
-      return <DropdownItem className="text-left" key="rokaf" onClick={() => window.open(rokafUrl)}>기훈단 사이트</DropdownItem >
+      return <DropdownItem className="text-left" key="rokaf" onClick={() => window.open(rokafUrl)}>기본군사훈련단</DropdownItem >
     }
     return <DropdownItem className="p-0"></DropdownItem>
   }
@@ -42,7 +42,10 @@ export default function DropdownButton({ username, name, birth, memberSeq, conne
           {profileDropdownItem()}
           <DropdownItem className="text-left" key="mail" onClick={() => router.push(`/mail/${username}`)}>편지 작성</DropdownItem>
           <DropdownItem className="text-left" key="mails" onClick={() => router.push(`/mails/${username}`)}>받은 편지함</DropdownItem>
+        </DropdownSection>
+        <DropdownSection showDivider>
           {rokafDropdownItem()}
+          <DropdownItem className="text-left" key="image" onClick={() => window.open(`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893231&siteId=last2&menuUIType=sub`)}>훈련병 사진</DropdownItem>
         </DropdownSection>
         <DropdownSection>
           <DropdownItem className="text-left" key="report" onClick={() => router.push(`/report`)}>문의사항</DropdownItem>
