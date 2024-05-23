@@ -1,5 +1,5 @@
 // [입대일, 전역일]
-const store: { [key: number]: [string, string] } = {
+export const store: { [key: number]: [string, string] } = {
   830: ["2021-09-06", "2023-06-05"],
   831: ["2021-10-12", "2023-07-11"],
   832: ["2021-11-08", "2023-08-07"],
