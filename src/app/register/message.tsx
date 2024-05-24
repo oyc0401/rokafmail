@@ -1,9 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./register.module.css";
-import { useStore, useStoreBase } from "./model";
+import { useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
-import { usePathname, useSearchParams } from "next/navigation";
 import { registerApi } from "src/app/api/register/register";
 import {
   InputField,
@@ -13,8 +12,8 @@ import {
   BasicFooter,
 } from "src/components";
 
-import axios from "axios";
 import crypto from "crypto";
+import { validateMessage } from "src/utils/validate";
 export default function Message() {
   const {
     generation,
@@ -31,7 +30,6 @@ export default function Message() {
 
   const router = useRouter();
 
-  const canSubmit = () => validM(message).valid;
 
   async function send() {
     let encryptedPassword = crypto
@@ -71,7 +69,11 @@ export default function Message() {
     }
   }
 
-  const messageValidation = validM(message);
+  const messageValidation = messageValid(message);
+
+  const canSubmit = () => messageValidation.status == 'valid';
+
+
   return (
     <>
       <div
@@ -97,7 +99,7 @@ export default function Message() {
                 value={message}
                 onChange={setMessage}
                 helpMessage={messageValidation.text}
-                color={messageValidation.color}
+                color={messageValidation.status}
               />
             </div>
             <div style={{ flex: 1 }}></div>
@@ -127,14 +129,16 @@ export default function Message() {
   );
 }
 
-function validM(message) {
+function messageValid(message: string) {
   // 빈칸일 때
-  if (message == "") return { text: "", valid: false };
+  if (message == "") return { status: 'default', text: "" };
 
-  // 너무 많을 때
-  if (50 < message.length)
-    return { text: "글이 너무 길어요", color: "warn", valid: false };
+  try {
+    validateMessage(message);
+  } catch (error) {
+    return { status: 'warn', text: error.message };
+  }
 
   // 통과
-  return { text: "", color: "great", valid: true };
+  return { status: 'valid', text: "" };
 }
