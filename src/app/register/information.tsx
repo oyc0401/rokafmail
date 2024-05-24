@@ -11,6 +11,7 @@ import {
   BasicFooter,
 } from "src/components";
 import { NavHeaderHome } from "src/components";
+import { RecommendGeneration } from "src/lib/time/recommendDate";
 export default function Information() {
   const { generation, name, birth, setGeneration, setName, setBirth, next } =
     useStoreBase();
@@ -21,7 +22,7 @@ export default function Information() {
   const click = (event) => {
     event.preventDefault();
     if (!canSubmit()) return;
-    
+
     if (canSubmit()) next();
   };
 
@@ -30,7 +31,7 @@ export default function Information() {
   const birthValidation = validB(birth);
   return (
     <>
-     
+
       <BasicFormArea>
         <BasicHeader>
           편지 주소를 확인하기 위해
@@ -42,7 +43,7 @@ export default function Information() {
             <div className="pb-12 w-full">
               <InputField
                 label="기수"
-                placeholder="기수를 입력해주세요 예시) 858"
+                placeholder={`기수를 입력해주세요 예시) ${RecommendGeneration.getGeneration()}`}
                 value={generation}
                 onChange={setGeneration}
                 helpMessage={generationValidation.text}
@@ -86,14 +87,14 @@ export default function Information() {
 
 function validG(generation) {
   // 빈칸일 때
-  if (generation == "") return { text: "예시) 858", valid: false };
+  if (generation == "") return { text: `예시) ${RecommendGeneration.getGeneration()}`, valid: false };
 
   // 숫자가 아닌 다른문자 입력
   if (!/^\d+$/.test(generation))
     return { text: "숫자만 입력해주세요", color: "warn", valid: false };
 
   // 작성중
-  if (Number(generation) < 100) return { text: "예시) 858", valid: false };
+  if (Number(generation) < 100) return { text: `예시) ${RecommendGeneration.getGeneration()}`, valid: false };
 
   if (isDischarged(Number(generation)))
     return { text: "이미 전역한 기수예요", color: "warn", valid: false };
@@ -102,7 +103,7 @@ function validG(generation) {
     return { text: "입영기수가 아니예요", color: "warn", valid: false };
 
   // 통과
-  return { text: "예시) 858", valid: true };
+  return { text: `예시) ${RecommendGeneration.getGeneration()}`, valid: true };
 }
 
 function validN(name) {

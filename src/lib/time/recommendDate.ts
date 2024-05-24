@@ -2,8 +2,43 @@ import { store } from './DB'
 
 import dayjs from 'dayjs';
 
-// 날짜에 따른 추천하는 기수 보여주기
-export function getRecommendGeneration(date: Date): number {
+/**
+ * 날짜에 따른 추천하는 기수 보여주기
+ * 전역변수에 저장해서 하루에 한번만 실행 됌
+ */
+export class RecommendGeneration {
+
+  private static generation: number;
+  private static lastUpdated?: Date;
+
+  static getGeneration() {
+    if (!RecommendGeneration.lastUpdated) {
+      const init = getRecommendGenerationBinary(new Date());
+      RecommendGeneration.setGeneration(init)
+      return RecommendGeneration.generation;
+    }
+
+    if (dayjs(RecommendGeneration.lastUpdated).isBefore(dayjs().subtract(1, 'day'))) {
+      const init = getRecommendGenerationBinary(new Date());
+      RecommendGeneration.setGeneration(init)
+      return RecommendGeneration.generation;
+    }
+
+    return RecommendGeneration.generation;
+  }
+
+  private static setGeneration(generation: number) {
+    RecommendGeneration.generation = generation;
+    RecommendGeneration.lastUpdated = new Date();
+  }
+
+}
+
+/**
+ * 날짜에 따른 추천하는 기수 보여주기
+ * (이분탐색)
+ */
+export function getRecommendGenerationBinary(date: Date): number {
   const targetDate = dayjs(date);
   const generations = Object.keys(store).map(Number); // store의 키는 이미 정렬되어 있다고 가정
 
