@@ -10,6 +10,7 @@ import {
   BasicBody,
   BasicFooter,
 } from "src/components";
+import { validatePassword, validateUsername } from "src/utils/validate";
 
 export default function Account() {
   const {
@@ -23,56 +24,64 @@ export default function Account() {
     prev,
   } = useStoreBase();
 
-  const clickUsernameDup = useRef(false);
-  const [validUser, setValidUser] = useState(false);
+  const [isDuplicated, setIsDuplicated] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  let [loading, setLoading] = useState(false);
-  const load = useRef(false);
+  const clickUsernameBtn = useRef(false);
+  const isWaitResponse = useRef(false);
 
   function editUsername(text) {
-    load.current = false;
+    isWaitResponse.current = false;
     setUsername(text);
-    clickUsernameDup.current = false;
-    setValidUser(false);
+    clickUsernameBtn.current = false;
+    setIsDuplicated(false);
   }
 
   async function checkUsername(event) {
     event.preventDefault();
-    if (!validU(username).valid) return;
-    if (load.current) return;
-    setLoading(true);
-    load.current = true;
-    const val = await duplicateUsername(username);
-    // console.log(val)
 
-    if (load.current) {
-      setValidUser(!val);
-      clickUsernameDup.current = true;
+    // 이미 검사 중 이면 검사를 하지 않음
+    if (isWaitResponse.current) return;
+
+    // 유효한 아이디가 아니면 중복 검사를 하지 않는다.
+    try {
+      validateUsername(username);
+    } catch (e) {
+      return;
     }
+
+    // 버튼 로딩바 표시
+    setLoading(true);
+
+    // 서버에서 중복인지 검사한다.
+    isWaitResponse.current = true;
+    const val = await duplicateUsername(username);
+    // 서버에서 값이 오기전에 문자열을 수정했는지 확인
+    if (isWaitResponse.current) {
+      setIsDuplicated(val);
+      clickUsernameBtn.current = true;
+    }
+    isWaitResponse.current = false;
+
+    // 버튼 로딩바 끄기
     setLoading(false);
-    load.current = false;
   }
 
-  function validUUU() {
-    if (!clickUsernameDup.current) return { text: "", valid: false };
+  const UsernameValidation = usernameValid(username, isDuplicated, clickUsernameBtn.current);
+  const passwordValidation = passwordValid(password);
+  const repasswordValidation = repasswordValid(repassword, password);
 
-    return validUser
-      ? { text: "사용할 수 있는 아이디입니다,", color: "great", valid: true }
-      : { text: "이미 사용중인 아이디 입니다", color: "warn", valid: false };
+  const canSubmit = () => {
+    return UsernameValidation.status == 'valid'
+      && passwordValidation.status == 'valid'
+      && repasswordValidation.status == 'valid'
   }
-
-  const canSubmit = () =>
-    validUser && validP(password).valid && validR(repassword, password).valid;
 
   const click = (event) => {
     event.preventDefault();
     if (!canSubmit()) return;
     if (canSubmit()) next();
   };
-
-  const UsernameValidation = validUUU();
-  const passwordValidation = validP(password);
-  const repasswordValidation = validR(repassword, password);
 
   return (
     <BasicFormArea>
@@ -88,7 +97,7 @@ export default function Account() {
           value={username}
           onChange={editUsername}
           helpMessage={UsernameValidation.text}
-          color={UsernameValidation.color}
+          color={UsernameValidation.status}
         >
           <button
             type="button"
@@ -118,7 +127,7 @@ export default function Account() {
           placeholder="비밀번호를 입력해주세요"
           onChange={setPassword}
           helpMessage={passwordValidation.text}
-          color={passwordValidation.color}
+          color={passwordValidation.status}
         />
         <InputField
           label="비밀번호 재확인"
@@ -128,7 +137,7 @@ export default function Account() {
           placeholder="비밀번호를 다시 입력해주세요"
           onChange={setRepassword}
           helpMessage={repasswordValidation.text}
-          color={repasswordValidation.color}
+          color={repasswordValidation.status}
         />
       </BasicBody>
       <BasicFooter>
@@ -147,42 +156,45 @@ export default function Account() {
   );
 }
 
-function validU(username) {
-  if (username == "") {
-    return { text: "아이디를 입력해주세요", color: "warn", valid: false };
+function usernameValid(username: string, duplicate: boolean, touchBtn: boolean) {
+  if (!touchBtn && username == "") return { status: 'default', text: "아이디를 입력해주세요" };
+  if (!touchBtn) return { status: 'default', text: "" };
+  if (username == "") return { status: 'warn', text: "아이디를 입력해주세요" };
+
+  try {
+    validateUsername(username);
+  } catch (error) {
+    return { status: 'warn', text: error.message };
   }
 
-  return {
-    text: "사용할 수 있는 아이디입니다,",
-    color: "great",
-    valid: true,
-  };
+  if (touchBtn && duplicate) {
+    return { status: 'warn', text: '이미 사용중인 아이디 입니다' };
+  }
+
+  return { status: 'valid', text: "사용할 수 있는 아이디입니다" };
 }
 
-function validP(password) {
+function passwordValid(password: string) {
   // 빈칸일 때
-  if (password == "") return { text: "", valid: false };
+  if (password == "") return { status: 'default', text: "" };
 
-  // 짧을 때
-  if (password.length < 4)
-    return {
-      text: "비밀번호는 4자리 이상이여야 합니다",
-      color: "warn",
-      valid: false,
-    };
+  try {
+    validatePassword(password);
+  } catch (error) {
+    return { status: 'warn', text: error.message };
+  }
 
   // 통과
-  return { text: "", color: "great", valid: true };
+  return { status: 'valid', text: "사용할 수 있는 비밀번호입니다" };
 }
 
-function validR(repassword, password) {
+function repasswordValid(repassword: string, password: string) {
   // 빈칸일 때
-  if (repassword == "") return { text: "", valid: false };
+  if (repassword == "") return { status: 'default', text: "" };
 
   // 비밀번호가 같지 않음
-  if (repassword != password)
-    return { text: "비밀번호가 같지 않습니다", color: "warn", valid: false };
+  if (repassword != password) return { status: 'warn', text: "비밀번호가 같지 않습니다" };
 
   // 통과
-  return { text: "", color: "great", valid: true };
+  return { status: 'valid', text: "" };
 }
