@@ -1,8 +1,5 @@
 "use client";
-import styles from "./register.module.css";
-import { useStore, useStoreBase } from "./model";
-import { knowTime, isDischarged } from "src/lib/time";
-
+import { useStoreBase } from "./model";
 import {
   InputField,
   BasicFormArea,
@@ -10,14 +7,11 @@ import {
   BasicBody,
   BasicFooter,
 } from "src/components";
-import { NavHeaderHome } from "src/components";
 import { RecommendGeneration } from "src/lib/time/recommendDate";
+import { validateBirth, validateGeneration, validateName } from "src/utils/validate";
 export default function Information() {
   const { generation, name, birth, setGeneration, setName, setBirth, next } =
     useStoreBase();
-
-  const canSubmit = () =>
-    validG(generation).valid && validN(name).valid && validB(birth).valid;
 
   const click = (event) => {
     event.preventDefault();
@@ -26,12 +20,17 @@ export default function Information() {
     if (canSubmit()) next();
   };
 
-  const generationValidation = validG(generation);
-  const nameValidation = validN(name);
-  const birthValidation = validB(birth);
+  const generationValidation = generationValid(generation);
+  const nameValidation = nameValid(name);
+  const birthValidation = birthValid(birth);
+
+  const canSubmit = () =>
+    generationValidation.status == 'valid'
+    && nameValidation.status == 'valid'
+    && birthValidation.status == 'valid'
+
   return (
     <>
-
       <BasicFormArea>
         <BasicHeader>
           편지 주소를 확인하기 위해
@@ -47,7 +46,7 @@ export default function Information() {
                 value={generation}
                 onChange={setGeneration}
                 helpMessage={generationValidation.text}
-                color={generationValidation.color}
+                color={generationValidation.status}
               />
               <InputField
                 label="이름"
@@ -55,7 +54,7 @@ export default function Information() {
                 value={name}
                 onChange={setName}
                 helpMessage={nameValidation.text}
-                color={nameValidation.color}
+                color={nameValidation.status}
               />
               <InputField
                 label="생년월일"
@@ -63,7 +62,7 @@ export default function Information() {
                 value={birth}
                 onChange={setBirth}
                 helpMessage={birthValidation.text}
-                color={birthValidation.color}
+                color={birthValidation.status}
               />
             </div>
             <div style={{ flex: 1 }}></div>
@@ -85,54 +84,53 @@ export default function Information() {
   );
 }
 
-function validG(generation) {
+function generationValid(generation: string) {
   // 빈칸일 때
-  if (generation == "") return { text: `예시) ${RecommendGeneration.getGeneration()}`, valid: false };
+  if (generation == "")
+    return { status: 'default', text: `예시) ${RecommendGeneration.getGeneration()}` };
 
-  // 숫자가 아닌 다른문자 입력
   if (!/^\d+$/.test(generation))
-    return { text: "숫자만 입력해주세요", color: "warn", valid: false };
+    return { status: 'warn', text: '숫자만 입력해주세요' };
 
   // 작성중
-  if (Number(generation) < 100) return { text: `예시) ${RecommendGeneration.getGeneration()}`, valid: false };
+  if (Number(generation) < 100)
+    return { status: 'default', text: `예시) ${RecommendGeneration.getGeneration()}` };
 
-  if (isDischarged(Number(generation)))
-    return { text: "이미 전역한 기수예요", color: "warn", valid: false };
-
-  if (!knowTime(Number(generation)))
-    return { text: "입영기수가 아니예요", color: "warn", valid: false };
+  try {
+    validateGeneration(Number(generation));
+  } catch (error) {
+    return { status: 'warn', text: error.message };
+  }
 
   // 통과
-  return { text: `예시) ${RecommendGeneration.getGeneration()}`, valid: true };
+  return { status: 'valid', text: `가입 가능한 기수 입니다.` };
 }
 
-function validN(name) {
+function nameValid(name: string) {
   // 빈칸일 때
-  if (name == "") return { text: "", valid: false };
+  if (name == "") return { status: 'default', text: "" };
+
+  try {
+    validateName(name);
+  } catch (error) {
+    return { status: 'warn', text: error.message };
+  }
 
   // 통과
-  return { text: "", color: "great", valid: true };
+  return { status: 'valid', text: "" };
 }
 
-function validB(birth) {
+function birthValid(birth: string) {
   // 빈칸일 때
-  if (birth == "") return { text: "예시) 20020101", valid: false };
+  if (birth == "") return { status: 'default', text: "예시) 20020101" };
 
-  // 숫자가 아닌 문자 입력
-  if (!/^\d+$/.test(birth))
-    return { text: "숫자만 입력해주세요.", color: "warn", valid: false };
-
-  // 8자리 미만
-  if (birth.length < 8) return { text: "예시) 20020101", valid: false };
-
-  // 8자리 초과
-  if (birth.length > 8)
-    return {
-      text: "생년월일 8자리를 입력해주세요",
-      color: "warn",
-      valid: false,
-    };
+  try {
+    validateBirth(birth);
+  } catch (error) {
+    return { status: 'warn', text: error.message };
+  }
 
   // 통과
-  return { text: "예시) 20020101", valid: true };
+  return { status: 'valid', text: "" };
 }
+
