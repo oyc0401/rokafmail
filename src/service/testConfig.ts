@@ -10,18 +10,18 @@ import { RetryService } from './retry/retryService';
 import { LogConfig } from 'config/logger';
 
 export function testBean() {
-  let postRepository = new MemoryPostRepository();
-  let postQueue = new MemoryPostQueue(postRepository);
+  const postRepository = new MemoryPostRepository();
+  const postQueue = new MemoryPostQueue(postRepository);
 
-  let rokafClient = new MockRokafClient();
-  let mailService = new MailService({ postRepository, postQueue, rokafClient });
-  let userRepository = new MemoryUserRepository();
-  let userQueue = new MemoryUserQueue(userRepository);
+  const rokafClient = new MockRokafClient();
+  const mailService = new MailService({ postRepository, postQueue, rokafClient });
+  const userRepository = new MemoryUserRepository();
+  const userQueue = new MemoryUserQueue(userRepository);
   postRepository.join(userRepository);
 
-  let userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
-  let retryService = new RetryService({ mailService, userService, postQueue, userQueue });
-  let logger = new MemoryLogger();
+  const userService = new UserService({ userRepository, userQueue, rokafClient, mailService });
+  const retryService = new RetryService({ mailService, userService, postQueue, userQueue });
+  const logger = new MemoryLogger();
   LogConfig.setLogger(logger);
 
   return {

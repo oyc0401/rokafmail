@@ -10,12 +10,12 @@ import { Checkbox, Divider } from "@nextui-org/react";
 
 export function Paper({ updateProps }) {
 
-  const { title, contents, name, relationship,isPublic } = updateProps;
+  const { title, contents, name, relationship, isPublic } = updateProps;
   const { initial } = useStore();
   useEffect(() => {
-    initial({ name, relationship, title, contents,isPublic });
-return   initial({ name, relationship, title, contents,isPublic });
-  }, [initial]);
+    initial({ name, relationship, title, contents, isPublic });
+    return initial({ name, relationship, title, contents, isPublic });
+  }, [initial, name, relationship, title, contents, isPublic]);
 
 
   return (
@@ -42,14 +42,14 @@ return   initial({ name, relationship, title, contents,isPublic });
 }
 
 function Title() {
-  const {title, setTitle, setClick } = useStore();
+  const { title, setTitle, setClick } = useStore();
   return (
     <div className="pb-4">
       <input
         className={`${styles.form} text-lg font-medium`}
         type="text"
         placeholder="제목"
-         value={title}
+        value={title}
         onChange={(e) => {
           setTitle(e.target.value);
           setClick(true);
@@ -96,7 +96,7 @@ function Contents() {
 }
 
 function Name() {
-  const { setName,name, relationship,setRelationship, setClick } = useStore();
+  const { setName, name, relationship, setRelationship, setClick } = useStore();
 
   return (
     <div className="pb-5">
@@ -124,7 +124,7 @@ function Name() {
             type="text"
             style={{ flex: "1" }}
             placeholder="관계"
-             value={relationship}
+            value={relationship}
             onChange={(e) => {
               setRelationship(e.target.value);
               setClick(true);
@@ -137,7 +137,7 @@ function Name() {
 }
 
 function Password() {
-  const { password, setPassword,isPublic, setIsPublic, setClick } = useStore();
+  const { password, setPassword, isPublic, setIsPublic, setClick } = useStore();
 
   return (
     <div className="pb-1">

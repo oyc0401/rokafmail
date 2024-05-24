@@ -20,7 +20,7 @@ dayjs.extend(timezone);
 
 export function Table({ data, tableName }) {
   // console.log(data);
- 
+
   if (data.length == 0) {
     return (
       <>
@@ -29,7 +29,7 @@ export function Table({ data, tableName }) {
       </>
     );
   }
-  let columns = Object.keys(data[0]);
+  const columns = Object.keys(data[0]);
   // console.log(columns);
 
   async function clickEvent(row) {
@@ -73,7 +73,7 @@ export function Table({ data, tableName }) {
   );
 }
 
-const width=[60,100,700,60,70,80]
+const width = [60, 100, 700, 60, 70, 80]
 
 function TableRow({ columns, row, event }) {
   // return (<Dropdown>
@@ -83,7 +83,7 @@ function TableRow({ columns, row, event }) {
   //         {renderCellValue(row[column])}
   //       </td>
   //     ))}</div>
-    
+
   //   </DropdownTrigger>
   //   <DropdownMenu aria-label="Static Actions">
   //     <DropdownItem key="new">New file</DropdownItem>
@@ -153,9 +153,8 @@ function SelectButton({ now, path, children }) {
   return (
     <Link
       href={`/admin/table/${path}`}
-      className={`${
-        now == path ? `bg-gray-500 text-white font-bold` : `bg-white`
-      }border border-gray-300 px-3 py-2 `}
+      className={`${now == path ? `bg-gray-500 text-white font-bold` : `bg-white`
+        }border border-gray-300 px-3 py-2 `}
     >
       {children}
     </Link>

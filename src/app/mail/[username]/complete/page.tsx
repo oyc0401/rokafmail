@@ -16,7 +16,7 @@ import { CheckCircle } from "public/assets/index";
 export default async function Complete({ searchParams, params }) {
   //const sc = searchParams.sc;
   const username = decodeURI(params.username);
-  let user = await User.findByUsername(username);
+  const user = await User.findByUsername(username);
 
   if (!user) {
     notFound();
@@ -33,7 +33,7 @@ export default async function Complete({ searchParams, params }) {
   // 편지 시작 이전에 보냄
   if (mailStartIsFuture(user.generation)) {
     const start = getMailStart(user.generation);
-    let diff = diffDay(start);
+    const diff = diffDay(start);
     page = <Later day={diff} name={user.name}></Later>;
     helpAdditional = `${start.format("YY.MM.DD")}부터 `;
   }

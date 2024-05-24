@@ -8,7 +8,7 @@ export default function Register() {
   const { reset } = useStoreBase();
   useEffect(() => {
     // 새로고침 막기(조건 부여 가능)
-    window.onbeforeunload = function () {
+    window.onbeforeunload = function() {
       return true;
     };
     return () => {
@@ -19,7 +19,7 @@ export default function Register() {
 
   const page = useStore.use.page();
 
-  let pages = {
+  const pages = {
     0: <Information />,
     1: <Account />,
     2: <Message />,

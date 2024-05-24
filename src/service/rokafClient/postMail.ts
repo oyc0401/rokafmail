@@ -14,7 +14,7 @@ export async function postMail(
   { name, relationship, title, contents, password, memberSeq, sodae },
   createdAt: Date,
 ): Promise<RokafMail> {
-  let data = new FormData();
+  const data = new FormData();
 
   const dateJs = parseKorea(createdAt);
   const formattedDate = dateJs.format("YYYY.MM.DD HH:mm:ss");

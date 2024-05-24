@@ -23,7 +23,7 @@ export function DeleteUser({ username }) {
     ) {
       const pw = prompt("비밀번호를 입력해주세요.");
       if (pw) {
-        let encryptedPassword = crypto
+        const encryptedPassword = crypto
           .createHash("sha256")
           .update(pw)
           .digest("hex");

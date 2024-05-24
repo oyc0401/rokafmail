@@ -2,7 +2,6 @@ import { getNow, serveStatus, Status } from "src/lib/time";
 import { PostRepository } from "src/repository/post/postRepository";
 import { createLogger } from "config/logger";
 import { PostQueue } from "src/repository/postQueue/postQueue";
-import dayjs from "dayjs";
 import { RokafClientInterface } from "../rokafClient/RokafClientInterface";
 const logger = createLogger("MailService");
 
@@ -144,7 +143,7 @@ export class MailService {
 
   // 해당 유저의 모든 미발송 편지들을 다시 보내기
   async sendUnpostedMails(userId: number) {
-    let posts = await this.postRepository.findNotPostedByUserId(userId);
+    const posts = await this.postRepository.findNotPostedByUserId(userId);
 
     for (let i = 0; i < posts.length; i++) {
       const post = posts[i];

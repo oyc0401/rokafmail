@@ -17,12 +17,12 @@ export function Client({ username }) {
     e.preventDefault();
     if (!canSubmit()) return;
 
-    let encryptedOriginPassword = crypto
+    const encryptedOriginPassword = crypto
       .createHash("sha256")
       .update(originPassword)
       .digest("hex");
 
-    let encryptedPassword = crypto
+    const encryptedPassword = crypto
       .createHash("sha256")
       .update(password)
       .digest("hex");

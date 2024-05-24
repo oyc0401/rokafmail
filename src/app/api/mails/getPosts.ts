@@ -11,16 +11,16 @@ export async function getPosts(username: string) {
 
 export async function getPostQueue(username: string) {
 
-  let queuePrivate = await Post.findPrivateNotPostedByUsername(username);
-  let queuePublic = await Post.findPublicNotPostedByUsername(username);
+  const queuePrivate = await Post.findPrivateNotPostedByUsername(username);
+  const queuePublic = await Post.findPublicNotPostedByUsername(username);
   const queues = [...queuePrivate, ...queuePublic];
   const queueSorted = queues.sort((a, b) => a.id < b.id ? -1 : 1);
 
   return queueSorted
 }
 export async function getunc(username: string) {
-  let unconnectedPrivate = await UnconnectedPost.findPrivateByUsername(username);
-  let unconnectedPublic = await UnconnectedPost.findPublicByUsername(username);
+  const unconnectedPrivate = await UnconnectedPost.findPrivateByUsername(username);
+  const unconnectedPublic = await UnconnectedPost.findPublicByUsername(username);
   const unconnects = [...unconnectedPrivate, ...unconnectedPublic];
   const unconnectsSorted = unconnects.sort((a, b) => a.id > b.id ? -1 : 1);
 

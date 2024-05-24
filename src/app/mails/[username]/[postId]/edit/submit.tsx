@@ -8,8 +8,8 @@ import { useStore } from "./model";
 import { validN, validR, validC, validT, validP } from "./valid";
 import { editPost } from "./api";
 
-export function Submit({ postId, username,posted, url }) {
-  const { name, relationship, title, contents, password,isPublic } = useStore();
+export function Submit({ postId, username, posted, url }) {
+  const { name, relationship, title, contents, password, isPublic } = useStore();
 
   const router = useRouter();
 
@@ -22,16 +22,16 @@ export function Submit({ postId, username,posted, url }) {
   }
 
   async function click() {
-    const result = await editPost({postId, username, name, relationship, title, contents, password,isPublic });
+    const result = await editPost({ postId, username, name, relationship, title, contents, password, isPublic });
 
-    if(result == '수정완료'){
+    if (result == '수정완료') {
       router.replace(`/mails/${username}/${postId}`);
-    }else{
+    } else {
       alert(result);
     }
   }
 
- async  function onDelete(){
+  async function onDelete() {
     var password = prompt("편지 삭제를 위해 비밀번호를 입력해주세요.", "");
 
     if (password) {
@@ -40,7 +40,7 @@ export function Submit({ postId, username,posted, url }) {
       if (response.status == 200) {
         if (posted) {
           // 이미 발송된 편지
-          let isConfirm = confirm(
+          const isConfirm = confirm(
             "편지가 삭제되었습니다.\n공군 기훈단 사이트에서도 해당 편지를 찾아 삭제해주십시오.\n확인을 누를시 해당 페이지로 이동합니다.",
           );
           if (isConfirm) {
@@ -62,7 +62,7 @@ export function Submit({ postId, username,posted, url }) {
     <>
       <footer className="container max-w-3xl mx-auto px-4">
         <div className="row pt-2 sm:pt-3 pb-8">
-          <button className={`submit mini hidden glxfd:block`} style={{background:'red'}} onClick={onDelete}>
+          <button className={`submit mini hidden glxfd:block`} style={{ background: 'red' }} onClick={onDelete}>
             삭제
           </button>
           <button
@@ -73,7 +73,7 @@ export function Submit({ postId, username,posted, url }) {
           </button>
         </div>
       </footer>
-     
+
     </>
   );
 }

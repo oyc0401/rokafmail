@@ -30,7 +30,7 @@ export async function InfoAll() {
 
   const ddd = parseKorea(new Date('2024-02-05'))
 
-  let dateObj = {};
+  const dateObj = {};
 
   for (const post of posts) {
     const date = parseKorea(post.createdAt);
@@ -40,7 +40,7 @@ export async function InfoAll() {
     }
   }
 
-  let userObj = {}
+  const userObj = {}
   for (const user of users) {
     const date = parseKorea(user.createdAt);
     if (ddd.isBefore(date)) {

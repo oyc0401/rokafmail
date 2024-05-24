@@ -33,7 +33,7 @@ export class RetryService {
     const now = new Date();
 
     let i = 0;
-    let queueSize = await this.postQueue.size();
+    const queueSize = await this.postQueue.size();
 
     try {
       while (!(await this.postQueue.empty())) {
@@ -68,7 +68,7 @@ export class RetryService {
     const now = new Date();
 
     let i = 0;
-    let queueSize = await this.userQueue.size();
+    const queueSize = await this.userQueue.size();
 
     try {
       while (!(await this.userQueue.empty())) {

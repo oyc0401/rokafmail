@@ -5,8 +5,8 @@ import { MemoryUserRepository } from '../user/memoryUserRepository';
 describe('Repository Test', () => {
 
   test('PostRepository 삽입', async () => {
-    let memoryPostRepository = new MemoryPostRepository();
-    let userRepository = new MemoryUserRepository();
+    const memoryPostRepository = new MemoryPostRepository();
+    const userRepository = new MemoryUserRepository();
     memoryPostRepository.join(userRepository);
 
     const user = { g: '2' }
@@ -25,8 +25,8 @@ describe('Repository Test', () => {
   });
 
   test('PostRepository 업데이트', async () => {
-    let memoryPostRepository = new MemoryPostRepository();
-    let userRepository = new MemoryUserRepository();
+    const memoryPostRepository = new MemoryPostRepository();
+    const userRepository = new MemoryUserRepository();
     memoryPostRepository.join(userRepository);
     const originalPost = {
       userId: 1,

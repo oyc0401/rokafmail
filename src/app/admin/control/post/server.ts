@@ -30,7 +30,7 @@ export async function forcePost(postId) {
       return "memberSeq or sodae is null";
     }
     const rokafClient = new RokafClient();
-    let postComplete = await rokafClient.postMail(
+    const postComplete = await rokafClient.postMail(
       {
         name,
         relationship,

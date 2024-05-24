@@ -29,7 +29,7 @@ export async function InfoGraph({ generation, leftDate }) {
     }
   });
 
-  let dateObj = {};
+  const dateObj = {};
 
   for (const post of posts) {
     const date = parseKorea(post.createdAt);
@@ -37,7 +37,7 @@ export async function InfoGraph({ generation, leftDate }) {
     dateObj[key] = (dateObj[key] ?? 0) + 1;
   }
 
-  let userObj = {}
+  const userObj = {}
   for (const user of users) {
     const date = parseKorea(user.createdAt);
     const key = `${date.format('YYYYMMDD')}`;
@@ -46,6 +46,6 @@ export async function InfoGraph({ generation, leftDate }) {
 
 
   return (
-      <Graph label={generation} postCount={dateObj} userCount={userObj} leftDate={leftDate}></Graph>
+    <Graph label={generation} postCount={dateObj} userCount={userObj} leftDate={leftDate}></Graph>
   );
 }

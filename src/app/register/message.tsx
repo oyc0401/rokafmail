@@ -32,7 +32,7 @@ export default function Message() {
 
 
   async function send() {
-    let encryptedPassword = crypto
+      const encryptedPassword = crypto
       .createHash("sha256")
       .update(password)
       .digest("hex");

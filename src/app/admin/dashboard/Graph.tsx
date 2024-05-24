@@ -31,13 +31,13 @@ export function Graph({ postCount, userCount, label, leftDate }) {
     }
   }
 
-  let keys: string[] = [];
+  const keys: string[] = [];
   for (const key in mergedData) {
     keys.push(key);
   }
   keys.sort();
 
-  let realdata: { name; user; post }[] = [];
+  const realdata: { name; user; post }[] = [];
   let registersum = 0;
   let postsum = 0;
 

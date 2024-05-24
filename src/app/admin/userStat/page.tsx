@@ -10,13 +10,13 @@ export default async function UserStat() {
   const users = await User.findAll();
   const posts = await Post.findAll();
 
-  let userMap: Record<string, Count> = {};
+  const userMap: Record<string, Count> = {};
 
-  for (let user of users) {
+  for (const user of users) {
     userMap[user.id] = { userId: user.id, username: user.username, count: 0 };
   }
 
-  for (let post of posts) {
+  for (const post of posts) {
     const userId = post.userId;
     userMap[userId].count++;
   }
@@ -26,7 +26,7 @@ export default async function UserStat() {
   );
 
   let activateAccountCount = 0;
-  for (let key in userMap) {
+  for (const key in userMap) {
     const user = userMap[key];
     if (user.count > 0) {
       activateAccountCount++;
@@ -40,7 +40,7 @@ export default async function UserStat() {
 
       <h2 className="text-lg font-bold">편지 개수</h2>
       <p className="pb-4">{`${posts.length}통`}</p>
-      
+
       <h2 className="text-lg font-bold">Rank</h2>
       <div className="pb-4">
         {sortedUsers.map((user) => (

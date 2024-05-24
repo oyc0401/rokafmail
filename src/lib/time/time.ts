@@ -28,13 +28,13 @@ dayjs.tz.setDefault("Asia/Seoul") // tz로 dayjs를 만들면 해당시간의 �
 function getProgramStart(generation: number): Dayjs {
   const enter = getEnter(generation);
 
-  let dayOfWeek = enter.day();
+  const dayOfWeek = enter.day();
   return enter.subtract(dayOfWeek - 1, "day");
 }
 
 // 입대
 export function getEnter(generation: number): Dayjs {
-  let [start] = timeDB(generation);
+  const [start] = timeDB(generation);
 
   return dayjs.tz(start);
 }
@@ -55,7 +55,7 @@ export function getCompletion(generation: number): Dayjs {
 
 // 전역
 export function getDischarge(generation: number): Dayjs {
-  let [, end] = timeDB(generation);
+  const [, end] = timeDB(generation);
   return dayjs.tz(end);
 }
 

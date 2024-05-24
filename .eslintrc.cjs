@@ -17,7 +17,7 @@ module.exports = {
     // semi: 'error',
     // 기존 프로젝트에서는 'warn'으로 취급되지만, 'error'로 설정하면 에러로 취급한다.
 
-    // 'prefer-const': 'warn',
+    'prefer-const': 'warn',
     // 'no-var': 'off',
     // 'no-undef': 'off',
     // 'no-unused-vars': 'off',
@@ -38,5 +38,5 @@ module.exports = {
     // '@typescript-eslint/no-redundant-type-constituents': 'off',
 
   },
-  ignorePatterns: ['*.js'],
+  ignorePatterns: ['*.js', "**/(admin)/**"],
 };
