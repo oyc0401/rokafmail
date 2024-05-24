@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/mails/",
+      disallow: ["/mail/", "/mails/"]
     },
     sitemap: "https://rokafmail.kr/sitemap.xml",
   };
