@@ -1,3 +1,3 @@
-export * from './userValitate';
-export * from './mailValitate';
+export * from './userValidate';
+export * from './mailValidate';
 export * from './validateErrorType';

@@ -21,3 +21,11 @@ export function validateRelationship(relationship: string) {
     throw new ValidateError("관계는 100자 이하여야합니다.");
   }
 }
+
+export function validateMailPassword(password: string) {
+  if (password.length < 4) throw new ValidateError("비밀번호는 4자리 이상이여야합니다.");
+
+  if (password !== password.trim()) {
+    throw new ValidateError("비밀번호에 띄어쓰기를 포함할 수 없습니다.");
+  }
+}

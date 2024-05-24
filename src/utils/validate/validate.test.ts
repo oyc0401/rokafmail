@@ -7,7 +7,7 @@ import {
   validateHashedPassword,
   validateName,
   validateMessage
-} from './userValitate';
+} from './userValidate';
 import { ValidateError } from './validateErrorType';
 
 describe('입력 폼 유효성 검사', () => {
@@ -62,7 +62,7 @@ describe('입력 폼 유효성 검사', () => {
       expect(() => validatePassword('pass123')).not.toThrow();
     });
 
-    test('비밀번호가 4자 미만', () => {
+    test('비밀번호가 8자 미만', () => {
       expect(() => validatePassword('pas')).toThrow(ValidateError);
     });
 
