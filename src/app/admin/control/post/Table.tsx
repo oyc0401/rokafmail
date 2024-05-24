@@ -26,8 +26,8 @@ import { useEffect } from "react";
 import { enQueue, forcePost } from "./server";
 import { canSearch } from "src/lib/time";
 // import { resend } from "./server";
-var utc = require("dayjs/plugin/utc");
-var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

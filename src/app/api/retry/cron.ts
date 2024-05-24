@@ -3,7 +3,7 @@ import { MailService } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
 import { UserService } from "src/service/user/UserService";
 import { RetryService } from "src/service/retry/retryService";
-var cron = require("node-cron");
+const cron = require("node-cron");
 const logger = makeLogger("repeat");
 
 export class CronStore {

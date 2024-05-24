@@ -1,8 +1,8 @@
 "use client";
 import dayjs from "dayjs";
 import Link from "next/link";
-var utc = require("dayjs/plugin/utc");
-var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
 // import {
 //   Dropdown,

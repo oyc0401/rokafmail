@@ -8,27 +8,18 @@ import {
   TableRow,
   TableCell,
   getKeyValue,
-  Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownSection,
   Pagination,
   SortDescriptor,
   Chip,
 } from "@nextui-org/react";
-import { VerticalDotsIcon } from "../VerticalDotsIcon";
-import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
-var utc = require("dayjs/plugin/utc");
-var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export function DatabaseTable({ data }) {
-  const router = useRouter();
 
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 10;
@@ -48,7 +39,7 @@ export function DatabaseTable({ data }) {
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
-  }, [sortDescriptor,data]);
+  }, [sortDescriptor, data]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -79,7 +70,7 @@ export function DatabaseTable({ data }) {
       }
     >
       <TableHeader>
-        
+
         <TableColumn key="id" allowsSorting>
           Id
         </TableColumn>
@@ -92,7 +83,7 @@ export function DatabaseTable({ data }) {
         <TableColumn key="postId" allowsSorting>
           PostId
         </TableColumn>
-        
+
         <TableColumn key="title" allowsSorting>
           Title
         </TableColumn>
@@ -135,7 +126,7 @@ export function DatabaseTable({ data }) {
                   return (
                     <TableCell>
                       <div className="relative flex justify-end items-center gap-2">
-                      
+
                       </div>
                     </TableCell>
                   );

@@ -3,7 +3,6 @@ import https from "https";
 import FormData from "form-data";
 import { parseKorea } from "src/lib/time";
 
-import cheerio from "cheerio";
 import { parse } from "node-html-parser";
 
 import { makeLogger } from "config/winston";
@@ -37,7 +36,7 @@ export async function postMail(
   data.append("memberSeqVal", memberSeq);
   data.append("sodaeVal", sodae);
   // 7TXYFRbyWor7fK22YBh7L4EWI8BW3WH1xt9TQkOE6VT16srxnF8pkaUT2euc9a4P.AF1302_servlet_CONT21
-  var config = {
+  const config = {
     method: "post",
     url: "https://www.airforce.mil.kr/user/emailPicSaveEmail.action",
     headers: {

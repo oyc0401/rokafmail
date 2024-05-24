@@ -1,9 +1,7 @@
 "use client";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deletePost } from "src/app/api/mails/mail";
 
-import styles from "./page.module.css";
 import { useStore } from "./model";
 import { validN, validR, validC, validT, validP } from "./valid";
 import { editPost } from "./api";
@@ -32,7 +30,7 @@ export function Submit({ postId, username, posted, url }) {
   }
 
   async function onDelete() {
-    var password = prompt("편지 삭제를 위해 비밀번호를 입력해주세요.", "");
+    const password = prompt("편지 삭제를 위해 비밀번호를 입력해주세요.", "");
 
     if (password) {
       const response = await deletePost(postId, password);

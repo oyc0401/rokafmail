@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo,useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -24,8 +24,8 @@ import { useRouter } from "next/navigation";
 // import { enQueue, forcePost } from "./server";
 import { canSearch } from "src/lib/time";
 // import { resend } from "./server";
-var utc = require("dayjs/plugin/utc");
-var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -43,7 +43,7 @@ export function DatabaseTable({ data }) {
     direction: "ascending",
   });
 
-  const sortedItems =useMemo(() => {
+  const sortedItems = useMemo(() => {
     return [...data].sort((a, b) => {
       const first = a[sortDescriptor.column!];
       const second = b[sortDescriptor.column!];

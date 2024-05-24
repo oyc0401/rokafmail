@@ -20,10 +20,10 @@ import {
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "../VerticalDotsIcon";
 import dayjs from "dayjs";
-import { userDoubleCheck,  } from "./server";
+import { userDoubleCheck, } from "./server";
 import { useRouter } from "next/navigation";
-var utc = require("dayjs/plugin/utc");
-var timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone"); // dependent on utc plugin
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -49,7 +49,7 @@ export function DatabaseTable({ data }) {
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
-  }, [sortDescriptor,data]);
+  }, [sortDescriptor, data]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -105,7 +105,7 @@ export function DatabaseTable({ data }) {
         <TableColumn key="action">Action</TableColumn>
       </TableHeader>
       <TableBody items={items} emptyContent={"No rows to display."}>
-        {(item: { id: number; connect: boolean; [key: string]: any }) => (
+        {(item: { id: number; connect: boolean;[key: string]: any }) => (
           <TableRow key={item.id}>
             {(columnKey) => {
               switch (columnKey) {
