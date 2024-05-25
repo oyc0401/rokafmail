@@ -43,4 +43,26 @@ export class PrismaUserQueue {
     return await prisma.usersQueue.count();
   }
 
+  async frontWithUser() {
+    const result = await prisma.usersQueue.findFirst({
+      orderBy: {
+        id: 'asc'
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            birth: true,
+            generation: true,
+            username: true,
+            connect: true
+          }
+        }
+
+      }
+    });
+    if (!result) throw new Error('Queue is empty');
+    return result;
+  }
+
 }
