@@ -20,11 +20,20 @@ describe('User Service Test', () => {
     } = testBean());
   });
 
+  function dummyUser() {
+    const dummyUser = {
+      username: 'testUser',
+      password: 'password123',
+      name: '홍길동',
+      birth: '19900101',
+      generation: 858,
+      message: '안녕하세요!'
+    };
+    return dummyUser;
+  }
+
   describe('회원가입 테스트', () => {
     test('성공적인 회원가입 테스트', async () => {
-      // Username 'testUser'가 중복되지 않음을 가정
-      jest.spyOn(userService, 'existUsername').mockResolvedValue(false);
-
       const registerProps = {
         username: 'testUser',
         password: 'password123',

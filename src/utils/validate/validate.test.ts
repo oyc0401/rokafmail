@@ -59,7 +59,7 @@ describe('입력 폼 유효성 검사', () => {
   // 비밀번호 검증
   describe('validatePassword', () => {
     test('올바른 비밀번호', () => {
-      expect(() => validatePassword('pass123')).not.toThrow();
+      expect(() => validatePassword('pass1234')).not.toThrow();
     });
 
     test('비밀번호가 8자 미만', () => {
