@@ -5,6 +5,7 @@ import { ValidateError, validateBirth, validateGeneration, validateHashedPasswor
 import { RegisterProps, UserService } from "src/service/user/UserService";
 import { bean } from "src/bean/bean";
 import { duplicateUsername } from "./duplicateUsername/serverAction";
+import { Trainee } from "src/service/user/Trainee";
 const logger = makeLogger("register");
 
 /**
@@ -26,7 +27,8 @@ export async function registerApi(registerProps: RegisterProps) {
     }
 
     const userService = new UserService(bean);
-    await userService.register(registerProps);
+    const trainee = new Trainee(registerProps);
+    await userService.AsyncRegisterTrainee(trainee);
 
     return ServerActionResponse.json({ message: "회원가입 성공", status: 200 });
   } catch (error) {

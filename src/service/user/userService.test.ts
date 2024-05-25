@@ -4,6 +4,7 @@ import { ProfileFactory } from 'src/type/factory';
 import { ValidateError } from 'src/utils/validate';
 import { Status } from 'src/lib/time';
 import { testBean } from '../testConfig';
+import { Trainee } from './Trainee';
 
 describe('User Service Test', () => {
   let {
@@ -20,59 +21,132 @@ describe('User Service Test', () => {
     } = testBean());
   });
 
-  function dummyUser() {
-    const dummyUser = {
-      username: 'testUser',
-      password: 'password123',
-      name: '홍길동',
-      birth: '19900101',
-      generation: 858,
-      message: '안녕하세요!'
-    };
-    return dummyUser;
+  function createUserProps({
+    username = 'testUser',
+    password = 'password123',
+    name = '홍길동',
+    birth = '19900101',
+    generation = 858,
+    message = '안녕하세요!'
+  } = {}) {
+    return { username, password, name, birth, generation, message, }
   }
 
-  describe('회원가입 테스트', () => {
-    test('성공적인 회원가입 테스트', async () => {
-      const registerProps = {
-        username: 'testUser',
-        password: 'password123',
-        name: '홍길동',
-        birth: '19900101',
-        generation: 858,
-        message: '안녕하세요!'
-      };
+  /**
+   * @deprecated
+   */
+  describe('회원가입', () => {
+    test('성공적인 회원가입', async () => {
+      const userProps = createUserProps();
 
       // 회원가입 요청
-      await userService.register(registerProps);
+      await userService.register(userProps);
 
-      // UserRepository에 정상적으로 추가되었는지 확인
-      const newUser = await userRepository.findByUsername('testUser');
+      const newUser = await userRepository.findByUsername(userProps.username);
+
       expect(newUser).not.toBeNull();
-
-      expect(newUser?.username).toEqual('testUser');
-      expect(newUser?.name).toEqual('홍길동');
-
+      expect(newUser?.username).toEqual((userProps.username));
+      expect(newUser?.name).toEqual((userProps.name));
     });
 
-    test('아이디 중복으로 인한 회원가입 실패 테스트', async () => {
-      // Username 'duplicateUser'가 중복된다고 가정
-      jest.spyOn(userService, 'existUsername').mockResolvedValue(true);
+    test('아이디 중복이면 회원가입이 실패합니다.', async () => {
+      // 회원가입
+      const userProps1 = createUserProps({ username: 'user' });
+      await userService.register(userProps1);
 
-      const registerProps = {
-        username: 'duplicateUser',
-        password: 'password123',
-        name: '홍길동',
-        birth: '19900101',
-        generation: 858,
-        message: '안녕하세요!'
-      };
+      // 중복된 아이디
+      const userProps2 = createUserProps({ username: 'user' });
 
       // 오류 예상
-      await expect(userService.register(registerProps)).rejects.toThrow(ValidateError);
+      await expect(userService.register(userProps2)).rejects.toThrow(ValidateError);
+    });
+  });
+
+  describe('Trainee 회원가입', () => {
+    test('회원가입', async () => {
+      const userProps = createUserProps();
+      const trainee = new Trainee(userProps);
+
+      const userId = await userService.AsyncRegisterTrainee(trainee);
+
+      const registeredTrainee = await userService.getTrainee(userId);
+
+      const user = userRepository.findByUsername(registeredTrainee.username);
+      expect(user).not.toBeNull();
     });
 
-  })
+    test('아이디 중복이면 회원가입이 실패합니다.', async () => {
+      // 회원가입
+      const userProps1 = createUserProps({ username: 'Michael' });
+      const trainee1 = new Trainee(userProps1);
+      await userService.AsyncRegisterTrainee(trainee1);
+
+      // 중복된 아이디
+      const userProps2 = createUserProps({ username: 'Michael' });
+      const trainee2 = new Trainee(userProps2);
+
+      // 오류 예상
+      await expect(userService.AsyncRegisterTrainee(trainee2)).rejects.toThrow(ValidateError);
+    });
+
+
+    test.each([
+      ['입대 전', Status.before],
+      ['초반 주차', Status.beginning]
+    ])(
+      '%s 상태에서는 프로필 검색을 하지 않는다.',
+      async (description, status) => {
+        const userProps = createUserProps();
+        const trainee = new Trainee(userProps);
+
+        jest.spyOn(trainee, 'currentStatus').mockReturnValue(status);
+
+        rokafClient.changeGetProfileReturnValue({
+          member: {
+            memberSeq: '12341234',
+            sodae: '1111',
+          },
+          serverOn: true,
+        });
+
+        // 회원가입
+        const userId = await userService.AsyncRegisterTrainee(trainee);
+        const registeredTrainee = await userService.getTrainee(userId);
+
+        // 프로필 업데이트 여부 검증
+        expect(registeredTrainee.memberSeq).toBeNull();
+        expect(registeredTrainee.sodae).toBeNull();
+
+        // 인증 전이므로 유저큐에 들어간다.
+        expect(await userQueue.size()).toBe(1);
+      }
+    );
+
+    test('회원가입 시 훈련주차에는 프로필을 가져온다.', async () => {
+      const userProps = createUserProps();
+      const trainee = new Trainee(userProps);
+
+      // 현재 상태: 훈련 주차
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+
+      // 회원가입
+      const userId = await userService.AsyncRegisterTrainee(trainee);
+
+      const registeredTrainee = await userService.getTrainee(userId);
+
+      // 소대번호를 업데이트 한다.
+      expect(registeredTrainee.memberSeq).toEqual('12341234');
+      expect(registeredTrainee.sodae).toEqual('1111');
+    });
+  });
 
   describe('syncProfile 테스트', () => {
 
@@ -183,10 +257,5 @@ describe('User Service Test', () => {
     });
   });
 
-
-  test('테스트 이름', () => {
-    expect(1).toBe(1);
-    expect(1).toEqual(1);
-  });
 });
 

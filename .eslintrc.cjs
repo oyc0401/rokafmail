@@ -4,9 +4,10 @@ module.exports = {
     // 'eslint:recommended',
     //'plugin:@typescript-eslint/recommended-type-checked',
     "next/core-web-vitals",
+    "plugin:deprecation/recommended",
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', "deprecation",],
   // parserOptions: {
   //   project: true,
   //   tsconfigRootDir: __dirname,
@@ -19,6 +20,7 @@ module.exports = {
 
     'prefer-const': 'warn',
     'no-var': 'warn',
+    "deprecation/deprecation": "warn",
     // 'no-undef': 'off',
     // 'no-unused-vars': 'off',
     // 'no-extra-semi': 'warn',
