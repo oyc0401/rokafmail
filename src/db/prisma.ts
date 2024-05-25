@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client'
 
 const prismaClientSingleton = () => {
   console.log('prisma 생성!')
-  throw new Error('어디야')
   return new PrismaClient()
 }
 

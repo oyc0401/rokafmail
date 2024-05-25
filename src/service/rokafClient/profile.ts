@@ -1,13 +1,13 @@
 import axios from "axios";
 import https from "https";
-import cheerio from "cheerio";
+import { load } from "cheerio";
 import { parse } from "node-html-parser";
 import { makeLogger } from "config/winston";
 import { RokafProfile } from "./RokafClientInterface";
 const logger = makeLogger("Rokaf");
 
 function exist(html) {
-  const $ = cheerio.load(html);
+  const $ = load(html);
 
   const SameResultList = $(".SameResultList");
 
@@ -47,7 +47,7 @@ function htmlToMemberSeq(html) {
 }
 
 function htmlToSodae(html) {
-  const doc = cheerio.load(html);
+  const doc = load(html);
   const sosok = doc(".first").find("dd").text();
   //console.log(sosok);
 

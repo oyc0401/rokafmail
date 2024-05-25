@@ -16,7 +16,7 @@ module.exports = {
   root: true,
   rules: {
     // semi: 'error',
-    
+
     'prefer-const': 'warn',
     'no-var': 'warn',
     "deprecation/deprecation": "warn",
@@ -39,5 +39,5 @@ module.exports = {
     // '@typescript-eslint/no-redundant-type-constituents': 'off',
 
   },
-  ignorePatterns: ['*.js', "**/(admin)/**"],
+  ignorePatterns: ['*.js', '*.jsx', "**/(admin)/**"],
 };
