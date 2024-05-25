@@ -46,9 +46,6 @@ export class MailService {
       case Status.beginning:
         return SendResponse.before;
       case Status.training:
-      // 테스트 편하게 풀어놓기
-      case Status.ending:
-      case Status.working:
         if (!memberSeq || !sodae) {
           return SendResponse.notfound;
         }
@@ -80,12 +77,12 @@ export class MailService {
           return SendResponse.fail;
         }
 
-      // case Status.ending:
-      // case Status.working:
+      case Status.ending:
+      case Status.working:
       case Status.discharged:
-        if (!memberSeq || !sodae) {
-          return SendResponse.notfound;
-        }
+        // if (!memberSeq || !sodae) {
+        //   return SendResponse.notfound;
+        // }
         // 특학인편 하지말자 ~
         // 편지쓰기 기간 이후에 전송하면 보내졌다고 치기
         await updatePost(postId);
@@ -101,44 +98,6 @@ export class MailService {
       }
     });
   }
-
-  // async retryDelayedMail() {
-
-  //   const userCountMap = {};
-  //   const MAX_POSTCOUNT = 10;
-  //   const now = new Date();
-
-  //   let i = 0;
-  //   let queueSize = await this.postQueue.size();
-
-  //   try {
-  //     while (!(await this.postQueue.empty())) {
-  //       i++;
-
-  //       const front = await this.postQueue.front();
-  //       if (front.createdAt > now) break;
-
-  //       const post = (await this.postRepository.findById(front.postId))!;
-
-  //       if (post.posted) {
-  //         logger.info(`${i}/${queueSize} (${front.postId}) | 이미 보내졌습니다`);
-  //       } else if ((userCountMap[post.userId] ?? 0) < MAX_POSTCOUNT) {
-  //         const response = await this.sendMailFalseEnqueue(front.postId);
-  //         logger.info(`${i}/${queueSize} (${front.id}) | ${sendStatusToStr(response)}`);
-  //       } else {
-  //         logger.info(`${i}/${queueSize} (${front.postId}) | 한도 초과`);
-  //         await this.postQueue.insert(front.postId);
-  //       }
-
-  //       userCountMap[post.userId] = (userCountMap[post.userId] ?? 0) + 1;
-
-  //       await this.postQueue.pop();
-  //     }
-
-  //   } catch (error) {
-  //     logger.error(`${i}/${queueSize} | ${error}`)
-  //   }
-  // }
 
 
   // 해당 유저의 모든 미발송 편지들을 다시 보내기
