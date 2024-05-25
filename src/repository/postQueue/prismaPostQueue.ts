@@ -1,6 +1,5 @@
 import prisma from "src/db/prisma";
 import { Post } from "src/db";
-import { PostQueue } from "@prisma/client";
 
 // implements PostQueue
 export class PrismaPostQueue  {

@@ -1,6 +1,6 @@
 import { serveStatus, Status } from "src/lib/time";
 import { Profile } from "src/type";
-import { ProfileFactory } from 'src/type/factory';
+import { ProfileFactory } from 'src/type/goodFactory';
 import { createLogger } from "config/logger";
 import { UserQueue } from "src/repository/userQueue/userQueue";
 import { UserRepository } from "src/repository/user/userRepository";
@@ -73,7 +73,7 @@ export class UserService {
         await this.userQueue.insert(userId);
         break;
       case syncResponse.fail:
-        const status = serveStatus(profile.generation);
+        const status = trainee.currentStatus();
         if (status == Status.working || status == Status.discharged) {
           // 수료를 했는데도 못찾으면 없는 유저로 판단하고 큐에 넣지 않는다.
         } else {

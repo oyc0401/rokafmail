@@ -1,6 +1,5 @@
 import { UserRepository } from "../user/userRepository";
 import { PostRepository, Post, UpdateType, InputPost } from "./postRepository";
-import { User } from "../user/userRepository";
 
 export class MemoryPostRepository implements PostRepository {
   posts: Post[];

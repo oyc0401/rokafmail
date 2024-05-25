@@ -3,7 +3,7 @@ import { PostQueue } from "src/repository/postQueue/postQueue";
 import { MailService, sendStatusToStr } from "../mail/MailService";
 import { UserService, syncResponse, syncResponseToStr } from "../user/UserService";
 import { UserQueue } from "src/repository/userQueue/userQueue";
-import { ProfileFactory } from "src/type/factory";
+import { ProfileFactory } from "src/type/goodFactory";
 const logger = createLogger("MailService");
 
 export class RetryService {

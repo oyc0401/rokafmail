@@ -4,6 +4,11 @@ import { MemoryUserRepository } from '../user/memoryUserRepository';
 
 describe('Repository Test', () => {
 
+  test('PostRepository 업데이트', async () => {
+
+    expect(1).toEqual(1);
+  });
+  
   test('PostRepository 삽입', async () => {
     const memoryPostRepository = new MemoryPostRepository();
     const userRepository = new MemoryUserRepository();
@@ -44,9 +49,5 @@ describe('Repository Test', () => {
       ...newPost,
       name: '호랑이'
     });
-  });
-
-  test('테스트 이름', () => {
-    expect(1).toBe(1);
   });
 })

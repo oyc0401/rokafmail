@@ -1,6 +1,6 @@
 import { describe, expect, test, beforeEach, jest } from '@jest/globals';
 
-import { ProfileFactory } from 'src/type/factory';
+import { ProfileFactory } from 'src/type/goodFactory';
 
 import { testBean } from '../testConfig';
 import { Status } from 'src/lib/time';
@@ -62,7 +62,7 @@ describe('Retry Service Test', () => {
         password: '0000', isPublic: true,
         posted: false
       };
-      
+
       const newPost = await postRepository.insert(post);
       await postQueue.insert(newPost.id);
 

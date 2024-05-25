@@ -1,7 +1,7 @@
 import { User } from "src/db";
 import { Profile } from './types'
 
-export class ProfileFactory {
+export class PrismaProfileFactory {
   static create({ userId, name, birth, generation, username }): Profile {
     return new Profile({ userId, name, birth, generation, username });
   }

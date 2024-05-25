@@ -2,14 +2,14 @@
 
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Control User");
-import { ProfileFactory } from 'src/type/factory';
+import { PrismaProfileFactory } from 'src/type/factory';
 import { UserService, syncResponseToStr } from "src/service/user/UserService";
 import { bean } from "src/bean/bean";
 
 
 export async function userDoubleCheck(userId: number) {
 
-  const profile = await ProfileFactory.loadFromDB(userId);
+  const profile = await PrismaProfileFactory.loadFromDB(userId);
 
   const { username } = profile;
 

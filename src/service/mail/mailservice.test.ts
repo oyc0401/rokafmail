@@ -3,7 +3,6 @@ import { MailService, SendResponse } from './MailService';
 import { LogConfig } from 'config/logger';
 import { MemoryLogger } from 'config/memoryLogger';
 import { testBean } from '../testConfig';
-import { ProfileFactory } from 'src/type/factory';
 import { Trainee } from '../user/Trainee';
 import { Status } from 'src/lib/time';
 
