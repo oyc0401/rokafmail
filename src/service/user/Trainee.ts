@@ -36,4 +36,8 @@ export class Trainee {
   currentStatus() {
     return serveStatus(this.generation);
   }
+
+  getConnect() {
+    return this.sodae != null && this.memberSeq != null;
+  }
 }

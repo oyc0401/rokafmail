@@ -6,6 +6,7 @@ import { makeLogger } from "config/winston";
 const logger = makeLogger("Mail");
 import { MailService, SendResponse, sendStatusToStr } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
+import { Trainee } from "src/service/user/Trainee";
 
 /**
  * 유저 확인: 제공된 username을 사용하여 유저가 존재하는지 확인합니다.
@@ -41,9 +42,6 @@ export async function mailApi(mailForm: {
         status: 404,
       });
     }
-
-    const { id: userId, connect } = user;
-
     // 폼 입력 검증
     const validationResult = validateInput(mailForm);
     if (!validationResult.validate) {
@@ -53,29 +51,16 @@ export async function mailApi(mailForm: {
       });
     }
 
-    // 편지 저장
-    const { id: postId } = await Post.insert({
-      userId,
-      name,
-      relationship,
-      title,
-      contents,
-      password,
-      isPublic,
-    });
-
-    // 연결되었으면 편지를 보낸다.
-    // 편지를 보내다 오류가 나면 큐에 저장합니다.
-    if (connect) {
-      const mailService = new MailService(bean);
-      const logStatus = (status: SendResponse) =>
-        logger.info(`(${postId}) | ${sendStatusToStr(status)}`);
-
-      mailService.sendMailFalseEnqueue(postId).then(logStatus);
-
-    } else {
-      logger.info(`(${postId}) | BeforeMailTime`)
+    const trainee = new Trainee(user);
+    const letter = {
+      userId: user.id,
+      name, relationship,
+      title, contents,
+      password, isPublic,
     }
+
+    const mailService = new MailService(bean);
+    await mailService.sendLetter(trainee, letter);
 
     return ServerActionResponse.json({ message: "편지 전송 성공!", status: 200 });
   } catch (error) {

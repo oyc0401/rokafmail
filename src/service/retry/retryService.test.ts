@@ -4,6 +4,7 @@ import { ProfileFactory } from 'src/type/factory';
 
 import { testBean } from '../testConfig';
 import { Status } from 'src/lib/time';
+import { Trainee } from '../user/Trainee';
 
 describe('Retry Service Test', () => {
   let {
@@ -20,9 +21,20 @@ describe('Retry Service Test', () => {
     } = testBean());
   });
 
+  function createUserProps({
+    username = 'testUser',
+    password = 'password123',
+    name = '홍길동',
+    birth = '19900101',
+    generation = 850,
+    message = '안녕하세요!'
+  } = {}) {
+    return { username, password, name, birth, generation, message, }
+  }
+
   describe('retryDelayedMail', () => {
     test('포스트큐에 한개 있을 때', async () => {
-      // 유저 회원가입
+      // 서버 상태 좋음
       rokafClient.changeGetProfileReturnValue({
         member: {
           memberSeq: '12341234',
@@ -30,27 +42,27 @@ describe('Retry Service Test', () => {
         },
         serverOn: true,
       });
-      const user = {
-        username: 'test',
-        password: '0000',
-        name: '김공군',
-        birth: '20030101',
-        generation: 857,
-        message: '잘 다녀오겠습니다!',
-      }
-      await userService.register(user);
-
-      // 편지 보내기
       rokafClient.changePostMailReturnValue({
         serverOn: true,
         complete: true,
       });
+
+      const user = createUserProps();
+      const trainee = new Trainee(user);
+
+      // 현재 상태: 훈련 주차
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+
+      await userService.AsyncRegisterTrainee(trainee);
+
+      // 편지 보내기
       const post = {
         userId: 1,
         name: '유찬', relationship: '친구', title: 'test', contents: 'contents',
         password: '0000', isPublic: true,
         posted: false
       };
+      
       const newPost = await postRepository.insert(post);
       await postQueue.insert(newPost.id);
 
@@ -344,7 +356,7 @@ describe('Retry Service Test', () => {
           username: newUser.username,
         });
         jest.spyOn(profile, 'getStatus').mockReturnValue(Status.ending);
-        
+
         await userService.searchProfileFailEnqueue(profile);
         expect(await userQueue.size()).toBe(1);
 
