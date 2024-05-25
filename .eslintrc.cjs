@@ -7,17 +7,16 @@ module.exports = {
     "plugin:deprecation/recommended",
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', "deprecation",],
-  // parserOptions: {
-  //   project: true,
-  //   tsconfigRootDir: __dirname,
-  // },
+  parserOptions: {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "project": "./tsconfig.json" // <-- Point to your project's "tsconfig.json" or create a new one.
+  },
+  plugins: ['@typescript-eslint'],
   root: true,
   rules: {
-    // 세미콜론이 없으면 에러로 취급한다.
     // semi: 'error',
-    // 기존 프로젝트에서는 'warn'으로 취급되지만, 'error'로 설정하면 에러로 취급한다.
-
+    
     'prefer-const': 'warn',
     'no-var': 'warn',
     "deprecation/deprecation": "warn",
