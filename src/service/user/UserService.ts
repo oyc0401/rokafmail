@@ -47,6 +47,25 @@ export class UserService {
     return userId;
   }
 
+  // 테스트용! 나중에 지워라 retry에 있다
+  async AwaitRegisterTrainee(trainee: Trainee) {
+    if (await this.existUsername(trainee.username)) {
+      throw new ValidateError('아이디가 중복되었습니다.');
+    }
+
+    // 유저 생성
+    const newUser = await this.userRepository.insert(trainee);
+    const { id: userId, name, birth, generation, username } = newUser
+
+    // 빠른 응답을 위해 남은 로직은 비동기에서 진행
+    const profile = ProfileFactory.create({ userId, name, birth, generation, username });
+
+    const response = await this.searchProfileFailEnqueueTrainee(userId, trainee);
+    logger.info(`[Register] ${profile.username} (${userId}) | ${syncResponseToStr(response)}`)
+
+    return userId;
+  }
+
 
 
   async getTrainee(userId: number) {

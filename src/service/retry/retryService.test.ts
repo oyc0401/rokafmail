@@ -1,4 +1,4 @@
-import { describe, expect, test, beforeEach, jest } from '@jest/globals';
+import { describe, expect, test, beforeEach, jest, afterEach } from '@jest/globals';
 
 import { ProfileFactory } from 'src/type/goodFactory';
 
@@ -32,8 +32,147 @@ describe('Retry Service Test', () => {
     return { username, password, name, birth, generation, message, }
   }
 
+  function createLetter({ userId = 1, name = '유찬', relationship = '친구',
+    title = '제목', contents = 'contents',
+    password = '0000', isPublic = true,
+  } = {}) {
+    return { userId, name, relationship, title, contents, password, isPublic }
+  }
+
   describe('retryDelayedMail', () => {
-    test('포스트큐에 한개 있을 때', async () => {
+
+    beforeEach(() => {
+      // 가짜 타이머 사용 설정
+      jest.useFakeTimers();
+      // 862기 훈련기간
+      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
+    });
+
+    afterEach(() => {
+      // 가짜 타이머 사용 해제
+      jest.useRealTimers();
+    });
+
+    test('메일 큐에 편지가 있으면 편지를 보냅니다.', async () => {
+      // 서버 상태 모두 좋음
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+      rokafClient.changePostMailReturnValue({
+        serverOn: true,
+        complete: true,
+      });
+
+      const user = createUserProps({ generation: 862 });
+      const trainee = new Trainee(user);
+
+      // 현재 상태: 훈련 주차 -> 회원가입
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      const userId = await userService.AsyncRegisterTrainee(trainee);
+
+      // 편지 보내기
+      const post = createLetter({ userId });
+
+      // 큐에 편지가 하나 들어있음
+      const newPost = await postRepository.insert(post);
+      await postQueue.insert(newPost.id);
+
+      // 모든 편지 다시보내기
+      await retryService.retryDelayedMail();
+
+      // 보내진거 확인
+      const updatedPost = await postRepository.findById(newPost.id);
+
+      expect(await postQueue.size()).toBe(0);
+      expect(updatedPost?.posted).toBe(true);
+
+    });
+
+    test('큐에 있는 편지가 이미 보낸 편지일 땐 기훈단에 실제로 보내진 않습니다.', async () => {
+      // 서버 상태 모두 좋음
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+      rokafClient.changePostMailReturnValue({
+        serverOn: true,
+        complete: true,
+      });
+
+      const userProps = createUserProps({ generation: 862 });
+      const trainee = new Trainee(userProps);
+
+      // 현재 상태: 훈련 주차 -> 회원가입
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      const userId = await userService.AsyncRegisterTrainee(trainee);
+
+      // 편지 보내기
+      const post = createLetter({ userId });
+
+      // 큐에 편지가 하나 들어있음
+      const newPost = await postRepository.insert(post);
+      await postQueue.insert(newPost.id);
+
+      // 모든 편지 다시보내기
+      await retryService.retryDelayedMail();
+
+      // 보내진거 확인
+      const updatedPost = await postRepository.findById(newPost.id);
+      expect(updatedPost?.posted).toBe(true);
+
+      // 큐에 다시 편지가 들어가지 않음
+      expect(await postQueue.size()).toBe(0);
+    });
+
+    test('서버에 에러가 생기면 다시 해당 편지를 큐에 넣습니다.', async () => {
+      // 프로필 서버 상태 좋음
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+      // 편지 서버상태 나쁨
+      rokafClient.changePostMailReturnValue({
+        serverOn: false,
+        complete: false,
+      });
+
+      const userProps = createUserProps({ generation: 862 });
+      const trainee = new Trainee(userProps);
+
+      // 현재 상태: 훈련 주차 -> 회원가입
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      const userId = await userService.AsyncRegisterTrainee(trainee);
+
+      // 편지 보내기
+      const post = createLetter({ userId });
+
+      // 큐에 편지가 하나 들어있음
+      const newPost = await postRepository.insert(post);
+      await postQueue.insert(newPost.id);
+      expect(await postQueue.size()).toBe(1);
+
+      // 모든 편지 다시보내기
+      await retryService.retryDelayedMail();
+
+      // 편지는 안 보내집니다.
+      const updatedPost = await postRepository.findById(newPost.id);
+      expect(updatedPost?.posted).toBe(false);
+
+      // 큐에 다시 편지가 들어감
+      expect(await postQueue.size()).toBe(1);
+    });
+
+    test('유저가 10개 초과의 편지를 보내지 않음', async () => {
       // 서버 상태 좋음
       rokafClient.changeGetProfileReturnValue({
         member: {
@@ -47,159 +186,18 @@ describe('Retry Service Test', () => {
         complete: true,
       });
 
-      const user = createUserProps();
-      const trainee = new Trainee(user);
+      const userProps = createUserProps({ generation: 862 });
+      const trainee = new Trainee(userProps);
 
-      // 현재 상태: 훈련 주차
+      // 현재 상태: 훈련 주차 -> 회원가입
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
-
-      await userService.AsyncRegisterTrainee(trainee);
-
-      // 편지 보내기
-      const post = {
-        userId: 1,
-        name: '유찬', relationship: '친구', title: 'test', contents: 'contents',
-        password: '0000', isPublic: true,
-        posted: false
-      };
-
-      const newPost = await postRepository.insert(post);
-      await postQueue.insert(newPost.id);
-
-      await retryService.retryDelayedMail();
-
-      const updatedPost = await postRepository.findById(newPost.id);
-
-      expect(await postQueue.size()).toBe(0);
-      expect(updatedPost?.posted).toBe(true);
-
-    });
-
-    test('이미 보낸 편지일 때', async () => {
-      // 유저 회원가입
-      rokafClient.changeGetProfileReturnValue({
-        member: {
-          memberSeq: '12341234',
-          sodae: '1111',
-        },
-        serverOn: true,
-      });
-      const user = {
-        username: 'test',
-        password: '0000',
-        name: '김공군',
-        birth: '20030101',
-        generation: 857,
-        message: '잘 다녀오겠습니다!',
-      }
-      await userService.register(user);
-
-      // MockRokafClient
-      rokafClient.changePostMailReturnValue({
-        serverOn: true,
-        complete: true,
-      });
-
-      const post = {
-        userId: 1,
-        name: '유찬', relationship: '친구', title: 'test', contents: 'contents',
-        password: '0000', isPublic: true,
-        posted: true
-      };
-      const newPost = await postRepository.insert(post);
-      await postQueue.insert(newPost.id);
-
-      await retryService.retryDelayedMail();
-
-      const updatedPost = await postRepository.findById(newPost.id);
-      if (updatedPost) {
-        expect(updatedPost.posted).toBe(true);
-      }
-
-      expect(await postQueue.size()).toBe(0);
-    });
-
-    test('큐가 비어 있을 때', async () => {
-      // 큐가 비어 있는 상태에서 실행
-      await retryService.retryDelayedMail();
-
-      expect(await postQueue.size()).toBe(0);
-    });
-
-    // test('기훈단 에러 발생 시', async () => {
-    //   // 유저 회원가입
-    //   rokafClient.changeGetProfileReturnValue({
-    //     member: {
-    //       memberSeq: '12341234',
-    //       sodae: '1111',
-    //     },
-    //     serverOn: true,
-    //   });
-    //   const user = {
-    //     username: 'test',
-    //     password: '0000',
-    //     name: '김공군',
-    //     birth: '20030101',
-    //     generation: 857,
-    //     message: '잘 다녀오겠습니다!',
-    //   }
-    //   await userService.register(user);
-
-    //   // MockRokafClient
-    //   rokafClient.changePostMailReturnValue({
-    //     serverOn: false,
-    //     complete: false,
-    //   });
-
-    //   const post = {
-    //     userId: 1,
-    //     name: '유찬', relationship: '친구', title: 'test', contents: 'contents',
-    //     password: '0000', isPublic: true,
-    //     posted: false
-    //   };
-
-    //   const newPost = await postRepository.insert(post);
-    //   await postQueue.insert(newPost.id);
-
-    //   await retryService.retryDelayedMail();
-
-    //   expect(await postQueue.size()).toBe(1);
-    // });
-
-    test('유저가 10개 초과의 편지를 보내지 않음', async () => {
-      // 유저 회원가입
-      rokafClient.changeGetProfileReturnValue({
-        member: {
-          memberSeq: '12341234',
-          sodae: '1111',
-        },
-        serverOn: true,
-      });
-      const user = {
-        username: 'test',
-        password: '0000',
-        name: '김공군',
-        birth: '20030101',
-        generation: 857,
-        message: '잘 다녀오겠습니다!',
-      }
-      await userService.register(user);
-
-      // MockRokafClient
-      rokafClient.changePostMailReturnValue({
-        serverOn: true,
-        complete: true,
-      });
+      const userId = await userService.AsyncRegisterTrainee(trainee);
 
       // 15개의 편지 생성
       const posts: any[] = [];
       for (let i = 0; i < 15; i++) {
-        const post = {
-          userId: 1,
-          name: '유찬', relationship: '친구', title: `test${i}`, contents: 'contents',
-          password: '0000', isPublic: true,
-          posted: false
-        };
+        const post = createLetter({ userId })
+
         const newPost = await postRepository.insert(post);
         await postQueue.insert(newPost.id);
         posts.push(newPost);
@@ -227,8 +225,20 @@ describe('Retry Service Test', () => {
 
   describe('retryGetProfile', () => {
 
+    beforeEach(() => {
+      // 가짜 타이머 사용 설정
+      jest.useFakeTimers();
+      // 862기 훈련기간
+      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
+    });
+
+    afterEach(() => {
+      // 가짜 타이머 사용 해제
+      jest.useRealTimers();
+    });
+
     test('유저큐에 한명일 때, 편지 일정개수 이상 보내지 않기', async () => {
-      // MockRokafClient
+      // 프로필 서버 이상함
       rokafClient.changeGetProfileReturnValue({
         serverOn: false,
       });
@@ -237,38 +247,25 @@ describe('Retry Service Test', () => {
         complete: true,
       });
 
-      const user = {
-        username: 'test',
-        password: '0000',
-        name: '김공군',
-        birth: '20030101',
-        generation: 857,
-        message: '잘 다녀오겠습니다!',
-      }
-      const newUser = await userRepository.insert(user);
+      const user = createUserProps({ generation: 862 });
+      const trainee = new Trainee(user);
 
-      // 회원가입
-      const profile = ProfileFactory.create({
-        userId: newUser.id, name: newUser.id,
-        birth: newUser.birth, generation: newUser.generation,
-        username: newUser.username,
-      });
+      // 현재 상태: 훈련 주차 -> 회원가입
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      const userId = await userService.AwaitRegisterTrainee(trainee);
 
-      await userService.searchProfileFailEnqueue(profile);
+      // 인증실패, 큐에 들어있음
+      expect(await userQueue.size()).toBe(1);
 
       // 인증 전 편지 보내기
       const newPosts: any[] = [];
       for (let i = 0; i < 15; i++) {
-        const post = {
-          userId: newUser.id,
-          name: '유찬', relationship: '친구', title: `test${i}`, contents: 'contents',
-          password: '0000', isPublic: true,
-        };
+        const post = createLetter({ userId })
         const newPost = await postRepository.insert(post);
         newPosts.push(newPost);
       }
 
-      // 이후에 서버가 정상회 되었음
+      // 이후에 프로필 서버 정상화 되었음
       rokafClient.changeGetProfileReturnValue({
         member: {
           memberSeq: '12341234',
@@ -293,13 +290,6 @@ describe('Retry Service Test', () => {
           }
         }
       }
-    });
-
-    test('큐가 비어 있을 때', async () => {
-      // 큐가 비어 있는 상태에서 실행
-      await retryService.retryGetProfile();
-
-      expect(await userQueue.size()).toBe(0);
     });
 
     describe('편지쓰기 기간 지났을 때', () => {

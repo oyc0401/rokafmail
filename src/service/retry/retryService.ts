@@ -79,7 +79,7 @@ export class RetryService {
         if (front.createdAt > now) break;
 
         const userId = front.userId;
-        
+
         if (front.user.connect) {
           logger.info(`${i}/${queueSize}: (${userId}) | 이미 연결 됌`)
         } else {
