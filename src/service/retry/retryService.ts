@@ -4,6 +4,7 @@ import { MailService, sendStatusToStr } from "../mail/MailService";
 import { UserService, syncResponse, syncResponseToStr } from "../user/UserService";
 import { UserQueue } from "src/repository/userQueue/userQueue";
 import { ProfileFactory } from "src/type/goodFactory";
+import { Trainee } from "../user/Trainee";
 const logger = createLogger("MailService");
 
 export class RetryService {
@@ -78,14 +79,12 @@ export class RetryService {
         if (front.createdAt > now) break;
 
         const userId = front.userId;
-
-        const { name, birth, generation, username, connect } = front.user;
-        const profile = ProfileFactory.create({ userId, name, birth, generation, username });
-
-        if (connect) {
+        
+        if (front.user.connect) {
           logger.info(`${i}/${queueSize}: (${userId}) | 이미 연결 됌`)
         } else {
-          const status = await this.userService.searchProfileFailEnqueue(profile);
+          const trainee = await this.userService.getTrainee(userId);
+          const status = await this.userService.searchProfileFailEnqueueTrainee(userId, trainee);
           if (status == syncResponse.complete) {
             await this.mailService.sendUnpostedMails(userId)
           }

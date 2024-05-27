@@ -42,7 +42,7 @@ export class UserService {
     const profile = ProfileFactory.create({ userId, name, birth, generation, username });
 
     this.searchProfileFailEnqueueTrainee(userId, trainee).then((response) =>
-      logger.info(`${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
+      logger.info(`[Register] ${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
 
     return userId;
   }

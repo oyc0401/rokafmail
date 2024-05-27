@@ -118,60 +118,8 @@ describe('User Service Test', () => {
     });
   });
 
-  describe('syncProfile 테스트', () => {
-
-    test('syncProfile - before status', async () => {
-      const userProps = createUserProps();
-      const trainee = new Trainee(userProps);
-      // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
-
-      // db 저장
-    
-
-      const result = await userService.syncProfileTrainee(user!.id, registeredTrainee);
-
-      expect(result).toBe(syncResponse.before);
-
-      // 유저 정보 검증
-      const updatedUser = await userRepository.findById(user!.id);
-      expect(updatedUser?.connect).toBe(false);
-    });
-
-    test('syncProfile - server error', async () => {
-      const user = await userRepository.insert({
-        username: 'test',
-        password: '0000',
-        name: '김공군',
-        birth: '20030101',
-        generation: 857,
-        message: '잘 다녀오겠습니다!',
-      });
-
-      const profile = ProfileFactory.FromUser(user);
-      jest.spyOn(profile, 'getStatus').mockReturnValue(Status.working);
-      rokafClient.setRokafServerError();
-
-      const result = await userService.syncProfile(profile);
-
-      expect(result).toBe(syncResponse.error);
-
-      // 유저 정보 검증
-      const updatedUser = await userRepository.findById(profile.userId);
-      expect(updatedUser?.connect).toBe(false);
-    });
-
-    test('syncProfile - complete response', async () => {
-      const user = await userRepository.insert({
-        username: 'test',
-        password: '0000',
-        name: '김공군',
-        birth: '20030101',
-        generation: 858,
-        message: '잘 다녀오겠습니다!',
-      });
-      const profile = ProfileFactory.FromUser(user);
-      jest.spyOn(profile, 'getStatus').mockReturnValue(Status.working);
+  describe('syncProfile: 유저의 프로필을 불러오고 업데이트한다.', () => {
+    test('편지쓰기 기간 이전에 프로필을 불러오지 않습니다.', async () => {
       rokafClient.changeGetProfileReturnValue({
         member: {
           memberSeq: '12341234',
@@ -180,38 +128,92 @@ describe('User Service Test', () => {
         serverOn: true,
       });
 
-      const result = await userService.syncProfile(profile);
+      const userProps = createUserProps();
+      const trainee = new Trainee(userProps);
+      // 현재 상태: 훈련 주차
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.before);
+
+      // db 저장
+      const user = await userRepository.insert(trainee);
+
+      const result = await userService.syncProfileTrainee(user!.id, trainee);
+
+      expect(result).toBe(syncResponse.before);
+
+      // 유저 정보 검증
+      const updatedUser = await userRepository.findById(user!.id);
+      expect(updatedUser?.connect).toBe(false);
+    });
+
+    test('편지쓰기 기간이면 프로필을 불러옵니다.', async () => {
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+
+      const userProps = createUserProps();
+      const trainee = new Trainee(userProps);
+      // 현재 상태: 훈련 주차
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+
+      // db 저장
+      const user = await userRepository.insert(trainee);
+
+      const result = await userService.syncProfileTrainee(user!.id, trainee);
 
       expect(result).toBe(syncResponse.complete);
 
       // 유저 정보 검증
-      const updatedUser = await userRepository.findById(profile.userId);
+      const updatedUser = await userRepository.findById(user!.id);
       expect(updatedUser?.connect).toBe(true);
       expect(updatedUser?.memberSeq).toBe('12341234');
       expect(updatedUser?.sodae).toBe('1111');
     });
 
-    test('syncProfile - fail response when no member data', async () => {
-      const user = await userRepository.insert({
-        username: 'test',
-        password: '0000',
-        name: '김공군',
-        birth: '20030101',
-        generation: 858,
-        message: '잘 다녀오겠습니다!',
+    test('편지쓰기 기간인데 서버 오류나면 프로필을 불러오지 않습니다.', async () => {
+      rokafClient.changeGetProfileReturnValue({
+        serverOn: false,
       });
-      const profile = ProfileFactory.FromUser(user);
-      jest.spyOn(profile, 'getStatus').mockReturnValue(Status.working);
+
+      const userProps = createUserProps();
+      const trainee = new Trainee(userProps);
+      // 현재 상태: 훈련 주차
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+
+      // db 저장
+      const user = await userRepository.insert(trainee);
+
+      const result = await userService.syncProfileTrainee(user!.id, trainee);
+
+      expect(result).toBe(syncResponse.error);
+
+      // 유저 정보 검증
+      const updatedUser = await userRepository.findById(user!.id);
+      expect(updatedUser?.connect).toBe(false);
+    });
+
+    test('편지쓰기 기간인데 프로필이 없으면 업데이트를 하지 않습니다.', async () => {
       rokafClient.changeGetProfileReturnValue({
         serverOn: true
       });
 
-      const result = await userService.syncProfile(profile);
+      const userProps = createUserProps();
+      const trainee = new Trainee(userProps);
+      // 현재 상태: 훈련 주차
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+
+      // db 저장
+      const user = await userRepository.insert(trainee);
+
+      const result = await userService.syncProfileTrainee(user!.id, trainee);
 
       expect(result).toBe(syncResponse.fail);
 
       // 유저 정보 검증
-      const updatedUser = await userRepository.findById(profile.userId);
+      const updatedUser = await userRepository.findById(user!.id);
       expect(updatedUser?.connect).toBe(false);
     });
   });
