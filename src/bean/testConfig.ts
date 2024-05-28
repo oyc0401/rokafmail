@@ -10,7 +10,7 @@ import { RetryService } from '../service/retry/retryService';
 import { LogConfig } from 'config/logger';
 import { BeanInterface } from './beanInterface';
 
-export function testBean(): BeanInterface & { logger: MemoryLogger } {
+export function testBean(): BeanInterface & { logger: MemoryLogger, rokafClient: MockRokafClient } {
   const postRepository = new MemoryPostRepository();
   const postQueue = new MemoryPostQueue(postRepository);
 

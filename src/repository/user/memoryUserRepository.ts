@@ -1,5 +1,5 @@
 
-import { InputUser, RokafProfile, User, UserRepository } from "./userRepository";
+import { EditProfileProps, InputUser, RokafProfile, User, UserRepository } from "./userRepository";
 
 export class MemoryUserRepository implements UserRepository {
   users: User[];
@@ -46,6 +46,19 @@ export class MemoryUserRepository implements UserRepository {
       connect: true,
       sodae: profile.sodae,
       memberSeq: profile.memberSeq
+    };
+    return this.users[userIndex];
+  }
+
+  async editProfile(userId: number, editProps: EditProfileProps) {
+    // 유저 ID를 찾아 프로필 정보를 수정
+    const userIndex = this.users.findIndex(user => user.id === userId);
+    if (userIndex === -1) {
+      throw new Error('해당 유저가 없습니다.');
+    }
+    this.users[userIndex] = {
+      ...this.users[userIndex],
+      ...editProps
     };
     return this.users[userIndex];
   }

@@ -1,4 +1,4 @@
-import { describe, expect, test, beforeEach, jest } from '@jest/globals';
+import { describe, expect, test, beforeEach, jest, afterEach } from '@jest/globals';
 import { syncResponse } from './UserService';
 import { ValidateError } from 'src/utils/validate';
 import { Status } from 'src/lib/time';
@@ -217,5 +217,91 @@ describe('User Service Test', () => {
     });
   });
 
+
+  describe('프로필 업데이트', () => {
+    beforeEach(() => {
+      // 가짜 타이머 사용 설정
+      jest.useFakeTimers();
+      // 862기 훈련기간
+      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
+    });
+
+    afterEach(() => {
+      // 가짜 타이머 사용 해제
+      jest.useRealTimers();
+    });
+    test('프로필 업데이트', async () => {
+      // 잘못된 이름 입력해서 프로필을 찾을 수 없음
+      rokafClient.changeGetProfileReturnValue({
+        serverOn: true,
+      });
+
+      const userProps = createUserProps({ generation: 862 });
+      const trainee = new Trainee(userProps);
+
+      // 현재 상태: 입대 전
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.before);
+
+      // 회원가입
+      const userId = await userService.register(trainee);
+
+      // 정확한 정보 입력으로 소대번호 가져올 수 있음
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+
+      // 정보 수정
+      await userService.editProfile(userId, { name: '하이', birth: '20230405' });
+
+      const updatedTrainee = await userService.getTrainee(userId);
+
+      // 프로필 업데이트를 하면 소대번호가 업데이트된다.
+      expect(updatedTrainee.memberSeq).toEqual('12341234');
+      expect(updatedTrainee.sodae).toEqual('1111');
+    })
+
+    test('프로필 업데이트', async () => {
+      // 다른 소대번호
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+
+      const userProps = createUserProps({ generation: 862 });
+      const trainee = new Trainee(userProps);
+
+      // 현재 상태: 입대 전
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.before);
+
+      // 회원가입
+      const userId = await userService.register(trainee);
+
+      // 정확한 정보 입력으로 소대번호 가져올 수 있음
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '2222',
+        },
+        serverOn: true,
+      });
+
+      // 정보 수정
+      await userService.editProfile(userId, { name: '하이', birth: '20230405' });
+
+      const updatedTrainee = await userService.getTrainee(userId);
+
+      // 프로필 업데이트를 하면 소대번호가 업데이트된다.
+      expect(updatedTrainee.memberSeq).toEqual('12341234');
+      expect(updatedTrainee.sodae).toEqual('2222');
+    })
+
+  })
 });
 

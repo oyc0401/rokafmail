@@ -5,6 +5,7 @@ import {
   ensureUserMatch,
 } from "../serverActionResponse";
 import { makeLogger } from "config/winston";
+import { bean } from "src/bean/bean";
 const logger = makeLogger("Profile");
 
 export async function getProfile(username: string) {
@@ -34,10 +35,13 @@ export async function deleteUser(username: string, password: string) {
 }
 
 export async function editProfile(username, name, birth, message) {
+  const { userService, userRepository } = bean;
   const { valid, errorResponse } = await ensureUserMatch(username);
   if (!valid) return errorResponse;
 
-  await User.editProfile({ username, name, birth, message });
+  const user = await userRepository.findByUsername(username);
+
+  await userService.editProfile(user!.id, { name, birth, message });
   return ServerActionResponse.ok("유저 정보 수정에 성공했습니다.");
 
 
@@ -48,14 +52,16 @@ export async function editPassword(
   encryptedOriginPassword: string,
   encryptedPassword: string,
 ) {
+  const { userService, userRepository } = bean;
+
   const { valid, errorResponse } = await ensureUserMatch(username);
   if (!valid) return errorResponse;
 
-  const user = await User.findByUsername(username);
+  const user = await userRepository.findByUsername(username);
   if (encryptedOriginPassword != user?.password) {
     return ServerActionResponse.notFound("비밀번호를 다시 입력해주세요.");
   }
+  await userService.editPassword(user!.id, encryptedPassword);
 
-  await User.editPassword({ username, password: encryptedPassword });
   return ServerActionResponse.ok("비밀번호 수정에 성공했습니다.");
 }

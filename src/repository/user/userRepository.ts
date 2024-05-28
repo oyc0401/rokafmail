@@ -3,6 +3,7 @@ export interface UserRepository {
   findById: (userId: number) => Promise<User | null>;
   findByUsername: (username: string) => Promise<User | null>;
   updateRokafProfile: (userId: number, profile: RokafProfile) => Promise<User>;
+  editProfile: (userId: number, editProps: EditProfileProps) => Promise<User>
 }
 
 export interface User {
@@ -31,4 +32,12 @@ export interface InputUser {
 export interface RokafProfile {
   memberSeq: string;
   sodae: string;
+}
+
+export interface EditProfileProps {
+  name?: string;
+  birth?: string;
+  generation?: number;
+  message?: string;
+  password?: string;
 }

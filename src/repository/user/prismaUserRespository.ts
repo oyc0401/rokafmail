@@ -1,5 +1,5 @@
 import prisma from "src/db/prisma";
-import { InputUser, RokafProfile, UserRepository } from "./userRepository";
+import { EditProfileProps, InputUser, RokafProfile, UserRepository } from "./userRepository";
 
 
 export class PrismaUserRepository implements UserRepository {
@@ -20,5 +20,11 @@ export class PrismaUserRepository implements UserRepository {
         sodae: rokafProfile.sodae,
         connect: true
       },
+    });
+
+  editProfile = (id: number, editProps: EditProfileProps) =>
+    prisma.user.update({
+      where: { id },
+      data: editProps,
     });
 }

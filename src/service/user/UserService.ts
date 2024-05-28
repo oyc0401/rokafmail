@@ -145,6 +145,21 @@ export class UserService {
     }
   }
 
+  async editProfile(userId: number, editProps: {
+    name?: string, birth?: string, message?: string, generation?: number
+  }) {
+    await this.userRepository.editProfile(userId, editProps);
+
+    const trainee = await this.getTrainee(userId);
+    const status = await this.updateRokafProfile(userId, trainee);
+
+    return status;
+  }
+
+  async editPassword(userId: number, newPassword: string) {
+    await this.userRepository.editProfile(userId, { password: newPassword });
+  }
+
 }
 
 export function syncResponseToStr(response: syncResponse) {
