@@ -1,4 +1,4 @@
-import { describe, expect, test, beforeAll, beforeEach, jest } from '@jest/globals';
+import { describe, expect, test, beforeAll, beforeEach, jest, afterEach } from '@jest/globals';
 import { MailService, SendResponse } from './MailService';
 import { LogConfig } from 'config/logger';
 import { MemoryLogger } from 'config/memoryLogger';
@@ -329,296 +329,107 @@ describe('serviceTest', () => {
   })
 
 
-
-
-
-
-
-
-  test('편지 보내는 시간 이전', async () => {
-    // 서버 상태 설정
-    rokafClient.changePostMailReturnValue({
-      serverOn: true,
-      complete: true,
+  describe('유저의 미발송 편지 보내기', () => {
+    beforeEach(() => {
+      // 가짜 타이머 사용 설정
+      jest.useFakeTimers();
+      // 862기 훈련기간
+      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
     });
 
-    const newUser = await userRepository.insert({
-      generation: 863,
-      message: '하이',
-      name: '김공군',
-      password: '123213',
-      username: 'rokaf',
-      birth: '20034001',
+    afterEach(() => {
+      // 가짜 타이머 사용 해제
+      jest.useRealTimers();
     });
 
-    await userRepository.updateRokafProfile(newUser.id, {
-      memberSeq: '12341234',
-      sodae: '1234'
+    // 유저 프로필을 얻어오면 해당 유저의 미발송 편지를 보내는데, 거기에 활용됌
+    test('미발송 편지 보내기를 하면 해당 유저의 모든 미발송 편지를 다시 보냅니다.', async () => {
+      // 서버 상태 양호
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+      rokafClient.changePostMailReturnValue({
+        serverOn: true,
+        complete: true,
+      });
+
+      const userProps = createUserProps({ generation: 862 });
+      const trainee = new Trainee(userProps);
+
+      // 현재 상태: 입대 전
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      const userId = await userService.awaitRegister(trainee);
+
+      // 편지 저장, 편지쓰기 기간 아니라 그냥 편지만 저장함
+      const letter = createLetter({ userId });
+      const { id: postId } = await postRepository.insert(letter);
+
+      // 미발송 편지 보내기
+      await mailService.sendUnpostedMails(userId);
+
+      // 결과 검증
+      const updated = await postRepository.findById(postId);
+      expect(updated!.posted).toBe(true);
     });
 
-    const post = {
-      userId: 1, name: '유찬', relationship: '친구',
-      title: '제목', contents: 'contents',
-      password: '0000', isPublic: true,
-    }
+    test('미발송 편지 보내기는 편지를 보내는 최대 개수가 정해져있음. 나머지는 큐에 저장됌', async () => {
+      // 서버 상태 양호
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+      rokafClient.changePostMailReturnValue({
+        serverOn: true,
+        complete: true,
+      });
 
-    const newPost = await postRepository.insert(post);
+      const userProps = createUserProps({ generation: 862 });
+      const trainee = new Trainee(userProps);
 
+      // 현재 상태: 훈련 주차
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      const userId = await userService.awaitRegister(trainee);
 
-    // 메일 전송 시도
-    const response = await mailService.sendMail(newPost.id);
-
-    // 결과 검증
-    expect(response).toBe(SendResponse.before);
-  });
-
-
-  test('mail service before', async () => {
-    // MockRokafClient
-    rokafClient.changePostMailReturnValue({
-      serverOn: true,
-      complete: true,
-    });
-
-    // 메모리 리포지토리 설정
-    const newUser = await userRepository.insert({
-      generation: 863,
-      message: '하이',
-      name: '김공군',
-      password: '123213',
-      username: 'rokaf',
-      birth: '20034001',
-    });
-
-    await userRepository.updateRokafProfile(newUser.id, {
-      memberSeq: '12341234',
-      sodae: '1234'
-    });
-
-    const post = {
-      userId: 1, name: '유찬', relationship: '친구',
-      title: '제목', contents: 'contents',
-      password: '0000', isPublic: true,
-    }
-
-    const newPost = await postRepository.insert(post);
+      // 편지 보내기, 실패해서 큐에 넣어짐
+      const registeredTrainee = await userService.getTrainee(userId);
+      jest.spyOn(registeredTrainee, 'currentStatus').mockReturnValue(Status.training);
 
 
-    // 메일 서비스 인스턴스화 및 메일 전송 시도
-    const response = await mailService.sendMail(newPost.id);
-
-    // 결과 검증
-    expect(response).toBe(SendResponse.before);
-  });
-
-  test('mail service 성공', async () => {
-    // MockRokafClient 준비
-    rokafClient.changePostMailReturnValue({
-      serverOn: true,
-      complete: true,
-    });
-
-    // 메모리 리포지토리 설정
-
-    const newUser = await userRepository.insert({
-      generation: 850,
-      message: '하이',
-      name: '김공군',
-      password: '123213',
-      username: 'rokaf',
-      birth: '20034001',
-    });
-
-    await userRepository.updateRokafProfile(newUser.id, {
-      memberSeq: '12341234',
-      sodae: '1234'
-    });
-
-    const post = {
-      userId: 1, name: '유찬', relationship: '친구',
-      title: '제목', contents: 'contents',
-      password: '0000', isPublic: true,
-    }
-
-    const newPost = await postRepository.insert(post);
-
-    // 메일 서비스 인스턴스화 및 메일 전송 시도
-    const response = await mailService.sendMail(newPost.id);
-
-    // 결과 검증
-    expect(response).toBe(SendResponse.success);
-
-    // 보내졌다고 업데이트
-    const updated = await postRepository.findById(newPost.id);
-    expect(updated!.posted).toBe(true);
-  });
-
-  // 편지 보낼 수 있는 기간에만 보낼 수 있어서 함수 다시 짜야함
-  // test('MailService 실패 상황', async () => {
-  //   // MockRokafClient 준비
-  //   rokafClient.changePostMailReturnValue({
-  //     serverOn: true,
-  //     complete: false,
-  //   });
-
-  //   // 메모리 리포지토리 설정
-  //   const newUser = await userRepository.insert({
-  //     generation: 857,
-  //     message: '하이',
-  //     name: '김공군',
-  //     password: '123213',
-  //     username: 'rokaf',
-  //     birth: '20034001',
-  //   });
-
-  //   await userRepository.updateRokafProfile(newUser.id, {
-  //     memberSeq: '12341234',
-  //     sodae: '1234'
-  //   });
-
-
-  //   const post = {
-  //     userId: 1, name: '유찬', relationship: '친구',
-  //     title: '제목', contents: 'contents',
-  //     password: '0000', isPublic: true,
-  //   }
-
-  //   const newPost = await postRepository.insert(post);
-
-  //   // 메일 서비스 인스턴스화 및 메일 전송 시도
-  //   const sendStatus = await mailService.sendMail(newPost.id);
-
-  //   // 결과 검증
-  //   expect(sendStatus).toBe(SendResponse.fail);
-  // });
-
-  test('MailService 편지 시간 지나면 그냥 성공', async () => {
-    // MockRokafClient 준비
-    rokafClient.changePostMailReturnValue({
-      serverOn: true,
-      complete: false,
-    });
-
-    // 메모리 리포지토리 설정
-    const newUser = await userRepository.insert({
-      generation: 850,
-      message: '하이',
-      name: '김공군',
-      password: '123213',
-      username: 'rokaf',
-      birth: '20034001',
-    });
-
-    await userRepository.updateRokafProfile(newUser.id, {
-      memberSeq: '12341234',
-      sodae: '1234'
-    });
-
-
-    const post = {
-      userId: 1, name: '유찬', relationship: '친구',
-      title: '제목', contents: 'contents',
-      password: '0000', isPublic: true,
-    }
-
-    const newPost = await postRepository.insert(post);
-
-    // 메일 서비스 인스턴스화 및 메일 전송 시도
-    const sendStatus = await mailService.sendMail(newPost.id);
-
-    // 결과 검증
-    expect(sendStatus).toBe(SendResponse.success);
-  });
-
-  test('sendUnpostedMails 테스트', async () => {
-    // MockRokafClient 준비
-    rokafClient.changePostMailReturnValue({
-      serverOn: true,
-      complete: true,
-    });
-    const newUser = await userRepository.insert({
-      generation: 850,
-      message: '하이',
-      name: '김공군',
-      password: '123213',
-      username: 'rokaf',
-      birth: '20034001',
-    });
-
-    await userRepository.updateRokafProfile(newUser.id, {
-      memberSeq: '12341234',
-      sodae: '1234'
-    });
-
-    // 메모리 리포지토리 설정
-    const post = {
-      userId: 1, name: '유찬', relationship: '친구',
-      title: '제목', contents: 'contents',
-      password: '0000', isPublic: true,
-    }
-    const newPost = await postRepository.insert(post);
-
-    // then
-    await mailService.sendUnpostedMails(post.userId);
-
-    // 결과 검증
-    const updated = await postRepository.findById(newPost.id);
-    expect(updated!.posted).toBe(true);
-  });
-
-  test('sendUnpostedMails 한계 테스트', async () => {
-    // MockRokafClient 준비
-    rokafClient.changePostMailReturnValue({
-      serverOn: true,
-      complete: true,
-    });
-    const newUser = await userRepository.insert({
-      generation: 850,
-      message: '하이',
-      name: '김공군',
-      password: '123213',
-      username: 'rokaf',
-      birth: '20034001',
-    });
-
-    await userRepository.updateRokafProfile(newUser.id, {
-      memberSeq: '12341234',
-      sodae: '1234'
-    });
-
-
-    // 메모리 리포지토리 설정
-    const posts: any[] = [];
-    for (let i = 0; i < 15; i++) {
-      const post = {
-        userId: 1, name: '유찬', relationship: '친구', title: `test${i}`, contents: 'contents',
-        password: '0000', createdAt: new Date(), postAt: null, posted: false,
-      };
-
-      posts.push(post)
-    }
-
-    const newPosts: any[] = [];
-    for (let i = 0; i < 15; i++) {
-      const newPost = await postRepository.insert(posts[i]);
-      newPosts.push(newPost);
-    }
-
-
-    // then
-    await mailService.sendUnpostedMails(posts[0].userId);
-
-    // 결과 검증
-    for (let i = 0; i < 15; i++) {
-      const updated = await postRepository.findById(newPosts[i].id);
-      if (i < 10) {
-        expect(updated!.posted).toBe(true);
-      } else {
-        expect(updated!.posted).toBe(false);
+      // 편지 15개 보내기
+      const POST_COUNT = 15;
+      const postIdList: any[] = [];
+      for (let i = 0; i < POST_COUNT; i++) {
+        // 편지 저장, 편지쓰기 기간 아니라 그냥 편지만 저장함
+        const letter = createLetter({ userId });
+        const { id: postId } = await postRepository.insert(letter);
+        postIdList.push(postId)
       }
-    }
 
-  });
+      // 미발송 편지 보내기
+      await mailService.sendUnpostedMails(userId);
+
+      // 최대 제한인 편지 10개만 보내진다.
+      for (let i = 0; i < POST_COUNT; i++) {
+        const updated = await postRepository.findById(postIdList[i]);
+        if (i < 10) {
+          expect(updated!.posted).toBe(true);
+        } else {
+          expect(updated!.posted).toBe(false);
+        }
+      }
+
+      // 남은 편지는 큐에 저장되어 나중에 보내집니다.
+      expect(await postQueue.size()).toBe(5);
+    });
+
+  })
 
 
 })

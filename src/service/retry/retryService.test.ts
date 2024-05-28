@@ -338,6 +338,4 @@ describe('Retry Service Test', () => {
       expect(await userQueue.size()).toBe(0);
     });
   })
-
-  // 편지 보낼 수 있는 기간에만 보낼 수 있어서 기훈단 오류시 테스트 함수 다시 짜야함
 });
