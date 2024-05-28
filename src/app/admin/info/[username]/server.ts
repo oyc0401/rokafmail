@@ -16,7 +16,7 @@ export async function userDoubleCheck(userId: number) {
   }
   const trainee = new Trainee(user);
   const userService = new UserService(bean);
-  const status = await userService.updateProfile(userId, trainee);
+  const status = await userService.updateRokafProfile(userId, trainee);
 
   const log = `${trainee.username} (${userId}) | ${syncResponseToStr(status)}`;
   logger.info(log);

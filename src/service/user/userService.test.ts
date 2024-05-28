@@ -108,7 +108,7 @@ describe('User Service Test', () => {
       });
 
       // 회원가입
-      const userId = await userService.register(trainee);
+      const userId = await userService.awaitRegister(trainee);
 
       const registeredTrainee = await userService.getTrainee(userId);
 
@@ -136,7 +136,7 @@ describe('User Service Test', () => {
       // db 저장
       const user = await userRepository.insert(trainee);
 
-      const result = await userService.updateProfile(user!.id, trainee);
+      const result = await userService.updateRokafProfile(user!.id, trainee);
 
       expect(result).toBe(syncResponse.before);
 
@@ -162,7 +162,7 @@ describe('User Service Test', () => {
       // db 저장
       const user = await userRepository.insert(trainee);
 
-      const result = await userService.updateProfile(user!.id, trainee);
+      const result = await userService.updateRokafProfile(user!.id, trainee);
 
       expect(result).toBe(syncResponse.complete);
 
@@ -186,7 +186,7 @@ describe('User Service Test', () => {
       // db 저장
       const user = await userRepository.insert(trainee);
 
-      const result = await userService.updateProfile(user!.id, trainee);
+      const result = await userService.updateRokafProfile(user!.id, trainee);
 
       expect(result).toBe(syncResponse.error);
 
@@ -208,7 +208,7 @@ describe('User Service Test', () => {
       // db 저장
       const user = await userRepository.insert(trainee);
 
-      const result = await userService.updateProfile(user!.id, trainee);
+      const result = await userService.updateRokafProfile(user!.id, trainee);
 
       expect(result).toBe(syncResponse.fail);
 

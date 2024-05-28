@@ -41,7 +41,7 @@ export class UserService {
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
     const profile = ProfileFactory.create({ userId, name, birth, generation, username });
 
-    this.searchProfileFailEnqueue(userId, trainee).then((response) =>
+    this.updateRokafProfile(userId, trainee).then((response) =>
       logger.info(`[Register] ${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
 
     return userId;
@@ -60,7 +60,7 @@ export class UserService {
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
     const profile = ProfileFactory.create({ userId, name, birth, generation, username });
 
-    const response = await this.searchProfileFailEnqueue(userId, trainee);
+    const response = await this.updateRokafProfile(userId, trainee);
     logger.info(`[Register] ${profile.username} (${userId}) | ${syncResponseToStr(response)}`)
 
     return userId;
@@ -77,14 +77,25 @@ export class UserService {
     });
   }
 
-  async searchProfileFailEnqueue(userId: number, trainee: Trainee) {
-    const response = await this.updateProfile(userId, trainee);
+  /**
+   * 유저의 소대번호, 멤버번호를 불러오고, 업데이트 한다.
+   * 만약 오류가 나거나 프로필 불러올 수 없으면 재시도 큐에 넣는다.
+   * 수료 후에 프로필을 불러올 수 없으면 큐에 넣지 않는다.
+   */
+  async updateRokafProfile(userId: number, trainee: Trainee) {
+    const response = await this.getRokafProfile(trainee);
+    const status = response.status;
 
-    switch (response) {
+    switch (status) {
       case syncResponse.before:
         await this.userQueue.insert(userId);
         break;
       case syncResponse.complete:
+        const member = response.member!;
+        await this.userRepository.updateRokafProfile(userId, {
+          memberSeq: member.memberSeq,
+          sodae: member.sodae
+        });
         break;
       case syncResponse.error:
         await this.userQueue.insert(userId);
@@ -99,35 +110,38 @@ export class UserService {
         }
         break;
     }
-    return response;
+
+    return status;
   }
 
   /**
-   * 유저의 소대번호, 멤버번호를 불러오고, 업데이트 한다.
+   * 유저의 소대번호, 멤버번호를 불러온다.
    */
-  async updateProfile(userId: number, trainee: Trainee) {
+  private async getRokafProfile(trainee: Trainee) {
     const status = trainee.currentStatus();
 
     if (status == Status.before || status == Status.beginning) {
-      return syncResponse.before;
+      return { status: syncResponse.before };
     }
 
     const result = await this.rokafClient.getProfile(trainee.name, trainee.birth);
 
     // 기훈단 서버 오류
     if (!result.serverOn) {
-      return syncResponse.error;
+      return { status: syncResponse.error };
     }
 
     // 소대번호, 멤버번호를 업데이트하고 연결됬다고 알려줌
     if (result.member) {
-      await this.userRepository.updateRokafProfile(userId, {
-        memberSeq: result.member.memberSeq,
-        sodae: result.member.sodae
-      });
-      return syncResponse.complete;
+      return {
+        status: syncResponse.complete,
+        member: {
+          memberSeq: result.member.memberSeq,
+          sodae: result.member.sodae
+        }
+      };
     } else {
-      return syncResponse.fail;
+      return { status: syncResponse.fail };
     }
   }
 
