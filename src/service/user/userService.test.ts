@@ -243,7 +243,7 @@ describe('User Service Test', () => {
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.before);
 
       // 회원가입
-      const userId = await userService.register(trainee);
+      const userId = await userService.awaitRegister(trainee);
 
       // 정확한 정보 입력으로 소대번호 가져올 수 있음
       rokafClient.changeGetProfileReturnValue({
@@ -253,7 +253,7 @@ describe('User Service Test', () => {
         },
         serverOn: true,
       });
-      
+
       // 862기 훈련기간
       jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
 
@@ -268,7 +268,7 @@ describe('User Service Test', () => {
     })
 
     test('기존에 소대번호가 있어도 프로필 수정하면 바뀝니다.', async () => {
-      // 다른 소대번호
+      // 서버 좋음
       rokafClient.changeGetProfileReturnValue({
         member: {
           memberSeq: '12341234',
@@ -280,11 +280,16 @@ describe('User Service Test', () => {
       const userProps = createUserProps({ generation: 862 });
       const trainee = new Trainee(userProps);
 
-      // 현재 상태: 입대 전
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.before);
+      // 현재 상태: 훈련 중
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.ending);
 
       // 회원가입
-      const userId = await userService.register(trainee);
+      const userId = await userService.awaitRegister(trainee);
+      
+      const updatedTrainee1 = await userService.getTrainee(userId);
+      
+      expect(updatedTrainee1.memberSeq).toEqual('12341234');
+      expect(updatedTrainee1.sodae).toEqual('1111');
 
       // 정확한 정보 입력으로 소대번호 가져올 수 있음
       rokafClient.changeGetProfileReturnValue({
