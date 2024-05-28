@@ -230,7 +230,7 @@ describe('User Service Test', () => {
       // 가짜 타이머 사용 해제
       jest.useRealTimers();
     });
-    test('프로필 업데이트', async () => {
+    test('프로필 업데이트하면 소대번호를 불러옵니다.', async () => {
       // 잘못된 이름 입력해서 프로필을 찾을 수 없음
       rokafClient.changeGetProfileReturnValue({
         serverOn: true,
@@ -253,6 +253,9 @@ describe('User Service Test', () => {
         },
         serverOn: true,
       });
+      
+      // 862기 훈련기간
+      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
 
       // 정보 수정
       await userService.editProfile(userId, { name: '하이', birth: '20230405' });
@@ -264,7 +267,7 @@ describe('User Service Test', () => {
       expect(updatedTrainee.sodae).toEqual('1111');
     })
 
-    test('프로필 업데이트', async () => {
+    test('기존에 소대번호가 있어도 프로필 수정하면 바뀝니다.', async () => {
       // 다른 소대번호
       rokafClient.changeGetProfileReturnValue({
         member: {
@@ -291,6 +294,9 @@ describe('User Service Test', () => {
         },
         serverOn: true,
       });
+
+      // 862기 훈련기간
+      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
 
       // 정보 수정
       await userService.editProfile(userId, { name: '하이', birth: '20230405' });
