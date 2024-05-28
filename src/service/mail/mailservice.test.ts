@@ -1,5 +1,4 @@
 import { describe, expect, test, beforeAll, beforeEach, jest, afterEach } from '@jest/globals';
-import { MailService, SendResponse } from './MailService';
 import { LogConfig } from 'config/logger';
 import { MemoryLogger } from 'config/memoryLogger';
 import { testBean } from '../testConfig';

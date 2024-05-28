@@ -1,7 +1,4 @@
 import { describe, expect, test, beforeEach, jest, afterEach } from '@jest/globals';
-
-import { ProfileFactory } from 'src/type/goodFactory';
-
 import { testBean } from '../testConfig';
 import { Status } from 'src/lib/time';
 import { Trainee } from '../user/Trainee';

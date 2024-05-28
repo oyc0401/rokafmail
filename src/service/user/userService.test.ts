@@ -1,6 +1,5 @@
 import { describe, expect, test, beforeEach, jest } from '@jest/globals';
-import { UserService, syncResponse } from './UserService';
-import { ProfileFactory } from 'src/type/goodFactory';
+import { syncResponse } from './UserService';
 import { ValidateError } from 'src/utils/validate';
 import { Status } from 'src/lib/time';
 import { testBean } from '../testConfig';
