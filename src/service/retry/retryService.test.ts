@@ -292,79 +292,52 @@ describe('Retry Service Test', () => {
       }
     });
 
-    describe('편지쓰기 기간 지났을 때', () => {
-      test('수료했는데 프로필 못 찾으면 큐에 넣지 않기', async () => {
-        // MockRokafClient
-        rokafClient.changeGetProfileReturnValue({
-          serverOn: true,
-        });
-
-        const user = {
-          username: 'test',
-          password: '0000',
-          name: '김공군',
-          birth: '20030101',
-          generation: 850,
-          message: '잘 다녀오겠습니다!',
-        }
-        const newUser = await userRepository.insert(user);
-
-        const profile = ProfileFactory.create({
-          userId: newUser.id, name: newUser.id,
-          birth: newUser.birth, generation: newUser.generation,
-          username: newUser.username,
-        });
-        jest.spyOn(profile, 'getStatus').mockReturnValue(Status.ending);
-
-        await userService.searchProfileFailEnqueue(profile);
-        expect(await userQueue.size()).toBe(0);
-
-        await retryService.retryGetProfile();
-        expect(await userQueue.size()).toBe(0);
-
+    test('수료했는데 프로필 못 찾으면 회원가입 할 때 큐에 넣지 않기', async () => {
+      // 서버 상태 좋음, 잘못된 검색
+      rokafClient.changeGetProfileReturnValue({
+        serverOn: true,
       });
+      const user = createUserProps({ generation: 862 });
+      const trainee = new Trainee(user);
 
-      test('수료했는데 서버 오류 생겨서 프로필 못 찾으면 큐에 넣기', async () => {
-        // MockRokafClient
-        rokafClient.changeGetProfileReturnValue({
-          serverOn: false,
-        });
+      // 현재 상태: 훈련 주차 -> 회원가입
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      const userId = await userService.AwaitRegisterTrainee(trainee);
 
-        const user = {
-          username: 'test',
-          password: '0000',
-          name: '김공군',
-          birth: '20030101',
-          generation: 850,
-          message: '잘 다녀오겠습니다!',
-        }
-        const newUser = await userRepository.insert(user);
+      expect(await userQueue.size()).toBe(1);
 
-        const profile = ProfileFactory.create({
-          userId: newUser.id, name: newUser.id,
-          birth: newUser.birth, generation: newUser.generation,
-          username: newUser.username,
-        });
-        jest.spyOn(profile, 'getStatus').mockReturnValue(Status.ending);
-
-        await userService.searchProfileFailEnqueue(profile);
-        expect(await userQueue.size()).toBe(1);
-
-        // 나중에 서버 안정화
-        rokafClient.changeGetProfileReturnValue({
-          serverOn: true,
-        });
-        await retryService.retryGetProfile();
-        expect(await userQueue.size()).toBe(0);
-
-      });
-
+      // 이후에 편지쓰기 기간이 지남
+      jest.setSystemTime(new Date('2024-12-01T00:00:00.000Z'));
+      await retryService.retryGetProfile();
+      expect(await userQueue.size()).toBe(0);
     });
 
+    test('수료했는데 서버 오류 생겨서 프로필 못 찾으면 큐에 넣기', async () => {
+      // 서버 상태 나쁨
+      rokafClient.changeGetProfileReturnValue({
+        serverOn: false,
+      });
 
+      const user = createUserProps({ generation: 862 });
+      const trainee = new Trainee(user);
 
+      // 현재 상태: 훈련 주차 -> 회원가입
+      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.ending);
+      const userId = await userService.AwaitRegisterTrainee(trainee);
+
+      expect(await userQueue.size()).toBe(1);
+
+      // 나중에 서버 안정화
+      rokafClient.changeGetProfileReturnValue({
+        serverOn: true,
+      });
+
+      // 이후에 편지쓰기 기간이 지남
+      jest.setSystemTime(new Date('2024-12-01T00:00:00.000Z'));
+      await retryService.retryGetProfile();
+      expect(await userQueue.size()).toBe(0);
+    });
   })
 
   // 편지 보낼 수 있는 기간에만 보낼 수 있어서 기훈단 오류시 테스트 함수 다시 짜야함
-
 });
