@@ -1,5 +1,5 @@
 import { describe, expect, test, beforeEach, jest, afterEach } from '@jest/globals';
-import { testBean } from '../testConfig';
+import { testBean } from 'src/bean/testConfig';
 import { Status } from 'src/lib/time';
 import { Trainee } from '../user/Trainee';
 

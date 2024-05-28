@@ -2,7 +2,7 @@ import { describe, expect, test, beforeEach, jest } from '@jest/globals';
 import { syncResponse } from './UserService';
 import { ValidateError } from 'src/utils/validate';
 import { Status } from 'src/lib/time';
-import { testBean } from '../testConfig';
+import { testBean } from 'src/bean/testConfig';
 import { Trainee } from './Trainee';
 
 describe('User Service Test', () => {

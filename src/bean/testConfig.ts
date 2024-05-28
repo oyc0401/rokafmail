@@ -1,15 +1,16 @@
-import MockRokafClient from './rokafClient/MockRokafClient';
+import MockRokafClient from '../service/rokafClient/MockRokafClient';
 import { MemoryUserRepository } from 'src/repository/user/memoryUserRepository';
-import { UserService } from './user/UserService';
+import { UserService } from '../service/user/UserService';
 import { MemoryUserQueue } from 'src/repository/userQueue/memoryUserQueue';
 import { MemoryLogger } from 'config/memoryLogger';
 import { MemoryPostRepository } from 'src/repository/post/memoryPostRepository';
 import { MemoryPostQueue } from 'src/repository/postQueue/memoryPostQueue';
-import { MailService } from './mail/MailService';
-import { RetryService } from './retry/retryService';
+import { MailService } from '../service/mail/MailService';
+import { RetryService } from '../service/retry/retryService';
 import { LogConfig } from 'config/logger';
+import { BeanInterface } from './beanInterface';
 
-export function testBean() {
+export function testBean(): BeanInterface & { logger: MemoryLogger } {
   const postRepository = new MemoryPostRepository();
   const postQueue = new MemoryPostQueue(postRepository);
 
