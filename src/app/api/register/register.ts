@@ -28,7 +28,7 @@ export async function registerApi(registerProps: RegisterProps) {
 
     const userService = new UserService(bean);
     const trainee = new Trainee(registerProps);
-    await userService.AsyncRegisterTrainee(trainee);
+    await userService.register(trainee);
 
     return ServerActionResponse.json({ message: "회원가입 성공", status: 200 });
   } catch (error) {

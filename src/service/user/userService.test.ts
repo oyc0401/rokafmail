@@ -37,7 +37,7 @@ describe('User Service Test', () => {
       const userProps = createUserProps();
       const trainee = new Trainee(userProps);
 
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       const registeredTrainee = await userService.getTrainee(userId);
 
@@ -49,14 +49,14 @@ describe('User Service Test', () => {
       // 회원가입
       const userProps1 = createUserProps({ username: 'Michael' });
       const trainee1 = new Trainee(userProps1);
-      await userService.AsyncRegisterTrainee(trainee1);
+      await userService.register(trainee1);
 
       // 중복된 아이디
       const userProps2 = createUserProps({ username: 'Michael' });
       const trainee2 = new Trainee(userProps2);
 
       // 오류 예상
-      await expect(userService.AsyncRegisterTrainee(trainee2)).rejects.toThrow(ValidateError);
+      await expect(userService.register(trainee2)).rejects.toThrow(ValidateError);
     });
 
 
@@ -80,7 +80,7 @@ describe('User Service Test', () => {
         });
 
         // 회원가입
-        const userId = await userService.AsyncRegisterTrainee(trainee);
+        const userId = await userService.register(trainee);
         const registeredTrainee = await userService.getTrainee(userId);
 
         // 프로필 업데이트 여부 검증
@@ -108,7 +108,7 @@ describe('User Service Test', () => {
       });
 
       // 회원가입
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       const registeredTrainee = await userService.getTrainee(userId);
 
@@ -136,7 +136,7 @@ describe('User Service Test', () => {
       // db 저장
       const user = await userRepository.insert(trainee);
 
-      const result = await userService.syncProfileTrainee(user!.id, trainee);
+      const result = await userService.updateProfile(user!.id, trainee);
 
       expect(result).toBe(syncResponse.before);
 
@@ -162,7 +162,7 @@ describe('User Service Test', () => {
       // db 저장
       const user = await userRepository.insert(trainee);
 
-      const result = await userService.syncProfileTrainee(user!.id, trainee);
+      const result = await userService.updateProfile(user!.id, trainee);
 
       expect(result).toBe(syncResponse.complete);
 
@@ -186,7 +186,7 @@ describe('User Service Test', () => {
       // db 저장
       const user = await userRepository.insert(trainee);
 
-      const result = await userService.syncProfileTrainee(user!.id, trainee);
+      const result = await userService.updateProfile(user!.id, trainee);
 
       expect(result).toBe(syncResponse.error);
 
@@ -208,7 +208,7 @@ describe('User Service Test', () => {
       // db 저장
       const user = await userRepository.insert(trainee);
 
-      const result = await userService.syncProfileTrainee(user!.id, trainee);
+      const result = await userService.updateProfile(user!.id, trainee);
 
       expect(result).toBe(syncResponse.fail);
 

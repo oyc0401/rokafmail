@@ -29,7 +29,7 @@ export class UserService {
     return user != null;
   }
 
-  async AsyncRegisterTrainee(trainee: Trainee) {
+  async register(trainee: Trainee) {
     if (await this.existUsername(trainee.username)) {
       throw new ValidateError('아이디가 중복되었습니다.');
     }
@@ -41,14 +41,14 @@ export class UserService {
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
     const profile = ProfileFactory.create({ userId, name, birth, generation, username });
 
-    this.searchProfileFailEnqueueTrainee(userId, trainee).then((response) =>
+    this.searchProfileFailEnqueue(userId, trainee).then((response) =>
       logger.info(`[Register] ${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
 
     return userId;
   }
 
   // 테스트용! 나중에 지워라 retry에 있다
-  async AwaitRegisterTrainee(trainee: Trainee) {
+  async awaitRegister(trainee: Trainee) {
     if (await this.existUsername(trainee.username)) {
       throw new ValidateError('아이디가 중복되었습니다.');
     }
@@ -60,13 +60,11 @@ export class UserService {
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
     const profile = ProfileFactory.create({ userId, name, birth, generation, username });
 
-    const response = await this.searchProfileFailEnqueueTrainee(userId, trainee);
+    const response = await this.searchProfileFailEnqueue(userId, trainee);
     logger.info(`[Register] ${profile.username} (${userId}) | ${syncResponseToStr(response)}`)
 
     return userId;
   }
-
-
 
   async getTrainee(userId: number) {
     const user = await this.userRepository.findById(userId);
@@ -79,8 +77,8 @@ export class UserService {
     });
   }
 
-  async searchProfileFailEnqueueTrainee(userId: number, trainee: Trainee) {
-    const response = await this.syncProfileTrainee(userId, trainee);
+  async searchProfileFailEnqueue(userId: number, trainee: Trainee) {
+    const response = await this.updateProfile(userId, trainee);
 
     switch (response) {
       case syncResponse.before:
@@ -107,7 +105,7 @@ export class UserService {
   /**
    * 유저의 소대번호, 멤버번호를 불러오고, 업데이트 한다.
    */
-  async syncProfileTrainee(userId: number, trainee: Trainee) {
+  async updateProfile(userId: number, trainee: Trainee) {
     const status = trainee.currentStatus();
 
     if (status == Status.before || status == Status.beginning) {

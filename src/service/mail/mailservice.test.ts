@@ -64,7 +64,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
 
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const registeredTrainee = await userService.getTrainee(userId);
@@ -96,7 +96,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.before);
 
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const registeredTrainee = await userService.getTrainee(userId);
@@ -124,7 +124,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
 
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const registeredTrainee = await userService.getTrainee(userId);
@@ -156,7 +156,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
 
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const registeredTrainee = await userService.getTrainee(userId);
@@ -188,7 +188,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
 
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const registeredTrainee = await userService.getTrainee(userId);
@@ -220,7 +220,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.working);
 
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const registeredTrainee = await userService.getTrainee(userId);
@@ -252,7 +252,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.working);
 
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const registeredTrainee = await userService.getTrainee(userId);
@@ -284,7 +284,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.working);
 
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const registeredTrainee = await userService.getTrainee(userId);
@@ -312,7 +312,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.working);
 
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const registeredTrainee = await userService.getTrainee(userId);

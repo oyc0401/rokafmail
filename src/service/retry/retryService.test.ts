@@ -72,7 +72,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const post = createLetter({ userId });
@@ -111,7 +111,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const post = createLetter({ userId });
@@ -151,7 +151,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 편지 보내기
       const post = createLetter({ userId });
@@ -191,7 +191,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
-      const userId = await userService.AsyncRegisterTrainee(trainee);
+      const userId = await userService.register(trainee);
 
       // 15개의 편지 생성
       const posts: any[] = [];
@@ -252,7 +252,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
-      const userId = await userService.AwaitRegisterTrainee(trainee);
+      const userId = await userService.awaitRegister(trainee);
 
       // 인증실패, 큐에 들어있음
       expect(await userQueue.size()).toBe(1);
@@ -302,7 +302,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
-      const userId = await userService.AwaitRegisterTrainee(trainee);
+      const userId = await userService.awaitRegister(trainee);
 
       expect(await userQueue.size()).toBe(1);
 
@@ -323,7 +323,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.ending);
-      const userId = await userService.AwaitRegisterTrainee(trainee);
+      const userId = await userService.awaitRegister(trainee);
 
       expect(await userQueue.size()).toBe(1);
 

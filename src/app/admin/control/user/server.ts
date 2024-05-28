@@ -16,7 +16,7 @@ export async function userDoubleCheck(userId: number) {
   }
   const trainee = new Trainee(user);
   const userService = new UserService(bean);
-  const response = await userService.syncProfileTrainee(userId, trainee);
+  const response = await userService.updateProfile(userId, trainee);
 
   logger.info(`${trainee.username} (${userId}) | ${syncResponseToStr(response)}`)
 }
