@@ -10,7 +10,7 @@ dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(isBetween);
-import { getEnter, getMailStart, getMailEnd, getCompletion, toStatus, Status, koreanToUtc } from "./time";
+import { getEnter, getMailStart, getMailEnd, getCompletion, toStatus, Status, koreanToUtc, postMailDday, minuteToStr } from "./time";
 
 dayjs.tz.setDefault("Asia/Seoul")
 
@@ -87,12 +87,20 @@ describe('time 라이브러리', () => {
   });
 
 
-  
 
 
 
-  test('현재 상태 계산', () => {
-    const status = toStatus(850);
-    expect(status).toBe(Status.working);
+
+  test('minuteToStr 함수 테스트', () => {
+    expect(minuteToStr(0)).toBe('0분');
+    expect(minuteToStr(3)).toBe('3분');
+    expect(minuteToStr(59)).toBe('59분');
+    expect(minuteToStr(60)).toBe('1시간');
+    expect(minuteToStr(67)).toBe('1시간 7분');
+    expect(minuteToStr(90)).toBe('1시간 30분');
+    expect(minuteToStr(1440)).toBe('1일');
+    expect(minuteToStr(1450)).toBe('1일');
+    expect(minuteToStr(1500)).toBe('1일 1시간');
+    expect(minuteToStr(1568)).toBe('1일 2시간');
   });
 })

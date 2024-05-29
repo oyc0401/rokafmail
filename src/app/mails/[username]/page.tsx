@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { NavHeader } from "src/components";
 import { LetterList } from "./LetterList";
 import { TabBar } from "./TabBar";
+import { minuteToStr, postMailDMinute, postMailDday } from "src/lib/time";
 
 export const metadata = {
   title: "하늘인편 | 받은 편지함",
@@ -38,7 +39,10 @@ export default async function Mails({ params, searchParams }) {
 
   if (!user.connect) {
     const unposteds = await getNotPostedPosts(username);
+    const minute = postMailDMinute(user.generation);
+    const strDate = minuteToStr(minute)
     content = <>
+      <p className="pt-2">{strDate}뒤에 편지가 전달됩니다.</p>
       <LetterList letters={unposteds} emptyMessage='받은 편지가 없습니다.'></LetterList>
     </>
   } else if (pageState == 'complete') {

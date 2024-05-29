@@ -54,6 +54,7 @@ export async function QueueStatus() {
       <form action={removeJung}>
         <button type="submit">중복 제거</button>
       </form>
+      <br />
     </div>
   </>;
 }

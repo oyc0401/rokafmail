@@ -9,6 +9,8 @@ import {
   diffDay,
   getMailStart,
   getMailEnd,
+  postMailDMinute,
+  minuteToStr,
 } from "src/lib/time";
 import { CheckCircle } from "public/assets/index";
 
@@ -29,13 +31,12 @@ export default async function Complete({ searchParams, params }) {
 
   let page = <Good name={user.name}></Good>;
 
-  let helpAdditional = "";
   // 편지 시작 이전에 보냄
   if (mailStartIsFuture(user.generation)) {
-    const start = getMailStart(user.generation);
-    const diff = diffDay(start);
-    page = <Later day={diff} name={user.name}></Later>;
-    helpAdditional = `${start.format("YY.MM.DD")}부터 `;
+    const minute = postMailDMinute(user.generation);
+    const strDate = minuteToStr(minute)
+
+    page = <Later day={strDate} name={user.name}></Later>;
   }
 
   const { name, birth, memberSeq, connect } = user;
@@ -82,7 +83,7 @@ function Good({ name }) {
 function Later({ day, name }) {
   return (
     <p className="text-xl">
-      {day}일 뒤에 <span className='text-primary'>{name}</span>{" "}
+      {day} 뒤에 <span className='text-primary'>{name}</span>{" "}
       훈련병에게
       <br />
       편지가 전달됩니다!

@@ -1,10 +1,8 @@
 "use server";
-import { Post, User } from "src/db";
-
 import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Mail");
-import { MailService, SendResponse, sendStatusToStr } from "src/service/mail/MailService";
+import { MailService } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
 import { Trainee } from "src/service/user/Trainee";
 
@@ -33,8 +31,9 @@ export async function mailApi(mailForm: {
     const { username, name, relationship, title, contents, password, isPublic } =
       mailForm;
 
+    const { userRepository } = bean;
     // 유저 존재 여부 체크
-    const user = await User.findByUsername(username);
+    const user = await userRepository.findByUsername(username);
 
     if (!user) {
       return ServerActionResponse.json({

@@ -193,3 +193,52 @@ export function koreanToUtc(koreaTimeStr: any) {
   return dayjs.utc(koreaTimeStr).add(-9, "hour"); // 시차 9시간 뺌;
 }
 
+
+export function postMailDday(generation: number) {
+
+  const start = getMailStart(generation);
+  const now = dayjs.tz();
+  const diff = start.diff(now, "hour");
+  return diff
+
+}
+
+export function postMailDMinute(generation: number) {
+
+  const start = getMailStart(generation);
+  const now = dayjs.tz();
+  const diff = start.diff(now, "minute");
+  return diff
+
+}
+
+
+export function minuteToStr(minutes) {
+  const minutesPerDay = 1440;
+  const minutesPerHour = 60;
+
+  const days = Math.floor(minutes / minutesPerDay);
+  const hours = Math.floor((minutes % minutesPerDay) / minutesPerHour);
+  const remainingMinutes = minutes % minutesPerHour;
+
+  let result = '';
+
+  if (days > 0) {
+    result += `${days}일`;
+  }
+  if (hours > 0) {
+    if (result.length > 0) {
+      result += ' ';
+    }
+    result += `${hours}시간`;
+  }
+  // 수정: 일이 나올 경우 분은 표시하지 않습니다.
+  if (days === 0 && remainingMinutes > 0) {
+    if (result.length > 0) {
+      result += ' ';
+    }
+    result += `${remainingMinutes}분`;
+  }
+
+  return result || '0분';
+}
