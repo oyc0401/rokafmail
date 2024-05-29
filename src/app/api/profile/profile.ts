@@ -12,7 +12,8 @@ export async function getProfile(username: string) {
   const { valid, errorResponse } = await ensureUserMatch(username);
   if (!valid) return errorResponse;
 
-  const user = await User.findByUsername(username);
+  const { userRepository } = bean;
+  const user = await userRepository.findByUsername(username);
   return ServerActionResponse.ok(user);
 
 }

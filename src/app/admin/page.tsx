@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import CronStatusMail from './CronStatusMail';
 import CronStatusUser from './CronStatusUser';
+import { QueueStatus } from './queueStatus';
 
 export default async function Page(){
  
@@ -11,6 +12,7 @@ export default async function Page(){
 
     <CronStatusMail></CronStatusMail>
     <CronStatusUser></CronStatusUser>
+     <QueueStatus></QueueStatus>
     <Link  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-2" href='/admin/table/user'>View DataBase</Link>
    
 
