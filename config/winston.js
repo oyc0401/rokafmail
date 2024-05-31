@@ -38,9 +38,6 @@ const makeLogger = (lab) => {
   const lo = winston.createLogger({
     format: combine(
       appendTimestamp({ tz: "Asia/Seoul" }),
-      // timestamp({
-      //   format: "YYYY-MM-DD HH:mm:ss",
-      // }),
       label({ label: lab }),
       logFormat,
     ),

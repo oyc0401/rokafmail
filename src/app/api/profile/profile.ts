@@ -4,9 +4,9 @@ import {
   ServerActionResponse,
   ensureUserMatch,
 } from "../serverActionResponse";
-import { makeLogger } from "config/winston";
 import { bean } from "src/bean/bean";
-const logger = makeLogger("Profile");
+import { createLogger } from "config/logger";
+const logger = createLogger("Profile");
 
 export async function getProfile(username: string) {
   const { valid, errorResponse } = await ensureUserMatch(username);
@@ -42,7 +42,7 @@ export async function editProfile(username, name, birth, message) {
 
   const user = await userRepository.findByUsername(username);
 
-  await userService.editProfile(user!.id, { name, birth, message });
+  const response =await userService.editProfile(user!.id, { name, birth, message });
   return ServerActionResponse.ok("유저 정보 수정에 성공했습니다.");
 
 

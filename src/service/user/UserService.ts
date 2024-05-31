@@ -1,5 +1,4 @@
-import { serveStatus, Status } from "src/lib/time";
-import { Profile } from "src/type";
+import { Status } from "src/lib/time";
 import { ProfileFactory } from 'src/type/goodFactory';
 import { createLogger } from "config/logger";
 import { UserQueue } from "src/repository/userQueue/userQueue";
@@ -152,6 +151,8 @@ export class UserService {
 
     const trainee = await this.getTrainee(userId);
     const status = await this.updateRokafProfile(userId, trainee);
+
+   // logger.info(d);
 
     return status;
   }
