@@ -4,14 +4,12 @@ import { useRouter } from "next/navigation";
 import { editProfile } from "src/app/api/profile/profile";
 import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
 
+import { validateMessage, validateBirth, validateName } from "src/utils/validate";
+
 export function Client({ username, name, birth, message }) {
   const [nameForm, setName] = useState(name);
   const [birthForm, setBirth] = useState(birth);
   const [messageForm, setmessage] = useState(message);
-  const canSubmit = () =>
-    validM(messageForm).valid &&
-    validN(nameForm).valid &&
-    validB(birthForm).valid;
 
   const router = useRouter();
 
@@ -31,6 +29,15 @@ export function Client({ username, name, birth, message }) {
     }
   };
 
+  const nameValidation = nameValid(nameForm);
+  const birthValidation = birthValid(birthForm);
+  const messageValidation = messageValid(messageForm);
+
+  const canSubmit = () =>
+    nameValidation.status == 'valid'
+    && birthValidation.status == 'valid'
+    && messageValidation.status == 'valid';
+
   return (<>
     <BasicFormArea>
       <BasicHeader>
@@ -45,8 +52,8 @@ export function Client({ username, name, birth, message }) {
           onChange={(e) => {
             setName(e);
           }}
-          helpMessage={validN(nameForm).text}
-          color={validN(nameForm).color}
+          helpMessage={nameValidation.text}
+          color={nameValidation.status}
         />
         <InputField
           label="생년월일"
@@ -56,8 +63,8 @@ export function Client({ username, name, birth, message }) {
           onChange={(e) => {
             setBirth(e);
           }}
-          helpMessage={validB(birthForm).text}
-          color={validB(birthForm).color}
+          helpMessage={birthValidation.text}
+          color={birthValidation.status}
         />
         <InputField
           label="메시지"
@@ -67,8 +74,8 @@ export function Client({ username, name, birth, message }) {
           onChange={(e) => {
             setmessage(e);
           }}
-          helpMessage={validM(messageForm).text}
-          color={validM(messageForm).color}
+          helpMessage={messageValidation.text}
+          color={messageValidation.status}
         />
       </BasicBody>
       <BasicFooter>
@@ -84,45 +91,45 @@ export function Client({ username, name, birth, message }) {
   );
 }
 
-function validM(message) {
-  // 빈칸일 때
-  if (message == "") return { text: "", valid: false };
 
-  // 너무 많을 때
-  if (50 < message.length)
-    return { text: "글이 너무 길어요", color: "warn", valid: false };
+function nameValid(name: string) {
+  // 빈칸일 때
+  if (name == "") return { status: 'default', text: "" };
+
+  try {
+    validateName(name);
+  } catch (error) {
+    return { status: 'warn', text: error.message };
+  }
 
   // 통과
-  return { text: "", color: "great", valid: true };
+  return { status: 'valid', text: "" };
 }
 
-function validN(name) {
+function birthValid(birth: string) {
   // 빈칸일 때
-  if (name == "") return { text: "", valid: false };
+  if (birth == "") return { status: 'default', text: "예시) 20020101" };
+
+  try {
+    validateBirth(birth);
+  } catch (error) {
+    return { status: 'warn', text: error.message };
+  }
 
   // 통과
-  return { text: "", color: "great", valid: true };
+  return { status: 'valid', text: "" };
 }
 
-function validB(birth) {
+function messageValid(message: string) {
   // 빈칸일 때
-  if (birth == "") return { text: "예시) 20020101", valid: false };
+  if (message == "") return { status: 'default', text: "" };
 
-  // 숫자가 아닌 문자 입력
-  if (!/^\d+$/.test(birth))
-    return { text: "숫자만 입력해주세요.", color: "warn", valid: false };
-
-  // 8자리 미만
-  if (birth.length < 8) return { text: "예시) 20020101", valid: false };
-
-  // 8자리 초과
-  if (birth.length > 8)
-    return {
-      text: "생년월일 8자리를 입력해주세요",
-      color: "warn",
-      valid: false,
-    };
+  try {
+    validateMessage(message);
+  } catch (error) {
+    return { status: 'warn', text: error.message };
+  }
 
   // 통과
-  return { text: "예시) 20020101", valid: true };
+  return { status: 'valid', text: "" };
 }

@@ -67,15 +67,15 @@ export default function Account() {
     setLoading(false);
   }
 
-  const UsernameValidation = usernameValid(username, isDuplicated, clickUsernameBtn.current);
+  const usernameValidation = usernameValid(username, isDuplicated, clickUsernameBtn.current);
   const passwordValidation = passwordValid(password);
   const repasswordValidation = repasswordValid(repassword, password);
 
-  const canSubmit = () => {
-    return UsernameValidation.status == 'valid'
-      && passwordValidation.status == 'valid'
-      && repasswordValidation.status == 'valid'
-  }
+  const canSubmit = () =>
+    usernameValidation.status == 'valid'
+    && passwordValidation.status == 'valid'
+    && repasswordValidation.status == 'valid'
+
 
   const click = (event) => {
     event.preventDefault();
@@ -96,8 +96,8 @@ export default function Account() {
           placeholder="아이디를 입력해주세요"
           value={username}
           onChange={editUsername}
-          helpMessage={UsernameValidation.text}
-          color={UsernameValidation.status}
+          helpMessage={usernameValidation.text}
+          color={usernameValidation.status}
         >
           <button
             type="button"

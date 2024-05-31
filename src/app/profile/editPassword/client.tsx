@@ -1,18 +1,17 @@
 "use client";
 import { useState } from "react";
 import crypto from "crypto";
-import { useRouter } from "next/navigation";
 import { editPassword } from "src/app/api/profile/profile";
 import { signOut } from "next-auth/react";
 import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
+import { validatePassword } from "src/utils/validate";
 
 export function Client({ username }) {
   const [originPassword, setorpassword] = useState("");
 
   const [password, setpassword] = useState("");
   const [repassword, setrepassword] = useState("");
-  const router = useRouter();
-
+ 
   async function click(e) {
     e.preventDefault();
     if (!canSubmit()) return;
@@ -37,13 +36,14 @@ export function Client({ username }) {
     }
   }
 
-  function canSubmit() {
-    return (
-      validP(originPassword) &&
-      validP(password).valid &&
-      validR(repassword, password).valid
-    );
-  }
+  const originPasswordValidation = passwordValid(originPassword);
+  const passwordValidation = passwordValid(password);
+  const repasswordValidation = repasswordValid(repassword, password);
+
+  const canSubmit = () =>
+    originPasswordValidation.status == 'valid'
+    && passwordValidation.status == 'valid'
+    && repasswordValidation.status == 'valid'
 
   return (
     <>
@@ -59,8 +59,8 @@ export function Client({ username }) {
             value={originPassword}
             placeholder="비밀번호를 입력해주세요"
             onChange={setorpassword}
-            helpMessage={validP(originPassword).text}
-            color={validP(originPassword).color}
+            helpMessage={originPasswordValidation.text}
+            color={originPasswordValidation.status}
           />
           <InputField
             label="새로운 비밀번호"
@@ -69,8 +69,8 @@ export function Client({ username }) {
             value={password}
             placeholder="새 비밀번호를 입력해주세요"
             onChange={setpassword}
-            helpMessage={validP(password).text}
-            color={validP(password).color}
+            helpMessage={passwordValidation.text}
+            color={passwordValidation.status}
           />
           <InputField
             label="비밀번호 재확인"
@@ -79,8 +79,8 @@ export function Client({ username }) {
             value={repassword}
             placeholder="비밀번호를 다시 입력해주세요"
             onChange={setrepassword}
-            helpMessage={validR(repassword, password).text}
-            color={validR(repassword, password).color}
+            helpMessage={repasswordValidation.text}
+            color={repasswordValidation.status}
           />
         </BasicBody>
         <BasicFooter>
@@ -94,34 +94,29 @@ export function Client({ username }) {
       </BasicFormArea>
     </>
   );
-
-
 }
 
-function validP(password) {
+function passwordValid(password: string) {
   // 빈칸일 때
-  if (password == "") return { text: "", valid: false };
+  if (password == "") return { status: 'default', text: "" };
 
-  // 짧을 때
-  if (password.length < 4)
-    return {
-      text: "비밀번호는 4자리 이상이여야 합니다",
-      color: "warn",
-      valid: false,
-    };
+  try {
+    validatePassword(password);
+  } catch (error) {
+    return { status: 'warn', text: error.message };
+  }
 
   // 통과
-  return { text: "", color: "great", valid: true };
+  return { status: 'valid', text: "사용할 수 있는 비밀번호입니다" };
 }
 
-function validR(repassword, password) {
+function repasswordValid(repassword: string, password: string) {
   // 빈칸일 때
-  if (repassword == "") return { text: "", valid: false };
+  if (repassword == "") return { status: 'default', text: "" };
 
   // 비밀번호가 같지 않음
-  if (repassword != password)
-    return { text: "비밀번호가 같지 않습니다", color: "warn", valid: false };
+  if (repassword != password) return { status: 'warn', text: "비밀번호가 같지 않습니다" };
 
   // 통과
-  return { text: "", color: "great", valid: true };
+  return { status: 'valid', text: "" };
 }
