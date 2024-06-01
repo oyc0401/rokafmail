@@ -1,14 +1,12 @@
 import { Status } from "src/lib/time";
 import { ProfileFactory } from 'src/type/goodFactory';
-import { createLogger } from "config/logger";
 import { UserQueue } from "src/repository/userQueue/userQueue";
 import { UserRepository } from "src/repository/user/userRepository";
 import { ValidateError } from "src/utils/validate";
 import { RokafClientInterface } from "../rokafClient/RokafClientInterface";
 import { MailService } from "../mail/MailService";
 import { Trainee } from "./Trainee";
-
-const logger = createLogger("UserService");
+import { labelLogger } from "config/logger/labelLogger";
 
 export class UserService {
   private rokafClient: RokafClientInterface;
@@ -29,6 +27,7 @@ export class UserService {
   }
 
   async register(trainee: Trainee) {
+    const logger = labelLogger("Register");
     if (await this.existUsername(trainee.username)) {
       throw new ValidateError('아이디가 중복되었습니다.');
     }
@@ -48,6 +47,7 @@ export class UserService {
 
   // 테스트용! 나중에 지워라 retry에 있다
   async awaitRegister(trainee: Trainee) {
+    const logger = labelLogger("AwaitRegister");
     if (await this.existUsername(trainee.username)) {
       throw new ValidateError('아이디가 중복되었습니다.');
     }
@@ -152,13 +152,17 @@ export class UserService {
     const trainee = await this.getTrainee(userId);
     const status = await this.updateRokafProfile(userId, trainee);
 
-   // logger.info(d);
+    const logger = labelLogger("EditProfile");
+    logger.info(`${userId}`)
 
     return status;
   }
 
   async editPassword(userId: number, newPassword: string) {
+    const logger = labelLogger("EditPassword");
+
     await this.userRepository.editProfile(userId, { password: newPassword });
+    logger.info(`${userId}`)
   }
 
 }

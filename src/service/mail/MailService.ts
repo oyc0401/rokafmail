@@ -1,10 +1,9 @@
 import { getNow, serveStatus, Status } from "src/lib/time";
 import { InputPost, Post, PostRepository } from "src/repository/post/postRepository";
-import { createLogger } from "config/logger";
 import { PostQueue } from "src/repository/postQueue/postQueue";
 import { RokafClientInterface } from "../rokafClient/RokafClientInterface";
 import { Trainee } from "../user/Trainee";
-const logger = createLogger("MailService");
+import { labelLogger } from "config/logger/labelLogger";
 
 const MAX_COUNT = 10;
 
@@ -24,6 +23,8 @@ export class MailService {
    * 편지를 보낼 때 편지큐는 '프로필이 있는' 훈련병이 편지만 존재한다.
    */
   async sendLetter(trainee: Trainee, letter: InputPost) {
+    const logger = labelLogger("SendLetter");
+    
     const { userId, name, relationship, title, contents, password, isPublic } = letter;
     // 편지 저장
     const newPost = await this.postRepository.insert({
@@ -201,6 +202,7 @@ export class MailService {
 
   // 해당 유저의 모든 미발송 편지들을 다시 보내기
   async sendUnpostedMails(userId: number) {
+    const logger = labelLogger("SendUnpostedMails");
     const posts = await this.postRepository.findNotPostedByUserId(userId);
 
     for (let i = 0; i < posts.length; i++) {

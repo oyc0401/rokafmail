@@ -1,11 +1,8 @@
-import { createLogger } from "config/logger";
 import { PostQueue } from "src/repository/postQueue/postQueue";
 import { MailService, sendStatusToStr } from "../mail/MailService";
 import { UserService, syncResponse, syncResponseToStr } from "../user/UserService";
 import { UserQueue } from "src/repository/userQueue/userQueue";
-import { ProfileFactory } from "src/type/goodFactory";
-import { Trainee } from "../user/Trainee";
-const logger = createLogger("MailService");
+import { labelLogger } from "config/logger/labelLogger";
 
 export class RetryService {
 
@@ -28,7 +25,7 @@ export class RetryService {
    * 에러 다수 던짐
   **/
   async retryDelayedMail() {
-
+    const logger = labelLogger("RetryDelayedMail");
     const userCountMap = {};
     const MAX_POSTCOUNT = 10;
     const now = new Date();
@@ -66,6 +63,7 @@ export class RetryService {
 
 
   async retryGetProfile() {
+    const logger = labelLogger("RetryGetProfile");
     const now = new Date();
 
     let i = 0;

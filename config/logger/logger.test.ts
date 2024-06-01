@@ -1,13 +1,13 @@
 import { describe, expect, test, beforeEach, jest, afterEach } from '@jest/globals';
 import { labelLogger } from './labelLogger';
-import { UseMemoryLogger } from './useMemoryLogger';
+import { MemoryLogger } from './useMemoryLogger';
 import { LoggerStore } from './loggerStore';
 
 describe('로깅 테스트', () => {
-  let loging = new UseMemoryLogger();
+  let loging = new MemoryLogger();
 
   beforeEach(() => {
-    loging = new UseMemoryLogger();
+    loging = new MemoryLogger();
     LoggerStore.setLogger(loging);
 
     // 가짜 타이머 사용 설정

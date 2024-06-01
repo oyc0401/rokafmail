@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { Logger } from "./logger";
 import { format } from "./format";
 
-export class UseMemoryLogger implements Logger {
+export class MemoryLogger implements Logger {
   log: string[] = [];
 
   info(message: string) {
