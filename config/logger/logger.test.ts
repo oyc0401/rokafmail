@@ -1,6 +1,6 @@
 import { describe, expect, test, beforeEach, jest, afterEach } from '@jest/globals';
 import { labelLogger } from './labelLogger';
-import { MemoryLogger } from './useMemoryLogger';
+import { MemoryLogger } from './memoryLogger';
 import { LoggerStore } from './loggerStore';
 
 describe('로깅 테스트', () => {

@@ -1,6 +1,4 @@
 import { describe, expect, test, beforeAll, beforeEach, jest, afterEach } from '@jest/globals';
-import { LogConfig } from 'config/logger';
-import { MemoryLogger } from 'config/memoryLogger';
 import { Trainee } from '../user/Trainee';
 import { Status } from 'src/lib/time';
 import { testBean } from 'src/bean/testConfig';
@@ -19,12 +17,6 @@ describe('serviceTest', () => {
       logger
     } = testBean());
   });
-
-
-  beforeAll(() => {
-    const logger = new MemoryLogger();
-    LogConfig.setLogger(logger);
-  })
 
   function createUserProps({
     username = 'testUser',
