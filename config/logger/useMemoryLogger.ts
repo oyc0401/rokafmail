@@ -7,7 +7,7 @@ export class UseMemoryLogger implements Logger {
 
   info(message: string) {
     const log = format({
-      timestamp: dayjs().format('YYYY.MM.DD hh:mm:ss'),
+      timestamp: dayjs().format('YYYY-MM-DD hh:mm:ss'),
       level: 'info',
       message: message,
     })
@@ -15,7 +15,7 @@ export class UseMemoryLogger implements Logger {
   }
   warn(message: string) {
     const log = format({
-      timestamp: dayjs().format('YYYY.MM.DD hh:mm:ss'),
+      timestamp: dayjs().format('YYYY-MM-DD hh:mm:ss'),
       level: 'warn',
       message: message,
     })
@@ -23,7 +23,7 @@ export class UseMemoryLogger implements Logger {
   }
   error(message: string) {
     const log = format({
-      timestamp: dayjs().format('YYYY.MM.DD hh:mm:ss'),
+      timestamp: dayjs().format('YYYY-MM-DD hh:mm:ss'),
       level: 'error',
       message: message,
     })

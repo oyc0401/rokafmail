@@ -17,7 +17,7 @@ export class WinstonLogger implements Logger {
 
     const appendTimestamp = winston.format((info, opts) => {
       if (opts.tz)
-        info.timestamp = moment().tz(opts.tz).format("YYYY-MM-DD HH:mm:ss -");
+        info.timestamp = moment().tz(opts.tz).format("YYYY-MM-DD HH:mm:ss");
       return info;
     });
 
@@ -62,16 +62,13 @@ export class WinstonLogger implements Logger {
       ],
     });
 
-    let notalignColorsAndTime = winston.format.combine(
-      winston.format.printf(format),
-    );
-
+    // 개발 모드면 색깔 넣어서 출력
     if (process.env.NODE_ENV !== "production") {
       this.logger.add(
         new winston.transports.Console({
           format: winston.format.combine(
             winston.format.colorize(), // 색깔 넣어서 출력
-            notalignColorsAndTime,
+            winston.format.printf(format),
           ),
         }),
       );

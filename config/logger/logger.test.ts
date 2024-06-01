@@ -26,7 +26,7 @@ describe('로깅 테스트', () => {
 
       logger.info('하이');
 
-      expect(loging.cat()).toBe('2024.01.01 09:00:00 info : [라벨] 하이\n');
+      expect(loging.cat()).toBe('2024-01-01 09:00:00 - info: [라벨] 하이\n');
     });
 
     test('로그 두번', async () => {
@@ -35,7 +35,7 @@ describe('로깅 테스트', () => {
       logger.info('하이');
       logger.info('하이');
 
-      expect(loging.cat()).toBe('2024.01.01 09:00:00 info : [라벨] 하이\n2024.01.01 09:00:00 info : [라벨] 하이\n');
+      expect(loging.cat()).toBe('2024-01-01 09:00:00 - info: [라벨] 하이\n2024-01-01 09:00:00 - info: [라벨] 하이\n');
     });
 
   });
