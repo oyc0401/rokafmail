@@ -2,6 +2,7 @@ import winston from "winston";
 import winstonDaily from "winston-daily-rotate-file";
 import moment from "moment-timezone";
 import { Logger } from "./logger";
+import { format } from "./format";
 
 const logDir = "logs"; // logs 디렉토리 하위에 로그 파일 저장
 const { combine, timestamp, label, printf } = winston.format;
@@ -10,24 +11,9 @@ const { combine, timestamp, label, printf } = winston.format;
 export class WinstonLogger implements Logger {
   logger;
   constructor() {
-    
-    // Define log format
-    const logFormat = printf((info) => {
-      const width = 5;
-      const length = info.level.length;
-      let level = `${info.level}`;
 
-      if (length < width) {
-        // Add spaces to make the length 5
-        while (level.length < width) {
-          level += " ";
-        }
-      } else if (length > width) {
-        // Trim the string to make the length 5
-        level = level.substring(0, width);
-      }
-      return `${info.timestamp} ${level}: ${info.message}`;
-    });
+    // Define log format
+    const logFormat = printf(format);
 
     const appendTimestamp = winston.format((info, opts) => {
       if (opts.tz)
@@ -77,9 +63,7 @@ export class WinstonLogger implements Logger {
     });
 
     let notalignColorsAndTime = winston.format.combine(
-      winston.format.printf(
-        (info) => `${info.timestamp} ${info.level}: ${info.message}`,
-      ),
+      winston.format.printf(format),
     );
 
     if (process.env.NODE_ENV !== "production") {
@@ -92,8 +76,6 @@ export class WinstonLogger implements Logger {
         }),
       );
     }
-
-
   }
   error(log: string) {
     this.logger.error(log);
