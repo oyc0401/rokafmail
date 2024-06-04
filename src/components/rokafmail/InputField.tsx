@@ -73,15 +73,13 @@ export function InputAutoSize({
   color?: string;
   children?: React.ReactNode;
 }) {
-
-
   return (
     <div className="pb-4 w-full">
       {label ? <p className={styles.label}>{label}</p> : null}
 
-      <div className="flex flex-row w-full items-center"      >
-        <textarea
-          className={`${styles.textArea} min-h-[150px]`}
+      <div className="flex flex-row w-full items-center">
+        <TextareaAutosize
+          className={`${styles.textArea} resize-none`}
           value={value}
           placeholder={placeholder}
           autoComplete={autoComplete}

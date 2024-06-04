@@ -6,10 +6,11 @@ import { sendEmail } from "./server";
 
 export default function Report() {
   const [message, setMessage] = useState('');
+  const [email, setEmail] = useState('');
 
   async function click(e) {
     e.preventDefault();
-    await sendEmail(message);
+    await sendEmail(message,email);
     alert('소중한 의견 감사합니다!');
     setMessage('');
   }
@@ -29,6 +30,16 @@ export default function Report() {
           placeholder="내용을 입력해주세요"
           onChange={setMessage}
         />
+        <div className="pt-2">
+          <InputField
+            label="이메일"
+            type="text"
+            value={email}
+            placeholder="답변을 위한 이메일 주소를 입력해주세요"
+            onChange={setEmail}
+          ></InputField>
+        </div>
+       
       </BasicBody>
       <BasicFooter>
         <button
