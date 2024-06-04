@@ -41,7 +41,7 @@ export const startGeneration: number = 830;
 
 export function timeDB(generation: number): [string, string] {
   const value = store[generation];
-  if (!value) throw new Error('해당 기수의 정보가 없습니다.')
+  if (!value) throw new Error(`${generation}기의 정보가 없습니다.`)
   return value;
 }
 

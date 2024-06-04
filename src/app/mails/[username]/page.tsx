@@ -37,12 +37,12 @@ export default async function Mails({ params, searchParams }) {
 
   let content = <></>;
 
+
   if (!user.connect) {
     const unposteds = await getNotPostedPosts(username);
-    const minute = postMailDMinute(user.generation);
-    const strDate = minuteToStr(minute)
+
     content = <>
-      <p className="pt-2">{strDate}뒤에 편지가 전달됩니다.</p>
+      <TimeIndicator generation={user.generation}></TimeIndicator>
       <LetterList letters={unposteds} emptyMessage='받은 편지가 없습니다.'></LetterList>
     </>
   } else if (pageState == 'complete') {
@@ -86,5 +86,14 @@ export default async function Mails({ params, searchParams }) {
       </nav>
     </>
   );
+}
+
+function TimeIndicator({generation}) {
+  const minute = postMailDMinute(generation);
+  const strDate = minuteToStr(minute);
+  if (strDate == "0분") {
+    return <></>;
+  }
+  return <p className="pt-2">{strDate}뒤에 편지가 전달됩니다.</p>;
 }
 
