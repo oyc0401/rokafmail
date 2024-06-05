@@ -9,7 +9,7 @@ export async function sendEmail(message, senderEmail) {
       pass: process.env.GMAIL_PASSWORD // 이메일의 비밀번호
     }
   });
-  console.log(process.env.GMAIL_PASSWORD);
+  //console.log(process.env.GMAIL_PASSWORD);
   const mailOptions = {
     from: process.env.GMAIL_EMAIL, // 작성자
     to: 'oyc0401@gmail.com', // 수신자
