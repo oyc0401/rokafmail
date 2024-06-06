@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 // 회원가입 정보 추출 함수
 function extractRegisterInfo(line) {
-  const regex = /\[register\]\s+(\w+)\s+\((\d+)\)/;
+  const regex = /\[Register\]\s+(\w+)\s+\((\d+)\)/;
   const match = regex.exec(line);
   if (!match) {
     return null;

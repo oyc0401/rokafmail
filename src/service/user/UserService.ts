@@ -60,7 +60,7 @@ export class UserService {
     const profile = ProfileFactory.create({ userId, name, birth, generation, username });
 
     const response = await this.updateRokafProfile(userId, trainee);
-    logger.info(`[Register] ${profile.username} (${userId}) | ${syncResponseToStr(response)}`)
+    logger.info(`${profile.username} (${userId}) | ${syncResponseToStr(response)}`)
 
     return userId;
   }
