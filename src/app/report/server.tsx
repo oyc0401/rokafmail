@@ -1,7 +1,7 @@
 'use server'
 const nodemailer = require('nodemailer'); // 모듈 import
 
-export async function sendEmail(message, senderEmail) {
+export async function sendEmail(message, senderEmail, lastUrl) {
   const transporter = nodemailer.createTransport({
     service: 'gmail', // gmail을 사용함
     auth: {
@@ -14,15 +14,15 @@ export async function sendEmail(message, senderEmail) {
     from: process.env.GMAIL_EMAIL, // 작성자
     to: 'oyc0401@gmail.com', // 수신자
     subject: `[하늘인편] ${message.slice(0, 15)}`, // 메일 제목
-    text: `발송인: ${senderEmail}\n\n${message}` // 메일 내용
+    text: `발송인: ${senderEmail}\n\n내용: ${message}\n\n${lastUrl}에서 보냄` // 메일 내용
   };
 
   const result = await transporter.sendMail(mailOptions, function(error, info) {
     if (error) {
-     // console.log(error);
+      // console.log(error);
       return false;
     } else {
-     // console.log('Email sent: ' + info.response);
+      // console.log('Email sent: ' + info.response);
       return true;
     }
   });

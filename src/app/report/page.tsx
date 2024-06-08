@@ -4,13 +4,14 @@ import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputAutoSize, Inpu
 import { sendEmail } from "./server";
 
 
-export default function Report() {
+export default function Report({ searchParams }) {
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
+  const lastUrl = searchParams.url;
 
   async function click(e) {
     e.preventDefault();
-    await sendEmail(message,email);
+    await sendEmail(message, email,lastUrl);
     alert('소중한 의견 감사합니다!');
     setMessage('');
   }
@@ -39,7 +40,7 @@ export default function Report() {
             onChange={setEmail}
           ></InputField>
         </div>
-       
+
       </BasicBody>
       <BasicFooter>
         <button

@@ -48,7 +48,7 @@ export default function DropdownButton({ username, name, birth, memberSeq, conne
           <DropdownItem className="text-left" key="image" onClick={() => window.open(`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893231&siteId=last2&menuUIType=sub`)}>훈련병 사진</DropdownItem>
         </DropdownSection>
         <DropdownSection>
-          <DropdownItem className="text-left" key="report" onClick={() => router.push(`/report`)}>문의사항</DropdownItem>
+          <DropdownItem className="text-left" key="report" onClick={() => router.push(`/report?url=${window.location.href}`)}>문의사항</DropdownItem>
           <DropdownItem className="text-left" key="privacy-policy" onClick={() => router.push(`/privacy-policy`)}>개인정보처리방침</DropdownItem>
           <DropdownItem className="text-left" key="developer" onClick={() => window.open(`https://github.com/oyc0401`)}>개발자 정보</DropdownItem>
         </DropdownSection>
