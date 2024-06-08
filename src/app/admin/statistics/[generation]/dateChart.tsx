@@ -13,6 +13,26 @@ import {
 } from "recharts";
 
 export function DateChart({ data }) {
+
+  
+  // return (
+  //   <div className="flex flex-col items-center">
+  //     <LineChart
+  //       width={900}
+  //       height={300}
+  //       data={data}
+  //       margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+  //     >
+
+  //       <Line type="monotone" dataKey="count" stroke="#8884d8" />
+  //       <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
+  //       <XAxis dataKey="date" />
+  //       <YAxis />
+  //       <Tooltip />
+       
+  //     </LineChart>
+  //   </div>
+  // );
   return (
     <div className="flex flex-col items-center">
       <BarChart
@@ -25,7 +45,7 @@ export function DateChart({ data }) {
         <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />
-       
+
         <Bar type="monotone" dataKey="count" fill="#8884d8" />
       </BarChart>
     </div>

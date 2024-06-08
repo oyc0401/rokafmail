@@ -33,10 +33,10 @@ export function Table({ data, tableName }) {
   // console.log(columns);
 
   async function clickEvent(row) {
-    if (confirm(`정말로 삭제하시겠습니까? ${tableName}, ${row["id"]}`)) {
-      //await deleteObj(tableName, row["id"]);
+    // if (confirm(`정말로 삭제하시겠습니까? ${tableName}, ${row["id"]}`)) {
+    //   //await deleteObj(tableName, row["id"]);
 
-    }
+    // }
 
     // if (tableName == "post") {
     //   console.log("이거");
