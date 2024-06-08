@@ -47,7 +47,7 @@ function validP(password: string) {
     return { text: "4자리 이상 입력", color: "warn", valid: false };
 
   // 통과
-  return { text: "", color: "great", valid: true };
+  return { text: "", color: "", valid: true };
 }
 
 export { validN, validR, validC, validT, validP };

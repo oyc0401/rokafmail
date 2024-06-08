@@ -135,7 +135,7 @@ function Password() {
   const { password, setPassword, isPublic, setIsPublic, setClick } = useStore();
 
   return (
-    <div className="pb-1">
+    <div className="pb-2">
       <div className="flex flex-row">
         <div className="flex-[2_2_0%] pl-2.5 flex justify-end">
           <Checkbox
@@ -166,17 +166,22 @@ function Password() {
 
         </div>
       </div>
-      <div className="flex flex-row">
-        <div className="flex-[2_2_0%] pl-2.5"></div>
-        <div className="flex-1 pl-2.5 text-center">
-          <p className={`text-xs font-fontmedium text-center h-4 ${validP(password).color}`}>
-            {validP(password).text}
-          </p></div>
-
-      </div>
-
-
-
+      {
+        validP(password).color == 'warn' ? <div className="flex flex-row">
+          <div className="flex-1 pl-2.5"></div>
+          <div className="flex-1 pl-2.5 shrink-0"></div>
+          <div className="flex-1 pl-2.5 text-center">
+            <p className={`text-xs font-fontmedium text-center pt-1.5 ${validP(password).color}`}>
+              {validP(password).text}
+            </p>
+          </div>
+        </div>
+          : <div>
+            <p className={`text-xs font-fontmedium text-right pt-1.5 text-[#37271A] ${validP(password).color}`}>
+              작성 후 수정 및 삭제를 위해 사용됩니다
+            </p>
+          </div>
+      }
     </div>
   );
 }
