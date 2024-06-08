@@ -36,7 +36,7 @@ export default function Report({ searchParams }) {
             label="이메일"
             type="text"
             value={email}
-            placeholder="답변을 위한 이메일 주소를 입력해주세요"
+            placeholder="답변을 위한 이메일 주소 입력"
             onChange={setEmail}
           ></InputField>
         </div>

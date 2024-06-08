@@ -12,6 +12,10 @@
   color: var(--light-font);
 }
 
+.formTitie::placeholder {
+  font-weight:400
+}
+
 .contentForm{
   border:none;
 }

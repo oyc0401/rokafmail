@@ -43,9 +43,9 @@ export function Paper() {
 function Title() {
   const { setTitle, setClick } = useStore();
   return (
-    <div className="pb-4">
+    <div className="pb-3">
       <input
-        className={`${styles.form} text-lg font-medium`}
+        className={`${styles.form} ${styles.formTitie} text-lg font-medium`}
         type="text"
         placeholder="제목"
         onChange={(e) => {
@@ -66,8 +66,7 @@ function Contents() {
   };
 
   return (
-
-    <div className="flex-1 pb-3 flex flex-col" >
+    <div className="flex-1 pb-2.5 flex flex-col" >
       <TextareaAutosize
         className={`${styles.form} text-base ${styles.contentForm} min-h-36 resize-none`}
         placeholder="내용"
@@ -86,7 +85,7 @@ function Contents() {
           {validC(contents).text}
         </p>
         <div style={{ flex: 1 }}></div>
-        <p className={`text-xs font-fontmedium text-left text-[#37271A]`}>{`${contents.length}/1200`}</p>
+        <p className={`text-xs font-fontmedium text-left text-[#B2A18F]`}>{`${contents.length}/1200`}</p>
       </div>
     </div>
   );
@@ -96,12 +95,11 @@ function Name() {
   const { setName, setRelationship, setClick } = useStore();
 
   return (
-    <div className="pb-5">
+    <div className="pb-4">
       <div className="row">
         <h2 className="text-base flex-1 text-right text-[#37271A]">
           From
         </h2>
-
         <div className="flex-1 pl-2.5">
           <input
             className={`${styles.form} text-base text-center`}
@@ -133,7 +131,6 @@ function Name() {
 
 function Password() {
   const { password, setPassword, isPublic, setIsPublic, setClick } = useStore();
-
   return (
     <div className="pb-2">
       <div className="flex flex-row">
@@ -163,25 +160,13 @@ function Password() {
               setClick(true);
             }}
           ></input>
-
         </div>
       </div>
-      {
-        validP(password).color == 'warn' ? <div className="flex flex-row">
-          <div className="flex-1 pl-2.5"></div>
-          <div className="flex-1 pl-2.5 shrink-0"></div>
-          <div className="flex-1 pl-2.5 text-center">
-            <p className={`text-xs font-fontmedium text-center pt-1.5 ${validP(password).color}`}>
-              {validP(password).text}
-            </p>
-          </div>
-        </div>
-          : <div>
-            <p className={`text-xs font-fontmedium text-right pt-1.5 text-[#37271A] ${validP(password).color}`}>
-              작성 후 수정 및 삭제를 위해 사용됩니다
-            </p>
-          </div>
-      }
+      <div>
+        <p className={`text-xs text-right pt-1.5 text-[#B2A18F]`}>
+          작성 후 수정 및 삭제를 위해 사용됩니다
+        </p>
+      </div>
     </div>
   );
 }
