@@ -94,6 +94,6 @@ function TimeIndicator({generation}) {
   if (strDate == "0분") {
     return <></>;
   }
-  return <p className="pt-2">{strDate}뒤에 편지가 전달됩니다.</p>;
+  return <p className="pt-2">{strDate}뒤에 편지가 전달됩니다</p>;
 }
 
