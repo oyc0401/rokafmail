@@ -24,7 +24,7 @@ export class MailService {
    */
   async sendLetter(trainee: Trainee, letter: InputPost) {
     const logger = labelLogger("SendLetter");
-    
+
     const { userId, name, relationship, title, contents, password, isPublic } = letter;
     // 편지 저장
     const newPost = await this.postRepository.insert({
@@ -128,7 +128,7 @@ export class MailService {
    * 에러 다수 던짐
   **/
   async sendMail(postId: number,
-    event: { onFalse?: (postQueue) => Promise<any> } = {}): Promise<SendResponse> {
+    event: { onFalse?: (postQueue: PostQueue) => Promise<any> } = {}): Promise<SendResponse> {
     const post = await this.postRepository.findByIdWithUser(postId);
     if (!post) throw Error(`id가 ${postId}인 편지를 찾을 수 없습니다.`);
 
@@ -209,10 +209,8 @@ export class MailService {
       const post = posts[i];
 
       if (i < MAX_COUNT) {
-        const response = await this.sendMail(post.id, {
-          onFalse: async (queue) =>
-            await queue.insert({ postId: post.id, userId: post.userId })
-        })
+
+        const response = await this.sendMailFalseEnqueue(post.id);
         logger.info(`(${post.id}) | ${sendStatusToStr(response)}`)
 
       } else {

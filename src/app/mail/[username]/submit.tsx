@@ -1,5 +1,5 @@
 "use client";
-import {  useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import styles from "./page.module.css";
@@ -8,7 +8,7 @@ import { validN, validR, validC, validT, validP } from "./valid";
 import { mailApi } from "src/app/api/mail/mail";
 
 export function Submit({ username }) {
-  const { name, relationship, title, contents, password,isPublic } = useStore();
+  const { name, relationship, title, contents, password, isPublic } = useStore();
 
   const router = useRouter();
 
@@ -30,7 +30,7 @@ export function Submit({ username }) {
       title: title,
       contents: contents,
       password: password,
-      isPublic:isPublic,
+      isPublic: isPublic,
     })
       .then((response) => {
         if (response.status === 200) {
@@ -40,6 +40,7 @@ export function Submit({ username }) {
         } else {
           alert(`편지 전송 실패 ${response.status}, ${response.message}`);
         }
+         setProgress(false);
       })
       .catch((error) => {
         alert(`오류발생, 편지 전송 실패 ${error}`);
