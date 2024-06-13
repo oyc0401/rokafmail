@@ -48,7 +48,7 @@ export default async function Mail({ params }) {
             <br /> 정보가 잘못 입력되었다면{" "}
             <a className="text-sky-500 underline " href="/profile">
               로그인
-            </a>{" "}
+            </a>
             후 정보수정 또는 oyc0401@gmail.com으로 이름과 생년월일을 보내주세요.
           </h2>
         </div>
@@ -138,17 +138,17 @@ function After({ user }) {
         </h1>
       </div>
       <h2 style={{ fontSize: 18 }}>
-        받은 편지를 모두 열어보고 싶으시면
+        훈련소 수료를 축하하는
         <br />
-        로그인 버튼을 눌러주세요!
+         메시지를 작성해주세요!
       </h2>
       <div style={{ flex: 260 }}></div>
       <BasicFooter>
         <Link className={`submit mini`} href={`/mails/${username}`}>
           편지함
         </Link>
-        <Link className={`submit`} href={`/auth/signin?callbackUrl=${callback}`}>
-          로그인
+        <Link className={`submit`} href={`/mail/${username}/forced`}>
+          편지 작성
         </Link>
       </BasicFooter>
     </div>

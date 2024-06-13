@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import styles from "./paper.module.css";
 import { useStore } from "./model";
-import { validC, validP } from "./valid";
+import { validC} from "./valid";
 import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';

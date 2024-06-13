@@ -1,15 +1,10 @@
-import styles from "../page.module.css";
 import { Submit } from "../submit";
 import { Paper } from "../paper";
-import Link from "next/link";
 
-import { ShadowNavigationBar } from "src/components";
 import {
   getEnter,
   getCompletion,
-  canSearch,
-  Status,
-  serveStatus,
+  getDischarge
 } from "src/lib/time";
 import { User } from "src/db";
 import { notFound } from "next/navigation";
@@ -18,101 +13,23 @@ import { ShareButton } from "../copy_button";
 
 import { NavHeader } from 'src/components'
 
-export async function generateMetadata(
-  { params }
-) {
-  const username = decodeURI(params.username);
-  return {
-    title: `하늘인편 | ${username}`,
-  }
-}
+
+export const metadata = {
+  title: "하늘인편 | 편지 작성",
+};
+
 export default async function Mail({ params }) {
   const username = decodeURI(params.username);
   const user = await User.findByUsername(username);
   if (!user) {
     notFound();
   }
-
-  const { generation, connect, name, birth } = user;
-
-  const status = serveStatus(generation);
-
-  function Banner() {
-    if (canSearch(generation) && !connect) {
-      return (
-        <div
-          className="mt-2 w-full"
-          style={{ background: "#FFF2F2", padding: 6 }}
-        >
-          <h2 className={styles.alert}>
-            ⚠️ 유저검색이 되지 않았습니다.
-            <br />
-            {`이름: ${name}, 생년월일: ${birth}`}
-            <br /> 정보가 잘못 입력되었다면{" "}
-            <a className="text-sky-500 underline " href="/profile">
-              로그인
-            </a>{" "}
-            후 정보수정 또는 oyc0401@gmail.com으로 이름과 생년월일을 보내주세요.
-          </h2>
-        </div>
-      );
-    }
-    return <></>;
-    // return <div className="bg-[#F3F3F3] w-full p-6">{""}</div>;
-  }
-
-  // 편지쓰는 기간은 입대전부터 수료까지. 수료후에 편지 쓰는건 훈련병 입장에서 안좋을듯
-  switch (status) {
-    case Status.before:
-    case Status.beginning:
-    case Status.training:
-    case Status.ending:
-
-      case Status.working:
-      // case Status.discharged:
-      return (
-        <div className="w-full flex flex-col max-w-3xl mx-auto h-full">
-          <NavHeader user={user}></NavHeader>
-          <Banner></Banner>
-          <UserDescription user={user}></UserDescription>
-          <Paper></Paper>
-          <Submit username={username}></Submit>
-        </div>
-      );
-
-    case Status.working:
-    case Status.discharged:
-      return <After name={user.name} username={username}></After>
-  }
-}
-
-function After({ name, username }) {
-  const callback = `https://${process.env.DOMAIN}/mails/${username}`;
-
   return (
-    <div className="screen">
-      <div style={{ flex: 178 }}></div>
-      <div style={{ paddingBottom: 54 }}>
-        <h1 style={{ fontSize: 25, fontWeight: 500 }}>
-          {name}님
-          <br />
-          수료를 축하드립니다!
-        </h1>
-      </div>
-      <h2 style={{ fontSize: 18 }}>
-        받은 편지를 모두 열어보고 싶으시면
-        <br />
-        로그인 버튼을 눌러주세요!
-      </h2>
-      <div style={{ flex: 260 }}></div>
-      <ShadowNavigationBar>
-        <Link className={`submit mini`} href={`/mails/${username}`}>
-          편지함
-        </Link>
-        <Link className={`submit`} href={`/auth/signin?callbackUrl=${callback}`}>
-          로그인
-        </Link>
-      </ShadowNavigationBar>
+    <div className="w-full flex flex-col max-w-3xl mx-auto h-full">
+      <NavHeader user={user}></NavHeader>
+      <UserDescription user={user}></UserDescription>
+      <Paper></Paper>
+      <Submit username={username}></Submit>
     </div>
   );
 }
@@ -120,8 +37,8 @@ function After({ name, username }) {
 async function UserDescription({ user }) {
   const { name, message, generation, username } = user;
 
-  const startTime = getEnter(generation).format("YY.MM.DD");
-  const compTime = getCompletion(generation).format("YY.MM.DD");
+  const startDate = getEnter(generation).format("YY.MM.DD");
+  const endDate = getDischarge(generation).format("YY.MM.DD");
 
   const domain = process.env.DOMAIN;
   const url = `https://${domain}/mail/${username}`;
@@ -136,7 +53,7 @@ async function UserDescription({ user }) {
         }}
       >
         <h2 className={'text-[22px] font-medium text-left'}>
-          <span className="text-primary">{name}</span> 훈련병에게
+          이병 <span className="text-primary">{name}</span>에게
           <br />
           편지를 보내주세요!
         </h2>
@@ -146,7 +63,7 @@ async function UserDescription({ user }) {
 
       <div className="pt-px w-full">
         <h2 className='text-sm font-medium text-left text-fontlight'>
-          {startTime} ~ {compTime}
+          {startDate} ~ {endDate}
         </h2>
       </div>
       <div className="pt-2 w-full">
