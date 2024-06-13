@@ -1,6 +1,5 @@
 import { Post, User } from "src/db";
 import { notFound, redirect } from "next/navigation";
-import { cookies } from "next/headers";
 import { auth } from "src/app/api/auth/auth";
 import { View } from './view'
 

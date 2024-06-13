@@ -26,11 +26,7 @@ export function LoginPage({ postId }) {
     } else {
       alert('비밀번호가 틀렸습니다.');
     }
-
-
   }
-
-
 
   return (
     <BasicFormArea>

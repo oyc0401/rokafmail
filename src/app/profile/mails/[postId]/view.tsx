@@ -7,12 +7,6 @@ import { Paper } from "./paper";
 
 import { NavHeader } from 'src/components'
 
-// import { dateToStr } from "./dateToStr";
-import {
-  getEnter,
-  getCompletion,
-} from "src/lib/time";
-
 export async function View({ postId, writer }: { postId: number; writer?: boolean }) {
   const post = await Post.findPublicPostById(postId);
   if (!post) notFound();

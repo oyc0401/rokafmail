@@ -6,6 +6,10 @@ import Link from "next/link";
 import { DeleteUser, SignOut } from "./client";
 import { NavHeader } from "src/components";
 
+export const metadata = {
+  title: "하늘인편 | 내 정보",
+};
+
 export default async function Page() {
   const session = await auth();
   if (!session || !session.user || !session.user.email)
@@ -48,7 +52,7 @@ export default async function Page() {
           </Link>
           <div style={{ height: 20 }}></div>
           <Link className="submit" href={{ pathname: `/profile/mails` }}>
-            받은 편지 모두 열어보기
+            내가 받은 편지
           </Link>
           <div style={{ flex: 1 }}></div>
 

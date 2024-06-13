@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 
 import { Post, User } from "src/db";
@@ -6,12 +5,6 @@ import { notFound } from "next/navigation";
 import { Paper } from "./paper";
 
 import { NavHeader } from 'src/components'
-
-// import { dateToStr } from "./dateToStr";
-import {
-  getEnter,
-  getCompletion,
-} from "src/lib/time";
 
 export async function View({ postId, writer }: { postId: number; writer?: boolean }) {
   const post = await Post.findPublicPostById(postId);
@@ -36,7 +29,7 @@ export async function View({ postId, writer }: { postId: number; writer?: boolea
   return (
     <div className="w-full flex flex-col max-w-3xl mx-auto h-full">
       <NavHeader user={user}></NavHeader>
-      <UserDescription user={user}></UserDescription>
+      <UserDescription name={user.name}></UserDescription>
       <Paper post={post}></Paper>
       <EditButton></EditButton>
       <div className="flex-1"></div>
@@ -51,15 +44,7 @@ export async function View({ postId, writer }: { postId: number; writer?: boolea
   );
 }
 
-async function UserDescription({ user }) {
-  const { name, message, generation, username } = user;
-
-  const startTime = getEnter(generation).format("YY.MM.DD");
-  const compTime = getCompletion(generation).format("YY.MM.DD");
-
-  const domain = process.env.DOMAIN;
-  const url = `https://${domain}/mail/${username}`;
-
+async function UserDescription({ name }) {
   return (
     <div role='userDescription' className="pt-3 pb-3.5 w-full px-4">
       <div
@@ -74,9 +59,7 @@ async function UserDescription({ user }) {
           <br></br>
           전송한 편지
         </h2>
-      
       </div>
-
     </div>
   );
 }

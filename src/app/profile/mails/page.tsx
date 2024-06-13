@@ -6,7 +6,7 @@ import { NavHeader } from "src/components";
 import { LetterList } from "./LetterList";
 
 export const metadata = {
-  title: "하늘인편 | 받은 편지 모두 보기",
+  title: "하늘인편 | 내가 받은 편지",
 };
 
 async function getPosts(username) {

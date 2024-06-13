@@ -1,8 +1,7 @@
-import { Post, User } from "src/db";
+import { Post } from "src/db";
 import { notFound, redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { auth } from "src/app/api/auth/auth";
-import { View } from './view/view'
+import { View } from './view'
 
 export const metadata = {
   title: "하늘인편 | 편지 확인",
@@ -14,22 +13,18 @@ export default async function Page({ params }) {
 
   const post = await Post.findById(postId);
   if (!post) notFound();
-  
+
+  /**
+   * /mails/nickname/234 에서 아이디와 해당 post의 주인이 같은때만 허용.
+   * postId 무작위 대입을 막기위해 있습니다.
+   */
   if (post.user.username != username) notFound();
 
+  // 공개글이면 이동
+  if (post.isPublic) return <View postId={postId} writer />;
 
-  // 세션
-  const session = await auth();
-  if (session && session.user && session.user.email) {
-    const sessionUsername = session.user.email;
-    const user = await User.findByUsername(sessionUsername);
 
-    // 본인의 편지함
-    if (user && sessionUsername == params.username)
-      return <View postId={postId} />;
-  }
-
-  // 쿠키
+  // 비공개 글이면 주인 확인
   const password = post.password;
   const cookieStore = cookies();
   const pwcookie = cookieStore.get("password");
@@ -37,10 +32,7 @@ export default async function Page({ params }) {
   if (pwcookie && pwcookie.value == password)
     return <View postId={postId} writer />;
 
-  if (post.isPublic) return <View postId={postId} writer />;
-
-
+   // 로그인 페이지 이동!
   const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}`;
-
   redirect(`/mails/${username}/${postId}/signin?&callbackUrl=${callbackUrl}`)
 }

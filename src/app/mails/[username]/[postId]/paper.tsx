@@ -3,7 +3,6 @@ import styles from "./paper.module.css";
 import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';
-import { Checkbox, Divider } from "@nextui-org/react";
 
 export function Paper({ post }) {
   const { title, contents, name, relationship, isPublic } = post;
