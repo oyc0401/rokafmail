@@ -146,10 +146,9 @@ export class Post {
     });
 
   /**
-   * [/profile/mails] 모든 편지 가져오기
-   * 
+   * [/profile/mails] 비공개 편지 가져오기
    */
-  static findMyPostsByUsername = (username: string) =>
+  static findMyPostsPrivateByUsername = (username: string) =>
     prisma.post.findMany({
       select: {
         id: true,
@@ -174,9 +173,41 @@ export class Post {
         user: {
           username,
         },
+        isPublic: false,
       },
     });
 
+  /**
+   * [/profile/mails] 공개 편지 가져오기
+   */
+  static findMyPostsPublicByUsername = (username: string) =>
+    prisma.post.findMany({
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        relationship: true,
+        title: true,
+        createdAt: true,
+        posted: true,
+        postAt: true,
+        isPublic: true,
+        contents: true,
+        user: {
+          select: {
+            username: true,
+            connect: true,
+            generation: true,
+          },
+        },
+      },
+      where: {
+        user: {
+          username,
+        },
+        isPublic: true,
+      },
+    });
 
 
   /**

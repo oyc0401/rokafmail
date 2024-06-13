@@ -10,7 +10,9 @@ export const metadata = {
 };
 
 async function getPosts(username) {
-  const posts = await Post.findMyPostsByUsername(username);
+  const postsPrivate = await Post.findMyPostsPrivateByUsername(username);
+  const postsPublic = await Post.findMyPostsPublicByUsername(username);
+  const posts = [...postsPrivate, ...postsPublic];
   const postsSorted = posts.sort((a, b) => a.id > b.id ? -1 : 1);
   return postsSorted
 }
