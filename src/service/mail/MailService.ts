@@ -58,7 +58,7 @@ export class MailService {
   }
 
   async sendMailTrainee(postId: number, letter: Post, trainee: Trainee,
-    event: { onFalse?: (postQueue) => Promise<any> } = {}): Promise<SendResponse> {
+    event: { onFalse?: (postQueue: PostQueue) => Promise<any> } = {}): Promise<SendResponse> {
 
     const { name, relationship, title, contents, password, createdAt } = letter;
     const { memberSeq, sodae } = trainee;
@@ -122,10 +122,6 @@ export class MailService {
 
   /**
    * 해당 id의 편지를 보내고 보내졌다고 업데이트하고, 결과 enum 리턴하기
-   * 주의사항:
-   * 해당 id를 가진 Post가 DB에 있어야합니다.
-   * 편지가능 기간 이전에 해당 함수를 호출하면 안됩니다.
-   * 에러 다수 던짐
   **/
   async sendMail(postId: number,
     event: { onFalse?: (postQueue: PostQueue) => Promise<any> } = {}): Promise<SendResponse> {

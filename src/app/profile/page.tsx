@@ -46,6 +46,10 @@ export default async function Page() {
           <Link className="submit" href={{ pathname: `/mail/${username}` }}>
             내 편지함
           </Link>
+          <div style={{ height: 20 }}></div>
+          <Link className="submit" href={{ pathname: `/profile/mails` }}>
+            받은 편지 모두 열어보기
+          </Link>
           <div style={{ flex: 1 }}></div>
 
           <div style={{ height: 26 }}></div>

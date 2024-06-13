@@ -145,6 +145,39 @@ export class Post {
 
     });
 
+  /**
+   * [/profile/mails] 모든 편지 가져오기
+   * 
+   */
+  static findMyPostsByUsername = (username: string) =>
+    prisma.post.findMany({
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        relationship: true,
+        title: true,
+        createdAt: true,
+        posted: true,
+        postAt: true,
+        isPublic: true,
+        user: {
+          select: {
+            username: true,
+            connect: true,
+            generation: true,
+          },
+        },
+      },
+
+      where: {
+        user: {
+          username,
+        },
+      },
+    });
+
+
 
   /**
    * [/mails] 비공개 편지 가져오기
@@ -310,6 +343,7 @@ export class Post {
         id,
       },
     });
+
 
   static update = (
     id: number,

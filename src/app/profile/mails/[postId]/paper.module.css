@@ -1,0 +1,32 @@
+.paper{
+  background: #FFFDF8;
+  padding:10px 20px;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.07);
+}
+
+
+/* 입력 폼 */
+.form{
+   border-width: 0 0 1px;
+  background-color: transparent;
+  outline: none;
+  color: var(--font-color);
+   border-color:#B2A18F;
+  width: 100%;
+  /* overflow: scroll; */
+}
+.form::placeholder {
+  color: var(--light-font);
+}
+
+.contentForm{
+  border:none;
+}
+.contentForm::-webkit-scrollbar {
+   display: none;
+ }
+
+.formLine{
+  border-width: 0 0 1px;
+   border-color:#B2A18F;
+}

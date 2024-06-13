@@ -1,0 +1,63 @@
+
+import Link from "next/link";
+
+import { Post, User } from "src/db";
+import { notFound } from "next/navigation";
+import { Paper } from "./paper";
+
+import { NavHeader } from 'src/components'
+
+// import { dateToStr } from "./dateToStr";
+import {
+  getEnter,
+  getCompletion,
+} from "src/lib/time";
+
+export async function View({ postId, writer }: { postId: number; writer?: boolean }) {
+  const post = await Post.findPublicPostById(postId);
+  if (!post) notFound();
+
+
+  const user = await User.findById(post.userId);
+  if (!user) notFound();
+
+  return (
+    <div className="w-full flex flex-col max-w-3xl mx-auto h-full">
+      <NavHeader user={user}></NavHeader>
+      <UserDescription writer={post.name}></UserDescription>
+      <Paper post={post}></Paper>
+      <div className="flex-1"></div>
+      <footer className="container max-w-3xl mx-auto px-4">
+        <div className="row pt-2 sm:pt-3 pb-8">
+          <Link className={"submit"} href={`/profile/mails`}>
+            편지함
+          </Link>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+async function UserDescription({ writer }) {
+
+  return (
+    <div role='userDescription' className="pt-3 pb-3.5 w-full px-4">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "start",
+        }}
+      >
+        <h2 className={'text-[22px] font-medium text-left'}>
+          <span className="text-primary">{writer}</span> 님이
+          <br></br>
+          전송한 편지
+        </h2>
+
+      </div>
+
+    </div>
+  );
+}
+
