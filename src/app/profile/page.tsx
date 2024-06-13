@@ -21,16 +21,36 @@ export default async function Page() {
   const user = await User.findByUsername(username);
   if (!user) redirect("/auth/signin");
 
-  const { name, birth, generation, message, memberSeq, connect } = user;
+
+
+  const { name, birth, generation, message, memberSeq, sodae, connect } = user;
+
+  function Sodae() {
+    if (sodae) {
+      return (
+        <div className="flex flex-row w-full bg-[#F5F5F5]">
+          <div className="w-full">
+            <h2 className="text-base text-primary font-normal text-left pb-[1px]">소대번호</h2>
+            <p className="text-lg text-primary font-normal text-left pb-4">{sodae}</p>
+          </div>
+        </div>
+      );
+    }
+    
+    return <></>
+  }
   return (
     <>
       <div className={`max-w-3xl mx-auto h-full flex flex-col`}>
         <NavHeader user={{ username, name, birth, memberSeq, connect }}></NavHeader>
         <div className="flex-1 flex flex-col w-full">
           <h1 className="text-2xl font-medium pt-6 pb-8">내 정보</h1>
-          <div className="flex flex-row w-full pt-4 px-4 bg-[#F5F5F5]">
-            <ProfileArea title="아이디" text={username} />
-            <ProfileArea title="기수" text={generation} />
+          <div className="flex flex-col w-full pt-4 px-4 bg-[#F5F5F5]">
+            <div className="flex flex-row w-full bg-[#F5F5F5]">
+              <ProfileArea title="아이디" text={username} />
+              <ProfileArea title="기수" text={generation} />
+            </div>
+            <Sodae />
           </div>
           <div className="flex flex-row w-full pt-4 px-4">
             <ProfileArea title="이름" text={name} />
