@@ -2,7 +2,7 @@ import prisma from "src/db/prisma";
 import { InputPost, PostRepository, UpdateType } from './postRepository';
 
 export class PrismaPostRepository implements PostRepository {
-  async insert(data:InputPost) {
+  async insert(data: InputPost) {
     return await prisma.post.create({ data });
   }
 
@@ -37,6 +37,7 @@ export class PrismaPostRepository implements PostRepository {
 
   findNotPostedByUserId = (userId: number) =>
     prisma.post.findMany({
+      orderBy: { id: 'asc' },
       where: {
         userId,
         posted: false,
