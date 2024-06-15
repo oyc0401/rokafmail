@@ -151,7 +151,10 @@ export class UserService {
 
     const trainee = await this.getTrainee(userId);
     const status = await this.updateRokafProfile(userId, trainee);
-
+    if (status == syncResponse.complete) {
+      await this.mailService.sendUnpostedMails(userId)
+    }
+    
     const logger = labelLogger("EditProfile");
     logger.info(`${userId}`)
 

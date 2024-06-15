@@ -4,22 +4,9 @@ import { DatabaseTable } from "./Table";
 
 export default async function UserController({ searchParams }) {
   if (searchParams.userId) {
-    const data = await prisma.postQueue.findMany({
+    const data = await prisma.usersQueue.findMany({
       include: {
         user: true,
-        post: {
-          include: {
-            user: {
-              select: {
-                username: true,
-                generation: true,
-                memberSeq: true,
-                sodae: true,
-                id: true,
-              },
-            },
-          }
-        }
       },
     });
 
@@ -38,22 +25,9 @@ export default async function UserController({ searchParams }) {
     );
   }
 
-  const data = await prisma.postQueue.findMany({
+  const data = await prisma.usersQueue.findMany({
     include: {
-      user: false,
-      post: {
-        include: {
-          user: {
-            select: {
-              username: true,
-              generation: true,
-              memberSeq: true,
-              sodae: true,
-              id: true,
-            },
-          },
-        }
-      }
+      user: true,
     },
   });
 
@@ -61,15 +35,14 @@ export default async function UserController({ searchParams }) {
     // 각 객체에 대해 user와 post 속성을 해체하여 상위 객체에 통합
 
     return {
-      ...item.post.user,
-      ...item.post,
+      ...item.user,
       ...item,
     };
   });
 
   return (
     <>
-      <h2 className="font-bold text-2xl mb-4">{`PostQueue`}</h2>
+      <h2 className="font-bold text-2xl mb-4">User Queue</h2>
       <DatabaseTable key={"2"} data={transformedArray}></DatabaseTable>
     </>
   );
