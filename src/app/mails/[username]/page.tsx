@@ -26,6 +26,14 @@ async function getNotPostedPosts(username) {
   return queueSorted;
 }
 
+async function getNotAuthPosts(username) {
+  const queuePrivate = await Post.findPrivateNotPostedByUsername(username);
+  const queuePublic = await Post.findPublicNotPostedByUsername(username);
+  const queues = [...queuePrivate, ...queuePublic];
+  const queueSorted = queues.sort((a, b) => a.id > b.id ? -1 : 1);
+  return queueSorted;
+}
+
 
 export default async function Mails({ params, searchParams }) {
   const username = decodeURI(params.username);
@@ -39,7 +47,7 @@ export default async function Mails({ params, searchParams }) {
 
 
   if (!user.connect) {
-    const unposteds = await getNotPostedPosts(username);
+    const unposteds = await getNotAuthPosts(username);
 
     content = <>
       <TimeIndicator generation={user.generation}></TimeIndicator>
