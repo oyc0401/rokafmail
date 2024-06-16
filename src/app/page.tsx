@@ -41,7 +41,7 @@ function TopView() {
         </div>
         <div className="pt-8 pb-6 w-full">
           <p className="font-light text-base">
-            현재 병 858기 중 646명이
+            현재 병 858기 중 656명이
             <br />
             하늘인편을 통해 편지를 받았습니다!
           </p>

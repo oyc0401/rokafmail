@@ -14,13 +14,13 @@ const notoSansKr = Noto_Sans_KR({
 export const metadata = {
   title: "하늘인편 - 공군 인터넷편지",
   description:
-    "<하늘인편으로 공군 인편 받는법> 1. 입대 전 SNS에 하늘인편 링크를 공유한다 2. 친구들이 링크를 보고 편지를 보낸다 3. 훈련소에서 인터넷편지를 받는다!",
+    "하늘인편으로 손쉽게 공군 인편을 받을 수 있어요. ① 입대 전 SNS에 하늘인편 링크를 공유한다. ② 친구들이 링크를 보고 편지를 보낸다. ③ 훈련소에서 인터넷편지를 받는다!",
   keywords: ["공군", "인편", "인터넷편지"],
   applicationName: "하늘인편",
   metadataBase: new URL(`https://${process.env.DOMAIN}`),
   openGraph: {
     title: "하늘인편",
-    description: "링크를 눌러 편지를 작성해주세요",
+    description: "편리한 공군 인터넷편지 서비스",
     siteName: "하늘인편",
     locale: "ko-KR",
     type: "website",

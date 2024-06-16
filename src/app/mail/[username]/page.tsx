@@ -21,6 +21,9 @@ import { NavHeader } from 'src/components'
 
 export const metadata = {
   title: "하늘인편 | 편지 작성",
+  openGraph: {
+    description: "링크를 눌러 편지를 작성해주세요",
+  },
 };
 
 export default async function Mail({ params }) {
