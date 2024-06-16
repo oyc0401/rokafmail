@@ -5,14 +5,16 @@
 }
 
 /* 설명글 */
-.subtitle{
+.title{
   font-size:20px;
-  font-weight:500;
-  padding-bottom:8px;
+  text-align:start;
+  font-weight:700;
+  padding-bottom:12px;
 }
 .content{
-  font-size:16px;
+  font-size:15px;
   text-align:start;
+  padding-bottom:8px;
 }
 
 
