@@ -36,12 +36,12 @@ function TopView() {
             <p className="text-medium font-bold pb-3">하늘인편으로 인편 받는법!</p>
             <p>1. 입대 전 SNS에 하늘인편 링크를 공유한다.</p>
             <p>2. 친구들이 링크를 보고 편지를 보낸다.</p>
-            <p></p>
+            <p>3. 훈련소에서 인터넷편지를 받는다.</p>
           </div>
         </div>
         <div className="pt-8 pb-6 w-full">
           <p className="font-light text-base">
-            현재 병 858기 중 656명이
+            현재 병 858기 중 646명이
             <br />
             하늘인편을 통해 편지를 받았습니다!
           </p>
