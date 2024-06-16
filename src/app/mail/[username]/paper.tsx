@@ -137,7 +137,7 @@ function Password() {
         <div className="flex-[2_2_0%] pl-2.5 flex justify-end">
           <Checkbox
             classNames={{ base: 'h-[24px] p-0 m-0 text-[#37271A]' }}
-            radius="full"
+            radius="sm"
             isSelected={isPublic} onValueChange={setIsPublic}
             className="text-[#37271A]"
           >
