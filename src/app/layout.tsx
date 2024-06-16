@@ -1,7 +1,6 @@
 import "styles/globals.css";
 import { Noto_Sans_KR } from "next/font/google";
 import Providers from "./provider";
-import { Suspense } from "react";
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 
@@ -15,8 +14,8 @@ const notoSansKr = Noto_Sans_KR({
 export const metadata = {
   title: "하늘인편 - 공군 인터넷편지",
   description:
-    "하늘인편은 공군 인편을 보내주는 사이트입니다. 입대 전 미리 링크를 만들어 사람들에게 공유하세요. 이젠 가족과 친구에게 인편지기를 부탁할 필요가 없습니다. 하늘인편이 인편지기가 되어드립니다. 또한 하늘인편은 입대 후 즉시 편지작성이 가능해서 더 많은 편지를 받아볼 수 있습니다.",
-  keywords: ["공군", "인편", "인편지기", "인터넷편지"],
+    "<하늘인편으로 공군 인편 받는법> 1. 입대 전 SNS에 하늘인편 링크를 공유한다 2. 친구들이 링크를 보고 편지를 보낸다 3. 훈련소에서 인터넷편지를 받는다!",
+  keywords: ["공군", "인편", "인터넷편지"],
   applicationName: "하늘인편",
   metadataBase: new URL(`https://${process.env.DOMAIN}`),
   openGraph: {

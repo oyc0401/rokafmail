@@ -1,14 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
-import localFont from 'next/font/local'
-import { Logo } from "public/assets/index";
-import { FitScreen } from "src/components/FitScreen";
 import { NavHeaderHome } from "src/components";
 
 import styles from "./page.module.css";
 import { IsAuthenticated, IsLoading, IsNotAuthenticated } from "src/components";
-
-const INKLIPQUID = localFont({ src: '../../public/fonts/INKLIPQUID.ttf' });
 
 export default function Page() {
   return (
@@ -24,7 +18,7 @@ function TopView() {
   return (
     <>
       <NavHeaderHome></NavHeaderHome>
-      <div className="max-w-3xl mx-auto flex flex-col px-4">
+      <div className="max-w-2xl mx-auto flex flex-col px-4">
         <div className="pt-8 pb-12">
           <h1 className='text-2xl font-bold text-left' >
             <span className="text-primary">하늘인편</span>으로
@@ -38,21 +32,21 @@ function TopView() {
           </p>
         </div>
         <div className="py-4">
-          <div className="p-4 bg-[#FAFAFA] text-sm">
+          <div className="max-w-xl py-4 px-1 bg-[#FAFAFA] text-sm mx-auto">
             <p className="text-medium font-bold pb-3">하늘인편으로 인편 받는법!</p>
             <p>1. 입대 전 SNS에 하늘인편 링크를 공유한다.</p>
             <p>2. 친구들이 링크를 보고 편지를 보낸다.</p>
-            <p>3. 훈련소에서 인터넷편지를 받는다.</p>
+            <p></p>
           </div>
         </div>
         <div className="pt-8 pb-6 w-full">
           <p className="font-light text-base">
-            이번 기수인 858기 중 646명이
+            현재 병 858기 중 646명이
             <br />
             하늘인편을 통해 편지를 받았습니다!
           </p>
         </div>
-        <Link className="submit max-w-2xl mx-auto" href={{ pathname: "/register" }}>
+        <Link className="submit" href={{ pathname: "/register" }}>
           편지함 생성하기
         </Link>
         <div className="pt-4 pb-5 w-full">
@@ -86,6 +80,21 @@ function Body() {
     <div className="max-w-2xl mx-auto pt-8 pb-14 px-4">
       <div className="pb-8">
         <h3 className={styles.title} >
+          훈련소 내 편지 발송
+        </h3>
+        <p className={styles.content}>
+          공군 훈련소에서 훈련 3주차부터 수료 전까지 인쇄된 편지를 받을 수 있습니다.
+        </p>
+        <p className={styles.content}>
+          하늘인편에서 훈련 3주차 이전에 작성한 편지는 모아두었다가 이후부터 순차적으로 발송됩니다.
+        </p>
+        <p className={styles.content}>
+          일일 편지 전송 제한으로 인해 일부 편지는 추후에 받을 수 있습니다.
+        </p>
+      </div>
+      
+      <div className="pb-8">
+        <h3 className={styles.title} >
           사용방법
         </h3>
         <p className={styles.content}>
@@ -98,20 +107,7 @@ function Body() {
           입대 전에도 편지를 받을 수 있으며 내 정보에서 받은 편지 내용을 확인할 수 있습니다.
         </p>
       </div>
-      <div className="pb-8">
-        <h3 className={styles.title} >
-          훈련소 내 편지 발송
-        </h3>
-        <p className={styles.content}>
-          공군 훈련소에서는 훈련 3주차부터 수료 전까지 인쇄된 편지를 받을 수 있습니다.
-        </p>
-        <p className={styles.content}>
-          하늘인편에서 3주차 이전에 작성한 편지는 모아두었다가 이후부터 순차적으로 발송됩니다.
-        </p>
-        <p className={styles.content}>
-          일일 편지 전송 제한으로 인해 일부 편지는 추후에 받을 수 있습니다.
-        </p>
-      </div>
+     
       <div className="pb-8">
         <h3 className={styles.title} >
           주의사항
