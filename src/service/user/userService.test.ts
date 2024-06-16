@@ -18,6 +18,7 @@ describe('User Service Test', () => {
       rokafClient, mailService, userService, retryService,
       logger
     } = testBean());
+    
   });
 
   function createUserProps({
@@ -28,15 +29,23 @@ describe('User Service Test', () => {
     generation = 858,
     message = '안녕하세요!'
   } = {}) {
-    return { username, password, name, birth, generation, message, }
+    return { username, password, name, birth, generation, message }
   }
 
   describe('Trainee 회원가입', () => {
     test('회원가입', async () => {
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+      
       const userProps = createUserProps();
       const trainee = new Trainee(userProps);
 
-      const userId = await userService.register(trainee);
+      const userId = await userService.awaitRegister(trainee);
 
       const registeredTrainee = await userService.getTrainee(userId);
 
@@ -45,10 +54,18 @@ describe('User Service Test', () => {
     });
 
     test('아이디 중복이면 회원가입이 실패합니다.', async () => {
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+      
       // 회원가입
       const userProps1 = createUserProps({ username: 'Michael' });
       const trainee1 = new Trainee(userProps1);
-      await userService.register(trainee1);
+      await userService.awaitRegister(trainee1);
 
       // 중복된 아이디
       const userProps2 = createUserProps({ username: 'Michael' });

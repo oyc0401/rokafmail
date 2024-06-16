@@ -22,7 +22,7 @@ export default function Page() {
 function TopView() {
   return (
     <FitScreen>
-      <div className="screen">
+      <div className="h-full max-w-3xl mx-auto flex flex-col px-4">
         <div style={{ flex: 90 }}></div>
         <div className="p-5">
           <Image className='h-40 w-40 mx-auto' src={Logo} alt="로고" />
@@ -67,55 +67,68 @@ function TopView() {
 
 function Body() {
   return (
-    <div className="screen-not-flex pb-14">
-      <div className="pt-14">
-        <h2 className='text-2xl font-medium pb-8'>
+    <div className="max-w-3xl mx-auto pb-14 px-4">
+      <div className="pt-14 pb-8">
+        <h2 className='text-2xl font-bold pb-4 text-left font-bold' >
           하늘인편으로
           <br />
-          인편 많이 받으세요!
+          손쉽게 편지를 받아보세요
         </h2>
+        <p className='text-base text-left'>
+          하늘인편은 편지를 쉽게 받을 수 있는
+          <br />
+          공군 인터넷편지 서비스입니다
+        </p>
       </div>
-
-      <p className={styles.content}>
-        하늘인편은 공군 훈련소 입소 전, 지인들에게 미리 인편 링크를 공유할 수 있는 서비스입니다.
-
-        <br />하늘인편으로 전달되는 편지를 통해 훈련 중 겪는 어려움을
-        이겨내는 데 큰 도움이 되기를 바랍니다!
-      </p>
-
-      <h3 className={styles.subtitle}>간편한 편지 작성</h3>
-      <p className={styles.content}>
-        이제 편지를 쓸 때 번거로운 정보 입력은 필요 없습니다.
-        <br />
-        미리 이름과 생년월일을 등록해두면, 가족과 친구들은 쉽게 편지를 작성할 수
-        있습니다.
-      </p>
-
-      <h3 className={styles.subtitle}>인편지기 대신 해드립니다</h3>
-      <p className={styles.content}>
-        입대 전 하늘인편에서 인터넷편지 링크를 생성하고 SNS에 공유할 수
-        있습니다.
-        <br />
-        이젠 지인에게 인편지기를 부탁하지 않아도 됩니다.
-      </p>
-
-      <h3 className={styles.subtitle}>입대 후 바로 편지작성</h3>
-      <p className={styles.content}>
-        입대 직후부터 하늘인편을 통해 편지를 작성할 수 있습니다. 이렇게 작성된
-        편지는 저장되었다가, 입대 후 2주가 지나면 일괄적으로 훈련병에게
-        전달됩니다.
-      </p>
-
-      <h3 className={styles.subtitle}>향상된 서버 안정성</h3>
-      <p className={styles.content}>
-        하늘인편은 기존의 인터넷편지 서비스가 겪었던 서버 불안정 문제를
-        개선하였습니다.
-        <br />
-        안정적인 서버 운영을 통해 편지가 제대로 전송되지 않는
-        문제를 최소화하여, 편지가 당신에게 안전하게
-        도착하도록 보장합니다.
-      </p>
-
+      <div className="pb-8">
+        <h2 className='text-2xl font-bold pb-4 text-left font-bold' >
+          사용방법
+        </h2>
+        <p className='text-base text-left pb-2.5'>
+          입대 전에 편지함을 만들어 주변 사람들에게 링크를 공유합니다.
+        </p>
+        <p className='text-base text-left pb-2.5'>
+          링크를 통해 접속하면 편지를 작성할 수 있습니다. 내용은 최대 1200자까지 작성할 수 있으며 작성한 비밀번호를 통해 이후에 수정 및 삭제가 가능합니다.
+        </p>
+        <p className='text-base text-left'>
+          입대 전에도 편지를 받을 수 있으며 내 정보에서 받은 편지 내용을 확인할 수 있습니다.
+        </p>
+      </div>
+      <div className="pb-8">
+        <h2 className='text-2xl font-bold pb-4 text-left font-bold' >
+          훈련소 내 편지 발송
+        </h2>
+        <p className='text-base text-left pb-2.5'>
+          공군 훈련소에서는 훈련 3주차부터 수료 전까지 인쇄된 편지를 받을 수 있습니다.
+        </p>
+        <p className='text-base text-left pb-2.5'>
+          하늘인편에서 3주차 이전에 작성한 편지는 모아두었다가 이후부터 순차적으로 발송됩니다.
+        </p>
+        <p className='text-base text-left'>
+          일일 편지 전송 제한으로 인해 일부 편지는 추후에 받을 수 있습니다.
+        </p>
+      </div>
+      <div className="pb-8">
+        <h2 className='text-2xl font-bold pb-4 text-left font-bold' >
+          주의사항
+        </h2>
+        <p className='text-base text-left'>
+          <strong> 가입 시 이름 및 생년월일을 정확히 입력해주세요!</strong>
+          <br/>
+          훈련병을 식별할 수 없어 편지 발송이 불가능합니다
+        </p>
+      </div> 
+      <div className="pb-8">
+        <h2 className='text-2xl font-bold pb-4 text-left font-bold' >
+          Q&A
+        </h2>
+        <p className='text-base text-left'>
+          <strong>꼭 입대전에 가입해야 하나요?</strong>
+          <br/>
+          아닙니다. 훈련소 내부에서 주말 휴대폰 사용시간을 통해 가입하셔도 되고, 지인에게 대신 부탁해서 가입하셔도 됩니다.
+        </p>
+      </div> 
+      
     </div>
   );
 }

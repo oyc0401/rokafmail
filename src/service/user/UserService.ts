@@ -40,7 +40,7 @@ export class UserService {
     const profile = ProfileFactory.create({ userId, name, birth, generation, username });
 
     this.updateRokafProfile(userId, trainee).then((response) =>
-      logger.info(`[Register] ${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
+      logger.info(`${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
 
     return userId;
   }
@@ -57,10 +57,9 @@ export class UserService {
     const { id: userId, name, birth, generation, username } = newUser
 
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
-    const profile = ProfileFactory.create({ userId, name, birth, generation, username });
 
     const response = await this.updateRokafProfile(userId, trainee);
-    logger.info(`${profile.username} (${userId}) | ${syncResponseToStr(response)}`)
+    logger.info(`${username} (${userId}) | ${syncResponseToStr(response)}`)
 
     return userId;
   }
@@ -125,6 +124,7 @@ export class UserService {
 
     const result = await this.rokafClient.getProfile(trainee.name, trainee.birth);
 
+    console.log(result);
     // 기훈단 서버 오류
     if (!result.serverOn) {
       return { status: syncResponse.error };
@@ -154,7 +154,7 @@ export class UserService {
     if (status == syncResponse.complete) {
       await this.mailService.sendUnpostedMails(userId)
     }
-    
+
     const logger = labelLogger("EditProfile");
     logger.info(`${userId}`)
 
