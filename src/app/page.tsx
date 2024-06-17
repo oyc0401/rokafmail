@@ -25,15 +25,15 @@ function TopView() {
             <br />
             인터넷 편지를 받아보세요
           </h1>
-          <p className="text-xs text-fontmedium text-left pt-2">
+          <h2 className="text-xs text-fontmedium text-left pt-2">
             하늘인편은 편지를 쉽게 받을 수 있는
             <br />
             공군 인터넷편지 서비스입니다
-          </p>
+          </h2>
         </div>
         <div className="py-4">
           <div className="max-w-xl py-4 px-1 bg-[#FAFAFA] text-sm mx-auto">
-            <p className="text-medium font-bold pb-3">하늘인편으로 인편 받는법!</p>
+            <h3 className="text-medium font-bold pb-3">하늘인편으로 인편 받는법!</h3>
             <p>1. 입대 전 SNS에 하늘인편 링크를 공유한다.</p>
             <p>2. 친구들이 링크를 보고 편지를 보낸다.</p>
             <p>3. 훈련소에서 인터넷편지를 받는다.</p>
@@ -41,7 +41,7 @@ function TopView() {
         </div>
         <div className="pt-8 pb-6 w-full">
           <p className="font-light text-base">
-            현재 병 858기 중 646명이
+            현재 병 858기 중 672명이
             <br />
             하늘인편을 통해 편지를 받았습니다!
           </p>
@@ -89,10 +89,10 @@ function Body() {
           하늘인편에서 훈련 3주차 이전에 작성한 편지는 모아두었다가 이후부터 순차적으로 발송됩니다.
         </p>
         <p className={styles.content}>
-          일일 편지 전송 제한으로 인해 일부 편지는 추후에 받을 수 있습니다.
+          일일 편지 전송 제한으로 인해 일부 편지는 추후에 받아볼 수 있습니다.
         </p>
       </div>
-      
+
       <div className="pb-8">
         <h3 className={styles.title} >
           사용방법
@@ -107,7 +107,7 @@ function Body() {
           입대 전에도 편지를 받을 수 있으며 내 정보에서 받은 편지 내용을 확인할 수 있습니다.
         </p>
       </div>
-     
+
       <div className="pb-8">
         <h3 className={styles.title} >
           주의사항

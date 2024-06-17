@@ -13,14 +13,13 @@ const notoSansKr = Noto_Sans_KR({
 
 export const metadata = {
   title: "하늘인편 - 공군 인터넷편지",
-  description:
-    "하늘인편으로 손쉽게 공군 인편을 받을 수 있어요. ① 입대 전 SNS에 하늘인편 링크를 공유한다. ② 친구들이 링크를 보고 편지를 보낸다. ③ 훈련소에서 인터넷편지를 받는다!",
-  keywords: ["공군", "인편", "인터넷편지"],
+  description: "하늘인편: 공군 인편을 가장 쉽게 받을 수 있는 서비스. 입대 전 하늘인편 링크를 공유하고, 훈련소에서 편지를 받아보세요.",
+  keywords: ["공군 인편", "공군 인편지기", "공군 인터넷편지", "공군 인편 받는법", "공군 인편지기 양식"],
   applicationName: "하늘인편",
   metadataBase: new URL(`https://${process.env.DOMAIN}`),
   openGraph: {
     title: "하늘인편",
-    description: "편리한 공군 인터넷편지 서비스",
+    description: "하늘인편: 공군 인편을 가장 쉽게 받을 수 있는 서비스",
     siteName: "하늘인편",
     locale: "ko-KR",
     type: "website",
@@ -40,9 +39,9 @@ export default function RootLayout({ children }) {
           name="naver-site-verification"
           content="1b4f09dac96624b20134a08b4d3884618caaf21f"
         />
-        <meta name="google-adsense-account" content="ca-pub-3948063339127452"/>
+        <meta name="google-adsense-account" content="ca-pub-3948063339127452" />
       </head>
-       <GoogleAnalytics gaId="G-BZ21V7LF0V" />
+      <GoogleAnalytics gaId="G-BZ21V7LF0V" />
       <body>
         <Providers>{children}</Providers>
       </body>
