@@ -82,6 +82,7 @@ export class RetryService {
           logger.info(`${i}/${queueSize}: (${userId}) | 이미 연결 됌`)
         } else {
           const trainee = await this.userService.getTrainee(userId);
+          // 검색하고, 실패시 큐에 넣기
           const status = await this.userService.updateRokafProfile(userId, trainee);
           if (status == syncResponse.complete) {
             await this.mailService.sendUnpostedMails(userId)

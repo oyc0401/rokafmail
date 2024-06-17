@@ -18,7 +18,7 @@ describe('User Service Test', () => {
       rokafClient, mailService, userService, retryService,
       logger
     } = testBean());
-    
+
   });
 
   function createUserProps({
@@ -41,7 +41,7 @@ describe('User Service Test', () => {
         },
         serverOn: true,
       });
-      
+
       const userProps = createUserProps();
       const trainee = new Trainee(userProps);
 
@@ -61,7 +61,7 @@ describe('User Service Test', () => {
         },
         serverOn: true,
       });
-      
+
       // 회원가입
       const userProps1 = createUserProps({ username: 'Michael' });
       const trainee1 = new Trainee(userProps1);
@@ -96,7 +96,7 @@ describe('User Service Test', () => {
         });
 
         // 회원가입
-        const userId = await userService.register(trainee);
+        const userId = await userService.awaitRegister(trainee);
         const registeredTrainee = await userService.getTrainee(userId);
 
         // 프로필 업데이트 여부 검증
@@ -302,9 +302,9 @@ describe('User Service Test', () => {
 
       // 회원가입
       const userId = await userService.awaitRegister(trainee);
-      
+
       const updatedTrainee1 = await userService.getTrainee(userId);
-      
+
       expect(updatedTrainee1.memberSeq).toEqual('12341234');
       expect(updatedTrainee1.sodae).toEqual('1111');
 

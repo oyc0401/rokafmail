@@ -34,13 +34,11 @@ export class UserService {
 
     // 유저 생성
     const newUser = await this.userRepository.insert(trainee);
-    const { id: userId, name, birth, generation, username } = newUser
+    const { id: userId, username } = newUser
 
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
-    const profile = ProfileFactory.create({ userId, name, birth, generation, username });
-
     this.updateRokafProfile(userId, trainee).then((response) =>
-      logger.info(`${profile.username} (${userId}) | ${syncResponseToStr(response)}`));
+      logger.info(`${username} (${userId}) | ${syncResponseToStr(response)}`));
 
     return userId;
   }
@@ -54,10 +52,9 @@ export class UserService {
 
     // 유저 생성
     const newUser = await this.userRepository.insert(trainee);
-    const { id: userId, name, birth, generation, username } = newUser
+    const { id: userId, username } = newUser
 
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
-
     const response = await this.updateRokafProfile(userId, trainee);
     logger.info(`${username} (${userId}) | ${syncResponseToStr(response)}`)
 
@@ -118,20 +115,21 @@ export class UserService {
   private async getRokafProfile(trainee: Trainee) {
     const status = trainee.currentStatus();
 
+    // 입대 이전이면 syncResponse.before
     if (status == Status.before || status == Status.beginning) {
       return { status: syncResponse.before };
     }
 
     const result = await this.rokafClient.getProfile(trainee.name, trainee.birth);
 
-    console.log(result);
-    // 기훈단 서버 오류
+    // 기훈단 서버 오류있으면 syncResponse.error 
     if (!result.serverOn) {
       return { status: syncResponse.error };
     }
 
     // 소대번호, 멤버번호를 업데이트하고 연결됬다고 알려줌
     if (result.member) {
+      // 검색 성공 했으면 syncResponse.complete 
       return {
         status: syncResponse.complete,
         member: {
@@ -140,6 +138,7 @@ export class UserService {
         }
       };
     } else {
+      // 검색 실패했으면 syncResponse.fail 
       return { status: syncResponse.fail };
     }
   }
