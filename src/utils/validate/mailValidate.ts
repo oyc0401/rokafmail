@@ -1,10 +1,6 @@
-import { attackValidate } from "../filter/filter";
 import { ValidateError } from "./validateErrorType";
 
 export function validateContent(content: string) {
-  if (!attackValidate(content)) {
-    throw new ValidateError("해당 내용을 작성할 수 없습니다.");
-  }
   if (content.length == 0) {
     throw new ValidateError("내용을 작성해주세요.");
   }
@@ -13,9 +9,6 @@ export function validateContent(content: string) {
   }
 }
 export function validateTitle(title: string) {
-  if (!attackValidate(title)) {
-    throw new ValidateError("해당 내용을 작성할 수 없습니다.");
-  }
   if (title.length == 0) {
     throw new ValidateError("제목을 작성해주세요.");
   }
@@ -24,9 +17,6 @@ export function validateTitle(title: string) {
   }
 }
 export function validateWriter(writer: string) {
-  if (!attackValidate(writer)) {
-    throw new ValidateError("해당 내용을 작성할 수 없습니다.");
-  }
   if (writer == 'sh' || writer == 'SH' || writer == 'Sh') {
     throw new ValidateError("해당 내용을 작성할 수 없습니다.");
   }
@@ -39,9 +29,6 @@ export function validateWriter(writer: string) {
 }
 
 export function validateRelationship(relationship: string) {
-  if (!attackValidate(relationship)) {
-    throw new ValidateError("해당 내용을 작성할 수 없습니다.");
-  }
   if (relationship.length == 0) {
     throw new ValidateError("관계를 작성해주세요.");
   }
@@ -57,8 +44,5 @@ export function validateMailPassword(password: string) {
   }
   if (password !== password.trim()) {
     throw new ValidateError("비밀번호에 띄어쓰기를 포함할 수 없습니다.");
-  }
-  if (!attackValidate(password)) {
-    throw new ValidateError("해당 내용을 작성할 수 없습니다.");
   }
 }

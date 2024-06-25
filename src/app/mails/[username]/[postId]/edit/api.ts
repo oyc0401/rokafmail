@@ -4,6 +4,7 @@ import { makeLogger } from "config/winston";
 const logger = makeLogger("Edit Mail");
 
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
+import { validateAttack } from "src/utils/filter/filter";
 
 
 export async function editPost({ postId, username, name, relationship, title, contents, password, isPublic }) {
@@ -45,4 +46,10 @@ function validateInput({
   validateMailPassword(password);
   validateRelationship(relationship);
   validateWriter(name);
+
+  validateAttack(title);
+  validateAttack(contents);
+  validateAttack(name);
+  validateAttack(relationship);
+  validateAttack(password);
 }

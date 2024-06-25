@@ -6,6 +6,7 @@ import { MailService } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
 import { Trainee } from "src/service/user/Trainee";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
+import { validateAttack } from "src/utils/filter/filter";
 
 /**
  * 유저 확인: 제공된 username을 사용하여 유저가 존재하는지 확인합니다.
@@ -43,7 +44,7 @@ export async function mailApi(mailForm: {
       });
     }
     // 폼 입력 검증
-   validateInput(mailForm);
+    validateInput(mailForm);
 
     const trainee = new Trainee(user);
     const letter = {
@@ -59,7 +60,8 @@ export async function mailApi(mailForm: {
     return ServerActionResponse.json({ message: "편지 전송 성공!", status: 200 });
   } catch (error) {
     logger.error(`편지 보내는 중 오류 발생: ${error}`);
-    return ServerActionResponse.json({ message: "서버 오류", status: 500 });
+
+    return ServerActionResponse.json({ message: error.message, status: 500 });
   }
 }
 
@@ -73,9 +75,15 @@ function validateInput({
   contents,
   password,
 }) {
-  validateContent(contents);
   validateTitle(title);
-  validateMailPassword(password);
-  validateRelationship(relationship);
+  validateContent(contents);
   validateWriter(name);
+  validateRelationship(relationship);
+  validateMailPassword(password);
+
+  validateAttack(title);
+  validateAttack(contents);
+  validateAttack(name);
+  validateAttack(relationship);
+  validateAttack(password);
 }

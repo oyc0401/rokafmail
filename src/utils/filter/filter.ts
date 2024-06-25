@@ -1,21 +1,23 @@
-import xss from 'xss';
-import SqlString from 'sqlstring'
 import { sqlinjectionFilter } from './sqliFilter';
+import { xssFilter } from './xssFilter';
+import { ValidateError } from '../validate';
 
 export function filter(dirtyMessage: string) {
 
-  let cleanHTML = xss(dirtyMessage);
-
+  let cleanHTML = xssFilter(dirtyMessage);
   let cleanSQL = sqlinjectionFilter(cleanHTML);
 
-  let clean = xss(cleanSQL);
-
-  return clean;
+  return cleanSQL;
 }
 
 
-export function attackValidate(str: string) {
+export function validateAttack(str: string) {
   const filteredString = filter(str);
 
-  return str == filteredString;
+  const valid = str == filteredString;
+
+  if (!valid) {
+    throw new ValidateError("편지 내용에서 보안 위협이 감지되었습니다. 추가적인 시도가 발생할 경우 군 보안 법령에 따라 법적 책임을 물을 수 있습니다.");
+  }
+
 }
