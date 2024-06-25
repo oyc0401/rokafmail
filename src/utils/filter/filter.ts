@@ -4,8 +4,8 @@ import { ValidateError } from '../validate';
 
 export function filter(dirtyMessage: string) {
 
-  let cleanHTML = xssFilter(dirtyMessage);
-  let cleanSQL = sqlinjectionFilter(cleanHTML);
+  const cleanHTML = xssFilter(dirtyMessage);
+  const cleanSQL = sqlinjectionFilter(cleanHTML);
 
   return cleanSQL;
 }
