@@ -80,7 +80,7 @@ export function xssFilter(str: string) {
 
 
   clean = clean
-    .replace(/<script>/g, '').replace(/script/g, '')
+    .replace(/<script>/g, '')
     .replace(/<a/g, '').replace(/<a>/g, '').replace(/<\/a>/g, '')
     .replace(/<link>/g, '')
     .replace(/<img>/g, '')
@@ -91,10 +91,10 @@ export function xssFilter(str: string) {
     .replace(/<\/>/g, '')
     .replace(/<button>/g, '').replace(/onclick/g, '')
     .replace(/<\/button>/g, '')
-    .replace(/alert\(/g, '').replace(/document./g, '')
-    .replace(/window./g, '').replace(/findBy./g, '')
+    .replace(/alert\(/g, '').replace(/document\./g, '')
+    .replace(/window\./g, '').replace(/findBy\./g, '')
     .replace(/${/g, '')
-    .replace(/function/g, '')
+    // .replace(/function/g, '')
 
   return clean;
 

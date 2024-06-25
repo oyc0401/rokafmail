@@ -2,10 +2,11 @@ export function sqlinjectionFilter(str: string) {
   let cleanSQL = str;
 
   const patterns = [
-    /--/g,            // Single line comment
-    /\/\*/g,          // Block comment start
-    /\*\//g,          // Block comment end
-    /\/\//g,          // Another single line comment style
+    // /--/g,            // Single line comment
+    // /\/\*/g,          // Block comment start
+    // /\*\//g,          // Block comment end
+    /\/\*.*\*\//gs,      // Block comment start and end
+    // /\/\//g,          // Another single line comment style
     // /'/g,             // Single quote
     // /"/g,             // Double quote
     // /;/g,             // Semicolon
@@ -20,7 +21,7 @@ export function sqlinjectionFilter(str: string) {
     /XP_/gi,           // XP_ commands (common in MSSQL)
     /SP_/gi,           // SP_ commands (common in MSSQL)
     /;--/g,            // Comment and semicolon
-    /--\s*$/g,         // End of line comment
+    // /--\s*$/g,         // End of line comment
     /%00/g,            // Null byte
     /\bOR\b.*\b=\b.*\bOR\b/gi, // Complex OR patterns
     /\bAND\b.*\b=\b.*\bAND\b/gi // Complex AND patterns
@@ -32,13 +33,10 @@ export function sqlinjectionFilter(str: string) {
 
 
   cleanSQL = cleanSQL
-    .replace(/--/g, '')
-    .replace(/\/\*/g, '').replace(/\*\//g, '')
-    .replace(/\/\//g, '')
     .replace(/or ''/g, '').replace(/or ''/g, '')
     .replace(/or 1=1/g, '').replace(/OR 1=1/g, '')
-    .replace(/select /g, '').replace(/OR 1=1/g, '')
+    .replace(/OR 1=1/g, '')
 
-  
+
   return cleanSQL;
 }
