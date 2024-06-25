@@ -5,6 +5,7 @@ const logger = makeLogger("Mail");
 import { MailService } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
 import { Trainee } from "src/service/user/Trainee";
+import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
 
 /**
  * 유저 확인: 제공된 username을 사용하여 유저가 존재하는지 확인합니다.
@@ -42,13 +43,7 @@ export async function mailApi(mailForm: {
       });
     }
     // 폼 입력 검증
-    const validationResult = validateInput(mailForm);
-    if (!validationResult.validate) {
-      return ServerActionResponse.json({
-        message: validationResult.message,
-        status: 400,
-      });
-    }
+   validateInput(mailForm);
 
     const trainee = new Trainee(user);
     const letter = {
@@ -78,40 +73,9 @@ function validateInput({
   contents,
   password,
 }) {
-  // 입력 검증
-  if (password.length < 4) {
-    return {
-      message: "비밀번호는 4자리 이상이여야합니다.",
-      validate: false,
-    };
-  }
-  if (contents.length > 1200) {
-    return {
-      message: "내용은 1200자를 넘을 수 없습니다.",
-      validate: false,
-    };
-  }
-  if (title.length > 300) {
-    return {
-      message: "제목은 300자를 넘을 수 없습니다.",
-      validate: false,
-    };
-  }
-  if (name.length > 100) {
-    return {
-      message: "이름은 100자를 넘을 수 없습니다.",
-      validate: false,
-    };
-  }
-  if (relationship.length > 100) {
-    return {
-      message: "관계는 100자를 넘을 수 없습니다.",
-      validate: false,
-    };
-  }
-
-  return {
-    message: "유효한 데이터 형식 입니다.",
-    validate: true,
-  };
+  validateContent(contents);
+  validateTitle(title);
+  validateMailPassword(password);
+  validateRelationship(relationship);
+  validateWriter(name);
 }

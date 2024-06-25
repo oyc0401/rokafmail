@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 
 import styles from "./page.module.css";
 import { useStore } from "./model";
-import { validN, validR, validC, validT, validP } from "./valid";
 import { mailApi } from "src/app/api/mail/mail";
+import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
 
 export function Submit({ username }) {
   const { name, relationship, title, contents, password, isPublic } = useStore();
@@ -14,12 +14,18 @@ export function Submit({ username }) {
 
   const [progress, setProgress] = useState(false);
 
-  const canSubmit = () =>
-    validN(name).valid &&
-    validR(relationship).valid &&
-    validT(title).valid &&
-    validC(contents).valid &&
-    validP(password).valid;
+  const canSubmit = () => {
+    try {
+      validateContent(contents);
+      validateTitle(title);
+      validateMailPassword(password);
+      validateRelationship(relationship);
+      validateWriter(name);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
 
   async function postMail() {
     setProgress(true);
@@ -40,7 +46,7 @@ export function Submit({ username }) {
         } else {
           alert(`편지 전송 실패 ${response.status}, ${response.message}`);
         }
-         setProgress(false);
+        setProgress(false);
       })
       .catch((error) => {
         alert(`오류발생, 편지 전송 실패 ${error}`);
@@ -49,7 +55,21 @@ export function Submit({ username }) {
   }
 
   async function click() {
-    if (canSubmit()) postMail();
+    const canpost = canSubmit();
+    if (canpost) {
+      postMail()
+    } else {
+      try {
+        validateTitle(title);
+        validateContent(contents);
+        validateWriter(name);
+        validateRelationship(relationship);
+        validateMailPassword(password);
+      } catch (e) {
+        alert(e.message);
+      }
+
+    }
   }
 
   function Loading() {

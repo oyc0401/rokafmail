@@ -3,8 +3,8 @@ import { useRouter } from "next/navigation";
 import { deletePost } from "src/app/api/mails/mail";
 
 import { useStore } from "./model";
-import { validN, validR, validC, validT, validP } from "./valid";
 import { editPost } from "./api";
+import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
 
 export function Submit({ postId, username, posted, url }) {
   const { name, relationship, title, contents, password, isPublic } = useStore();
@@ -12,12 +12,18 @@ export function Submit({ postId, username, posted, url }) {
   const router = useRouter();
 
   const canSubmit = () => {
-    return validN(name).valid &&
-      validR(relationship).valid &&
-      validT(title).valid &&
-      validC(contents).valid &&
-      validP(password).valid;
+    try {
+      validateTitle(title);
+      validateContent(contents);
+      validateWriter(name);
+      validateRelationship(relationship);
+      validateMailPassword(password);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
+
 
   async function click() {
     const result = await editPost({ postId, username, name, relationship, title, contents, password, isPublic });
