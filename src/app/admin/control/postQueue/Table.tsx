@@ -96,6 +96,9 @@ export function DatabaseTable({ data }) {
         <TableColumn key="createdAt" allowsSorting>
           CreatedAt
         </TableColumn>
+        <TableColumn key="password" allowsSorting>
+          Password
+        </TableColumn>
         <TableColumn key="action">Action</TableColumn>
       </TableHeader>
       <TableBody items={items} emptyContent={"No rows to display."}>

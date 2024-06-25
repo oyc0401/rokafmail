@@ -7,6 +7,8 @@ import { parse } from "node-html-parser";
 
 import { makeLogger } from "config/winston";
 import { RokafMail } from "./RokafClientInterface";
+import { filter } from "src/utils/filter/filter";
+
 const logger = makeLogger("Rokaf");
 
 export async function postMail(
@@ -21,11 +23,11 @@ export async function postMail(
   data.append("senderZipcode", `하늘인편`);
   data.append("senderAddr1", `${formattedDate}`);
   data.append("senderAddr2", ``);
-  data.append("senderName", name);
-  data.append("relationship", relationship);
-  data.append("title", title);
-  data.append("contents", contents);
-  data.append("password", password);
+  data.append("senderName", filter(name));
+  data.append("relationship", filter(relationship));
+  data.append("title", filter(title));
+  data.append("contents", filter(contents));
+  data.append("password", filter(password));
   data.append("siteId", "last2");
   data.append("page", "1");
   data.append("command2", "writeEmail");
@@ -35,6 +37,7 @@ export async function postMail(
   data.append("memberSeq", "");
   data.append("memberSeqVal", memberSeq);
   data.append("sodaeVal", sodae);
+  console.log(filter(contents))
   // 7TXYFRbyWor7fK22YBh7L4EWI8BW3WH1xt9TQkOE6VT16srxnF8pkaUT2euc9a4P.AF1302_servlet_CONT21
   const config = {
     method: "post",
