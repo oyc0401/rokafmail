@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Post, User } from "src/db";
 import prisma from "src/db/prisma";
 
@@ -27,46 +27,39 @@ export async function getPostWithUserById(postId: number) {
   return post;
 }
 
-// 유저와 편지 비밀번호가 포함된 편지
-export async function getPostView(postId: number, username: string) {
+// 다 포함된 편지
+export async function getPostEverything(postId: number) {
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+  });
+  return post;
+}
+
+// 내용이 포함된 편지
+export async function getPostContent(postId: number) {
   const post = await prisma.post.findUnique({
     select: {
       ...defalutPostSelect,
-      password: true,
-      user: { select: defalutUserSelect }
+      contents: true,
+    },
+    where: { id: postId },
+  });
+  return post;
+}
+
+// 해당 아이디와 편지id가 같은 사람이 아니면 notFound
+export async function isSameUser(postId: number, username: string) {
+  const post = await prisma.post.findUnique({
+    select: {
+      user: { select: { username: true } }
     },
     where: { id: postId },
   });
 
   if (!post) notFound();
 
+  // 아이디와 편지 주인이 같지 않으면 notFound
   if (post.user.username != username) notFound();
-
-  // 공개글이면 이동
-  if (post.isPublic) return post;
-
-  // 비공개 글이면 주인 확인
-  const password = post.password;
-  const cookieStore = cookies();
-  const pwcookie = cookieStore.get("password");
-
-  if (pwcookie && pwcookie.value == password)
-    return post;
-
-  return post;
-}
-
-// 내용과 비밀번호가 포함된 편지
-export async function getPostContentPassword(postId: number) {
-  const post = await prisma.post.findUnique({
-    select: {
-      ...defalutPostSelect,
-      password: true,
-      contents: true,
-    },
-    where: { id: postId },
-  });
-  return post;
 }
 
 const defalutPostSelect = {

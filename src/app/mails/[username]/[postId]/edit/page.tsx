@@ -6,7 +6,7 @@ import { getEnter, getCompletion } from "src/lib/time";
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { Paper } from "./paper";
 import { Submit } from './submit'
-import { getPostContentPassword } from "src/app/apiSSR/mail/server";
+import { getPostEverything } from "src/app/apiSSR/mail/server";
 
 
 export const metadata = {
@@ -17,7 +17,7 @@ export default async function EditPage({ params }) {
   const postId = Number(params.postId);
   const username = params.username;
 
-  const post = await getPostContentPassword(postId);
+  const post = await getPostEverything(postId);
   if (!post) notFound();
 
   const user = await getUserByUsername(username);
