@@ -23,3 +23,11 @@ export async function getNotAuthPosts(username) {
   const queueSorted = queues.sort((a, b) => a.id > b.id ? -1 : 1);
   return queueSorted;
 }
+
+export async function getMyPosts(username) {
+  const postsPrivate = await Post.findMyPostsPrivateByUsername(username);
+  const postsPublic = await Post.findMyPostsPublicByUsername(username);
+  const posts = [...postsPrivate, ...postsPublic];
+  const postsSorted = posts.sort((a, b) => a.id > b.id ? -1 : 1);
+  return postsSorted
+}

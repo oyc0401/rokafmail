@@ -1,6 +1,7 @@
-import { Post } from "src/db";
 import { notFound, redirect } from "next/navigation";
 import { cookies } from "next/headers";
+
+import { getPostById } from "src/app/apiSSR/user/server";
 import { View } from './view'
 
 export const metadata = {
@@ -11,7 +12,7 @@ export default async function Page({ params }) {
   const postId = Number(params.postId);
   const username = params.username;
 
-  const post = await Post.findById(postId);
+  const post = await getPostById(postId);
   if (!post) notFound();
 
   /**

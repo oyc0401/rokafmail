@@ -1,7 +1,7 @@
-import { Post, User } from "src/db";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "src/app/api/auth/auth";
 import { View } from './view'
+import { getPostById, getUserByUsername } from "src/app/apiSSR/user/server";
 
 export const metadata = {
   title: "하늘인편 | 편지 확인",
@@ -9,7 +9,7 @@ export const metadata = {
 
 export default async function Page({ params }) {
   const postId = Number(params.postId);
-  const post = await Post.findById(postId);
+  const post = await getPostById(postId);
   if (!post) notFound();
 
   // 세션
@@ -18,7 +18,7 @@ export default async function Page({ params }) {
     redirect("/auth/signin");
 
   const username = session.user.email;
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
   if (!user) notFound();
   
   return <View postId={postId} />;

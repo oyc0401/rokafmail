@@ -1,21 +1,14 @@
 import { auth } from "src/app/api/auth/auth";
 import Link from "next/link";
-import { Post, User } from "src/db";
 import { notFound, redirect } from "next/navigation";
 import { NavHeader } from "src/components";
 import { LetterList } from "./LetterList";
+import { getUserByUsername } from "src/app/apiSSR/user/server";
+import { getMyPosts } from "src/app/apiSSR/mails/server";
 
 export const metadata = {
   title: "하늘인편 | 내가 받은 편지",
 };
-
-async function getPosts(username) {
-  const postsPrivate = await Post.findMyPostsPrivateByUsername(username);
-  const postsPublic = await Post.findMyPostsPublicByUsername(username);
-  const posts = [...postsPrivate, ...postsPublic];
-  const postsSorted = posts.sort((a, b) => a.id > b.id ? -1 : 1);
-  return postsSorted
-}
 
 
 export default async function Mails() {
@@ -24,11 +17,11 @@ export default async function Mails() {
     redirect("/auth/signin");
 
   const username = session.user.email;
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
 
   if (!user) notFound();
 
-  const letters = await getPosts(username);
+  const letters = await getMyPosts(username);
 
   return (
     <>

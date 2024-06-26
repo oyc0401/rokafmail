@@ -1,7 +1,7 @@
 import { auth } from "src/app/api/auth/auth";
-import { User } from "src/db";
 import { notFound } from "next/navigation";
 import { Client } from "./client";
+import { getUserByUsername } from "src/app/apiSSR/user/server";
 export const metadata = {
   title: "하늘인편 | 정보 수정",
 };
@@ -11,7 +11,7 @@ export default async function Page() {
     notFound();
   }
   const username = session.user.email;
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
 
   if (!user)  notFound();
   

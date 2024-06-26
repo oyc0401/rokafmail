@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { Post, User } from "src/db";
 import { notFound } from "next/navigation";
+
 import { NavHeader } from "src/components";
+import { minuteToStr, postMailDMinute } from "src/lib/time";
+import { getPostedPosts, getNotPostedPosts, getNotAuthPosts } from "src/app/apiSSR/mails/server";
+import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { LetterList } from "./LetterList";
 import { TabBar } from "./TabBar";
-import { minuteToStr, postMailDMinute, postMailDday } from "src/lib/time";
-import { getPostedPosts, getNotPostedPosts, getNotAuthPosts } from "src/app/apiSSR/mails/server";
+
 
 export const metadata = {
   title: "하늘인편 | 받은 편지함",
@@ -14,13 +16,12 @@ export const metadata = {
 export default async function Mails({ params, searchParams }) {
   const username = decodeURI(params.username);
 
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
   if (!user) notFound();
 
   const pageState = searchParams.page;
 
   let content = <></>;
-
 
   if (!user.connect) {
     const unposteds = await getNotAuthPosts(username);

@@ -1,12 +1,14 @@
 "use client";
 import { useEffect, useRef } from "react";
-import styles from "./paper.module.css";
-import { useStore } from "./model";
-import { validC} from "./valid";
-import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';
 import { Checkbox, Divider } from "@nextui-org/react";
+
+import rokafLogo from "public/assets/rokaf.png";
+import styles from "./paper.module.css";
+import { useStore } from "./model";
+import { validC } from "./valid";
+
 export function Paper() {
   const { initial } = useStore();
   useEffect(() => {

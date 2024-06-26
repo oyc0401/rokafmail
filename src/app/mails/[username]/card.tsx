@@ -1,6 +1,7 @@
-import RokafSmall from 'public/assets/rokaf-small.png';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import RokafSmall from 'public/assets/rokaf-small.png';
 
 export function PostCard({ id, title, name, rel, time, username, contents, isPublic }) {
   return (

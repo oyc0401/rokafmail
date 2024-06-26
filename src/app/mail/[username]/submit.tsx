@@ -2,10 +2,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
+import { mailApi } from "src/app/apiAction/mail/action";
 import styles from "./page.module.css";
 import { useStore } from "./model";
-import { mailApi } from "src/app/apiAction/mail/action";
-import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
+
 
 export function Submit({ username }) {
   const { name, relationship, title, contents, password, isPublic } = useStore();

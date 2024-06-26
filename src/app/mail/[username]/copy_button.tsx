@@ -1,7 +1,8 @@
 "use client";
-import { Share } from "public/assets";
 import Image from "next/image";
+import { Share } from "public/assets";
 import styles from "./page.module.css";
+
 export function ShareButton({ url, name }) {
   function copy() {
     const isMobile = () => {

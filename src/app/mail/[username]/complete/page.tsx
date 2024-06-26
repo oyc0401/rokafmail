@@ -13,12 +13,13 @@ import {
   minuteToStr,
 } from "src/lib/time";
 import { CheckCircle } from "public/assets/index";
+import { getUserByUsername } from "src/app/apiSSR/user/server";
 
 ///res?sc=200&searchName=곽희근&searchBirth=19950824&memberSeqVal=347938631
 export default async function Complete({ searchParams, params }) {
   //const sc = searchParams.sc;
   const username = decodeURI(params.username);
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
 
   if (!user) {
     notFound();

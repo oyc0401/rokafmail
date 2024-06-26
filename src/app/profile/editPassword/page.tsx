@@ -1,8 +1,7 @@
-
-import { User } from "src/db";
 import { notFound } from "next/navigation";
 import { Client } from "./client";
 import { auth } from "src/app/api/auth/auth";
+import { getUserByUsername } from "src/app/apiSSR/user/server";
 export const metadata = {
   title: "하늘인편 | 비밀번호 변경",
 };
@@ -13,7 +12,7 @@ export default async function Page() {
 
   const username = session.user.email;
   
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
   if (!user)  notFound();
   
   return <Client username={username}></Client>;

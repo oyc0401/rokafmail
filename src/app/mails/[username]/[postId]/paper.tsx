@@ -1,8 +1,9 @@
 "use client";
-import styles from "./paper.module.css";
-import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';
+
+import rokafLogo from "public/assets/rokaf.png";
+import styles from "./paper.module.css";
 
 export function Paper({ post }) {
   const { title, contents, name, relationship, isPublic } = post;

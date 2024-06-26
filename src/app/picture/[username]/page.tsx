@@ -1,8 +1,6 @@
 import { notFound } from "next/navigation";
-import styles from "./page.module.css";
-import Link from "next/link";
 import { BasicBody, BasicFormArea, BasicHeader } from "src/components";
-import { User } from "src/db";
+import { getUserByUsername } from "src/app/apiSSR/user/server";
 
 
 export const metadata = {
@@ -14,7 +12,7 @@ export const metadata = {
 export default async function Mail({ params }) {
   const username = params.username;
 
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
   if (!user) {
     notFound();
   }

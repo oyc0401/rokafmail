@@ -1,17 +1,12 @@
-
-import { Post, User } from "src/db";
 import { notFound, redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 import { NavHeader } from 'src/components'
+import { getEnter, getCompletion } from "src/lib/time";
+import { getPostById, getUserByUsername } from "src/app/apiSSR/user/server";
+import { Paper } from "./paper";
 import { Submit } from './submit'
 
-// import { dateToStr } from "./dateToStr";
-import {
-  getEnter,
-  getCompletion,
-} from "src/lib/time";
-import { cookies } from "next/headers";
-import { Paper } from "./paper";
 
 export const metadata = {
   title: "하늘인편 | 편지 수정",
@@ -21,18 +16,18 @@ export default async function EditPage({ params }) {
   const postId = Number(params.postId);
   const username = params.username;
 
-  const post = await Post.findById(postId);
+  const post = await getPostById(postId);
   if (!post) notFound();
 
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
   if (!user) notFound();
 
   const password = post.password;
   const cookieStore = cookies();
   const pwcookie = cookieStore.get("password");
 
-  const { title, contents, name, relationship, posted,isPublic } = post;
-  const props = { title, contents, name, relationship,isPublic };
+  const { title, contents, name, relationship, posted, isPublic } = post;
+  const props = { title, contents, name, relationship, isPublic };
 
   const url = `https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`;
 

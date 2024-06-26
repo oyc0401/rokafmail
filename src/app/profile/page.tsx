@@ -1,13 +1,13 @@
 import { auth } from "src/app/api/auth/auth";
-import { User } from "src/db";
-
 import { redirect } from "next/navigation";
 import Link from "next/link";
+
 import { DeleteUser, SignOut } from "./client";
 import { NavHeader } from "src/components";
 import { Edit } from "public/assets";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { getUserByUsername } from "../apiSSR/user/server";
 export const metadata = {
   title: "하늘인편 | 내 정보",
 };
@@ -18,7 +18,7 @@ export default async function Page() {
     redirect("/auth/signin");
 
   const username = session.user.email;
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
   if (!user) redirect("/auth/signin");
 
 

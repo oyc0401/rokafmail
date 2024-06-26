@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
 import { Post, UnidentifiedUser, User, UserQueue } from "src/db";
 import { DatabaseTable } from "./Table";
+import { getUserByUsername } from "src/app/apiSSR/user/server";
 
 export default async function Page({ params }) {
 
   const username = params.username;
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
   if (!user) notFound();
 
   const posts = await Post.findByUserId(user.id);

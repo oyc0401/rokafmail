@@ -4,11 +4,11 @@ import {
   getEnter,
   getDischarge
 } from "src/lib/time";
-import { User } from "src/db";
 import { notFound } from "next/navigation";
 import { ShareButton } from "../copy_button";
 import { NavHeader } from 'src/components'
 import { Dayjs } from "dayjs";
+import { getUserByUsername } from "src/app/apiSSR/user/server";
 const dayjs = require('dayjs');
 
 
@@ -18,7 +18,7 @@ export const metadata = {
 
 export default async function Mail({ params }) {
   const username = decodeURI(params.username);
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
   if (!user) {
     notFound();
   }

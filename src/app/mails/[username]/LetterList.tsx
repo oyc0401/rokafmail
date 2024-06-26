@@ -1,4 +1,5 @@
 import { dateToStr } from "src/lib/time";
+
 import { PostCard } from "./card";
 
 export function LetterList({ letters, emptyMessage }) {

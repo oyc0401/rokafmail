@@ -1,23 +1,14 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+import { BasicFooter } from "src/components";
+import { NavHeader } from 'src/components'
+import { getEnter, getCompletion, canSearch, Status, serveStatus } from "src/lib/time";
+import { getUserByUsername } from "src/app/apiSSR/user/server";
 import styles from "./page.module.css";
 import { Submit } from "./submit";
 import { Paper } from "./paper";
-import Link from "next/link";
-
-import { BasicFooter } from "src/components";
-import {
-  getEnter,
-  getCompletion,
-  canSearch,
-  Status,
-  serveStatus,
-} from "src/lib/time";
-import { User } from "src/db";
-import { notFound } from "next/navigation";
-
 import { ShareButton } from "./copy_button";
-
-import { NavHeader } from 'src/components'
-
 
 export const metadata = {
   title: "하늘인편 | 편지 작성",
@@ -28,7 +19,7 @@ export const metadata = {
 
 export default async function Mail({ params }) {
   const username = decodeURI(params.username);
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
   if (!user) {
     notFound();
   }
@@ -143,7 +134,7 @@ function After({ user }) {
       <h2 style={{ fontSize: 18 }}>
         훈련소 수료를 축하하는
         <br />
-         메시지를 작성해주세요!
+        메시지를 작성해주세요!
       </h2>
       <div style={{ flex: 260 }}></div>
       <BasicFooter>

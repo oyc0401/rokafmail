@@ -1,9 +1,9 @@
 import Image from "next/image";
 
 import { CheckCircle } from "public/assets/index";
-import { User } from "src/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { getUserByUsername } from "src/app/apiSSR/user/server";
 
 export const metadata = {
   title: "하늘인편 | 편지함 생성",
@@ -12,7 +12,7 @@ export const metadata = {
 export default async function LinkPage({ params }) {
   const username = decodeURI(params.username);
 
-  const user = await User.findByUsername(username);
+  const user = await getUserByUsername(username);
   if (!user) {
     notFound();
   }
