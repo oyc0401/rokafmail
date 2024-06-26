@@ -11,6 +11,13 @@ export async function getUserByUsername(username: string) {
 
   return user;
 }
+export async function getUserById(userId: number) {
+  const user = await User.findById(userId);
+
+  return user;
+}
+
+
 
 export async function getPostById(postId: number) {
   const post = await Post.findById(postId);

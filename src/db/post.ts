@@ -1,5 +1,44 @@
 import prisma from "./prisma";
 
+const privateSelect = {
+  id: true,
+  userId: true,
+  name: true,
+  relationship: true,
+  title: true,
+  createdAt: true,
+  posted: true,
+  postAt: true,
+  isPublic: true,
+  user: {
+    select: {
+      username: true,
+      connect: true,
+      generation: true,
+    },
+  },
+}
+
+const publicSelect = {
+  id: true,
+  userId: true,
+  name: true,
+  relationship: true,
+  title: true,
+  createdAt: true,
+  posted: true,
+  postAt: true,
+  isPublic: true,
+  contents: true,
+  user: {
+    select: {
+      username: true,
+      connect: true,
+      generation: true,
+    },
+  },
+}
+
 export class Post {
   static insert = (data: {
     userId: number;
@@ -143,236 +182,6 @@ export class Post {
         posted: true,
       },
 
-    });
-
-  /**
-   * [/profile/mails] 비공개 편지 가져오기
-   */
-  static findMyPostsPrivateByUsername = (username: string) =>
-    prisma.post.findMany({
-      select: {
-        id: true,
-        userId: true,
-        name: true,
-        relationship: true,
-        title: true,
-        createdAt: true,
-        posted: true,
-        postAt: true,
-        isPublic: true,
-        user: {
-          select: {
-            username: true,
-            connect: true,
-            generation: true,
-          },
-        },
-      },
-
-      where: {
-        user: {
-          username,
-        },
-        isPublic: false,
-      },
-    });
-
-  /**
-   * [/profile/mails] 공개 편지 가져오기
-   */
-  static findMyPostsPublicByUsername = (username: string) =>
-    prisma.post.findMany({
-      select: {
-        id: true,
-        userId: true,
-        name: true,
-        relationship: true,
-        title: true,
-        createdAt: true,
-        posted: true,
-        postAt: true,
-        isPublic: true,
-        contents: true,
-        user: {
-          select: {
-            username: true,
-            connect: true,
-            generation: true,
-          },
-        },
-      },
-      where: {
-        user: {
-          username,
-        },
-        isPublic: true,
-      },
-    });
-
-
-  /**
-   * [/mails] 비공개 편지 가져오기
-   * 
-   */
-  static findPrivateByUsername = (username: string) =>
-    prisma.post.findMany({
-      select: {
-        id: true,
-        userId: true,
-        name: true,
-        relationship: true,
-        title: true,
-        createdAt: true,
-        posted: true,
-        postAt: true,
-        isPublic: true,
-        user: {
-          select: {
-            username: true,
-            connect: true,
-            generation: true,
-          },
-        },
-      },
-
-      where: {
-        user: {
-          username,
-        },
-        isPublic: false,
-        posted: true,
-      },
-    });
-
-
-  /**
-   * [/mails] 공개 편지 가져오기
-   * 
-   */
-  static findPublicByUsername = (username: string) =>
-    prisma.post.findMany({
-      select: {
-        id: true,
-        userId: true,
-        name: true,
-        relationship: true,
-        title: true,
-        createdAt: true,
-        posted: true,
-        postAt: true,
-        isPublic: true,
-        contents: true,
-        user: {
-          select: {
-            username: true,
-            connect: true,
-            generation: true,
-          },
-        },
-      },
-      where: {
-        user: {
-          username,
-        },
-        isPublic: true,
-        posted: true,
-      },
-    });
-
-
-  /**
-   * [/mails] 비공개 미발송 편지 가져오기
-   * 
-   */
-  static findPrivateNotPostedByUsername = (username: string) =>
-    prisma.post.findMany({
-      select: {
-        id: true,
-        userId: true,
-        name: true,
-        relationship: true,
-        title: true,
-        createdAt: true,
-        posted: true,
-        postAt: true,
-        isPublic: true,
-        user: {
-          select: {
-            username: true,
-            connect: true,
-            generation: true,
-          },
-        },
-      },
-
-      where: {
-        user: {
-          username,
-        },
-        isPublic: false,
-        posted: false,
-      },
-    });
-
-
-  /**
-   * [/mails] 공개 미발송 편지 가져오기
-   * 
-   */
-  static findPublicNotPostedByUsername = (username: string) =>
-    prisma.post.findMany({
-      select: {
-        id: true,
-        userId: true,
-        name: true,
-        relationship: true,
-        title: true,
-        createdAt: true,
-        posted: true,
-        postAt: true,
-        isPublic: true,
-        contents: true,
-        user: {
-          select: {
-            username: true,
-            connect: true,
-            generation: true,
-          },
-        },
-      },
-      where: {
-        user: {
-          username,
-        },
-        isPublic: true,
-        posted: false,
-      },
-    });
-
-  static findPublicPostById = (id: number) =>
-    prisma.post.findUnique({
-      select: {
-        id: true,
-        userId: true,
-        name: true,
-        relationship: true,
-        title: true,
-        createdAt: true,
-        posted: true,
-        postAt: true,
-        isPublic: true,
-        contents: true,
-        user: {
-          select: {
-            username: true,
-            connect: true,
-            generation: true,
-          },
-        },
-      },
-      where: {
-        id,
-      },
     });
 
 
