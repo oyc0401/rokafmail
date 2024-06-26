@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { NavHeader } from 'src/components'
-import { getPostById, getPostContent, getPostEverything, getPostView, isSameUser } from "src/app/apiSSR/mail/server";
+import { getPostEverything, isSameUser } from "src/app/apiSSR/mail/server";
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { Paper } from "./paper";
 
@@ -59,8 +59,6 @@ export default async function Page({ params }) {
       <a className="text-base underline cursor-pointer active:opacity-75 text-fontlight" href={`/mails/${username}/${postId}/edit`}>수정하기</a>
     </div>
   }
-
-
 
   return (
     <div className="w-full flex flex-col max-w-3xl mx-auto h-full">

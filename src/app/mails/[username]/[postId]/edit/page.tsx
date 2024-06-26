@@ -2,12 +2,28 @@ import { notFound, redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 import { NavHeader } from 'src/components'
-import { getEnter, getCompletion } from "src/lib/time";
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { Paper } from "./paper";
 import { Submit } from './submit'
 import { getPostEverything } from "src/app/apiSSR/mail/server";
 
+async function getPostAuthCheck(postId) {
+  const post = await getPostEverything(postId);
+  if (!post) notFound();
+
+  const password = post.password;
+  const cookieStore = cookies();
+  const pwcookie = cookieStore.get("password");
+
+  const { title, contents, name, relationship, posted, isPublic } = post;
+  const props = { title, contents, name, relationship, isPublic, posted };
+
+  if (pwcookie && pwcookie.value == password) {
+    return props;
+  }
+
+  return null;
+}
 
 export const metadata = {
   title: "하늘인편 | 편지 수정",
@@ -17,43 +33,32 @@ export default async function EditPage({ params }) {
   const postId = Number(params.postId);
   const username = params.username;
 
-  const post = await getPostEverything(postId);
-  if (!post) notFound();
+  const post = await getPostAuthCheck(postId);
+
+  if (!post) {
+    const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}/edit`;
+    redirect(`/mails/${username}/${postId}/signin?callbackUrl=${callbackUrl}`)
+  }
 
   const user = await getUserByUsername(username);
   if (!user) notFound();
 
-  const password = post.password;
-  const cookieStore = cookies();
-  const pwcookie = cookieStore.get("password");
-
-  const { title, contents, name, relationship, posted, isPublic } = post;
-  const props = { title, contents, name, relationship, isPublic };
-
   const url = `https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`;
 
-  if (pwcookie && pwcookie.value == password)
-    return <div className="h-full flex flex-col max-w-3xl mx-auto">
+  return (
+    <div className="h-full flex flex-col max-w-3xl mx-auto">
       <NavHeader user={user}></NavHeader>
       <UserDescription user={user}></UserDescription>
-      <Paper updateProps={props}></Paper>
+      <Paper updateProps={post}></Paper>
       <div className="flex-1"></div>
-      <Submit postId={postId} username={username} posted={posted} url={url}></Submit>
-    </div>;
-
-  const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}/edit`;
-  redirect(`/mails/${username}/${postId}/signin?callbackUrl=${callbackUrl}`)
+      <Submit postId={postId} username={username} posted={post.posted} url={url}></Submit>
+    </div>
+  );
 }
 
 async function UserDescription({ user }) {
-  const { name, message, generation, username } = user;
-
-  const startTime = getEnter(generation).format("YY.MM.DD");
-  const compTime = getCompletion(generation).format("YY.MM.DD");
-
-  const domain = process.env.DOMAIN;
-  const url = `https://${domain}/mail/${username}`;
-
+  const { name } = user;
+  
   return (
     <div role='userDescription' className="pt-3 pb-3.5 w-full px-4">
       <div
