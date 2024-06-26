@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { editProfile } from "src/app/api/profile/profile";
+import { editProfile } from "src/app/apiAction/profile/action";
 import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
 
 import { validateMessage, validateBirth, validateName } from "src/utils/validate";

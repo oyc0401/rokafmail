@@ -7,7 +7,7 @@ import {
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Delete Mail");
 
-export async function deletePost(id: number, password: string) {
+export async function deletePostApi(id: number, password: string) {
   const post = await Post.findById(id);
   
   if (!post) return ServerActionResponse.notFound("해당 편지가 없습니다.");

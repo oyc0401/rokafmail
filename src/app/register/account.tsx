@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
-import { duplicateUsername } from "src/app/api/register/duplicateUsername/serverAction";
+import { isDuplicatedUsernameApi } from "src/app/apiAction/isDuplicatedUsername/action";
 import { useStore, useStoreBase } from "./model";
 import {
   InputField,
@@ -55,7 +55,7 @@ export default function Account() {
 
     // 서버에서 중복인지 검사한다.
     isWaitResponse.current = true;
-    const val = await duplicateUsername(username);
+    const val = await isDuplicatedUsernameApi(username);
     // 서버에서 값이 오기전에 문자열을 수정했는지 확인
     if (isWaitResponse.current) {
       setIsDuplicated(val);

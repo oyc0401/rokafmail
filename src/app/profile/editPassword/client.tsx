@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import crypto from "crypto";
-import { editPassword } from "src/app/api/profile/profile";
+import { editPassword } from "src/app/apiAction/profile/action";
 import { signOut } from "next-auth/react";
 import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
 import { validatePassword } from "src/utils/validate";

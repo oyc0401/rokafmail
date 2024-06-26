@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { deletePost } from "src/app/api/mails/mail";
+import { deletePostApi } from "src/app/apiAction/mails/action";
 
 import { useStore } from "./model";
 import { editPost } from "./api";
@@ -39,7 +39,7 @@ export function Submit({ postId, username, posted, url }) {
     const password = prompt("편지 삭제를 위해 비밀번호를 입력해주세요.", "");
 
     if (password) {
-      const response = await deletePost(postId, password);
+      const response = await deletePostApi(postId, password);
 
       if (response.status == 200) {
         if (posted) {

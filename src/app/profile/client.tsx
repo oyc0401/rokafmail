@@ -1,6 +1,6 @@
 "use client";
 import { signOut } from "next-auth/react";
-import { deleteUser } from "src/app/api/profile/profile";
+import { deleteUser } from "src/app/apiAction/profile/action";
 import crypto from "crypto";
 export function SignOut() {
   async function onclickSignout() {

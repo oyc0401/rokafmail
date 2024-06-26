@@ -1,8 +1,6 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Post, UnidentifiedUser, User, UserQueue } from "src/db";
 import { DatabaseTable } from "./Table";
-import { getPosts } from "src/app/api/mails/getPosts";
 
 export default async function Page({ params }) {
 

@@ -8,18 +8,6 @@ import { Trainee } from "src/service/user/Trainee";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
 import { validateAttack } from "src/utils/filter/filter";
 
-/**
- * 유저 확인: 제공된 username을 사용하여 유저가 존재하는지 확인합니다.
- * 입력 검증: 비밀번호, 내용, 제목, 이름, 관계의 길이를 검증합니다.
- * 편지 저장: 유효한 입력에 대해 편지 정보를 Post 테이블에 저장합니다.
- * 인증 여부 확인: 유저의 인증 상태(connect)를 확인합니다.
- * 인증되지 않은 유저: 인증되지 않은 경우, 정보를 UnconnectedPost 테이블에 저장합니다.
- * 인증된 유저 & 편지 전송 시간 확인: 인증된 유저의 경우, 편지를 보낼 수 있는 시간(serveStatus)을 확인합니다.
- * 국방부 서버로 편지 전송: 편지 보내기 기간(Status.training)이면 국방부 서버로 편지를 전송합니다.
- * 편지 전송 상태 업데이트: 국방부 서버로 편지 전송이 성공하면, Post 테이블의 posted 상태를 true로 업데이트합니다.
- * 편지 큐 저장: 국방부 서버로 전송하기에 적합한 시간이 아니면, PostQueue에 편지 정보를 저장합니다.
- */
-
 export async function mailApi(mailForm: {
   username: string;
   name: string;

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "./register.module.css";
 import { useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
-import { registerApi } from "src/app/api/register/register";
+import { registerApi } from "src/app/apiAction/register/action";
 import {
   InputField,
   BasicFormArea,
