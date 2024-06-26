@@ -86,7 +86,7 @@ export default function Message() {
       </div>
       <BasicFormArea>
         <BasicHeader>
-          편지지에 보여질
+          사람들에게 전하고 싶은
           <br />
           한줄 글을 적어주세요
         </BasicHeader>
