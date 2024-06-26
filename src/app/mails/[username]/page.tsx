@@ -5,35 +5,11 @@ import { NavHeader } from "src/components";
 import { LetterList } from "./LetterList";
 import { TabBar } from "./TabBar";
 import { minuteToStr, postMailDMinute, postMailDday } from "src/lib/time";
+import { getPostedPosts, getNotPostedPosts, getNotAuthPosts } from "src/app/apiSSR/mails/server";
 
 export const metadata = {
   title: "하늘인편 | 받은 편지함",
 };
-
-async function getPostedPosts(username) {
-  const postsPrivate = await Post.findPrivateByUsername(username);
-  const postsPublic = await Post.findPublicByUsername(username);
-  const posts = [...postsPrivate, ...postsPublic];
-  const postsSorted = posts.sort((a, b) => a.id > b.id ? -1 : 1);
-  return postsSorted
-}
-
-async function getNotPostedPosts(username) {
-  const queuePrivate = await Post.findPrivateNotPostedByUsername(username);
-  const queuePublic = await Post.findPublicNotPostedByUsername(username);
-  const queues = [...queuePrivate, ...queuePublic];
-  const queueSorted = queues.sort((a, b) => a.id < b.id ? -1 : 1);
-  return queueSorted;
-}
-
-async function getNotAuthPosts(username) {
-  const queuePrivate = await Post.findPrivateNotPostedByUsername(username);
-  const queuePublic = await Post.findPublicNotPostedByUsername(username);
-  const queues = [...queuePrivate, ...queuePublic];
-  const queueSorted = queues.sort((a, b) => a.id > b.id ? -1 : 1);
-  return queueSorted;
-}
-
 
 export default async function Mails({ params, searchParams }) {
   const username = decodeURI(params.username);
@@ -96,7 +72,7 @@ export default async function Mails({ params, searchParams }) {
   );
 }
 
-function TimeIndicator({generation}) {
+function TimeIndicator({ generation }) {
   const minute = postMailDMinute(generation);
   const strDate = minuteToStr(minute);
   if (strDate == "0분") {

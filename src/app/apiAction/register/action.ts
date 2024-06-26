@@ -2,25 +2,26 @@
 import { ServerActionResponse } from "../serverActionResponse";
 import { makeLogger } from "config/winston";
 import { ValidateError, validateBirth, validateGeneration, validateHashedPassword, validateMessage, validateName, validateUsername } from "src/utils/validate";
-import { RegisterProps, UserService } from "src/service/user/UserService";
+import { RegisterProps } from "src/service/user/UserService";
 import { bean } from "src/bean/bean";
-import { isDuplicatedUsernameApi } from "../isDuplicatedUsername/action";
 import { Trainee } from "src/service/user/Trainee";
 const logger = makeLogger("register");
 
 export async function registerApi(registerProps: RegisterProps) {
+  const { userService } = bean;
+
   try {
     // 입력 검증
     validateInput(registerProps);
 
-    if (await isDuplicatedUsernameApi(registerProps.username)) {
+    const exist = await userService.existUsername(registerProps.username);
+    if (exist) {
       return ServerActionResponse.json({
         message: "아이디가 중복되었습니다.",
         status: 400,
       });
     }
 
-    const userService = new UserService(bean);
     const trainee = new Trainee(registerProps);
     await userService.register(trainee);
 

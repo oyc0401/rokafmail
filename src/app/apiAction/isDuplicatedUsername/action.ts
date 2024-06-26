@@ -1,7 +1,9 @@
 "use server";
-import { User } from "src/db";
+import { bean } from "src/bean/bean";
 
 export async function isDuplicatedUsernameApi(username) {
-  const duplicate = (await User.countUsername(username)) != 0;
-  return duplicate;
+  const { userService } = bean;
+
+  const exist = await userService.existUsername(username);
+  return exist;
 }
