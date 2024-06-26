@@ -3,9 +3,10 @@ import { cookies } from "next/headers";
 
 import { NavHeader } from 'src/components'
 import { getEnter, getCompletion } from "src/lib/time";
-import { getPostById, getUserByUsername } from "src/app/apiSSR/user/server";
+import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { Paper } from "./paper";
 import { Submit } from './submit'
+import { getPostContentPassword } from "src/app/apiSSR/mail/server";
 
 
 export const metadata = {
@@ -16,7 +17,7 @@ export default async function EditPage({ params }) {
   const postId = Number(params.postId);
   const username = params.username;
 
-  const post = await getPostById(postId);
+  const post = await getPostContentPassword(postId);
   if (!post) notFound();
 
   const user = await getUserByUsername(username);

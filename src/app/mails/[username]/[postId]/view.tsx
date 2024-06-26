@@ -1,17 +1,17 @@
 import Link from "next/link";
 
-import { Post, User } from "src/db";
 import { notFound } from "next/navigation";
 import { Paper } from "./paper";
 
 import { NavHeader } from 'src/components'
+import { getPublicPostById } from "src/app/apiSSR/mails/server";
+import { getUserById } from "src/app/apiSSR/user/server";
 
 export async function View({ postId, writer }: { postId: number; writer?: boolean }) {
-  const post = await Post.findPublicPostById(postId);
+  const post = await getPublicPostById(postId);
   if (!post) notFound();
 
-
-  const user = await User.findById(post.userId);
+  const user = await getUserById(post.userId);
   if (!user) notFound();
 
   const { username } = user;

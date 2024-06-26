@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
-
-import { getPostById } from "src/app/apiSSR/user/server";
 import { LoginPage } from "./LoginPage";
+import { getPostWithUserById } from "src/app/apiSSR/mail/server";
 
 
 export const metadata = {
@@ -13,7 +12,7 @@ export default async function Page({ params, }) {
   const username = params.username;
   const postId = Number(params.postId);
 
-  const post = await getPostById(postId);
+  const post = await getPostWithUserById(postId);
   if (!post) notFound();
 
   if (post.user.username != username) notFound();
