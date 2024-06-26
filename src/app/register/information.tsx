@@ -33,9 +33,9 @@ export default function Information() {
     <>
       <BasicFormArea>
         <BasicHeader>
-          편지 주소를 확인하기 위해
+          회원가입을 위해 훈련병의
           <br />
-          이름과 생년월일이 필요해요
+          정보를 작성해주세요
         </BasicHeader>
         <BasicBody paddingBottom={false}>
           <div className="flex flex-col h-full">

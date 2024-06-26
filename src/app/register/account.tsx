@@ -86,9 +86,9 @@ export default function Account() {
   return (
     <BasicFormArea>
       <BasicHeader>
-        수료 후 편지함 확인을 위해
+        회원가입을 위해 아이디와
         <br />
-        비밀번호를 설정해주세요
+        비밀번호를 입력해주세요
       </BasicHeader>
       <BasicBody>
         <InputField
