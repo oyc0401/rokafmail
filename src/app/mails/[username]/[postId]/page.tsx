@@ -13,7 +13,7 @@ export const metadata = {
 export default async function Page({ params }) {
   const postId = Number(params.postId);
   const username = params.username;
-
+  
   async function getMail() {
     // 편지 내용 불러오기, 인증 포함
     try {
