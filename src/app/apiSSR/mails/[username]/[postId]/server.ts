@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { ApiResponse } from "src/app/apiSSR/apiResponse";
+import { ActionResponse } from "src/app/apiSSR/actionResponse";
 import prisma from "src/db/prisma";
 
 // 해당 아이디와 편지가 같은 사람이 아니면 notFound
@@ -20,30 +20,30 @@ async function isPostOwner(postId: number, username: string) {
  */
 export async function getMailById(postId: number, username: string) {
   const isOwner = await isPostOwner(postId, username);
-  if (!isOwner) return ApiResponse.notFound();
+  if (!isOwner) return ActionResponse.notFound();
 
   const post = await prisma.post.findUnique({
     where: { id: postId },
   });
 
-  if (!post) return ApiResponse.notFound();
+  if (!post) return ActionResponse.notFound();
 
   const { id, title, contents, name, relationship, posted, isPublic, createdAt } = post;
   const props = { id, title, contents, name, relationship, isPublic, posted, createdAt };
 
   // 공개글이면 이동
   if (post.isPublic) {
-    return ApiResponse.ok(props);
+    return ActionResponse.ok(props);
   }
 
   // 비공개 글이면 주인 확인  
   const cookieStore = cookies();
   const pwcookie = cookieStore.get("password");
-
+  
   // 쿠키에 있는게 비밀번호면 주인.
   if (pwcookie && pwcookie.value != post.password) {
-    return ApiResponse.ok(props);
+    return ActionResponse.ok(props);
   }
 
-  return ApiResponse.unauthorized();
+  return ActionResponse.unauthorized();
 }

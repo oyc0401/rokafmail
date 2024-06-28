@@ -4,7 +4,7 @@ import { NavHeader } from 'src/components'
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { Paper } from "./paper";
 import { getMailById } from "src/app/apiSSR/mails/[username]/[postId]/server";
-import { apiThrower } from "src/app/apiSSR/apiResponse";
+import { action } from "src/app/apiSSR/actionResponse";
 
 export const metadata = {
   title: "하늘인편 | 편지 확인",
@@ -13,11 +13,11 @@ export const metadata = {
 export default async function Page({ params }) {
   const postId = Number(params.postId);
   const username = params.username;
-  
+
   async function getMail() {
     // 편지 내용 불러오기, 인증 포함
     try {
-      const response = await apiThrower(getMailById(postId, username));
+      const response = await action(getMailById(postId, username));
       return response;
     } catch (error) {
       if (error.status == 401) {
