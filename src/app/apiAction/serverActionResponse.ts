@@ -33,17 +33,17 @@ export class ServerActionResponse {
     });
   }
 
-  static unauthorized() {
+  static unauthorized(error = "Unauthorized") {
     return ServerActionResponse.json({
       status: 401,
-      error: "Unauthorized",
+      error,
     });
   }
 
-  static forbidden() {
+  static forbidden(error = "Forbidden") {
     return ServerActionResponse.json({
       status: 403,
-      error: "Forbidden",
+      error,
     });
   }
 

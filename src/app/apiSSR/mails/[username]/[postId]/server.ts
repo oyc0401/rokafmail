@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import prisma from "src/db/prisma";
 
 // 해당 아이디와 편지가 같은 사람이 아니면 notFound
-export async function isSameUser(postId: number, username: string) {
+export async function isPostOwner(postId: number, username: string) {
   const post = await prisma.post.findUnique({
     select: {
       user: { select: { username: true } }
@@ -18,15 +18,15 @@ export async function isSameUser(postId: number, username: string) {
  * 편지가 비공개라면 쿠키에 있는 비밀번호를 확인하고
  * 틀리면 null을 반환한다.
  */
-export async function getMail(postId) {
+export async function getMail(postId: number) {
   const post = await prisma.post.findUnique({
     where: { id: postId },
   });
 
   if (!post) notFound();
 
-  const { title, contents, name, relationship, posted, isPublic } = post;
-  const props = { title, contents, name, relationship, isPublic };
+  const { id, title, contents, name, relationship, posted, isPublic, createdAt } = post;
+  const props = { id, title, contents, name, relationship, isPublic, posted, createdAt };
 
   // 공개글이면 이동
   if (post.isPublic) {

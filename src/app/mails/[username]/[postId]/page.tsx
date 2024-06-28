@@ -3,7 +3,7 @@ import Link from "next/link";
 import { NavHeader } from 'src/components'
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { Paper } from "./paper";
-import { isSameUser, getMail } from "src/app/apiSSR/mails/[username]/[postId]/server";
+import { isPostOwner, getMail } from "src/app/apiSSR/mails/[username]/[postId]/server";
 
 export const metadata = {
   title: "하늘인편 | 편지 확인",
@@ -14,7 +14,7 @@ export default async function Page({ params }) {
   const username = params.username;
 
   // 해당 편지가 저 유저의 것이 아니면 notFound
-  const isSame = await isSameUser(postId, username);
+  const isSame = await isPostOwner(postId, username);
   if (!isSame) {
     notFound();
   }
