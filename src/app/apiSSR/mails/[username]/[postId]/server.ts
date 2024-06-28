@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
+import { ApiResponse } from "src/app/apiSSR/apiResponse";
 import prisma from "src/db/prisma";
 
 // 해당 아이디와 편지가 같은 사람이 아니면 notFound
-export async function isPostOwner(postId: number, username: string) {
+async function isPostOwner(postId: number, username: string) {
   const post = await prisma.post.findUnique({
     select: {
       user: { select: { username: true } }
@@ -18,19 +18,22 @@ export async function isPostOwner(postId: number, username: string) {
  * 편지가 비공개라면 쿠키에 있는 비밀번호를 확인하고
  * 틀리면 null을 반환한다.
  */
-export async function getMail(postId: number) {
+export async function getMailById(postId: number, username: string) {
+  const isOwner = await isPostOwner(postId, username);
+  if (!isOwner) return ApiResponse.notFound();
+
   const post = await prisma.post.findUnique({
     where: { id: postId },
   });
 
-  if (!post) notFound();
+  if (!post) return ApiResponse.notFound();
 
   const { id, title, contents, name, relationship, posted, isPublic, createdAt } = post;
   const props = { id, title, contents, name, relationship, isPublic, posted, createdAt };
 
   // 공개글이면 이동
   if (post.isPublic) {
-    return props;
+    return ApiResponse.ok(props);
   }
 
   // 비공개 글이면 주인 확인  
@@ -38,8 +41,9 @@ export async function getMail(postId: number) {
   const pwcookie = cookieStore.get("password");
 
   // 쿠키에 있는게 비밀번호면 주인.
-  if (pwcookie && pwcookie.value == post.password)
-    return props;
+  if (pwcookie && pwcookie.value != post.password) {
+    return ApiResponse.ok(props);
+  }
 
-  return null;
+  return ApiResponse.unauthorized();
 }

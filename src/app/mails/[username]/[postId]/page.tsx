@@ -3,7 +3,8 @@ import Link from "next/link";
 import { NavHeader } from 'src/components'
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { Paper } from "./paper";
-import { isPostOwner, getMail } from "src/app/apiSSR/mails/[username]/[postId]/server";
+import { getMailById } from "src/app/apiSSR/mails/[username]/[postId]/server";
+import { apiThrower } from "src/app/apiSSR/apiResponse";
 
 export const metadata = {
   title: "하늘인편 | 편지 확인",
@@ -13,19 +14,27 @@ export default async function Page({ params }) {
   const postId = Number(params.postId);
   const username = params.username;
 
-  // 해당 편지가 저 유저의 것이 아니면 notFound
-  const isSame = await isPostOwner(postId, username);
-  if (!isSame) {
-    notFound();
+  async function getMail() {
+    // 편지 내용 불러오기, 인증 포함
+    try {
+      const response = await apiThrower(getMailById(postId, username));
+      return response;
+    } catch (error) {
+      if (error.status == 401) {
+        // 편지 내용을 볼 수 없으면 로그인 창으로 이동
+        const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}`;
+        redirect(`/mails/${username}/${postId}/signin?&callbackUrl=${callbackUrl}`)
+      }
+      if (error.status == 404) {
+        notFound();
+      }
+      console.log(error.message);
+      throw new Error(`에러: ${error}`)
+    }
   }
 
-  // 편지 내용 불러오기, 인증 포함
-  const mail = await getMail(postId);
-  if (!mail) {
-    // 편지 내용을 볼 수 없으면 로그인 창으로 이동
-    const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}`;
-    redirect(`/mails/${username}/${postId}/signin?&callbackUrl=${callbackUrl}`)
-  }
+
+  const mail = await getMail();
 
   const user = await getUserByUsername(username);
   if (!user) notFound();
