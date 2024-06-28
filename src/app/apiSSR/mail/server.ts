@@ -1,4 +1,4 @@
-import { notFound} from "next/navigation";
+
 import prisma from "src/db/prisma";
 
 
@@ -45,18 +45,7 @@ export async function getPostContent(postId: number) {
   return post;
 }
 
-// 해당 아이디와 편지가 같은 사람이 아니면 notFound
-export async function isSameUser(postId: number, username: string) {
-  const post = await prisma.post.findUnique({
-    select: {
-      user: { select: { username: true } }
-    },
-    where: { id: postId },
-  });
 
-  // 아이디와 편지 주인이 같지 않으면 notFound
-  if (post?.user.username != username) notFound();
-}
 
 const defalutPostSelect = {
   id: true,

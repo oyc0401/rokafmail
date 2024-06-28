@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { NavHeader } from "src/components";
 import { LetterList } from "./LetterList";
 import { getUserByUsername } from "src/app/apiSSR/user/server";
-import { getMyPosts } from "src/app/apiSSR/mails/server";
+import { getMyPosts } from "src/app/apiSSR/profile/mails/server";
 
 export const metadata = {
   title: "하늘인편 | 내가 받은 편지",
@@ -27,7 +27,7 @@ export default async function Mails() {
     <>
       <div className="h-full max-w-3xl mx-auto">
         <NavHeader user={user}></NavHeader>
-         <p className="text-lg font-medium p-3">내가 받은 편지</p>
+        <p className="text-lg font-medium p-3">내가 받은 편지</p>
         <LetterList letters={letters} emptyMessage='받은 편지가 없습니다.'></LetterList>
         <div style={{ height: 108, minHeight: 108, width: 1 }}></div>
       </div>

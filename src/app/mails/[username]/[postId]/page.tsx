@@ -2,9 +2,10 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { NavHeader } from 'src/components'
-import { getPostEverything, isSameUser } from "src/app/apiSSR/mail/server";
+import { getPostEverything } from "src/app/apiSSR/mail/server";
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { Paper } from "./paper";
+import { isSameUser } from "src/app/apiSSR/mails/postId/server";
 
 export const metadata = {
   title: "하늘인편 | 편지 확인",
@@ -40,7 +41,10 @@ export default async function Page({ params }) {
   const username = params.username;
 
   // 해당 편지가 저 유저의 것이 아니면 notFound
-  await isSameUser(postId, username);
+  const isSame = await isSameUser(postId, username);
+  if (!isSame) {
+    notFound();
+  }
 
   // 편지가 넘어오면 인증 절차 다 끝낸거임
   const post = await getPostAuthCheck(postId);

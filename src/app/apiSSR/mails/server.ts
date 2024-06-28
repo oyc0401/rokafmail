@@ -46,29 +46,6 @@ export async function getNotAuthPosts(username: string) {
   return queueSorted;
 }
 
-export async function getMyPosts(username: string) {
-  const postsPrivate = await prisma.post.findMany({
-    select: privateSelect,
-    where: { user: { username }, isPublic: false },
-  });
-  const postsPublic = await prisma.post.findMany({
-    select: publicSelect,
-    where: { user: { username }, isPublic: true },
-  });
-
-  const posts = [...postsPrivate, ...postsPublic];
-  const postsSorted = posts.sort((a, b) => a.id > b.id ? -1 : 1);
-  return postsSorted
-}
-
-export async function getPublicPostById(postId: number) {
-  const post = await prisma.post.findUnique({
-    select: publicSelect,
-    where: { id: postId },
-  });
-
-  return post;
-}
 
 const postSelect = {
   id: true,
