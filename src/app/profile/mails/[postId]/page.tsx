@@ -5,7 +5,7 @@ import { NavHeader } from 'src/components'
 import { auth } from "src/app/api/auth/auth";
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { Paper } from "./paper";
-import { getPostById } from "src/app/apiSSR/mail/server";
+import { getPostContent } from "src/app/apiSSR/mail/server";
 
 export const metadata = {
   title: "하늘인편 | 편지 확인",
@@ -13,8 +13,8 @@ export const metadata = {
 
 export default async function Page({ params }) {
   const postId = Number(params.postId);
-  const post = await getPostById(postId);
-  if (!post) notFound();
+  const post = await getPostContent(postId);
+      if (!post) notFound();
 
   // 세션
   const session = await auth();
