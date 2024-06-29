@@ -10,34 +10,38 @@ export const metadata = {
   title: "하늘인편 | 편지 확인",
 };
 
+async function getMail(postId: number, username: string) {
+  // 편지 내용 불러오기, 인증 포함
+  try {
+    const response = await action(getMailById(postId, username));
+    return response;
+  } catch (error) {
+    if (error.status == 401) {
+      // 편지 내용을 볼 수 없으면 로그인 창으로 이동
+      const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}`;
+      redirect(`/mails/${username}/${postId}/signin?&callbackUrl=${callbackUrl}`)
+    }
+    if (error.status == 404) {
+      notFound();
+    }
+    console.log(error.message);
+    throw new Error(`에러: ${error}`)
+  }
+}
+
+async function getUser(username: string) {
+  const user = await getUserByUsername(username);
+  if (!user) notFound();
+  return user;
+}
+
 export default async function Page({ params }) {
   const postId = Number(params.postId);
   const username = params.username;
 
-  async function getMail() {
-    // 편지 내용 불러오기, 인증 포함
-    try {
-      const response = await action(getMailById(postId, username));
-      return response;
-    } catch (error) {
-      if (error.status == 401) {
-        // 편지 내용을 볼 수 없으면 로그인 창으로 이동
-        const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}`;
-        redirect(`/mails/${username}/${postId}/signin?&callbackUrl=${callbackUrl}`)
-      }
-      if (error.status == 404) {
-        notFound();
-      }
-      console.log(error.message);
-      throw new Error(`에러: ${error}`)
-    }
-  }
+  const mail = await getMail(postId, username);
+  const user = await getUser(username);
 
-
-  const mail = await getMail();
-
-  const user = await getUserByUsername(username);
-  if (!user) notFound();
 
   function EditButton() {
     return <div className="w-full text-right px-4 pb-4">
