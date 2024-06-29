@@ -41,7 +41,7 @@ export async function getMailById(postId: number, username: string) {
   const pwcookie = cookieStore.get("password");
   
   // 쿠키에 있는게 비밀번호면 주인.
-  if (pwcookie && pwcookie.value != post.password) {
+  if (pwcookie && pwcookie.value == post.password) {
     return ActionResponse.ok(props);
   }
 
