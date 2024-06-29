@@ -22,3 +22,32 @@ export async function login(username, password) {
     return { message: "비밀번호가 다릅니다.", status: 400 };
   }
 }
+
+
+
+export function saltAndHashPassword(password: string) {
+  const encryptedPassword = crypto
+    .createHash("sha256")
+    .update(password)
+    .digest("hex");
+
+  return encryptedPassword;
+}
+
+export async function getUserFromDb(username: string, encryptedPassword: string) {
+  const user = await User.findByUsername(username);
+
+  if (user && user.password == encryptedPassword) {
+    let role = 'trainee'
+    if (user.username == 'oyc0401') {
+      role = 'admin';
+    }
+    return {
+      id: user.id.toString(),
+      email: user.username,
+      role: role,
+    }
+  }
+
+  return null;
+}
