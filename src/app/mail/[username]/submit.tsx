@@ -3,9 +3,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
-import { mailApi } from "src/app/apiAction/mail/action";
 import styles from "./page.module.css";
 import { useStore } from "./model";
+import { action } from "src/app/apiSSR/actionResponse";
+import { sendMail } from "src/app/apiAction/mail";
 
 
 export function Submit({ username }) {
@@ -30,29 +31,28 @@ export function Submit({ username }) {
 
   async function postMail() {
     setProgress(true);
-    await mailApi({
-      username: username,
-      name: name,
-      relationship: relationship,
-      title: title,
-      contents: contents,
-      password: password,
-      isPublic: isPublic,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          alert("편지 전송 성공!");
+    try {
+      const sendForm = {
+        username: username,
+        name: name,
+        relationship: relationship,
+        title: title,
+        contents: contents,
+        password: password,
+        isPublic: isPublic,
+      }
 
-          router.push(`/mail/${username}/complete?sc=200`);
-        } else {
-          alert(`편지 전송 실패 ${response.status}, ${response.message}`);
-        }
-        setProgress(false);
-      })
-      .catch((error) => {
+      await action(sendMail(sendForm));
+      alert('편지 전송 성공!');
+      router.push(`/mail/${username}/complete`);
+    } catch (error) {
+      if (error.status == 404) {
+        alert(`해당 유저가 없습니다.`);
+      } else {
         alert(`오류발생, 편지 전송 실패 ${error}`);
-        setProgress(false);
-      });
+      }
+    }
+    setProgress(false);
   }
 
   async function click() {

@@ -7,8 +7,15 @@ import { bean } from "src/bean/bean";
 import { Trainee } from "src/service/user/Trainee";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
 import { validateAttack } from "src/utils/filter/filter";
+import { ActionResponse } from "src/app/apiSSR/actionResponse";
 
-export async function mailApi(mailForm: {
+/**
+ * `Server Action`
+ * 
+ * 편지를 보낸다.
+ * @status `200` `404`
+ */
+export async function sendMail(mailForm: {
   username: string;
   name: string;
   relationship: string;
@@ -26,10 +33,7 @@ export async function mailApi(mailForm: {
     const user = await userRepository.findByUsername(username);
 
     if (!user) {
-      return ServerActionResponse.json({
-        message: "해당 유저를 찾을 수 없습니다.",
-        status: 404,
-      });
+      return ActionResponse.notFound("해당 유저를 찾을 수 없습니다.")
     }
     // 폼 입력 검증
     validateInput(mailForm);
@@ -45,11 +49,10 @@ export async function mailApi(mailForm: {
     const mailService = new MailService(bean);
     await mailService.sendLetter(trainee, letter);
 
-    return ServerActionResponse.json({ message: "편지 전송 성공!", status: 200 });
+    return ActionResponse.ok("편지 전송 성공!");
   } catch (error) {
     logger.error(`편지 보내는 중 오류 발생: ${error}`);
-
-    return ServerActionResponse.json({ message: error.message, status: 500 });
+    return ActionResponse.internalServerError(error.message);
   }
 }
 
