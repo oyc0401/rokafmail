@@ -60,11 +60,11 @@ export default async function Page() {
               <div className="w-full">
                 <div className="flex flex-row justify-between">
                   <h2 className="text-sm font-normal text-left pb-[1px]">생년월일</h2>
-                  <Link className='text-base underline whitespace-nowrap' href={"/profile/edit"}>
+                  <Link href={"/profile/edit"}>
                     <Image className={styles.icon} src={Edit} alt="로고" />
                   </Link>
                 </div>
-                <p className="text-lg font-normal text-left pb-3">{birth}</p>
+                <p className="text-base font-normal text-left pb-3">{birth}</p>
               </div>
             </div>
             <ProfileArea title="한줄 글" text={message} />
