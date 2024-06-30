@@ -18,7 +18,6 @@ export default async function Page() {
   const session = await auth();
   if (!session?.user.email)
     redirect("/auth/signin");
-  console.log(session);
 
   const username = session.user.email;
   const user = await getUserByUsername(username);
