@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { editProfile } from "src/app/apiAction/profile/action";
+import { editProfile } from "src/app/apiAction/profile";
 import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
 
 import { validateMessage, validateBirth, validateName } from "src/utils/validate";
+import { action } from "src/app/apiSSR/actionResponse";
 
 export function Client({ username, name, birth, message }) {
   const [nameForm, setName] = useState(name);
@@ -13,20 +14,26 @@ export function Client({ username, name, birth, message }) {
 
   const router = useRouter();
 
-  const click = async (e) => {
+  async function click(e) {
     e.preventDefault();
-    const response = await editProfile(
-      username,
-      nameForm,
-      birthForm,
-      messageForm,
-    );
-    if (response.status == 200) {
+    try {
+      await action(editProfile(
+        nameForm,
+        birthForm,
+        messageForm,
+      ));
+      alert('수정되었습니다')
       router.push("/profile");
       router.refresh();
-    } else {
-      alert(`error: ${response.status} ${response.error}`);
+    } catch (error) {
+      if (error.status == 401) {
+        alert('로그인을 해주세요');
+        router.replace('/profile');
+      } else {
+        alert(`error: ${error.message}`);
+      }
     }
+
   };
 
   const nameValidation = nameValid(nameForm);

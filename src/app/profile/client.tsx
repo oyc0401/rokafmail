@@ -1,8 +1,10 @@
 "use client";
 import { signOut } from "next-auth/react";
-import { deleteUser } from "src/app/apiAction/profile/action";
+import { deleteUser } from "src/app/apiAction/profile";
 import crypto from "crypto";
 import Link from "next/link";
+import { action } from "../apiSSR/actionResponse";
+import { useRouter } from "next/navigation";
 export function SignOut() {
   async function onclickSignout() {
     if (confirm("로그아웃 하시겠습니까?")) {
@@ -18,6 +20,8 @@ export function SignOut() {
 }
 
 export function DeleteUser({ username }) {
+  const router = useRouter();
+
   async function onclickDelete() {
     if (
       confirm("정말로 계정을 삭제하시겠습니까? 작성된 모든 편지가 사라집니다.")
@@ -29,13 +33,21 @@ export function DeleteUser({ username }) {
           .update(pw)
           .digest("hex");
 
-        const response = await deleteUser(username, encryptedPassword);
-        if (response.message) {
+        try {
+          await action(deleteUser(encryptedPassword));
           alert("삭제되었습니다.");
           signOut({ callbackUrl: "/" });
-        } else {
-          alert(`error: ${response.status} ${response.error}`);
+        } catch (error) {
+          if (error.status == 401) {
+            alert('로그인을 해주세요');
+            router.replace('/profile');
+          } else if (error.status == 404) {
+            alert(error.message);
+          } else {
+            alert(`error: ${error.message}`);
+          }
         }
+
       }
     }
   }

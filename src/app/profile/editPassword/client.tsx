@@ -1,17 +1,21 @@
 "use client";
 import { useState } from "react";
 import crypto from "crypto";
-import { editPassword } from "src/app/apiAction/profile/action";
+import { editPassword } from "src/app/apiAction/profile";
 import { signOut } from "next-auth/react";
 import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
 import { validatePassword } from "src/utils/validate";
+import { action } from "src/app/apiSSR/actionResponse";
+import { useRouter } from "next/navigation";
 
 export function Client({ username }) {
   const [originPassword, setorpassword] = useState("");
 
   const [password, setpassword] = useState("");
   const [repassword, setrepassword] = useState("");
- 
+
+  const router = useRouter();
+
   async function click(e) {
     e.preventDefault();
     if (!canSubmit()) return;
@@ -26,14 +30,21 @@ export function Client({ username }) {
       .update(password)
       .digest("hex");
 
-    const response = await editPassword(username, encryptedOriginPassword, encryptedPassword);
-    if (response.status == 200) {
+    try {
+      await action(editPassword(encryptedOriginPassword, encryptedPassword));
       alert("비밀번호가 변경되었습니다! 다시 로그인 해주세요.");
       signOut({ callbackUrl: "/" });
-
-    } else {
-      alert(`error: ${response.status} ${response.error}`);
+    } catch (error) {
+      if (error.status == 401) {
+        alert('로그인을 해주세요');
+        router.replace('/profile');
+      } else if (error.status == 404) {
+        alert(error.message);
+      } else {
+        alert(`error: ${error.message}`);
+      }
     }
+
   }
 
   const originPasswordValidation = passwordValid(originPassword);
