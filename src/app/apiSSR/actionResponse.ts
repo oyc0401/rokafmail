@@ -30,6 +30,14 @@ export class ActionResponse {
   }
 
   /**
+   * Bad Request
+   * @status `400`
+   */
+  static badRequest(error = "Bad Request") {
+    return ActionResponse.error({ status: 400, error });
+  }
+
+  /**
    * Unauthorized
    * @status `401`
    */

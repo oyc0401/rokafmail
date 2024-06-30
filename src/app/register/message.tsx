@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "./register.module.css";
 import { useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
-import { registerApi } from "src/app/apiAction/register/action";
+import { register } from "src/app/apiAction/register";
 import {
   InputField,
   BasicFormArea,
@@ -14,6 +14,7 @@ import {
 
 import crypto from "crypto";
 import { validateMessage } from "src/utils/validate";
+import { action } from "../apiSSR/actionResponse";
 export default function Message() {
   const {
     generation,
@@ -32,30 +33,33 @@ export default function Message() {
 
 
   async function send() {
-      const encryptedPassword = crypto
+    const encryptedPassword = crypto
       .createHash("sha256")
       .update(password)
       .digest("hex");
 
-    await registerApi({
+    const registerForm = {
       username: username,
       password: encryptedPassword,
       name: name,
       birth: birth,
       generation: Number(generation),
       message: message,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          window.onbeforeunload = null;
-          router.push(`/register/link/${username}`);
-        } else {
-          alert(`회원가입 실패 ${response.status}, ${response.message}`);
-        }
-      })
-      .catch((error) => {
-        alert(`오류발생, 회원가입 실패 ${error}`);
-      });
+    }
+
+    try {
+      await action(register(registerForm));
+      window.onbeforeunload = null;
+      router.push(`/register/link/${username}`);
+    } catch (error) {
+      if (error.status == 400) {
+        alert(`회원가입 실패 ${error.message}`);
+      } else {
+        alert(error.message);
+      }
+
+    }
+
   }
 
   async function click(event) {
