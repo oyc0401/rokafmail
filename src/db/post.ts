@@ -217,23 +217,6 @@ export class Post {
       data,
     });
 
-  static deleteById = (id: number) =>
-    prisma.post.delete({
-      where: {
-        id,
-      },
-    });
-
-  static notPosts = () =>
-    prisma.post.findMany({
-      where: {
-        posted: false,
-        user: {
-          connect: true,
-        },
-      },
-    });
-
   static count = () => prisma.post.count();
 
   static generationCount = (generation) =>

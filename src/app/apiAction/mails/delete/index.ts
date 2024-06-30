@@ -3,6 +3,7 @@
 import { Post } from "src/db";
 import { makeLogger } from "config/winston";
 import { ActionResponse } from "src/app/apiSSR/actionResponse";
+import prisma from "src/db/prisma";
 const logger = makeLogger("Delete Mail");
 
 /**
@@ -17,7 +18,9 @@ export async function deleteMail(id: number, password: string) {
   if (!post) return ActionResponse.notFound("해당 편지가 없습니다.");
 
   if (post.password == password) {
-    await Post.deleteById(id);
+    await prisma.post.delete({
+      where: { id },
+    });
     logger.info(`(${id}) ${post.user.username} Delete | ${post.title} | ${post.name} | ${post.relationship}`);
     return ActionResponse.ok("편지 삭제에 성공했습니다.");
   } else {
