@@ -1,5 +1,4 @@
 "use server";
-import { ServerActionResponse } from ".././serverActionResponse";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Mail");
 import { MailService } from "src/service/mail/MailService";

@@ -1,23 +1,9 @@
 "use server";
 import { User } from "src/db";
-import {
-  ServerActionResponse,
-  ensureUserMatch,
-} from "../serverActionResponse";
 import { bean } from "src/bean/bean";
 import { labelLogger } from "config/logger/labelLogger";
 import { ActionResponse } from "src/app/apiSSR/actionResponse";
 import { auth } from "src/app/api/auth/auth";
-
-export async function getProfile(username: string) {
-  const { valid, errorResponse } = await ensureUserMatch(username);
-  if (!valid) return errorResponse;
-
-  const { userRepository } = bean;
-  const user = await userRepository.findByUsername(username);
-  return ActionResponse.ok(user);
-
-}
 
 /**
  * `Server Action`

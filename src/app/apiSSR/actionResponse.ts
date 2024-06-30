@@ -1,22 +1,32 @@
-interface ActionResponseOk<Body> {
-  message: Body;
-  status: number;
-  error?: undefined;
-}
-
-interface ActionResponseError {
-  message?: undefined;
-  status: number;
-  error: any;
-}
-
-export type ActionResponseType<Body> = ActionResponseOk<Body> | ActionResponseError;
-
+/**
+ * ActionResponse Library
+ * 
+ * `ActionResponse`는 서버 액션을 보다 쉽게 처리할 수 있도록 돕는 방법을 제공합니다.
+ * 각 HTTP 상태 코드에 대응하는 메서드를 통해 일관된 방식으로 서버액션을 생성할 수 있습니다.
+ *
+ * @example
+ * ```typescript
+ * 'use server'
+ * import { ActionResponse } from '@/ActionResponse';
+ * 
+ * async function getProfile() {
+ *   return ActionResponse.ok({ name: 'Foo', birth: '20050703' });
+ * }
+ * ```
+ */
 export class ActionResponse {
+  /**
+   * 커스텀 성공 응답
+   * @params `ActionResponseOk`
+   */
   static json<Body>(obj: ActionResponseType<Body>) {
     return obj;
   }
 
+  /**
+   * 커스텀 실패 응답
+   * @params `ActionResponseError`
+   */
   static error(obj: ActionResponseError) {
     return obj;
   }
@@ -71,22 +81,36 @@ export class ActionResponse {
 }
 
 /**
- * 서버 액션 성공 시 해당 결과값을 제공함.
- *
+ * Wrapper of server action
  * 
- * ```ts
- * // error type
- * {
- *   status: number;
- *   message: any;
- * }
+ * 성공 시 결과값 제공, 오류 발생시 오류 던짐
+ * @param serverActionPromise - API 응답을 반환하는 프로미스 함수
+ * @example
+ * ```typescript
+ * 'use client'
+ * import { action } from '@/ActionResponse';
+ * import { getProfile } from '@/serverAction/profile';
+ * try {
+ *   const response = await action(getProfile()); // getProfile은 서버액션 함수
+ *   console.log(response) // { name: 'Foo', birth: '20050703' }
+ * } catch(error) {
+ *   if(error.statue == 404){
+ *     alert('없는 유저 입니다.');
+ *   } else {
+ *     console.error(error.message);
+ *   }
+ * }  
+ * ```
+ * @ErrorType
+ * ```typescript
+ * interface Error { status: number; message: any; }
  * ```
  * 
  */
-export async function action<Body>(apiResponseFunc: Promise<ActionResponseType<Body>>) {
+export async function action<Body>(serverActionPromise: Promise<ActionResponseType<Body>>) {
 
   try {
-    const response = await apiResponseFunc;
+    const response = await serverActionPromise;
     if (response.message != null || response.message != undefined) {
       return response.message;
     } else {
@@ -105,3 +129,19 @@ export async function action<Body>(apiResponseFunc: Promise<ActionResponseType<B
   }
 
 }
+
+interface ActionResponseOk<Body> {
+  message: Body;
+  status: number;
+  error?: undefined;
+}
+
+interface ActionResponseError {
+  message?: undefined;
+  status: number;
+  error: any;
+}
+
+export type ActionResponseType<Body> = ActionResponseOk<Body> | ActionResponseError;
+
+interface ActionError { status: number; message: any; }
