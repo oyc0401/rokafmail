@@ -56,13 +56,18 @@ export default function Account() {
 
     // 서버에서 중복인지 검사한다.
     isWaitResponse.current = true;
-    const response = await action(existUsername(username));
-    // 서버에서 값이 오기전에 문자열을 수정했는지 확인
-    if (isWaitResponse.current) {
-      setIsDuplicated(response);
-      clickUsernameBtn.current = true;
+    try {
+      const response = await action(existUsername(username));
+      // 서버에서 값이 오기전에 문자열을 수정했는지 확인
+      if (isWaitResponse.current) {
+        setIsDuplicated(response);
+        clickUsernameBtn.current = true;
+      }
+      isWaitResponse.current = false;
+    } catch (error) {
+      alert(`오류: ${error.message}`);
     }
-    isWaitResponse.current = false;
+
 
     // 버튼 로딩바 끄기
     setLoading(false);
