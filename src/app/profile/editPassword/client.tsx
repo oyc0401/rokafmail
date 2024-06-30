@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import crypto from "crypto";
 import { editPassword } from "src/app/apiAction/profile";
 import { signOut } from "next-auth/react";
 import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
 import { validatePassword } from "src/utils/validate";
 import { action } from "src/app/apiSSR/actionResponse";
 import { useRouter } from "next/navigation";
+import { sha256 } from "src/lib/sha256";
 
 export function Client({ username }) {
   const [originPassword, setorpassword] = useState("");
@@ -20,15 +20,8 @@ export function Client({ username }) {
     e.preventDefault();
     if (!canSubmit()) return;
 
-    const encryptedOriginPassword = crypto
-      .createHash("sha256")
-      .update(originPassword)
-      .digest("hex");
-
-    const encryptedPassword = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("hex");
+    const encryptedOriginPassword =sha256(originPassword); 
+    const encryptedPassword =sha256(password);
 
     try {
       await action(editPassword(encryptedOriginPassword, encryptedPassword));

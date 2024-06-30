@@ -1,10 +1,10 @@
 "use client";
 import { signOut } from "next-auth/react";
 import { deleteUser } from "src/app/apiAction/profile";
-import crypto from "crypto";
 import Link from "next/link";
 import { action } from "../apiSSR/actionResponse";
 import { useRouter } from "next/navigation";
+import { sha256 } from "src/lib/sha256";
 export function SignOut() {
   async function onclickSignout() {
     if (confirm("로그아웃 하시겠습니까?")) {
@@ -28,10 +28,7 @@ export function DeleteUser({ username }) {
     ) {
       const pw = prompt("비밀번호를 입력해주세요.");
       if (pw) {
-        const encryptedPassword = crypto
-          .createHash("sha256")
-          .update(pw)
-          .digest("hex");
+        const encryptedPassword = sha256(pw);
 
         try {
           await action(deleteUser(encryptedPassword));

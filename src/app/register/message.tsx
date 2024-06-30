@@ -11,10 +11,9 @@ import {
   BasicBody,
   BasicFooter,
 } from "src/components";
-
-import crypto from "crypto";
 import { validateMessage } from "src/utils/validate";
 import { action } from "../apiSSR/actionResponse";
+import { sha256 } from "src/lib/sha256";
 export default function Message() {
   const {
     generation,
@@ -33,10 +32,7 @@ export default function Message() {
 
 
   async function send() {
-    const encryptedPassword = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("hex");
+    const encryptedPassword = sha256(password);
 
     const registerForm = {
       username: username,

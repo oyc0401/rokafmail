@@ -1,5 +1,5 @@
 import { User } from "src/db";
-import crypto from "crypto";
+import { sha256 } from "src/lib/sha256";
 export async function login(username, password) {
   const user = await User.findByUsername(username);
 
@@ -7,11 +7,8 @@ export async function login(username, password) {
     return { message: "아이디가 없습니다.", status: 400 };
   }
 
-  const encryptedPassword = crypto
-    .createHash("sha256")
-    .update(password)
-    .digest("hex");
-  
+  const encryptedPassword = sha256(password);
+
   if (user.password == encryptedPassword) {
     return {
       message: "로그인 성공",
@@ -26,10 +23,7 @@ export async function login(username, password) {
 
 
 export function saltAndHashPassword(password: string) {
-  const encryptedPassword = crypto
-    .createHash("sha256")
-    .update(password)
-    .digest("hex");
+  const encryptedPassword =sha256(password);
 
   return encryptedPassword;
 }
