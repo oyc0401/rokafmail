@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react"
 export function IsAuthenticated({ children }) {
 
   const { data: session, status } = useSession();
-  console.log('IsAuthenticated:',session);
   if (status === "authenticated") {
     return children;
   }

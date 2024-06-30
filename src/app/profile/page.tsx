@@ -9,15 +9,15 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { getUserByUsername } from "../apiSSR/user/server";
 import { LinkButton } from "src/components/LinkButton";
+
 export const metadata = {
   title: "하늘인편 | 내 정보",
 };
 
 export default async function Page() {
   const session = await auth();
-  if (!session || !session.user || !session.user.email)
+  if (!session?.user.email)
     redirect("/auth/signin");
-
   console.log(session);
 
   const username = session.user.email;

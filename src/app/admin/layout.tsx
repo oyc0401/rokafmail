@@ -7,18 +7,19 @@ import { notFound } from "next/navigation";
 
 export default async function RootLayout({ children }) {
   const session = await auth();
-  if (!session || !session.user || !session.user.email) {
+  if (!session?.user.email) {
     notFound();
   }
+
+  if (session.user.role != 'admin') {
+    notFound();
+  }
+  
   const username = session.user.email;
 
   const user = await User.findByUsername(username);
-  if (!user)  notFound();
+  if (!user) notFound();
 
-  if (username!='oyc0401') {
-    notFound();
-  } 
-  
   return (
     <>
       <div className="container mx-auto pt-8">
@@ -34,8 +35,8 @@ export default async function RootLayout({ children }) {
         </div>
         {children}
       </div>
-   
+
     </>
-  
+
   );
 }
