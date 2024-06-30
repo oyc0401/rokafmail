@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputAutoSize, InputField } from "src/components";
-import { sendEmail } from "./server";
+import { sendEmail } from "../apiAction/report";
 
 
 export default function Report({ searchParams }) {
