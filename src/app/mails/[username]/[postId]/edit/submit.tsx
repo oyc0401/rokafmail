@@ -1,10 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { deletePostApi } from "src/app/apiAction/mails/action";
+import { deleteMail } from "src/app/apiAction/mails/delete";
 
 import { useStore } from "./model";
 import { editPost } from "./api";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
+import { action } from "src/app/apiSSR/actionResponse";
 
 export function Submit({ postId, username, posted, url }) {
   const { name, relationship, title, contents, password, isPublic } = useStore();
@@ -39,27 +40,29 @@ export function Submit({ postId, username, posted, url }) {
     const password = prompt("편지 삭제를 위해 비밀번호를 입력해주세요.", "");
 
     if (password) {
-      const response = await deletePostApi(postId, password);
-
-      if (response.status == 200) {
-        if (posted) {
-          // 이미 발송된 편지
-          const isConfirm = confirm(
-            "편지가 삭제되었습니다.\n공군 기훈단 사이트에서도 해당 편지를 찾아 삭제해주십시오.\n확인을 누를시 해당 페이지로 이동합니다.",
-          );
-          if (isConfirm) {
-            window.open(url);
-          }
-        } else {
-          // 미발송 편지
+      try {
+        await action(deleteMail(postId, password));
+        if (posted) { // 기훈단에 발송 된 편지
+          const isConfirm = confirm("편지가 삭제되었습니다.\n공군 기훈단 사이트에서도 해당 편지를 찾아 삭제해주십시오.\n확인을 누를시 해당 페이지로 이동합니다.");
+          if (isConfirm) window.open(url);
+        } else { // 내 DB에만 있는 편지
           alert("편지를 삭제했습니다.");
-          router.replace(`/mails/${username}`);
         }
-      } else {
-        alert(response.error);
+        // 삭제 후 메일 화면으로 돌아가기
+        router.replace(`/mails/${username}`);
+      } catch (error) {
+        if (error.status == 401) {
+          alert('잘못된 비밀번호 입니다.');
+        } else if (error.status == 404) {
+          alert('해당 편지가 없습니다.');
+        } else {
+          alert(error.message);
+        }
       }
+
     }
   }
+
 
 
   return (
