@@ -40,7 +40,7 @@ export class ActionResponse {
 
 export async function action<Body>(apiResponseFunc: Promise<ActionResponseType<Body>>) {
   const response = await apiResponseFunc;
-  if (response.message) {
+  if (response.message != null || response.message != undefined) {
     return response.message;
   } else {
     throw {
