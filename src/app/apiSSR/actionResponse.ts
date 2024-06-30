@@ -16,7 +16,7 @@
  */
 export class ActionResponse {
   /**
-   * 커스텀 성공 응답
+   * 성공 응답
    * @params `ActionResponseOk`
    */
   static json<Body>(obj: ActionResponseType<Body>) {
@@ -24,7 +24,7 @@ export class ActionResponse {
   }
 
   /**
-   * 커스텀 실패 응답
+   * 실패 응답
    * @params `ActionResponseError`
    */
   static error(obj: ActionResponseError) {

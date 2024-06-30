@@ -50,8 +50,6 @@ export async function editProfile(name, birth, message) {
 
   const response = await userService.editProfile(user!.id, { name, birth, message });
   return ActionResponse.ok("유저 정보 수정에 성공했습니다.");
-
-
 }
 
 /**
