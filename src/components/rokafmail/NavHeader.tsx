@@ -4,9 +4,8 @@ import localFont from 'next/font/local'
 import DropdownButton from './NavHeaderDropdownButton';
 
 const INKLIPQUID = localFont({
-
   src: [
-    { path: '../../../public/fonts/INKLIPQUID.ttf' },
+    { path: '../../../public/fonts/INKLIPQUID_subset.ttf' },
   ]
 })
 
