@@ -6,8 +6,9 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 
 const notoSansKr = Noto_Sans_KR({
   weight: ["400", "500", "600", "700", "800"],
-  preload: false,
+  preload: true,
   display: "fallback",
+  subsets: ['latin'],
   fallback: ["Noto Sans KR", "sans-serif"],
 });
 
