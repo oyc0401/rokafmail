@@ -4,7 +4,7 @@ import localFont from 'next/font/local'
 
 const INKLIPQUID = localFont({
   src: [
-    { path: '../../../public/fonts/INKLIPQUID.ttf' },
+    { path: '../../../public/fonts/INKLIPQUID_subset.ttf' },
   ]
 })
 
