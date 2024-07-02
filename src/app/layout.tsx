@@ -2,65 +2,13 @@ import "styles/globals.css";
 import { Noto_Sans_KR } from "next/font/google";
 import Providers from "./provider";
 import { GoogleAnalytics } from '@next/third-parties/google'
-import localFont from "next/dist/compiled/@next/font/dist/local";
-
-// const noroSansKrLocal = localFont({
-//   src: [
-//     {
-//       path: './font/NotoSansKR-Thin.ttf',
-//       weight: '100',
-//        style: 'normal',
-//     },
-//     {
-//       path: './font/NotoSansKR-ExtraLight.ttf',
-//       weight: '200',
-//        style: 'normal',
-//     },
-//     {
-//       path: './font/NotoSansKR-Light.ttf',
-//       weight: '300',
-//        style: 'normal',
-//     },
-//     {
-//       path: './font/NotoSansKR-Regular.ttf',
-//       weight: '400',
-//       style: 'normal',
-//     },
-//     {
-//       path: './font/NotoSansKR-Medium.ttf',
-//       weight: '500',
-//       style: 'normal',
-//     },
-//     {
-//       path: './font/NotoSansKR-SemiBold.ttf',
-//       weight: '600',
-//       style: 'normal',
-//     },
-//     {
-//       path: './font/NotoSansKR-Bold.ttf',
-//       weight: '700',
-//       style: 'normal',
-//     },
-//     {
-//       path: './font/NotoSansKR-ExtraBold.ttf',
-//       weight: '800',
-//       style: 'normal',
-//     },
-//     {
-//       path: './font/NotoSansKR-Black.ttf',
-//       weight: '900',
-//       style: 'normal',
-//     },
-
-//   ],
-// })
 
 const notoSansKr = Noto_Sans_KR({
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "700"],
   preload: false,
-  display: "fallback",
+  display: "swap", // swap으로 해야 입력시 안깨짐
   //subsets: ['latin'],
-  fallback: ["Noto Sans KR", "sans-serif"],
+  fallback: ["휴먼엽서체", "sans-serif"],
 });
 
 export const metadata = {

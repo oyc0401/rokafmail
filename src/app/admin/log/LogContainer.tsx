@@ -24,7 +24,7 @@ export function LogsContainer({ logs }) {
       <div className="flex overflow-x-auto">
         {sortedDates.map(date => (
           <div key={date} className="flex-none w-64 m-4 bg-gray-100 text-white rounded-lg shadow-md p-4">
-            <h2 className="text-lg font-semibold">{date}</h2>
+            <h2 className="text-lg font-bold">{date}</h2>
             <div className="flex flex-col">
               {
                 // .log와 .debug.log 파일을 분리하여 정렬
