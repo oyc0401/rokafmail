@@ -12,6 +12,7 @@ export const metadata = {
 
 async function getMail(postId: number, username: string) {
   // 편지 내용 불러오기, 인증 포함
+  
   try {
     const response = await action(getMailById(postId, username));
     return response;
@@ -23,10 +24,9 @@ async function getMail(postId: number, username: string) {
     }
     if (error.status == 404) {
       notFound();
-    } else {
-      alert(error.message);
     }
-
+    
+    console.error(error.message);
   }
 }
 

@@ -158,3 +158,21 @@ a{
   overflow: auto !important;
 }
 
+
+
+.errorcss{
+  height: 100vh;
+  background-color: #f3f3f3;
+  color: #333;
+}
+
+.errorin{
+  padding: 0 16px;
+  max-width:768px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
