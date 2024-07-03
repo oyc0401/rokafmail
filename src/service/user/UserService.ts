@@ -149,15 +149,21 @@ export class UserService {
     await this.userRepository.editProfile(userId, editProps);
 
     const trainee = await this.getTrainee(userId);
-    const status = await this.updateRokafProfile(userId, trainee);
-    if (status == syncResponse.complete) {
-      await this.mailService.sendUnpostedMails(userId)
-    }
+    const user = await this.userRepository.findById(userId);
 
     const logger = labelLogger("EditProfile");
-    logger.info(`${userId}`)
+    if (user?.connect) {
+      const status = await this.updateRokafProfile(userId, trainee);
+      if (status == syncResponse.complete) {
+        await this.mailService.sendUnpostedMails(userId)
+      }
+      logger.info(`${userId} | ${syncResponseToStr(status)}`);
+    } else {
+      // 훈련기간이 아니면 DB값만 바꿔놓음
+      logger.info(`${userId} | Not Train Time`);
+    }
 
-    return status;
+
   }
 
   async editPassword(userId: number, newPassword: string) {
