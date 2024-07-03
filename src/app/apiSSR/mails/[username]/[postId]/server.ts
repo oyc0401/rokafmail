@@ -28,8 +28,10 @@ export async function getMailById(postId: number, username: string) {
 
   if (!post) return ActionResponse.notFound();
 
+
   const { id, title, contents, name, relationship, posted, isPublic, createdAt } = post;
   const props = { id, title, contents, name, relationship, isPublic, posted, createdAt };
+ 
 
   // 공개글이면 이동
   if (post.isPublic) {
@@ -39,7 +41,7 @@ export async function getMailById(postId: number, username: string) {
   // 비공개 글이면 주인 확인  
   const cookieStore = cookies();
   const pwcookie = cookieStore.get("password");
-  
+
   // 쿠키에 있는게 비밀번호면 주인.
   if (pwcookie && pwcookie.value == post.password) {
     return ActionResponse.ok(props);

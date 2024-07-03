@@ -109,7 +109,7 @@ export class ActionResponse {
  */
 export async function action<Body>(serverActionPromise: Promise<ActionResponseType<Body>>) {
 
-  try {
+  // try {
     const response = await serverActionPromise;
     if (response.message != null || response.message != undefined) {
       return response.message;
@@ -120,13 +120,13 @@ export async function action<Body>(serverActionPromise: Promise<ActionResponseTy
       }
     }
 
-  } catch (error) {
-    // 네트워크, 서버 문제 등으로 오류가 났을 때
-    throw {
-      status: 500,
-      message: error.message,
-    }
-  }
+  // } catch (error) {
+  //   // 네트워크, 서버 문제 등으로 오류가 났을 때
+  //   throw {
+  //     status: 500,
+  //     message: error.message,
+  //   }
+  // }
 
 }
 

@@ -23,9 +23,10 @@ async function getMail(postId: number, username: string) {
     }
     if (error.status == 404) {
       notFound();
+    } else {
+      alert(error.message);
     }
-    console.log(error.message);
-    throw new Error(`에러: ${error}`)
+
   }
 }
 
