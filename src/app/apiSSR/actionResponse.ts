@@ -109,26 +109,31 @@ export class ActionResponse {
  */
 export async function action<Body>(serverActionPromise: Promise<ActionResponseType<Body>>) {
 
-  // try {
-    const response = await serverActionPromise;
-    if (response.message != null || response.message != undefined) {
-      return response.message;
-    } else {
+  async function getResponse() {
+    try {
+      const res = await serverActionPromise;
+      return res;
+    } catch (error) {
+      // 네트워크, 서버 문제 등으로 오류가 났을 때
       throw {
-        status: response.status,
-        message: response.error,
+        status: 500,
+        message: error.message,
       }
     }
+  }
 
-  // } catch (error) {
-  //   // 네트워크, 서버 문제 등으로 오류가 났을 때
-  //   throw {
-  //     status: 500,
-  //     message: error.message,
-  //   }
-  // }
+  const response = await getResponse();
+  if (response.message != null || response.message != undefined) {
+    return response.message;
+  } else {
+    throw {
+      status: response.status,
+      message: response.error,
+    }
+  }
 
 }
+
 
 interface ActionResponseOk<Body> {
   message: Body;
