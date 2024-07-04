@@ -1,6 +1,8 @@
 import winston from "winston";
 import winstonDaily from "winston-daily-rotate-file";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(timezone);
 import { Logger } from "./logger";
 import { format } from "./format";
 
@@ -17,7 +19,7 @@ export class WinstonLogger implements Logger {
 
     const appendTimestamp = winston.format((info, opts) => {
       if (opts.tz)
-        info.timestamp = moment().tz(opts.tz).format("YYYY-MM-DD HH:mm:ss");
+        info.timestamp = dayjs().tz(opts.tz).format("YYYY-MM-DD HH:mm:ss");
       return info;
     });
 
