@@ -1,5 +1,4 @@
-import { Status } from "src/lib/time";
-import { ProfileFactory } from 'src/type/goodFactory';
+import { Status, serveStatus } from "src/lib/time";
 import { UserQueue } from "src/repository/userQueue/userQueue";
 import { UserRepository } from "src/repository/user/userRepository";
 import { ValidateError } from "src/utils/validate";
@@ -146,13 +145,20 @@ export class UserService {
   async editProfile(userId: number, editProps: {
     name?: string, birth?: string, message?: string, generation?: number
   }) {
+    const logger = labelLogger("EditProfile");
+
     await this.userRepository.editProfile(userId, editProps);
 
     const trainee = await this.getTrainee(userId);
     const user = await this.userRepository.findById(userId);
+    if (!user) {
+      logger.info(`${userId} | 해당 유저가 없습니다.`);
+      return;
+    }
 
-    const logger = labelLogger("EditProfile");
-    if (user?.connect) {
+    const serves = serveStatus(user.generation);
+    
+    if (serves == Status.training) {
       const status = await this.updateRokafProfile(userId, trainee);
       if (status == syncResponse.complete) {
         await this.mailService.sendUnpostedMails(userId)

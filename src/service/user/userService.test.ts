@@ -277,6 +277,8 @@ describe('User Service Test', () => {
       // 정보 수정
       await userService.editProfile(userId, { name: '하이', birth: '20230405' });
 
+      //expect(logger.cat()).toEqual('12341234');
+
       const updatedTrainee = await userService.getTrainee(userId);
 
       // 프로필 업데이트를 하면 소대번호가 업데이트된다.
