@@ -1,5 +1,6 @@
 import { getNow, Status } from "src/lib/time";
-import { Letter, PostRepository } from "src/repository/post/postRepository";
+import { PostRepository } from "src/repository/post/postRepository";
+import { Letter } from "src/type/serviceType";
 import { PostQueue } from "src/repository/postQueue/postQueue";
 import { RokafClientInterface } from "../rokafClient/RokafClientInterface";
 import { labelLogger } from "config/logger/labelLogger";
@@ -201,11 +202,3 @@ export function sendStatusToStr(status: SendResponse) {
 }
 
 
-export interface Letter {
-  name: string;
-  relationship: string;
-  title: string;
-  contents: string;
-  password: string;
-  isPublic: boolean;
-}

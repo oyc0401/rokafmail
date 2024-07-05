@@ -1,3 +1,12 @@
+export interface Letter {
+  name: string;
+  relationship: string;
+  title: string;
+  contents: string;
+  password: string;
+  isPublic: boolean;
+}
+
 export interface Trainee {
   username: string;
   password: string;

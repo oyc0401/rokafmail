@@ -1,7 +1,7 @@
 import { describe, expect, test, beforeEach, jest, afterEach } from '@jest/globals';
 import { testBean } from 'src/bean/testConfig';
 import { Status } from 'src/lib/time';
-import { Trainee } from '../user/Trainee';
+import { Trainee } from "src/type/serviceType";
 import { RokafTime } from 'src/lib/time/rokafTime';
 
 describe('Retry Service Test', () => {

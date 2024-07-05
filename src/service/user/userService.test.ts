@@ -3,7 +3,7 @@ import { syncResponse } from './UserService';
 import { ValidateError } from 'src/utils/validate';
 import { Status } from 'src/lib/time';
 import { testBean } from 'src/bean/testConfig';
-import { Trainee } from './Trainee';
+import { Trainee } from "src/type/serviceType";
 import { RokafTime } from 'src/lib/time/rokafTime';
 
 describe('User Service Test', () => {

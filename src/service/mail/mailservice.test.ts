@@ -1,9 +1,8 @@
 import { describe, expect, test, beforeAll, beforeEach, jest, afterEach } from '@jest/globals';
-import { Trainee } from '../user/Trainee';
 import { Status } from 'src/lib/time';
 import { testBean } from 'src/bean/testConfig';
 import { RokafTime } from 'src/lib/time/rokafTime';
-import { Letter } from './MailService';
+import { Letter, Trainee } from "src/type/serviceType";
 
 describe('serviceTest', () => {
   let {

@@ -5,7 +5,7 @@ import { ValidateError, validateBirth, validateGeneration, validateHashedPasswor
 import { RegisterProps } from "src/service/user/UserService";
 import { bean } from "src/bean/bean";
 import { ActionResponse } from "src/app/apiSSR/actionResponse";
-import { Trainee } from "src/service/user/Trainee";
+import { Trainee } from "src/type/serviceType";
 const logger = makeLogger("Register");
 
 /**

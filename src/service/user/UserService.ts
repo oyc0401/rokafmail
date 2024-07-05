@@ -4,7 +4,7 @@ import { UserRepository } from "src/repository/user/userRepository";
 import { ValidateError } from "src/utils/validate";
 import { RokafClientInterface } from "../rokafClient/RokafClientInterface";
 import { MailService } from "../mail/MailService";
-import { Trainee } from "./Trainee";
+import { Trainee } from "src/type/serviceType";
 import { labelLogger } from "config/logger/labelLogger";
 import { RokafTime } from "src/lib/time/rokafTime";
 

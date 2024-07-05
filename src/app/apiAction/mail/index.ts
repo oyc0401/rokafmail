@@ -1,7 +1,8 @@
 "use server";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Mail");
-import { Letter, MailService } from "src/service/mail/MailService";
+import { Letter } from "src/type/serviceType";
+import { MailService } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
 import { validateAttack } from "src/utils/filter/filter";
