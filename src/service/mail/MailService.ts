@@ -1,9 +1,10 @@
-import { getNow, serveStatus, Status } from "src/lib/time";
-import { InputPost, Post, PostRepository } from "src/repository/post/postRepository";
+import { getNow, Status } from "src/lib/time";
+import { Letter, PostRepository } from "src/repository/post/postRepository";
 import { PostQueue } from "src/repository/postQueue/postQueue";
 import { RokafClientInterface } from "../rokafClient/RokafClientInterface";
-import { Trainee } from "../user/Trainee";
 import { labelLogger } from "config/logger/labelLogger";
+import { RokafTime } from "src/lib/time/rokafTime";
+import { UserRepository } from "src/repository/user/userRepository";
 
 const MAX_COUNT = 10;
 
@@ -12,9 +13,12 @@ export enum SendResponse { before, notfound, success, fail, error }
 export class MailService {
   private rokafClient: RokafClientInterface;
   private postRepository: PostRepository;
+  private userRepository: UserRepository;
   private postQueue: PostQueue;
-  constructor({ postRepository, postQueue, rokafClient }) {
+
+  constructor({ postRepository, userRepository, postQueue, rokafClient }) {
     this.postRepository = postRepository;
+    this.userRepository = userRepository;
     this.postQueue = postQueue;
     this.rokafClient = rokafClient;
   }
@@ -22,10 +26,10 @@ export class MailService {
   /**
    * 편지를 보낼 때 편지큐는 '프로필이 있는' 훈련병이 편지만 존재한다.
    */
-  async sendLetter(trainee: Trainee, letter: InputPost) {
+  async sendLetter(userId: number, letter: Letter) {
     const logger = labelLogger("SendLetter");
 
-    const { userId, name, relationship, title, contents, password, isPublic } = letter;
+    const { name, relationship, title, contents, password, isPublic } = letter;
     // 편지 저장
     const newPost = await this.postRepository.insert({
       userId, name, relationship,
@@ -34,13 +38,16 @@ export class MailService {
 
     const { id: postId } = newPost;
 
+    const user = await this.userRepository.findById(userId);
+    if (!user) throw new Error('유저가 없습니다.')
+
     // 연결되었으면 편지를 보낸다.
     // 편지를 보내다 오류가 나면 큐에 저장합니다.
-    if (trainee.getConnect()) {
+    if (user.connect) {
       const logStatus = (status: SendResponse) =>
         logger.info(`(${postId}) | ${sendStatusToStr(status)}`);
 
-      this.sendMailFalseEnqueueTrainee(postId, newPost, trainee).then(logStatus);
+      this.sendMailFalseEnqueue(postId).then(logStatus);
 
     } else {
       logger.info(`(${postId}) | BeforeMailTime`)
@@ -48,77 +55,34 @@ export class MailService {
     return postId;
   }
 
-  async sendMailFalseEnqueueTrainee(postId: number, letter: Post, trainee: Trainee) {
-    return await this.sendMailTrainee(postId, letter, trainee, {
-      onFalse: async (queue) => {
-        // 오류가 나거나 실패하면 큐에 넣는다.
-        await queue.insert(postId);
-      }
+  async awaitSendLetter(userId: number, letter: Letter) {
+    const logger = labelLogger("AwaitSendLetter");
+
+    const { name, relationship, title, contents, password, isPublic } = letter;
+    // 편지 저장
+    const newPost = await this.postRepository.insert({
+      userId, name, relationship,
+      title, contents, password, isPublic
     });
-  }
 
-  async sendMailTrainee(postId: number, letter: Post, trainee: Trainee,
-    event: { onFalse?: (postQueue: PostQueue) => Promise<any> } = {}): Promise<SendResponse> {
+    const { id: postId } = newPost;
 
-    const { name, relationship, title, contents, password, createdAt } = letter;
-    const { memberSeq, sodae } = trainee;
+    const user = await this.userRepository.findById(userId);
+    if (!user) throw new Error('유저가 없습니다.')
 
-    const status = trainee.currentStatus();
+    // 연결되었으면 편지를 보낸다.
+    // 편지를 보내다 오류가 나면 큐에 저장합니다.
+    if (user.connect) {
+      const logStatus = (status: SendResponse) =>
+        logger.info(`(${postId}) | ${sendStatusToStr(status)}`);
 
-    const updatePost = async (postId: number) =>
-      this.postRepository.update(postId, { posted: true, postAt: getNow() });
+      await this.sendMailFalseEnqueue(postId).then(logStatus);
 
-
-    switch (status) {
-      case Status.before:
-      case Status.beginning:
-        return SendResponse.before;
-      case Status.training:
-        if (!memberSeq || !sodae) {
-          return SendResponse.notfound;
-        }
-
-        const postComplete = await this.rokafClient.postMail(
-          {
-            name,
-            relationship,
-            title,
-            contents,
-            password,
-            memberSeq,
-            sodae,
-          },
-          createdAt,
-        );
-
-        // 국방서버에 보내는 요청
-        if (!postComplete.serverOn) {
-          await event.onFalse?.(this.postQueue);
-          return SendResponse.error;
-        }
-
-        if (postComplete.complete) {
-          await updatePost(postId);
-          return SendResponse.success;
-        } else {
-          await event.onFalse?.(this.postQueue);
-          return SendResponse.fail;
-        }
-
-      case Status.ending:
-      case Status.working:
-      case Status.discharged:
-        // if (!memberSeq || !sodae) {
-        //   return SendResponse.notfound;
-        // }
-        // 특학인편 하지말자 ~
-        // 편지쓰기 기간 이후에 전송하면 보내졌다고 치기
-        await updatePost(postId);
-        return SendResponse.success;
+    } else {
+      logger.info(`(${postId}) | BeforeMailTime`)
     }
+    return postId;
   }
-
-
 
   /**
    * 해당 id의 편지를 보내고 보내졌다고 업데이트하고, 결과 enum 리턴하기
@@ -131,7 +95,7 @@ export class MailService {
     const { name, relationship, title, contents, password, createdAt } = post;
     const { memberSeq, sodae, generation } = post.user;
 
-    const status = serveStatus(generation);
+    const status = RokafTime.getStatus(generation);
 
     const updatePost = async (postId: number) =>
       this.postRepository.update(postId, { posted: true, postAt: getNow() });
@@ -234,4 +198,14 @@ export function sendStatusToStr(status: SendResponse) {
     case SendResponse.fail:
       return `QueueAdded - Fail`;
   }
+}
+
+
+export interface Letter {
+  name: string;
+  relationship: string;
+  title: string;
+  contents: string;
+  password: string;
+  isPublic: boolean;
 }

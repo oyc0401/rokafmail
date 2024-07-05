@@ -2,6 +2,7 @@ import { describe, expect, test, beforeEach, jest, afterEach } from '@jest/globa
 import { testBean } from 'src/bean/testConfig';
 import { Status } from 'src/lib/time';
 import { Trainee } from '../user/Trainee';
+import { RokafTime } from 'src/lib/time/rokafTime';
 
 describe('Retry Service Test', () => {
   let {
@@ -16,16 +17,18 @@ describe('Retry Service Test', () => {
       rokafClient, mailService, userService, retryService,
       logger
     } = testBean());
+
+    RokafTime.resetMock();
   });
 
-  function createUserProps({
+  function createTrainee({
     username = 'testUser',
     password = 'password123',
     name = '홍길동',
     birth = '19900101',
-    generation = 850,
+    generation = 857,
     message = '안녕하세요!'
-  } = {}) {
+  } = {}): Trainee {
     return { username, password, name, birth, generation, message, }
   }
 
@@ -64,11 +67,10 @@ describe('Retry Service Test', () => {
         complete: true,
       });
 
-      const user = createUserProps({ generation: 862 });
-      const trainee = new Trainee(user);
+      const trainee = createTrainee({ generation: 862 });
 
       // 현재 상태: 훈련 주차 -> 회원가입
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(trainee.generation, Status.training);
       const userId = await userService.register(trainee);
 
       // 편지 보내기
@@ -103,11 +105,10 @@ describe('Retry Service Test', () => {
         complete: true,
       });
 
-      const userProps = createUserProps({ generation: 862 });
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee({ generation: 862 });
 
       // 현재 상태: 훈련 주차 -> 회원가입
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(trainee.generation, Status.training);
       const userId = await userService.register(trainee);
 
       // 편지 보내기
@@ -143,11 +144,10 @@ describe('Retry Service Test', () => {
         complete: false,
       });
 
-      const userProps = createUserProps({ generation: 862 });
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee({ generation: 862 });
 
       // 현재 상태: 훈련 주차 -> 회원가입
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(trainee.generation, Status.training);
       const userId = await userService.register(trainee);
 
       // 편지 보내기
@@ -183,11 +183,10 @@ describe('Retry Service Test', () => {
         complete: true,
       });
 
-      const userProps = createUserProps({ generation: 862 });
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee({ generation: 862 });
 
       // 현재 상태: 훈련 주차 -> 회원가입
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(trainee.generation, Status.training);
       const userId = await userService.register(trainee);
 
       // 15개의 편지 생성
@@ -222,18 +221,6 @@ describe('Retry Service Test', () => {
 
   describe('retryGetProfile', () => {
 
-    beforeEach(() => {
-      // 가짜 타이머 사용 설정
-      jest.useFakeTimers();
-      // 862기 훈련기간
-      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
-    });
-
-    afterEach(() => {
-      // 가짜 타이머 사용 해제
-      jest.useRealTimers();
-    });
-
     test('유저큐에 한명일 때, 편지 일정개수 이상 보내지 않기', async () => {
       // 프로필 서버 이상함
       rokafClient.changeGetProfileReturnValue({
@@ -244,11 +231,10 @@ describe('Retry Service Test', () => {
         complete: true,
       });
 
-      const user = createUserProps({ generation: 862 });
-      const trainee = new Trainee(user);
+      const trainee = createTrainee();
 
       // 현재 상태: 훈련 주차 -> 회원가입
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(trainee.generation, Status.training);
       const userId = await userService.awaitRegister(trainee);
 
       // 인증실패, 큐에 들어있음
@@ -294,17 +280,16 @@ describe('Retry Service Test', () => {
       rokafClient.changeGetProfileReturnValue({
         serverOn: true,
       });
-      const user = createUserProps({ generation: 862 });
-      const trainee = new Trainee(user);
+      const trainee = createTrainee();
 
       // 현재 상태: 훈련 주차 -> 회원가입
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(trainee.generation, Status.training);
       const userId = await userService.awaitRegister(trainee);
 
       expect(await userQueue.size()).toBe(1);
 
       // 이후에 편지쓰기 기간이 지남
-      jest.setSystemTime(new Date('2024-12-01T00:00:00.000Z'));
+      RokafTime.setMock(trainee.generation, Status.working); // ending 이면 검색 계속 함!
       await retryService.retryGetProfile();
       expect(await userQueue.size()).toBe(0);
     });
@@ -315,11 +300,10 @@ describe('Retry Service Test', () => {
         serverOn: false,
       });
 
-      const user = createUserProps({ generation: 862 });
-      const trainee = new Trainee(user);
+      const trainee = createTrainee({ generation: 862 });
 
       // 현재 상태: 훈련 주차 -> 회원가입
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.ending);
+      RokafTime.setMock(trainee.generation, Status.training);
       const userId = await userService.awaitRegister(trainee);
 
       expect(await userQueue.size()).toBe(1);
@@ -330,7 +314,7 @@ describe('Retry Service Test', () => {
       });
 
       // 이후에 편지쓰기 기간이 지남
-      jest.setSystemTime(new Date('2024-12-01T00:00:00.000Z'));
+      RokafTime.setMock(trainee.generation, Status.working);
       await retryService.retryGetProfile();
       expect(await userQueue.size()).toBe(0);
     });

@@ -61,15 +61,18 @@ export class UserService {
     return userId;
   }
 
-  async getTrainee(userId: number) {
+  async getTrainee(userId: number): Promise<Trainee> {
     const user = await this.userRepository.findById(userId);
     if (!user) throw Error('유저가 없습니다.')
     const { username, password, name, birth, generation, message,
       memberSeq, sodae } = user;
-    return new Trainee({
-      username, password, name, birth, generation, message,
-      memberSeq, sodae
-    });
+    if (memberSeq && sodae) {
+      const trainee: Trainee = { username, password, name, birth, generation, message, memberSeq, sodae };
+      return trainee;
+    }
+    const trainee: Trainee = { username, password, name, birth, generation, message };
+    return trainee;
+
   }
 
   /**

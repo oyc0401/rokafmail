@@ -9,7 +9,7 @@ export class RokafTime {
   static resetMock() {
     RokafTime.mockMap = {};
   }
-  static getStatus(generation: number) {
+  static getStatus(generation: number): Status {
     if (RokafTime.mockMap[generation] != null) {
       return RokafTime.mockMap[generation];
     }

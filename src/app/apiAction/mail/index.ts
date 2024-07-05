@@ -1,9 +1,8 @@
 "use server";
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Mail");
-import { MailService } from "src/service/mail/MailService";
+import { Letter, MailService } from "src/service/mail/MailService";
 import { bean } from "src/bean/bean";
-import { Trainee } from "src/service/user/Trainee";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
 import { validateAttack } from "src/utils/filter/filter";
 import { ActionResponse } from "src/app/apiSSR/actionResponse";
@@ -37,16 +36,14 @@ export async function sendMail(mailForm: {
     // 폼 입력 검증
     validateInput(mailForm);
 
-    const trainee = new Trainee(user);
-    const letter = {
-      userId: user.id,
+    const letter: Letter = {
       name, relationship,
       title, contents,
       password, isPublic,
     }
 
     const mailService = new MailService(bean);
-    await mailService.sendLetter(trainee, letter);
+    await mailService.sendLetter(user.id, letter);
 
     return ActionResponse.ok("편지 전송 성공!");
   } catch (error) {

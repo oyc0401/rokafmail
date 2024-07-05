@@ -2,6 +2,8 @@ import { describe, expect, test, beforeAll, beforeEach, jest, afterEach } from '
 import { Trainee } from '../user/Trainee';
 import { Status } from 'src/lib/time';
 import { testBean } from 'src/bean/testConfig';
+import { RokafTime } from 'src/lib/time/rokafTime';
+import { Letter } from './MailService';
 
 describe('serviceTest', () => {
   let {
@@ -16,24 +18,25 @@ describe('serviceTest', () => {
       rokafClient, mailService, userService, retryService,
       logger
     } = testBean());
+    RokafTime.resetMock();
   });
 
-  function createUserProps({
+  function createTrainee({
     username = 'testUser',
     password = 'password123',
     name = '홍길동',
     birth = '19900101',
     generation = 857,
     message = '안녕하세요!'
-  } = {}) {
+  } = {}): Trainee {
     return { username, password, name, birth, generation, message, }
   }
 
-  function createLetter({ userId = 1, name = '유찬', relationship = '친구',
+  function createLetter({ name = '유찬', relationship = '친구',
     title = '제목', contents = 'contents',
     password = '0000', isPublic = true,
-  } = {}) {
-    return { userId, name, relationship, title, contents, password, isPublic }
+  } = {}): Letter {
+    return { name, relationship, title, contents, password, isPublic }
   }
 
   describe('편지 보내기', () => {
@@ -50,19 +53,14 @@ describe('serviceTest', () => {
         complete: true,
       });
 
-      const userProps = createUserProps();
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee();
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
-
+      RokafTime.setMock(trainee.generation, Status.training);
       const userId = await userService.awaitRegister(trainee);
 
       // 편지 보내기
-      const registeredTrainee = await userService.getTrainee(userId);
-      jest.spyOn(registeredTrainee, 'currentStatus').mockReturnValue(Status.training);
-
-      const letter = createLetter({ userId });
-      const postId = await mailService.sendLetter(registeredTrainee, letter);
+      const letter = createLetter();
+      const postId = await mailService.awaitSendLetter(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(true);
@@ -82,19 +80,14 @@ describe('serviceTest', () => {
         complete: true,
       });
 
-      const userProps = createUserProps();
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee();
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.before);
-
+      RokafTime.setMock(trainee.generation, Status.before);
       const userId = await userService.awaitRegister(trainee);
 
       // 편지 보내기
-      const registeredTrainee = await userService.getTrainee(userId);
-      jest.spyOn(registeredTrainee, 'currentStatus').mockReturnValue(Status.before);
-
-      const letter = createLetter({ userId });
-      const postId = await mailService.sendLetter(registeredTrainee, letter);
+      const letter = createLetter();
+      const postId = await mailService.awaitSendLetter(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(false);
@@ -110,19 +103,15 @@ describe('serviceTest', () => {
         complete: true,
       });
 
-      const userProps = createUserProps();
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee();
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(trainee.generation, Status.training);
 
       const userId = await userService.awaitRegister(trainee);
 
       // 편지 보내기
-      const registeredTrainee = await userService.getTrainee(userId);
-      jest.spyOn(registeredTrainee, 'currentStatus').mockReturnValue(Status.training);
-
-      const letter = createLetter({ userId });
-      const postId = await mailService.sendLetter(registeredTrainee, letter);
+      const letter = createLetter();
+      const postId = await mailService.awaitSendLetter(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(false);
@@ -142,19 +131,15 @@ describe('serviceTest', () => {
         complete: false,
       });
 
-      const userProps = createUserProps();
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee();
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(trainee.generation, Status.training);
 
       const userId = await userService.awaitRegister(trainee);
 
       // 편지 보내기
-      const registeredTrainee = await userService.getTrainee(userId);
-      jest.spyOn(registeredTrainee, 'currentStatus').mockReturnValue(Status.training);
-
-      const letter = createLetter({ userId });
-      const postId = await mailService.sendLetter(registeredTrainee, letter);
+      const letter = createLetter();
+      const postId = await mailService.awaitSendLetter(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(false);
@@ -174,19 +159,15 @@ describe('serviceTest', () => {
         complete: false,
       });
 
-      const userProps = createUserProps();
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee();
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(trainee.generation, Status.training);
 
       const userId = await userService.awaitRegister(trainee);
 
       // 편지 보내기
-      const registeredTrainee = await userService.getTrainee(userId);
-      jest.spyOn(registeredTrainee, 'currentStatus').mockReturnValue(Status.training);
-
-      const letter = createLetter({ userId });
-      const postId = await mailService.sendLetter(registeredTrainee, letter);
+      const letter = createLetter();
+      const postId = await mailService.awaitSendLetter(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(false);
@@ -206,19 +187,15 @@ describe('serviceTest', () => {
         complete: true,
       });
 
-      const userProps = createUserProps();
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee();
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.working);
+      RokafTime.setMock(trainee.generation, Status.working);
 
       const userId = await userService.awaitRegister(trainee);
 
       // 편지 보내기
-      const registeredTrainee = await userService.getTrainee(userId);
-      jest.spyOn(registeredTrainee, 'currentStatus').mockReturnValue(Status.working);
-
-      const letter = createLetter({ userId });
-      const postId = await mailService.sendLetter(registeredTrainee, letter);
+      const letter = createLetter();
+      const postId = await mailService.awaitSendLetter(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(true);
@@ -238,19 +215,15 @@ describe('serviceTest', () => {
         complete: true,
       });
 
-      const userProps = createUserProps();
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee();
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.working);
+      RokafTime.setMock(trainee.generation, Status.working);
 
       const userId = await userService.awaitRegister(trainee);
 
       // 편지 보내기
-      const registeredTrainee = await userService.getTrainee(userId);
-      jest.spyOn(registeredTrainee, 'currentStatus').mockReturnValue(Status.working);
-
-      const letter = createLetter({ userId });
-      const postId = await mailService.sendLetter(registeredTrainee, letter);
+      const letter = createLetter();
+      const postId = await mailService.awaitSendLetter(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(true);
@@ -270,19 +243,15 @@ describe('serviceTest', () => {
         complete: false,
       });
 
-      const userProps = createUserProps();
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee();
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.working);
+      RokafTime.setMock(trainee.generation, Status.working);
 
       const userId = await userService.awaitRegister(trainee);
 
       // 편지 보내기
-      const registeredTrainee = await userService.getTrainee(userId);
-      jest.spyOn(registeredTrainee, 'currentStatus').mockReturnValue(Status.working);
-
-      const letter = createLetter({ userId });
-      const postId = await mailService.sendLetter(registeredTrainee, letter);
+      const letter = createLetter();
+      const postId = await mailService.awaitSendLetter(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(true);
@@ -298,19 +267,15 @@ describe('serviceTest', () => {
         complete: false,
       });
 
-      const userProps = createUserProps();
-      const trainee = new Trainee(userProps);
+      const trainee = createTrainee();
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.working);
+      RokafTime.setMock(trainee.generation, Status.working);
 
       const userId = await userService.awaitRegister(trainee);
 
       // 편지 보내기
-      const registeredTrainee = await userService.getTrainee(userId);
-      jest.spyOn(registeredTrainee, 'currentStatus').mockReturnValue(Status.working);
-
-      const letter = createLetter({ userId });
-      const postId = await mailService.sendLetter(registeredTrainee, letter);
+      const letter = createLetter();
+      const postId = await mailService.awaitSendLetter(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(false);
@@ -348,16 +313,14 @@ describe('serviceTest', () => {
         complete: true,
       });
 
-      const userProps = createUserProps({ generation: 862 });
-      const trainee = new Trainee(userProps);
-
+      const trainee = createTrainee({ generation: 862 });
       // 현재 상태: 입대 전
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(trainee.generation, Status.training);
       const userId = await userService.awaitRegister(trainee);
 
       // 편지 저장, 편지쓰기 기간 아니라 그냥 편지만 저장함
-      const letter = createLetter({ userId });
-      const { id: postId } = await postRepository.insert(letter);
+      const letter = createLetter();
+      const { id: postId } = await postRepository.insert({ userId, ...letter });
 
       // 미발송 편지 보내기
       await mailService.sendUnpostedMails(userId);
@@ -381,25 +344,18 @@ describe('serviceTest', () => {
         complete: true,
       });
 
-      const userProps = createUserProps({ generation: 862 });
-      const trainee = new Trainee(userProps);
-
+      const trainee = createTrainee({ generation: 862 });
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(trainee.generation, Status.training);
       const userId = await userService.awaitRegister(trainee);
-
-      // 편지 보내기, 실패해서 큐에 넣어짐
-      const registeredTrainee = await userService.getTrainee(userId);
-      jest.spyOn(registeredTrainee, 'currentStatus').mockReturnValue(Status.training);
-
 
       // 편지 15개 보내기
       const POST_COUNT = 15;
       const postIdList: any[] = [];
       for (let i = 0; i < POST_COUNT; i++) {
         // 편지 저장, 편지쓰기 기간 아니라 그냥 편지만 저장함
-        const letter = createLetter({ userId });
-        const { id: postId } = await postRepository.insert(letter);
+        const letter = createLetter();
+        const { id: postId } = await postRepository.insert({ userId, ...letter });
         postIdList.push(postId)
       }
 

@@ -4,8 +4,8 @@ import { makeLogger } from "config/winston";
 import { ValidateError, validateBirth, validateGeneration, validateHashedPassword, validateMessage, validateName, validateUsername } from "src/utils/validate";
 import { RegisterProps } from "src/service/user/UserService";
 import { bean } from "src/bean/bean";
-import { Trainee } from "src/service/user/Trainee";
 import { ActionResponse } from "src/app/apiSSR/actionResponse";
+import { Trainee } from "src/service/user/Trainee";
 const logger = makeLogger("Register");
 
 /**
@@ -26,7 +26,7 @@ export async function register(registerProps: RegisterProps) {
       return ActionResponse.badRequest("아이디가 중복되었습니다.");
     }
 
-    const trainee = new Trainee(registerProps);
+    const trainee: Trainee = registerProps
     await userService.register(trainee);
 
     return ActionResponse.ok("회원가입 성공");

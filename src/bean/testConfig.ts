@@ -15,8 +15,9 @@ export function testBean(): BeanInterface & { logger: MemoryLogger, rokafClient:
   const postQueue = new MemoryPostQueue(postRepository);
 
   const rokafClient = new MockRokafClient();
-  const mailService = new MailService({ postRepository, postQueue, rokafClient });
   const userRepository = new MemoryUserRepository();
+  const mailService = new MailService({ postRepository, postQueue, rokafClient, userRepository });
+
   const userQueue = new MemoryUserQueue(userRepository);
   postRepository.join(userRepository);
 

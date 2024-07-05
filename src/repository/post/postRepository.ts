@@ -40,3 +40,4 @@ export interface UpdateType {
   postAt?: Date | null; isPublic?: boolean;
 }
 
+
