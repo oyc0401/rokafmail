@@ -6,6 +6,7 @@ import { RokafClientInterface } from "../rokafClient/RokafClientInterface";
 import { MailService } from "../mail/MailService";
 import { Trainee } from "./Trainee";
 import { labelLogger } from "config/logger/labelLogger";
+import { RokafTime } from "src/lib/time/rokafTime";
 
 export class UserService {
   private rokafClient: RokafClientInterface;
@@ -95,7 +96,7 @@ export class UserService {
         await this.userQueue.insert(userId);
         break;
       case syncResponse.fail:
-        const status = trainee.currentStatus();
+        const status = RokafTime.getStatus(trainee.generation)
         if (status == Status.working || status == Status.discharged) {
           // 수료를 했는데도 못찾으면 없는 유저로 판단하고 큐에 넣지 않는다.
         } else {
@@ -112,7 +113,7 @@ export class UserService {
    * 유저의 소대번호, 멤버번호를 불러온다.
    */
   private async getRokafProfile(trainee: Trainee) {
-    const status = trainee.currentStatus();
+    const status = RokafTime.getStatus(trainee.generation)
 
     // 입대 이전이면 syncResponse.before
     if (status == Status.before || status == Status.beginning) {
@@ -156,8 +157,8 @@ export class UserService {
       return;
     }
 
-    const serves = serveStatus(user.generation);
-    
+    const serves = RokafTime.getStatus(user.generation);
+
     if (serves == Status.training) {
       const status = await this.updateRokafProfile(userId, trainee);
       if (status == syncResponse.complete) {

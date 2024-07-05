@@ -4,6 +4,7 @@ import { ValidateError } from 'src/utils/validate';
 import { Status } from 'src/lib/time';
 import { testBean } from 'src/bean/testConfig';
 import { Trainee } from './Trainee';
+import { RokafTime } from 'src/lib/time/rokafTime';
 
 describe('User Service Test', () => {
   let {
@@ -18,6 +19,8 @@ describe('User Service Test', () => {
       rokafClient, mailService, userService, retryService,
       logger
     } = testBean());
+
+    RokafTime.resetMock();
 
   });
 
@@ -85,8 +88,7 @@ describe('User Service Test', () => {
         const userProps = createUserProps();
         const trainee = new Trainee(userProps);
 
-        jest.spyOn(trainee, 'currentStatus').mockReturnValue(status);
-
+        RokafTime.setMock(userProps.generation, status);
         rokafClient.changeGetProfileReturnValue({
           member: {
             memberSeq: '12341234',
@@ -113,7 +115,7 @@ describe('User Service Test', () => {
       const trainee = new Trainee(userProps);
 
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(userProps.generation, Status.training);
 
       rokafClient.changeGetProfileReturnValue({
         member: {
@@ -147,7 +149,7 @@ describe('User Service Test', () => {
       const userProps = createUserProps();
       const trainee = new Trainee(userProps);
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.before);
+      RokafTime.setMock(userProps.generation, Status.before);
 
       // db 저장
       const user = await userRepository.insert(trainee);
@@ -173,7 +175,7 @@ describe('User Service Test', () => {
       const userProps = createUserProps();
       const trainee = new Trainee(userProps);
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(userProps.generation, Status.training);
 
       // db 저장
       const user = await userRepository.insert(trainee);
@@ -197,7 +199,7 @@ describe('User Service Test', () => {
       const userProps = createUserProps();
       const trainee = new Trainee(userProps);
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(userProps.generation, Status.training);
 
       // db 저장
       const user = await userRepository.insert(trainee);
@@ -219,7 +221,7 @@ describe('User Service Test', () => {
       const userProps = createUserProps();
       const trainee = new Trainee(userProps);
       // 현재 상태: 훈련 주차
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.training);
+      RokafTime.setMock(userProps.generation, Status.training);
 
       // db 저장
       const user = await userRepository.insert(trainee);
@@ -236,17 +238,6 @@ describe('User Service Test', () => {
 
 
   describe('프로필 업데이트', () => {
-    beforeEach(() => {
-      // 가짜 타이머 사용 설정
-      jest.useFakeTimers();
-      // 862기 훈련기간
-      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
-    });
-
-    afterEach(() => {
-      // 가짜 타이머 사용 해제
-      jest.useRealTimers();
-    });
     test('프로필 업데이트하면 소대번호를 불러옵니다.', async () => {
       // 잘못된 이름 입력해서 프로필을 찾을 수 없음
       rokafClient.changeGetProfileReturnValue({
@@ -257,7 +248,7 @@ describe('User Service Test', () => {
       const trainee = new Trainee(userProps);
 
       // 현재 상태: 입대 전
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.before);
+      RokafTime.setMock(userProps.generation, Status.before);
 
       // 회원가입
       const userId = await userService.awaitRegister(trainee);
@@ -272,7 +263,7 @@ describe('User Service Test', () => {
       });
 
       // 862기 훈련기간
-      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
+      RokafTime.setMock(userProps.generation, Status.training);
 
       // 정보 수정
       await userService.editProfile(userId, { name: '하이', birth: '20230405' });
@@ -300,7 +291,7 @@ describe('User Service Test', () => {
       const trainee = new Trainee(userProps);
 
       // 현재 상태: 훈련 중
-      jest.spyOn(trainee, 'currentStatus').mockReturnValue(Status.ending);
+      RokafTime.setMock(userProps.generation, Status.ending);
 
       // 회원가입
       const userId = await userService.awaitRegister(trainee);
@@ -320,7 +311,7 @@ describe('User Service Test', () => {
       });
 
       // 862기 훈련기간
-      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
+      RokafTime.setMock(userProps.generation, Status.training);
 
       // 정보 수정
       await userService.editProfile(userId, { name: '하이', birth: '20230405' });
