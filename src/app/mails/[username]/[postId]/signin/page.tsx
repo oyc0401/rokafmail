@@ -9,7 +9,7 @@ export const metadata = {
 
 export default async function Page({ params, }) {
 
-  const username = params.username;
+  const username = decodeURI(params.username);
   const postId = Number(params.postId);
 
   const post = await getPostWithUserById(postId);
