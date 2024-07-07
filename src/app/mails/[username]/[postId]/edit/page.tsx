@@ -31,7 +31,7 @@ export const metadata = {
 
 export default async function EditPage({ params }) {
   const postId = Number(params.postId);
-  const username = params.username;
+  const username = decodeURI(params.username);
 
   const post = await getPostAuthCheck(postId);
 
