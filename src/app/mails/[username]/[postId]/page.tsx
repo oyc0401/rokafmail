@@ -18,10 +18,12 @@ async function getMail(postId: number, username: string) {
     return response;
   } catch (error) {
     if (error.status == 401) {
+      
       // 편지 내용을 볼 수 없으면 로그인 창으로 이동
       const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}`;
       redirect(`/mails/${username}/${postId}/signin?&callbackUrl=${callbackUrl}`)
     }
+    
     if (error.status == 404) {
       notFound();
     }
@@ -38,7 +40,7 @@ async function getUser(username: string) {
 
 export default async function Page({ params }) {
   const postId = Number(params.postId);
-  const username = params.username;
+  const username = decodeURI(params.username);
 
   const mail = await getMail(postId, username);
   const user = await getUser(username);
