@@ -31,16 +31,16 @@ export const metadata = {
 
 export default async function EditPage({ params }) {
   const postId = Number(params.postId);
-  const username = decodeURI(params.username);
+  const decodedUsername = decodeURI(params.username);
 
   const post = await getPostAuthCheck(postId);
 
   if (!post) {
-    const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}/edit`;
-    redirect(`/mails/${username}/${postId}/signin?callbackUrl=${callbackUrl}`)
+    const callbackUrl = `https://${process.env.DOMAIN}/mails/${params.username}/${postId}/edit`;
+    redirect(`/mails/${params.username}/${postId}/signin?callbackUrl=${callbackUrl}`)
   }
 
-  const user = await getUserByUsername(username);
+  const user = await getUserByUsername(decodedUsername);
   if (!user) notFound();
 
   const url = `https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${user.name}&searchBirth=${user.birth}&memberSeq=${user.memberSeq}`;
@@ -51,7 +51,7 @@ export default async function EditPage({ params }) {
       <UserDescription user={user}></UserDescription>
       <Paper updateProps={post}></Paper>
       <div className="flex-1"></div>
-      <Submit postId={postId} username={username} posted={post.posted} url={url}></Submit>
+      <Submit postId={postId} username={decodedUsername} posted={post.posted} url={url}></Submit>
     </div>
   );
 }

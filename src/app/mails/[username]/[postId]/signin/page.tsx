@@ -7,7 +7,7 @@ export const metadata = {
   title: "하늘인편 | 편지 로그인",
 };
 
-export default async function Page({ params, }) {
+export default async function Page({ params }) {
 
   const username = decodeURI(params.username);
   const postId = Number(params.postId);
