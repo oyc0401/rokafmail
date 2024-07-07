@@ -11,12 +11,15 @@ export async function checkPassword(postId: number, password: string) {
   const oriPw = post.password;
   const valid = oriPw == password;
 
+
+  const decodeUsername = encodeURI(post.user.username);
   if (valid) {
     cookies().set({
       name: "password",
       value: password,
-      path: `/mails/${post.user.username}/${postId}`,
+      path: `/mails/${decodeUsername}/${postId}`,
     });
   }
+
   return valid;
 }
