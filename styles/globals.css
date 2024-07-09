@@ -123,13 +123,23 @@ a{
   background: #2e2e2e;
 }
 
+.submit.lg{
+  padding: 14px 32px;
+}
+
 /* sm */
 @media (min-width: 640px) {
  .submit{
-
     padding: 16px 32px;
  }
+  .submit.lg{
+    padding: 18px 32px;
+  }
+  
 }
+
+
+
 
 
 .row{

@@ -41,13 +41,13 @@ function TopView() {
         </div>
         <div className="pt-8 pb-6 w-full">
           <p className="font-light text-base">
-            현재 병 858기 중 697명이
+            저번 기수인 858기 중 697명이
             <br />
             하늘인편을 통해 편지를 받았습니다!
           </p>
         </div>
-        <Link className="submit" href={{ pathname: "/register" }}>
-          편지함 생성하기
+        <Link className="submit lg text-lg shadow" href={{ pathname: "/register" }}>
+          시작하기
         </Link>
         <div className="pt-4 pb-5 w-full">
           <div
