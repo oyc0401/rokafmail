@@ -1,18 +1,16 @@
 import { Post, User } from "src/db";
 import { InfoGraph } from './InfoGraph';
-import { InfoAll } from "./InfoAll";
 
 export default async function Page() {
   const userCount = await User.count();
   const activateUserCount = await User.activateCount();
   const postCount = await Post.count();
 
-
-  const userCount857 = await User.generationCount(857);
-  const postCount857 = await Post.generationCount(857);
-
   const userCount858 = await User.generationCount(858);
   const postCount858 = await Post.generationCount(858);
+
+  const userCount859 = await User.generationCount(859);
+  const postCount859 = await Post.generationCount(859);
 
   return (
     <>
@@ -27,17 +25,14 @@ export default async function Page() {
 
           <p className="text-xl pb-2">편지 수: {postCount}통</p>
 
-          <p className="text-xl pb-2">857기 유저: {userCount857}명 </p>
-          <p className="text-xl pb-2">857기 편지: {postCount857}통</p>
-
           <p className="text-xl pb-2">858기 유저: {userCount858}명 </p>
           <p className="text-xl pb-2">858기 편지: {postCount858}통</p>
+
+          <p className="text-xl pb-2">859기 유저: {userCount859}명 </p>
+          <p className="text-xl pb-2">859기 편지: {postCount859}통</p>
         </div>
-        <InfoAll></InfoAll>
+        <InfoGraph generation={859} leftDate={new Date('2024-06-24')}></InfoGraph>
         <InfoGraph generation={858} leftDate={new Date('2024-05-20')}></InfoGraph>
-        <InfoGraph generation={857} leftDate={new Date('2024-04-15')}></InfoGraph>
-
-
       </div>
     </>
   );
