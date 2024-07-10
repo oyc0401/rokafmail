@@ -1,5 +1,5 @@
-import { getProfile } from "./profile";
-import { postMail } from "./postMail";
+import { getProfile } from "src/airforce/profile";
+import { postMail } from "src/airforce/postMail";
 import { RokafClientInterface } from "./RokafClientInterface";
 
 export default class RokafClient implements RokafClientInterface {

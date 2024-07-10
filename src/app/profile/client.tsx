@@ -4,7 +4,7 @@ import { deleteUser } from "src/app/apiAction/profile";
 import Link from "next/link";
 import { action } from "../apiSSR/actionResponse";
 import { useRouter } from "next/navigation";
-import { sha256 } from "src/lib/sha256";
+import { sha256 } from "src/utils/sha256";
 export function SignOut() {
   async function onclickSignout() {
     if (confirm("로그아웃 하시겠습니까?")) {

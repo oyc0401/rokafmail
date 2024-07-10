@@ -6,7 +6,7 @@ import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "
 import { validatePassword } from "src/utils/validate";
 import { action } from "src/app/apiSSR/actionResponse";
 import { useRouter } from "next/navigation";
-import { sha256 } from "src/lib/sha256";
+import { sha256 } from "src/utils/sha256";
 
 export function Client({ username }) {
   const [originPassword, setorpassword] = useState("");
@@ -20,8 +20,8 @@ export function Client({ username }) {
     e.preventDefault();
     if (!canSubmit()) return;
 
-    const encryptedOriginPassword =sha256(originPassword); 
-    const encryptedPassword =sha256(password);
+    const encryptedOriginPassword = sha256(originPassword);
+    const encryptedPassword = sha256(password);
 
     try {
       await action(editPassword(encryptedOriginPassword, encryptedPassword));

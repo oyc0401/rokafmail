@@ -13,7 +13,7 @@ import {
 } from "src/components";
 import { validateMessage } from "src/utils/validate";
 import { action } from "../apiSSR/actionResponse";
-import { sha256 } from "src/lib/sha256";
+import { sha256 } from "src/utils/sha256";
 export default function Message() {
   const {
     generation,

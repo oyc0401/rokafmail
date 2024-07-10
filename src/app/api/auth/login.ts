@@ -1,5 +1,5 @@
 import { User } from "src/db";
-import { sha256 } from "src/lib/sha256";
+import { sha256 } from "src/utils/sha256";
 export async function login(username, password) {
   const user = await User.findByUsername(username);
 
