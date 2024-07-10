@@ -1,5 +1,5 @@
 import { PostQueue } from "src/repository/postQueue/postQueue";
-import { MailService, sendStatusToStr } from "../mail/MailService";
+import { MailService, sendResponseToStr } from "../mail/MailService";
 import { UserService, syncResponse, syncResponseToStr } from "../user/UserService";
 import { UserQueue } from "src/repository/userQueue/userQueue";
 import { labelLogger } from "config/logger/labelLogger";
@@ -45,7 +45,7 @@ export class RetryService {
           logger.info(`${i}/${queueSize} (${front.postId}) | 이미 보내졌습니다`);
         } else if ((userCountMap[front.post.userId] ?? 0) < MAX_POSTCOUNT) {
           const response = await this.mailService.sendMailFalseEnqueue(front.postId);
-          logger.info(`${i}/${queueSize} (${front.id}) | ${sendStatusToStr(response)}`);
+          logger.info(`${i}/${queueSize} (${front.id}) | ${sendResponseToStr(response)}`);
         } else {
           logger.info(`${i}/${queueSize} (${front.postId}) | 한도 초과`);
           await this.postQueue.insert(front.postId);

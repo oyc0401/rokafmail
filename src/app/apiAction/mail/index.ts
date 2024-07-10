@@ -44,7 +44,7 @@ export async function sendMail(mailForm: {
     }
 
     const mailService = new MailService(bean);
-    await mailService.sendLetter(user.id, letter);
+    await mailService.sendLetterAsync(user.id, letter);
 
     return ActionResponse.ok("편지 전송 성공!");
   } catch (error) {

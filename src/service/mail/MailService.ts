@@ -25,39 +25,17 @@ export class MailService {
   }
 
   /**
-   * 편지를 보낼 때 편지큐는 '프로필이 있는' 훈련병이 편지만 존재한다.
+   * 편지를 보낸다.
+   * 
+   * DB에 해당 편지를 저장한 뒤, 기훈단 서버에 편지를 보낸다.
+   *
+   * 이때 기훈단 서버에 편지를 보내는것은 비동기적으로 실행한다.
    */
-  async sendLetter(userId: number, letter: Letter) {
+  async sendLetterAsync(userId: number, letter: Letter) {
     const logger = labelLogger("SendLetter");
 
-    const { name, relationship, title, contents, password, isPublic } = letter;
-    // 편지 저장
-    const newPost = await this.postRepository.insert({
-      userId, name, relationship,
-      title, contents, password, isPublic
-    });
-
-    const { id: postId } = newPost;
-
     const user = await this.userRepository.findById(userId);
     if (!user) throw new Error('유저가 없습니다.')
-
-    // 연결되었으면 편지를 보낸다.
-    // 편지를 보내다 오류가 나면 큐에 저장합니다.
-    if (user.connect) {
-      const logStatus = (status: SendResponse) =>
-        logger.info(`(${postId}) | ${sendStatusToStr(status)}`);
-
-      this.sendMailFalseEnqueue(postId).then(logStatus);
-
-    } else {
-      logger.info(`(${postId}) | BeforeMailTime`)
-    }
-    return postId;
-  }
-
-  async awaitSendLetter(userId: number, letter: Letter) {
-    const logger = labelLogger("AwaitSendLetter");
 
     const { name, relationship, title, contents, password, isPublic } = letter;
     // 편지 저장
@@ -68,16 +46,12 @@ export class MailService {
 
     const { id: postId } = newPost;
 
-    const user = await this.userRepository.findById(userId);
-    if (!user) throw new Error('유저가 없습니다.')
-
     // 연결되었으면 편지를 보낸다.
     // 편지를 보내다 오류가 나면 큐에 저장합니다.
     if (user.connect) {
-      const logStatus = (status: SendResponse) =>
-        logger.info(`(${postId}) | ${sendStatusToStr(status)}`);
-
-      await this.sendMailFalseEnqueue(postId).then(logStatus);
+      // 편지가 보내졌으면 로그를 찍는다.
+      this.sendMailFalseEnqueue(postId)
+        .then((status) => logger.info(`(${postId}) | ${sendResponseToStr(status)}`));
 
     } else {
       logger.info(`(${postId}) | BeforeMailTime`)
@@ -86,10 +60,41 @@ export class MailService {
   }
 
   /**
-   * 해당 id의 편지를 보내고 보내졌다고 업데이트하고, 결과 enum 리턴하기
+   * 편지를 보낸다.
+   * 
+   * DB에 해당 편지를 저장한 뒤, 기훈단 서버에 편지를 보낸다.
+   */
+  async sendLetterAwait(userId: number, letter: Letter) {
+    const logger = labelLogger("AwaitSendLetter");
+
+    const user = await this.userRepository.findById(userId);
+    if (!user) throw new Error('유저가 없습니다.')
+
+    const { name, relationship, title, contents, password, isPublic } = letter;
+    // 편지 저장
+    const newPost = await this.postRepository.insert({
+      userId, name, relationship,
+      title, contents, password, isPublic
+    });
+
+    const { id: postId } = newPost;
+
+    // 연결되었으면 편지를 보낸다.
+    // 편지를 보내다 오류가 나면 큐에 저장합니다.
+    if (user.connect) {
+      // await가 붇어있어야 함
+      await this.sendMailFalseEnqueue(postId)
+        .then((status) => logger.info(`(${postId}) | ${sendResponseToStr(status)}`));
+    } else {
+      logger.info(`(${postId}) | BeforeMailTime`)
+    }
+    return postId;
+  }
+
+  /**
+   * 해당 id의 편지를 보내고 발송 완료 처리한다.
   **/
-  async sendMail(postId: number,
-    event: { onFalse?: (postQueue: PostQueue) => Promise<any> } = {}): Promise<SendResponse> {
+  async sendMail(postId: number): Promise<SendResponse> {
     const post = await this.postRepository.findByIdWithUser(postId);
     if (!post) throw Error(`id가 ${postId}인 편지를 찾을 수 없습니다.`);
 
@@ -98,9 +103,9 @@ export class MailService {
 
     const status = RokafTime.getStatus(generation);
 
-    const updatePost = async (postId: number) =>
+    // 편지 발송완료 처리 함수
+    const updatePostSent = async (postId: number) =>
       this.postRepository.update(postId, { posted: true, postAt: getNow() });
-
 
     switch (status) {
       case Status.before:
@@ -112,56 +117,45 @@ export class MailService {
         }
 
         const postComplete = await this.rokafClient.postMail(
-          {
-            name,
-            relationship,
-            title,
-            contents,
-            password,
-            memberSeq,
-            sodae,
-          },
-          createdAt,
-        );
+          { name, relationship, title, contents, password, memberSeq, sodae },
+          createdAt);
 
         // 국방서버에 보내는 요청
         if (!postComplete.serverOn) {
-          await event.onFalse?.(this.postQueue);
           return SendResponse.error;
         }
 
         if (postComplete.complete) {
-          await updatePost(postId);
+          await updatePostSent(postId);
           return SendResponse.success;
         } else {
-          await event.onFalse?.(this.postQueue);
           return SendResponse.fail;
         }
-
       case Status.ending:
       case Status.working:
       case Status.discharged:
-        // if (!memberSeq || !sodae) {
-        //   return SendResponse.notfound;
-        // }
-        // 특학인편 하지말자 ~
         // 편지쓰기 기간 이후에 전송하면 보내졌다고 치기
-        await updatePost(postId);
+        await updatePostSent(postId);
         return SendResponse.success;
     }
   }
 
-  async sendMailFalseEnqueue(postId: number) {
-    return await this.sendMail(postId, {
-      onFalse: async (queue) => {
-        // 오류가 나거나 실패하면 큐에 넣는다.
-        await queue.insert(postId);
-      }
-    });
+  /**
+   * 편지를 보내고, 실패하면 큐에 넣는다.
+   */
+  async sendMailFalseEnqueue(postId: number): Promise<SendResponse> {
+    const response = await this.sendMail(postId);
+    if (response == SendResponse.error || response == SendResponse.fail) {
+      // 오류가 나거나 실패하면 큐에 넣는다.
+      await this.postQueue.insert(postId);
+    }
+    return response;
   }
 
 
-  // 해당 유저의 모든 미발송 편지들을 다시 보내기
+  /**
+   * 해당 유저의 모든 미발송 편지들을 다시 보내기
+   */
   async sendUnpostedMails(userId: number) {
     const logger = labelLogger("SendUnpostedMails");
     const posts = await this.postRepository.findNotPostedByUserId(userId);
@@ -172,7 +166,7 @@ export class MailService {
       if (i < MAX_COUNT) {
 
         const response = await this.sendMailFalseEnqueue(post.id);
-        logger.info(`(${post.id}) | ${sendStatusToStr(response)}`)
+        logger.info(`(${post.id}) | ${sendResponseToStr(response)}`)
 
       } else {
         // 한번에 많이 보내지 않게 나머지는 큐에 넣음
@@ -180,13 +174,10 @@ export class MailService {
         logger.info(`(${post.id}) | Limit`)
       }
     }
-
   }
-
-
 }
 
-export function sendStatusToStr(status: SendResponse) {
+export function sendResponseToStr(status: SendResponse) {
   switch (status) {
     case SendResponse.before:
       return `QueueAdded - BeforeMailTime`;

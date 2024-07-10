@@ -40,19 +40,6 @@ describe('Retry Service Test', () => {
   }
 
   describe('retryDelayedMail', () => {
-
-    beforeEach(() => {
-      // 가짜 타이머 사용 설정
-      jest.useFakeTimers();
-      // 862기 훈련기간
-      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
-    });
-
-    afterEach(() => {
-      // 가짜 타이머 사용 해제
-      jest.useRealTimers();
-    });
-
     test('메일 큐에 편지가 있으면 편지를 보냅니다.', async () => {
       // 서버 상태 모두 좋음
       rokafClient.changeGetProfileReturnValue({

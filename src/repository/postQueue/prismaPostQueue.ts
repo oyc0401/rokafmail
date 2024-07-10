@@ -5,9 +5,10 @@ import { Post } from "src/db";
 export class PrismaPostQueue  {
 
   async insert(postId: number) {
-    // 나중에 지워라
+    // 나중에 지워라 DB 수정하기 귀찮아서 이렇게 한거임..
     const post = await Post.findById(postId);
     const { userId } = post!;
+    
     return prisma.postQueue.create({
       data: {
         postId,

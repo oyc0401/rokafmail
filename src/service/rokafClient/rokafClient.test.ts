@@ -1,17 +1,42 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test, beforeEach } from '@jest/globals';
 import MockRokafClient from './MockRokafClient';
 
-describe('rokaf api client test', () => {
-
-  test('Post Mail', async () => {
+describe('RokafClient Test', () => {
+  
+  test('getProfile Mocking', async () => {
     const rokafClient = new MockRokafClient();
+    rokafClient.changeGetProfileReturnValue({
+      member: {
+        memberSeq: '12341234',
+        sodae: '1111',
+      },
+      serverOn: true,
+    });
 
-    const profile = await rokafClient.getProfile('이름', '12341234');
+    const response = await rokafClient.getProfile('이름', '12341234');
 
-    expect(1).toBe(1);
+    expect(response.serverOn).toBe(true);
+    expect(response.member).toStrictEqual({
+      memberSeq: '12341234',
+      sodae: '1111',
+    });
   });
 
-  test('테스트 이름', () => {
-    expect(1).toBe(1);
+  test('PostMail Mocking', async () => {
+    const rokafClient = new MockRokafClient();
+    rokafClient.changePostMailReturnValue({
+      serverOn: true,
+      complete: true,
+    });
+
+    const response = await rokafClient.postMail({
+      name: '유찬', relationship: '친구',
+      title: '제목', contents: 'contents',
+      password: '0000', sodae: '1234', memberSeq: '1234522'
+    });
+
+
+    expect(response.serverOn).toBe(true);
+    expect(response.complete).toBe(true);
   });
 })

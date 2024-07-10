@@ -28,10 +28,11 @@ describe('serviceTest', () => {
     generation = 857,
     message = '안녕하세요!'
   } = {}): Trainee {
-    return { username, password, name, birth, generation, message, }
+    return { username, password, name, birth, generation, message }
   }
 
-  function createLetter({ name = '유찬', relationship = '친구',
+  function createLetter({
+    name = '유찬', relationship = '친구',
     title = '제목', contents = 'contents',
     password = '0000', isPublic = true,
   } = {}): Letter {
@@ -59,7 +60,7 @@ describe('serviceTest', () => {
 
       // 편지 보내기
       const letter = createLetter();
-      const postId = await mailService.awaitSendLetter(userId, letter);
+      const postId = await mailService.sendLetterAwait(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(true);
@@ -86,7 +87,7 @@ describe('serviceTest', () => {
 
       // 편지 보내기
       const letter = createLetter();
-      const postId = await mailService.awaitSendLetter(userId, letter);
+      const postId = await mailService.sendLetterAwait(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(false);
@@ -110,7 +111,7 @@ describe('serviceTest', () => {
 
       // 편지 보내기
       const letter = createLetter();
-      const postId = await mailService.awaitSendLetter(userId, letter);
+      const postId = await mailService.sendLetterAwait(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(false);
@@ -138,7 +139,7 @@ describe('serviceTest', () => {
 
       // 편지 보내기
       const letter = createLetter();
-      const postId = await mailService.awaitSendLetter(userId, letter);
+      const postId = await mailService.sendLetterAwait(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(false);
@@ -166,7 +167,7 @@ describe('serviceTest', () => {
 
       // 편지 보내기
       const letter = createLetter();
-      const postId = await mailService.awaitSendLetter(userId, letter);
+      const postId = await mailService.sendLetterAwait(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(false);
@@ -194,7 +195,7 @@ describe('serviceTest', () => {
 
       // 편지 보내기
       const letter = createLetter();
-      const postId = await mailService.awaitSendLetter(userId, letter);
+      const postId = await mailService.sendLetterAwait(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(true);
@@ -222,7 +223,7 @@ describe('serviceTest', () => {
 
       // 편지 보내기
       const letter = createLetter();
-      const postId = await mailService.awaitSendLetter(userId, letter);
+      const postId = await mailService.sendLetterAwait(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(true);
@@ -250,7 +251,7 @@ describe('serviceTest', () => {
 
       // 편지 보내기
       const letter = createLetter();
-      const postId = await mailService.awaitSendLetter(userId, letter);
+      const postId = await mailService.sendLetterAwait(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(true);
@@ -274,7 +275,7 @@ describe('serviceTest', () => {
 
       // 편지 보내기
       const letter = createLetter();
-      const postId = await mailService.awaitSendLetter(userId, letter);
+      const postId = await mailService.sendLetterAwait(userId, letter);
       const resultMail = await postRepository.findById(postId);
 
       expect(resultMail?.posted).toBe(false);
@@ -285,18 +286,7 @@ describe('serviceTest', () => {
 
 
   describe('유저의 미발송 편지 보내기', () => {
-    beforeEach(() => {
-      // 가짜 타이머 사용 설정
-      jest.useFakeTimers();
-      // 862기 훈련기간
-      jest.setSystemTime(new Date('2024-11-01T00:00:00.000Z'));
-    });
-
-    afterEach(() => {
-      // 가짜 타이머 사용 해제
-      jest.useRealTimers();
-    });
-
+    
     // 유저 프로필을 얻어오면 해당 유저의 미발송 편지를 보내는데, 거기에 활용됌
     test('미발송 편지 보내기를 하면 해당 유저의 모든 미발송 편지를 다시 보냅니다.', async () => {
       // 서버 상태 양호
