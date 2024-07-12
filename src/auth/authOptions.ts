@@ -1,8 +1,7 @@
-
-import CredentialsProvider from "next-auth/providers/credentials";
-import { getUserFromDb, login, saltAndHashPassword } from "./login";
-
 import NextAuth, { DefaultSession } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import { getUserFromDb, saltAndHashPassword } from "./login";
 
 declare module "next-auth" {
   /**
@@ -38,6 +37,10 @@ export const authOptions = {
       },
 
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    })
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -48,6 +51,10 @@ export const authOptions = {
         session.user.role = token.role;
       }
       return session;
+    },
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log(user, account, profile, email, credentials);
+      return true
     },
   },
   pages: {
