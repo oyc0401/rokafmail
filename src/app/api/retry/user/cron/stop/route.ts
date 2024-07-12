@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { CronStore } from "../../../cron";
-import { auth } from "src/app/api/auth/auth";
+import { auth } from "src/auth";
 import { User } from "src/db";
 
 export async function POST(request: Request) {

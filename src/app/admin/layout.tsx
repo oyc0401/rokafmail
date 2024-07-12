@@ -1,4 +1,4 @@
-import { auth } from "src/app/api/auth/auth";
+import { auth } from "src/auth";
 import { User } from "src/db";
 
 import { notFound } from "next/navigation";

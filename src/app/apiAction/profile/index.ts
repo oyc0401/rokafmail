@@ -3,7 +3,7 @@ import { User } from "src/db";
 import { bean } from "src/bean/bean";
 import { labelLogger } from "config/logger/labelLogger";
 import { ActionResponse } from "src/app/apiSSR/actionResponse";
-import { auth } from "src/app/api/auth/auth";
+import { auth } from "src/auth";
 
 /**
  * `Server Action`

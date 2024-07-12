@@ -1,6 +1,6 @@
 
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getUserFromDb, login, saltAndHashPassword } from "../login";
+import { getUserFromDb, login, saltAndHashPassword } from "./login";
 
 import NextAuth, { DefaultSession } from "next-auth"
 

@@ -1,8 +1,3 @@
-import { auth } from "src/app/api/auth/auth";
-import { User } from "src/db";
-
-import { notFound } from "next/navigation";
-
 export default function RootLayout({ children }) {
   return (
     <>

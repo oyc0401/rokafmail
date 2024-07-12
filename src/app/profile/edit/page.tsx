@@ -1,4 +1,4 @@
-import { auth } from "src/app/api/auth/auth";
+import { auth } from "src/auth";
 import { notFound } from "next/navigation";
 import { Client } from "./client";
 import { getUserByUsername } from "src/app/apiSSR/user/server";

@@ -1,4 +1,4 @@
-import { auth } from "src/app/api/auth/auth";
+import { auth } from "src/auth";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { NavHeader } from "src/components";

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Client } from "./client";
-import { auth } from "src/app/api/auth/auth";
+import { auth } from "src/auth";
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 export const metadata = {
   title: "하늘인편 | 비밀번호 변경",

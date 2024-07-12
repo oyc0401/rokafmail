@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 
 import { NavHeader } from 'src/components'
-import { auth } from "src/app/api/auth/auth";
+import { auth } from "src/qauth";
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { Paper } from "./paper";
 import { getPostContent } from "src/app/apiSSR/mail/server";
