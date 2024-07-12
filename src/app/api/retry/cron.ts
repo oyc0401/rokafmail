@@ -1,6 +1,6 @@
 import { makeLogger } from "config/winston";
-import { bean } from "src/bean/bean";
-import { RetryService } from "src/service/retry/retryService";
+import { bean } from "src/server/bean/bean";
+import { RetryService } from "src/server/service/retry/retryService";
 const cron = require("node-cron");
 const logger = makeLogger("repeat");
 

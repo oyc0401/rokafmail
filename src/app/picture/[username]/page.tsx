@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { BasicBody, BasicFormArea, BasicHeader } from "src/components";
-import { getUserByUsername } from "src/app/apiSSR/user/server";
+import { getUserByUsername } from "src/server/apiSSR/user/server";
 
 
 export const metadata = {

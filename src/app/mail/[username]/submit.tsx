@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
 import styles from "./page.module.css";
 import { useStore } from "./model";
-import { action } from "src/app/apiSSR/actionResponse";
-import { sendMail } from "src/app/apiAction/mail";
+import { action } from "src/server/actionResponse";
+import { sendMail } from "src/server/apiAction/mail";
 
 
 export function Submit({ username }) {

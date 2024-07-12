@@ -3,8 +3,8 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { NavHeader } from "src/components";
 import { LetterList } from "./LetterList";
-import { getUserByUsername } from "src/app/apiSSR/user/server";
-import { getMyPosts } from "src/app/apiSSR/profile/mails/server";
+import { getUserByUsername } from "src/server/apiSSR/user/server";
+import { getMyPosts } from "src/server/apiSSR/profile/mails/server";
 
 export const metadata = {
   title: "하늘인편 | 내가 받은 편지",

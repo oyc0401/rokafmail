@@ -1,6 +1,6 @@
 "use server";
-import { bean } from "src/bean/bean";
-import { RetryService } from "src/service/retry/retryService";
+import { bean } from "src/server/bean/bean";
+import { RetryService } from "src/server/service/retry/retryService";
 
 export async function repost() {
   const retryService = new RetryService(bean);

@@ -2,8 +2,8 @@
 
 import { makeLogger } from "config/winston";
 const logger = makeLogger("Control User");
-import { UserService, syncResponseToStr } from "src/service/user/UserService";
-import { bean } from "src/bean/bean";
+import { UserService, syncResponseToStr } from "src/server/service/user/UserService";
+import { bean } from "src/server/bean/bean";
 
 
 export async function userDoubleCheck(userId: number) {

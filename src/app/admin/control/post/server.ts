@@ -2,8 +2,8 @@
 
 import { Post } from "src/db";
 import { makeLogger } from "config/winston";
-import RokafClient from "src/service/rokafClient/RokafClient";
-import { PrismaPostQueue } from "src/repository/postQueue/prismaPostQueue";
+import RokafClient from "src/server/service/rokafClient/RokafClient";
+import { PrismaPostQueue } from "src/server/repository/postQueue/prismaPostQueue";
 const logger = makeLogger("Control Post");
 
 // import {} from'src/app/api/retry/'

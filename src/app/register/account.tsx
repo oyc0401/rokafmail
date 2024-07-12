@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import styles from "./register.module.css";
-import { existUsername } from "src/app/apiAction/existUsername";
+import { existUsername } from "src/server/apiAction/existUsername";
 import { useStore, useStoreBase } from "./model";
 import {
   InputField,
@@ -11,7 +11,7 @@ import {
   BasicFooter,
 } from "src/components";
 import { validatePassword, validateUsername } from "src/utils/validate";
-import { action } from "../apiSSR/actionResponse";
+import { action } from "src/server/actionResponse";
 
 export default function Account() {
   const {

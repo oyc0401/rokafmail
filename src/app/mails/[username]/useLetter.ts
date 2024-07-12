@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "react-query";
-import { LetterItem, getPostedLetters, getUnpostedLetters } from "src/app/apiAction/mails/server"
-import { action } from "src/app/apiSSR/actionResponse";
+import { LetterItem, getPostedLetters, getUnpostedLetters } from "src/server/apiAction/mails/server"
+import { action } from "src/server/actionResponse";
 
 /**
  * 미발송 편지 불러오는 무한 스크롤 훅

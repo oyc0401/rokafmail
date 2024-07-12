@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { editProfile } from "src/app/apiAction/profile";
+import { editProfile } from "src/server/apiAction/profile";
 import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
 
 import { validateMessage, validateBirth, validateName } from "src/utils/validate";
-import { action } from "src/app/apiSSR/actionResponse";
+import { action } from "src/server/actionResponse";
 
 export function Client({ username, name, birth, message }) {
   const [nameForm, setName] = useState(name);

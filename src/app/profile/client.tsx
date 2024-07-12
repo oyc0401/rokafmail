@@ -1,8 +1,8 @@
 "use client";
 import { signOut } from "next-auth/react";
-import { deleteUser } from "src/app/apiAction/profile";
+import { deleteUser } from "src/server/apiAction/profile";
 import Link from "next/link";
-import { action } from "../apiSSR/actionResponse";
+import { action } from "src/server/actionResponse";
 import { useRouter } from "next/navigation";
 import { sha256 } from "src/utils/sha256";
 export function SignOut() {

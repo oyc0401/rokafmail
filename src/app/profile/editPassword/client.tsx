@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import { editPassword } from "src/app/apiAction/profile";
+import { editPassword } from "src/server/apiAction/profile";
 import { signOut } from "next-auth/react";
 import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
 import { validatePassword } from "src/utils/validate";
-import { action } from "src/app/apiSSR/actionResponse";
+import { action } from "src/server/actionResponse";
 import { useRouter } from "next/navigation";
 import { sha256 } from "src/utils/sha256";
 

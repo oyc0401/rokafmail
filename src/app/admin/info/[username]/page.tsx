@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Post, UnidentifiedUser, User, UserQueue } from "src/db";
 import { DatabaseTable } from "./Table";
-import { getUserByUsername } from "src/app/apiSSR/user/server";
+import { getUserByUsername } from "src/server/apiSSR/user/server";
 
 export default async function Page({ params }) {
 

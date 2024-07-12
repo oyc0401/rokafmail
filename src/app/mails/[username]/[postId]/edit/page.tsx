@@ -2,10 +2,10 @@ import { notFound, redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 import { NavHeader } from 'src/components'
-import { getUserByUsername } from "src/app/apiSSR/user/server";
+import { getUserByUsername } from "src/server/apiSSR/user/server";
 import { Paper } from "./paper";
 import { Submit } from './submit'
-import { getPostEverything } from "src/app/apiSSR/mail/server";
+import { getPostEverything } from "src/server/apiSSR/mail/server";
 
 async function getPostAuthCheck(postId) {
   const post = await getPostEverything(postId);

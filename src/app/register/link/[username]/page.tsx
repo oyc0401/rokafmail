@@ -3,7 +3,7 @@ import Image from "next/image";
 import { CheckCircle, CopyIcon } from "public/assets/index";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getUserByUsername } from "src/app/apiSSR/user/server";
+import { getUserByUsername } from "src/server/apiSSR/user/server";
 import { BasicFooter, NavHeader } from "src/components";
 import { LinkButton } from "src/components/LinkButton";
 

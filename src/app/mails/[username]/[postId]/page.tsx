@@ -1,10 +1,10 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { NavHeader } from 'src/components'
-import { getUserByUsername } from "src/app/apiSSR/user/server";
+import { getUserByUsername } from "src/server/apiSSR/user/server";
 import { Paper } from "./paper";
-import { getMailById } from "src/app/apiSSR/mails/[username]/[postId]/server";
-import { action } from "src/app/apiSSR/actionResponse";
+import { getMailById } from "src/server/apiSSR/mails/[username]/[postId]/server";
+import { action } from "src/server/actionResponse";
 
 export const metadata = {
   title: "하늘인편 | 편지 확인",

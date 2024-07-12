@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { LoginPage } from "./LoginPage";
-import { getPostWithUserById } from "src/app/apiSSR/mail/server";
+import { getPostWithUserById } from "src/server/apiSSR/mail/server";
 
 
 export const metadata = {

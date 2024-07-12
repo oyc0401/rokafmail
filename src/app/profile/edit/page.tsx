@@ -1,7 +1,7 @@
 import { auth } from "src/auth";
 import { notFound } from "next/navigation";
 import { Client } from "./client";
-import { getUserByUsername } from "src/app/apiSSR/user/server";
+import { getUserByUsername } from "src/server/apiSSR/user/server";
 export const metadata = {
   title: "하늘인편 | 정보 수정",
 };

@@ -1,10 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { deleteMail } from "src/app/apiAction/mails/delete";
+import { deleteMail } from "src/server/apiAction/mails/delete";
 import { useStore } from "./model";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
-import { action } from "src/app/apiSSR/actionResponse";
-import { editPost } from "src/app/apiAction/mails/edit";
+import { action } from "src/server/actionResponse";
+import { editPost } from "src/server/apiAction/mails/edit";
 
 export function Submit({ postId, username, posted, url }) {
   const { name, relationship, title, contents, password, isPublic } = useStore();

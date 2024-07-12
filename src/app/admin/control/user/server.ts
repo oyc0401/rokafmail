@@ -1,8 +1,8 @@
 "use server";
 
 import { makeLogger } from "config/winston";
-import { bean } from "src/bean/bean";
-import { UserService, syncResponseToStr } from "src/service/user/UserService";
+import { bean } from "src/server/bean/bean";
+import { UserService, syncResponseToStr } from "src/server/service/user/UserService";
 const logger = makeLogger("Control User");
 import { Trainee } from "src/type/serviceType";
 

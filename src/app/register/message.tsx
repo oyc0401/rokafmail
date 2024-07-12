@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "./register.module.css";
 import { useStoreBase } from "./model";
 import { useRouter } from "next/navigation";
-import { register } from "src/app/apiAction/register";
+import { register } from "src/server/apiAction/register";
 import {
   InputField,
   BasicFormArea,
@@ -12,7 +12,7 @@ import {
   BasicFooter,
 } from "src/components";
 import { validateMessage } from "src/utils/validate";
-import { action } from "../apiSSR/actionResponse";
+import { action } from "src/server/actionResponse";
 import { sha256 } from "src/utils/sha256";
 export default function Message() {
   const {

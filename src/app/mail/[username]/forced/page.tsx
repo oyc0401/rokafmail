@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import { ShareButton } from "../copy_button";
 import { NavHeader } from 'src/components'
 import { Dayjs } from "dayjs";
-import { getUserByUsername } from "src/app/apiSSR/user/server";
+import { getUserByUsername } from "src/server/apiSSR/user/server";
 const dayjs = require('dayjs');
 
 

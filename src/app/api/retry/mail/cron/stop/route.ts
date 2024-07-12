@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { CronStore } from "../../../cron";
 import { auth } from "src/auth";
+import { User } from "src/db";
 
 export async function POST(request: Request) {
   // <어드민 인증 코드>

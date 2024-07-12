@@ -7,7 +7,7 @@ import { NavHeader } from "src/components";
 import { Edit } from "public/assets";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { getUserByUsername } from "../apiSSR/user/server";
+import { getUserByUsername } from "src/server/apiSSR/user/server";
 import { LinkButton } from "src/components/LinkButton";
 
 export const metadata = {

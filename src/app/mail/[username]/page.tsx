@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { BasicFooter } from "src/components";
 import { NavHeader } from 'src/components'
 import { getEnter, getCompletion, canSearch, Status, serveStatus } from "src/lib/time";
-import { getUserByUsername } from "src/app/apiSSR/user/server";
+import { getUserByUsername } from "src/server/apiSSR/user/server";
 import styles from "./page.module.css";
 import { Submit } from "./submit";
 import { Paper } from "./paper";
