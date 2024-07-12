@@ -12,7 +12,7 @@ import {
   BasicFooter,
 } from "src/components";
 import { validateMessage } from "src/utils/validate";
-import { action } from "src/server/actionResponse";
+import { action } from "src/lib/actionResponse";
 import { sha256 } from "src/utils/sha256";
 export default function Message() {
   const {

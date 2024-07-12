@@ -2,7 +2,7 @@
 
 import { Post } from "src/db";
 import { makeLogger } from "config/winston";
-import { ActionResponse } from "src/server/actionResponse";
+import { ActionResponse } from "src/lib/actionResponse";
 import prisma from "src/db/prisma";
 const logger = makeLogger("Delete Mail");
 

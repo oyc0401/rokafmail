@@ -1,7 +1,7 @@
 "use server";
 
 import { omit } from "lodash";
-import { ActionResponse } from "src/server/actionResponse";
+import { ActionResponse } from "src/lib/actionResponse";
 import prisma from "src/db/prisma";
 
 /**

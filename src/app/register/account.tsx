@@ -11,7 +11,7 @@ import {
   BasicFooter,
 } from "src/components";
 import { validatePassword, validateUsername } from "src/utils/validate";
-import { action } from "src/server/actionResponse";
+import { action } from "src/lib/actionResponse";
 
 export default function Account() {
   const {

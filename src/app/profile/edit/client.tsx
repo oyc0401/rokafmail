@@ -5,7 +5,7 @@ import { editProfile } from "src/server/apiAction/profile";
 import { BasicBody, BasicFooter, BasicFormArea, BasicHeader, InputField } from "src/components";
 
 import { validateMessage, validateBirth, validateName } from "src/utils/validate";
-import { action } from "src/server/actionResponse";
+import { action } from "src/lib/actionResponse";
 
 export function Client({ username, name, birth, message }) {
   const [nameForm, setName] = useState(name);

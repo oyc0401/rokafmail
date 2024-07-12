@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { deleteMail } from "src/server/apiAction/mails/delete";
 import { useStore } from "./model";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
-import { action } from "src/server/actionResponse";
+import { action } from "src/lib/actionResponse";
 import { editPost } from "src/server/apiAction/mails/edit";
 
 export function Submit({ postId, username, posted, url }) {

@@ -4,7 +4,7 @@ import { makeLogger } from "config/winston";
 import { ValidateError, validateBirth, validateGeneration, validateHashedPassword, validateMessage, validateName, validateUsername } from "src/utils/validate";
 import { RegisterProps } from "src/server/service/user/UserService";
 import { bean } from "src/server/bean/bean";
-import { ActionResponse } from "src/server/actionResponse";
+import { ActionResponse } from "src/lib/actionResponse";
 import { Trainee } from "src/type/serviceType";
 const logger = makeLogger("Register");
 

@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { ActionResponse } from "src/server/actionResponse";
+import { ActionResponse } from "src/lib/actionResponse";
 import prisma from "src/db/prisma";
 
 // 해당 아이디와 편지가 같은 사람이 아니면 notFound

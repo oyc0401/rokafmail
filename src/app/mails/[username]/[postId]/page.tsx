@@ -4,7 +4,7 @@ import { NavHeader } from 'src/components'
 import { getUserByUsername } from "src/server/apiSSR/user/server";
 import { Paper } from "./paper";
 import { getMailById } from "src/server/apiSSR/mails/[username]/[postId]/server";
-import { action } from "src/server/actionResponse";
+import { action } from "src/lib/actionResponse";
 
 export const metadata = {
   title: "하늘인편 | 편지 확인",

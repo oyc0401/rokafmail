@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { NavHeader } from "src/components";
 import { minuteToStr, postMailDMinute } from "src/lib/time";
 import { getUnpostedLetters, getPostedLetters } from "src/server/apiAction/mails/server";
-import { action } from "src/server/actionResponse";
+import { action } from "src/lib/actionResponse";
 import { getUserByUsername } from "src/server/apiSSR/user/server";
 import { TabBar } from "./TabBar";
 import { UnpostedLetterPage } from "./pages/UnpostedLetterPage";

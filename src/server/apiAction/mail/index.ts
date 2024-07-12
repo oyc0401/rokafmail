@@ -6,7 +6,7 @@ import { MailService } from "src/server/service/mail/MailService";
 import { bean } from "src/server/bean/bean";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
 import { validateAttack } from "src/utils/filter/filter";
-import { ActionResponse } from "src/server/actionResponse";
+import { ActionResponse } from "src/lib/actionResponse";
 
 /**
  * `Server Action`

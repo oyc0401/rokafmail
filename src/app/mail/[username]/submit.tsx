@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
 import styles from "./page.module.css";
 import { useStore } from "./model";
-import { action } from "src/server/actionResponse";
+import { action } from "src/lib/actionResponse";
 import { sendMail } from "src/server/apiAction/mail";
 
 

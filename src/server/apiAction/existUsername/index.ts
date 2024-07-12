@@ -1,5 +1,5 @@
 "use server";
-import { ActionResponse } from "src/server/actionResponse";
+import { ActionResponse } from "src/lib/actionResponse";
 import { bean } from "src/server/bean/bean";
 
 /**

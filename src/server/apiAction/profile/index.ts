@@ -2,7 +2,7 @@
 import { User } from "src/db";
 import { bean } from "src/server/bean/bean";
 import { labelLogger } from "config/logger/labelLogger";
-import { ActionResponse } from "src/server/actionResponse";
+import { ActionResponse } from "src/lib/actionResponse";
 import { auth } from "src/auth";
 
 /**
