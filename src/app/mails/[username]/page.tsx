@@ -7,7 +7,9 @@ import { getPostedPosts, getNotPostedPosts, getNotAuthPosts } from "src/app/apiS
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { LetterList } from "./LetterList";
 import { TabBar } from "./TabBar";
-import { LetterClient } from "./LetterClient";
+import { UnpostedLetterPage } from "./UnpostedLetterPage";
+import { getUnpostedLetters } from "src/app/apiAction/mails/getNotAuthPost";
+import { action } from "src/app/apiSSR/actionResponse";
 
 
 export const metadata = {
@@ -25,29 +27,11 @@ export default async function Mails({ params, searchParams }) {
   let content = <></>;
 
   if (!user.connect) {
-    content = <LetterClient user={user}></LetterClient>
-  } else if (pageState == 'complete') {
-    const letters = await getPostedPosts(username);
-    content = (
-      <>
-        <TabBar username={username} active={0}></TabBar>
-        <LetterList letters={letters} emptyMessage='받은 편지가 없습니다.'></LetterList>
-      </>
-    );
+    content = <BeforeLetter user={user} />
   } else if (pageState == 'wait') {
-    const unposteds = await getNotPostedPosts(username);
-    content = <>
-      <TabBar username={username} active={1}></TabBar>
-      <LetterList letters={unposteds} emptyMessage='모든 편지가 보내졌습니다.'></LetterList>
-    </>
+    content = <WaitLetter user={user} />
   } else {
-    const letters = await getPostedPosts(username);
-    content = (
-      <>
-        <TabBar username={username} active={0}></TabBar>
-        <LetterList letters={letters} emptyMessage='받은 편지가 없습니다.'></LetterList>
-      </>
-    );
+    content = <CompleteLetter user={user} />
   }
 
   return (
@@ -71,15 +55,35 @@ export default async function Mails({ params, searchParams }) {
 
 
 async function BeforeLetter({ user }) {
-  const unposteds = await getNotAuthPosts(user.username);
-
+  const letters = await action(getUnpostedLetters(user.username, 1, 10));
   return (
     <>
-      <TimeIndicator generation={user.generation}></TimeIndicator>
-      <LetterList letters={unposteds} emptyMessage='받은 편지가 없습니다.'></LetterList>
+      <TimeIndicator generation={user.generation} />
+      <UnpostedLetterPage user={user} initialData={letters} />
     </>
   )
+}
 
+
+
+async function CompleteLetter({ user }) {
+  const letters = await getPostedPosts(user.username);
+  return (
+    <>
+      <TabBar username={user.username} active={0}></TabBar>
+      <LetterList letters={letters} emptyMessage='받은 편지가 없습니다.'></LetterList>
+    </>
+  );
+}
+
+async function WaitLetter({ user }) {
+  const letters = await getNotPostedPosts(user.username);
+  return (
+    <>
+      <TabBar username={user.username} active={1}></TabBar>
+      <LetterList letters={letters} emptyMessage='모든 편지가 보내졌습니다.'></LetterList>
+    </>
+  );
 }
 
 function TimeIndicator({ generation }) {

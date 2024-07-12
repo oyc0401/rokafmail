@@ -6,22 +6,49 @@ import prisma from "src/db/prisma";
 /**
  * `Server Action`
  * 
- * 해당 편지를 삭제한다.
- * @status `200` `401` `404`
+ * 안보내진 편지를 모두 가져온다.
+ * @status `200`
  */
-export async function getNotAuthPosts(username: string) {
-  const queuePrivate = await prisma.post.findMany({
-    select: privateSelect,
-    where: { user: { username }, isPublic: false, posted: false },
-  });
-  const queuePublic = await prisma.post.findMany({
+export async function getUnpostedLetters(username: string, page: number, limit: number) {
+  const list = await prisma.post.findMany({
     select: publicSelect,
-    where: { user: { username }, isPublic: true, posted: false },
+    where: { user: { username }, posted: false },
+    skip: (page - 1) * limit,
+    take: limit,
+    orderBy: { id: 'desc' }
   });
 
-  const queues = [...queuePrivate, ...queuePublic];
-  const queueSorted = queues.sort((a, b) => a.id > b.id ? -1 : 1);
-  return ActionResponse.ok(queueSorted);
+  let letters: LetterItem[] = [];
+
+  for (let publicLetter of list) {
+    if (publicLetter.isPublic) {
+      letters.push(publicLetter);
+    } else {
+      const privateLetter: LetterItem = publicLetter;
+      privateLetter.contents = undefined;
+      letters.push(privateLetter);
+    }
+  }
+
+  return ActionResponse.ok(letters);
+}
+
+interface LetterItem {
+  id: number;
+  userId: number;
+  name: string;
+  relationship: string;
+  title: string;
+  contents?: string;
+  createdAt: Date;
+  posted: boolean;
+  postAt: Date | null;
+  isPublic: boolean;
+  user: {
+    username: string;
+    generation: number;
+    connect: boolean;
+  };
 }
 
 const postSelect = {
