@@ -1,19 +1,18 @@
-
-import { getPostedLetters, getUnpostedLetters } from "src/app/apiAction/mails/server"
-import { action } from "src/app/apiSSR/actionResponse";
 import { useInfiniteQuery } from "react-query";
+import { LetterItem, getPostedLetters, getUnpostedLetters } from "src/app/apiAction/mails/server"
+import { action } from "src/app/apiSSR/actionResponse";
 
 /**
- * 
+ * 미발송 편지 불러오는 무한 스크롤 훅
  */
-const fetchUnpostedLetters = async ({ pageParam = 1, queryKey }) => {
-  const [, username] = queryKey;
-  const limit = 10; // 한번에 가져올 데이터 수
-  const letters = await action(getUnpostedLetters(username, pageParam, limit));
-  return { letters, nextPage: pageParam + 1 };
-};
+export const useUnpostedLetters = (username: string, initialData: LetterItem[]) => {
+  const fetchUnpostedLetters = async ({ pageParam = 1, queryKey }) => {
+    const [, username] = queryKey;
+    const limit = 10; // 한번에 가져올 데이터 수
+    const letters = await action(getUnpostedLetters(username, pageParam, limit));
+    return { letters, nextPage: pageParam + 1 };
+  };
 
-export const useUnpostedLetters = (username, initialData) => {
   return useInfiniteQuery(
     ['unpostedLetters', username],
     fetchUnpostedLetters,
@@ -31,18 +30,18 @@ export const useUnpostedLetters = (username, initialData) => {
     }
   );
 };
+
 /**
- * 
+ * 발송된 편지 불러오는 무한 스크롤 훅
  */
+export const usePostedLetters = (username: string, initialData: LetterItem[]) => {
+  const fetchPostedLetters = async ({ pageParam = 1, queryKey }) => {
+    const [, username] = queryKey;
+    const limit = 10; // 한번에 가져올 데이터 수
+    const letters = await action(getPostedLetters(username, pageParam, limit));
+    return { letters, nextPage: pageParam + 1 };
+  };
 
-const fetchPostedLetters = async ({ pageParam = 1, queryKey }) => {
-  const [, username] = queryKey;
-  const limit = 10; // 한번에 가져올 데이터 수
-  const letters = await action(getPostedLetters(username, pageParam, limit));
-  return { letters, nextPage: pageParam + 1 };
-};
-
-export const usePostedLetters = (username, initialData) => {
   return useInfiniteQuery(
     ['postedLetters', username],
     fetchPostedLetters,
@@ -60,8 +59,3 @@ export const usePostedLetters = (username, initialData) => {
     }
   );
 };
-
-/**
- * 
- */
-

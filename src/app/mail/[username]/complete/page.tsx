@@ -84,7 +84,7 @@ function Good({ name }) {
 function Later({ day, name }) {
   return (
     <p className="text-lg">
-      {day} 뒤에 <span className='text-primary'>{name}</span>{" "}
+      {day} 후에 <span className='text-primary'>{name}</span>{" "}
       훈련병에게
       <br />
       편지가 전달됩니다!

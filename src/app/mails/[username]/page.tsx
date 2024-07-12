@@ -1,16 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
 import { NavHeader } from "src/components";
 import { minuteToStr, postMailDMinute } from "src/lib/time";
-import { getUserByUsername } from "src/app/apiSSR/user/server";
-import { TabBar } from "./TabBar";
-import { UnpostedLetterPage } from "./UnpostedLetterPage";
 import { getUnpostedLetters, getPostedLetters } from "src/app/apiAction/mails/server";
 import { action } from "src/app/apiSSR/actionResponse";
-import { PostedLetterPage } from "./PostedLetterPage";
-import { WaitLetterPage } from "./WaitLetterPage";
-
+import { getUserByUsername } from "src/app/apiSSR/user/server";
+import { TabBar } from "./TabBar";
+import { UnpostedLetterPage } from "./pages/UnpostedLetterPage";
+import { PostedLetterPage } from "./pages/PostedLetterPage";
+import { WaitLetterPage } from "./pages/WaitLetterPage";
 
 export const metadata = {
   title: "하늘인편 | 받은 편지함",
@@ -47,7 +45,8 @@ export default async function Mails({ params, searchParams }) {
             <Link className={"submit shadow-md"} href={`/mail/${user.username}`}>
               편지 작성
             </Link>
-          </div></footer>
+          </div>
+        </footer>
       </nav>
     </>
   );
@@ -63,8 +62,6 @@ async function BeforeLetter({ user }) {
     </>
   )
 }
-
-
 
 async function CompleteLetter({ user }) {
   const letters = await action(getPostedLetters(user.username, 1, 10));

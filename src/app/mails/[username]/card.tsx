@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-
 import RokafSmall from 'public/assets/rokaf-small.png';
 
 export function PostCard({ id, title, name, rel, time, username, contents, isPublic }) {
@@ -19,7 +18,6 @@ export function PostCard({ id, title, name, rel, time, username, contents, isPub
             <p className="text-sm">{`${name} | ${rel}`}</p>
             <p className="text-xs">{time}</p>
           </div>
-
         </div>
       </Link>
     </div>
@@ -32,9 +30,7 @@ export function PostSkeletonCard() {
       <div className='cursor-pointer bg-[#FFFDF8] active:opacity-75 p-4 shadow-sm rounded max-w-3xl '>
         <div className="flex flex-row justify-between space-x-2">
           <div className="bg-[#F2F0EC] mb-1.5 h-6 w-48 rounded"></div>
-          {/* <Image className="w-10 h-4" src={RokafSmall} alt='공군마크' ></Image> */}
         </div>
-
         <div className="flex flex-row justify-between items-end space-x-2 mt-0.5">
           <div className="bg-[#F2F0EC] h-5 w-28 rounded"></div>
           <div className="bg-[#F2F0EC] h-5 w-16 rounded"></div>

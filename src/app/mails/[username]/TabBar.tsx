@@ -1,7 +1,6 @@
 'use client'
 import { useRouter } from "next/navigation";
 
-
 export function TabBar({ username, active }) {
   const router = useRouter();
   return <div className="h-[56px] w-full flex p-1">

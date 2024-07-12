@@ -59,7 +59,7 @@ function privateLetterFilter(letters: LetterItem[]) {
   return value;
 }
 
-interface LetterItem {
+export interface LetterItem {
   id: number;
   userId: number;
   name: string;
