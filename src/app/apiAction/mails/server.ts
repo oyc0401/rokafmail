@@ -19,16 +19,7 @@ export async function getUnpostedLetters(username: string, page: number, limit: 
     orderBy: { id: 'desc' }
   });
 
-  let letters: LetterItem[] = [];
-
-  for (let publicLetter of list) {
-    if (publicLetter.isPublic) {
-      letters.push(publicLetter);
-    } else {
-      const privateLetter: LetterItem = omit(publicLetter, ['contents']);
-      letters.push(privateLetter);
-    }
-  }
+  const letters = privateLetterFilter(list);
 
   return ActionResponse.ok(letters);
 }
@@ -48,18 +39,24 @@ export async function getPostedLetters(username: string, page: number, limit: nu
     orderBy: { id: 'desc' }
   });
 
-  let letters: LetterItem[] = [];
+  const letters = privateLetterFilter(list);
 
-  for (let publicLetter of list) {
+  return ActionResponse.ok(letters);
+}
+
+function privateLetterFilter(letters: LetterItem[]) {
+  let value: LetterItem[] = [];
+
+  for (let publicLetter of letters) {
     if (publicLetter.isPublic) {
-      letters.push(publicLetter);
+      value.push(publicLetter);
     } else {
       const privateLetter: LetterItem = omit(publicLetter, ['contents']);
-      letters.push(privateLetter);
+      value.push(privateLetter);
     }
   }
 
-  return ActionResponse.ok(letters);
+  return value;
 }
 
 interface LetterItem {

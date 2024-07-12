@@ -73,7 +73,7 @@ export default async function Complete({ searchParams, params }) {
 // 여러 텍스트 컴포넌트 만들기
 function Good({ name }) {
   return (
-    <p className="text-xl">
+    <p className="text-lg">
       1일 이내에 <span className='text-primary'>{name}</span> 훈련병에게
       <br />
       편지가 전달됩니다!
@@ -83,7 +83,7 @@ function Good({ name }) {
 
 function Later({ day, name }) {
   return (
-    <p className="text-xl">
+    <p className="text-lg">
       {day} 뒤에 <span className='text-primary'>{name}</span>{" "}
       훈련병에게
       <br />
