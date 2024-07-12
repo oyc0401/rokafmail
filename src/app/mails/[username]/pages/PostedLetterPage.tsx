@@ -1,8 +1,8 @@
 'use client'
 import { dateToStr } from "src/lib/time";
 import { useEffect, useRef } from "react";
-import { PostCard, PostSkeletonCard } from "./card";
-import { usePostedLetters } from "./useLetter";
+import { PostCard, PostSkeletonCard } from "../card";
+import { usePostedLetters } from "../useLetter";
 
 export function PostedLetterPage({ user, initialData }) {
   const {
