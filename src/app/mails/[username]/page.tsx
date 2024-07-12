@@ -7,6 +7,7 @@ import { getPostedPosts, getNotPostedPosts, getNotAuthPosts } from "src/app/apiS
 import { getUserByUsername } from "src/app/apiSSR/user/server";
 import { LetterList } from "./LetterList";
 import { TabBar } from "./TabBar";
+import { LetterClient } from "./LetterClient";
 
 
 export const metadata = {
@@ -24,12 +25,7 @@ export default async function Mails({ params, searchParams }) {
   let content = <></>;
 
   if (!user.connect) {
-    const unposteds = await getNotAuthPosts(username);
-
-    content = <>
-      <TimeIndicator generation={user.generation}></TimeIndicator>
-      <LetterList letters={unposteds} emptyMessage='받은 편지가 없습니다.'></LetterList>
-    </>
+    content = <LetterClient user={user}></LetterClient>
   } else if (pageState == 'complete') {
     const letters = await getPostedPosts(username);
     content = (
@@ -71,6 +67,19 @@ export default async function Mails({ params, searchParams }) {
       </nav>
     </>
   );
+}
+
+
+async function BeforeLetter({ user }) {
+  const unposteds = await getNotAuthPosts(user.username);
+
+  return (
+    <>
+      <TimeIndicator generation={user.generation}></TimeIndicator>
+      <LetterList letters={unposteds} emptyMessage='받은 편지가 없습니다.'></LetterList>
+    </>
+  )
+
 }
 
 function TimeIndicator({ generation }) {
