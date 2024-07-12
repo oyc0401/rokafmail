@@ -1,7 +1,7 @@
 'use client'
 import { dateToStr } from "src/lib/time";
 import { useEffect, useRef } from "react";
-import { PostCard } from "./card";
+import { PostCard, PostSkeletonCard } from "./card";
 import { useUnpostedLetters } from "./useLetter";
 
 export function UnpostedLetterPage({ user, initialData }) {
@@ -43,6 +43,10 @@ export function UnpostedLetterPage({ user, initialData }) {
 
   const letters = (data?.pages.flatMap(page => page.letters))!;
 
+  if (letters.length == 0) {
+    return <p className="text-medium p-4 text-fontlight">받은 편지가 없습니다.</p>
+  }
+  
   return (
     <>
       <div>
@@ -75,8 +79,8 @@ export function UnpostedLetterPage({ user, initialData }) {
           </div>
         })}
       </div>
-      {isFetchingNextPage && <h4>Loading...</h4>}
-      {!hasNextPage && <p style={{ textAlign: 'center' }}>모든 편지를 불러왔습니다.</p>}
+      {isFetchingNextPage &&<PostSkeletonCard/>}
+      {!hasNextPage && <p style={{ textAlign: 'center' }}></p>}
     </>
   );
 }

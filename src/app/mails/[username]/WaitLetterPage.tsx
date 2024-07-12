@@ -2,9 +2,9 @@
 import { dateToStr } from "src/lib/time";
 import { useEffect, useRef } from "react";
 import { PostCard, PostSkeletonCard } from "./card";
-import { usePostedLetters } from "./useLetter";
+import { useUnpostedLetters } from "./useLetter";
 
-export function PostedLetterPage({ user, initialData }) {
+export function WaitLetterPage({ user, initialData }) {
   const {
     data,
     fetchNextPage,
@@ -12,7 +12,7 @@ export function PostedLetterPage({ user, initialData }) {
     isLoading,
     isFetchingNextPage,
     error
-  } = usePostedLetters(user.username, initialData);
+  } = useUnpostedLetters(user.username, initialData);
 
   const observerRef = useRef<IntersectionObserver>();
   const lastLetterRef = useRef(null);
@@ -41,12 +41,10 @@ export function PostedLetterPage({ user, initialData }) {
     return <div>편지를 불러오는 중에 오류가 발생했습니다.</div>;
   }
 
-
-
   const letters = (data?.pages.flatMap(page => page.letters))!;
 
   if (letters.length == 0) {
-    return <p className="text-medium p-4 text-fontlight">받은 편지가 없습니다.</p>
+    return <p className="text-medium p-4 text-fontlight">모든 편지가 전송되었습니다.</p>
   }
 
   return (

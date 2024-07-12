@@ -3,13 +3,13 @@ import { notFound } from "next/navigation";
 
 import { NavHeader } from "src/components";
 import { minuteToStr, postMailDMinute } from "src/lib/time";
-import { getPostedPosts, getNotPostedPosts, getNotAuthPosts } from "src/app/apiSSR/mails/server";
 import { getUserByUsername } from "src/app/apiSSR/user/server";
-import { LetterList } from "./LetterList";
 import { TabBar } from "./TabBar";
 import { UnpostedLetterPage } from "./UnpostedLetterPage";
-import { getUnpostedLetters } from "src/app/apiAction/mails/getNotAuthPost";
+import { getUnpostedLetters, getPostedLetters } from "src/app/apiAction/mails/server";
 import { action } from "src/app/apiSSR/actionResponse";
+import { PostedLetterPage } from "./PostedLetterPage";
+import { WaitLetterPage } from "./WaitLetterPage";
 
 
 export const metadata = {
@@ -67,21 +67,23 @@ async function BeforeLetter({ user }) {
 
 
 async function CompleteLetter({ user }) {
-  const letters = await getPostedPosts(user.username);
+  const letters = await action(getPostedLetters(user.username, 1, 10));
   return (
     <>
       <TabBar username={user.username} active={0}></TabBar>
-      <LetterList letters={letters} emptyMessage='받은 편지가 없습니다.'></LetterList>
+      <TimeIndicator generation={user.generation} />
+      <PostedLetterPage user={user} initialData={letters} />
     </>
   );
 }
 
 async function WaitLetter({ user }) {
-  const letters = await getNotPostedPosts(user.username);
+  const letters = await action(getUnpostedLetters(user.username, 1, 10));
   return (
     <>
       <TabBar username={user.username} active={1}></TabBar>
-      <LetterList letters={letters} emptyMessage='모든 편지가 보내졌습니다.'></LetterList>
+      <TimeIndicator generation={user.generation} />
+      <WaitLetterPage user={user} initialData={letters} />
     </>
   );
 }
@@ -92,6 +94,6 @@ function TimeIndicator({ generation }) {
   if (strDate == "0분") {
     return <></>;
   }
-  return <p className="pt-2">{strDate}뒤에 편지가 전달됩니다</p>;
+  return <p className=" text-sm pt-3 pb-1 text-[#AAAAAA]">{strDate}뒤에 편지가 전달됩니다</p>;
 }
 

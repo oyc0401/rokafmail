@@ -1,8 +1,11 @@
 
-import { getUnpostedLetters } from "src/app/apiAction/mails/getNotAuthPost"
+import { getPostedLetters, getUnpostedLetters } from "src/app/apiAction/mails/server"
 import { action } from "src/app/apiSSR/actionResponse";
 import { useInfiniteQuery } from "react-query";
 
+/**
+ * 
+ */
 const fetchUnpostedLetters = async ({ pageParam = 1, queryKey }) => {
   const [, username] = queryKey;
   const limit = 10; // 한번에 가져올 데이터 수
@@ -28,12 +31,14 @@ export const useUnpostedLetters = (username, initialData) => {
     }
   );
 };
-
+/**
+ * 
+ */
 
 const fetchPostedLetters = async ({ pageParam = 1, queryKey }) => {
   const [, username] = queryKey;
   const limit = 10; // 한번에 가져올 데이터 수
-  const letters = await action(getUnpostedLetters(username, pageParam, limit));
+  const letters = await action(getPostedLetters(username, pageParam, limit));
   return { letters, nextPage: pageParam + 1 };
 };
 
@@ -55,4 +60,8 @@ export const usePostedLetters = (username, initialData) => {
     }
   );
 };
+
+/**
+ * 
+ */
 
