@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react"
 export function IsAuthenticated({ children }) {
 
   const { data: session, status } = useSession();
-  if (status === "authenticated") {
+  if (status === "authenticated" && session.user.username != undefined) {
     return children;
   }
   return undefined;

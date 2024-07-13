@@ -9,7 +9,7 @@ export default function Privacy() {
    }
 
    const { data, status, update } = useSession();
-  console.log(data);
+   console.log('session:', data);
 
 
    return <>
