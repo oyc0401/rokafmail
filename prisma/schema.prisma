@@ -19,7 +19,8 @@ model User {
   memberSeq        String?
   sodae            String?
   connect          Boolean            @default(false)
-  createdAt        DateTime          @default(now())
+  createdAt        DateTime           @default(now())
+  auth             Auth?
   posts            Post[]
   postQueue        PostQueue[]
   unconnectedPosts UnconnectedPost[]
@@ -27,9 +28,17 @@ model User {
   usersQueue       UsersQueue[]
 }
 
+model Auth {
+  userId   Int     @id
+  provider String
+  password String?
+  uid      String?
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model Post {
   id               Int               @id @default(autoincrement())
-  userId           Int               
+  userId           Int
   name             String
   relationship     String
   title            String
@@ -43,7 +52,7 @@ model Post {
   postQueues       PostQueue[]
   unconnectedPosts UnconnectedPost[]
 
- @@index([userId])
+  @@index([userId])
 }
 
 model UnconnectedPost {
@@ -55,10 +64,10 @@ model UnconnectedPost {
 }
 
 model UsersQueue {
-  id     Int  @id @default(autoincrement())
-  userId Int
-  createdAt        DateTime          @default(now())
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model UnidentifiedUser {
@@ -68,10 +77,10 @@ model UnidentifiedUser {
 }
 
 model PostQueue {
-  id     Int  @id @default(autoincrement())
-  userId Int
-  postId Int
-  createdAt        DateTime          @default(now())
-  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  postId    Int
+  createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
