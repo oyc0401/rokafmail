@@ -16,9 +16,9 @@ export async function deleteUser(password: string) {
 
   const session = await auth();
   // 로그인이 되어있지 않으면 unauthorized (401)
-  if (!session?.user.email) return ActionResponse.unauthorized();
+  if (!session?.user.username) return ActionResponse.unauthorized();
 
-  const username = session.user.email;
+  const username = session.user.username;
 
   const user = await User.findByUsername(username);
   if (user?.password == password) {
@@ -42,9 +42,9 @@ export async function editProfile(name, birth, message) {
 
   const session = await auth();
   // 로그인이 되어있지 않으면 unauthorized (401)
-  if (!session?.user.email) return ActionResponse.unauthorized();
+  if (!session?.user.username) return ActionResponse.unauthorized();
 
-  const username = session.user.email;
+  const username = session.user.username;
 
   const user = await userRepository.findByUsername(username);
 
@@ -70,9 +70,9 @@ export async function editPassword(
 
   const session = await auth();
   // 로그인이 되어있지 않으면 unauthorized (401)
-  if (!session?.user.email) return ActionResponse.unauthorized();
+  if (!session?.user.username) return ActionResponse.unauthorized();
 
-  const username = session.user.email;
+  const username = session.user.username;
 
   const user = await userRepository.findByUsername(username);
   if (encryptedOriginPassword != user?.password) {

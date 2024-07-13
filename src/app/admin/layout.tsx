@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 
 export default async function RootLayout({ children }) {
   const session = await auth();
-  if (!session?.user.email) {
+  if (!session?.user.username) {
     notFound();
   }
 
@@ -15,7 +15,7 @@ export default async function RootLayout({ children }) {
     notFound();
   }
   
-  const username = session.user.email;
+  const username = session.user.username;
 
   const user = await User.findByUsername(username);
   if (!user) notFound();

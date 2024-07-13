@@ -8,9 +8,9 @@ export const metadata = {
 export default async function Page() {
   const session = await auth();
 
-  if (!session || !session.user || !session.user.email)  notFound();
+  if (!session || !session.user || !session.user.username)  notFound();
 
-  const username = session.user.email;
+  const username = session.user.username;
   
   const user = await getUserByUsername(username);
   if (!user)  notFound();

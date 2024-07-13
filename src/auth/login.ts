@@ -23,7 +23,7 @@ export async function login(username, password) {
 
 
 export function saltAndHashPassword(password: string) {
-  const encryptedPassword =sha256(password);
+  const encryptedPassword = sha256(password);
 
   return encryptedPassword;
 }
@@ -38,7 +38,7 @@ export async function getUserFromDb(username: string, encryptedPassword: string)
     }
     return {
       id: user.id.toString(),
-      email: user.username,
+      username: user.username,
       role: role,
     }
   }

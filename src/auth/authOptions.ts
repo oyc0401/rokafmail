@@ -10,6 +10,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       /** The user's postal address. */
+      username?: string;
       role: 'admin' | 'trainee'
     } & DefaultSession["user"]
   }
@@ -53,9 +54,16 @@ export const authOptions = {
       return session;
     },
     async signIn({ user, account, profile, email, credentials }) {
-      console.log(user, account, profile, email, credentials);
+      if (account.provider === 'google') {
+        console.log('signin:', user);
+        user.role = 'trainee';
+
+        return true;
+      }
       return true
     },
+
+
   },
   pages: {
     signIn: "/auth/signin",

@@ -18,10 +18,10 @@ export default async function Page({ params }) {
 
   // 세션
   const session = await auth();
-  if (!session || !session.user || !session.user.email)
+  if (!session || !session.user || !session.user.username)
     redirect("/auth/signin");
 
-  const username = session.user.email;
+  const username = session.user.username;
   const user = await getUserByUsername(username);
   if (!user) notFound();
 
