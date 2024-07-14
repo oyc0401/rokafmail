@@ -28,6 +28,9 @@ export function IsNotAuthenticated({ children }) {
   if (status === "unauthenticated") {
     return children;
   }
+  if (status === "authenticated" && session.user.username == undefined) {
+    return children;
+  }
 
   return undefined;
 }

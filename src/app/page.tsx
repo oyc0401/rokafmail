@@ -3,6 +3,8 @@ import { NavHeaderHome } from "src/components";
 
 import styles from "./page.module.css";
 import { IsAuthenticated, IsLoading, IsNotAuthenticated } from "src/components";
+import { BasicButton, BasicLink } from "src/components/BasicButton";
+import { GoogleButton } from "./pageClient";
 
 export default function Page() {
   return (
@@ -46,9 +48,12 @@ function TopView() {
             하늘인편을 통해 편지를 받았습니다!
           </p>
         </div>
-        <Link className="submit lg text-lg shadow-md" href={{ pathname: "/register" }}>
-          시작하기
-        </Link>
+        <GoogleButton className="mb-3">
+          구글로 계속하기
+        </GoogleButton>
+        <BasicLink className="text-white bg-primary" href={{ pathname: "/register" }}>
+          회원가입
+        </BasicLink>
         <div className="pt-4 pb-4 w-full">
           <div className="flex flex-row justify-center"          >
             <IsAuthenticated>
