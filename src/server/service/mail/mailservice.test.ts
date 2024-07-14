@@ -22,14 +22,14 @@ describe('serviceTest', () => {
 
   function createTrainee({
     username = 'testUser',
-    password = 'password123',
     name = '홍길동',
     birth = '19900101',
     generation = 857,
     message = '안녕하세요!'
   } = {}): Trainee {
-    return { username, password, name, birth, generation, message }
+    return { username, name, birth, generation, message }
   }
+  const dummyPassword = '00000000';
 
   function createLetter({
     name = '유찬', relationship = '친구',
@@ -56,7 +56,7 @@ describe('serviceTest', () => {
       const trainee = createTrainee();
       // 현재 상태: 훈련 주차
       RokafTime.setMock(trainee.generation, Status.training);
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const letter = createLetter();
@@ -83,7 +83,7 @@ describe('serviceTest', () => {
       const trainee = createTrainee();
       // 현재 상태: 훈련 주차
       RokafTime.setMock(trainee.generation, Status.before);
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const letter = createLetter();
@@ -107,7 +107,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       RokafTime.setMock(trainee.generation, Status.training);
 
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const letter = createLetter();
@@ -135,7 +135,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       RokafTime.setMock(trainee.generation, Status.training);
 
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const letter = createLetter();
@@ -163,7 +163,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       RokafTime.setMock(trainee.generation, Status.training);
 
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const letter = createLetter();
@@ -191,7 +191,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       RokafTime.setMock(trainee.generation, Status.working);
 
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const letter = createLetter();
@@ -219,7 +219,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       RokafTime.setMock(trainee.generation, Status.working);
 
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const letter = createLetter();
@@ -247,7 +247,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       RokafTime.setMock(trainee.generation, Status.working);
 
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const letter = createLetter();
@@ -271,7 +271,7 @@ describe('serviceTest', () => {
       // 현재 상태: 훈련 주차
       RokafTime.setMock(trainee.generation, Status.working);
 
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const letter = createLetter();
@@ -286,7 +286,7 @@ describe('serviceTest', () => {
 
 
   describe('유저의 미발송 편지 보내기', () => {
-    
+
     // 유저 프로필을 얻어오면 해당 유저의 미발송 편지를 보내는데, 거기에 활용됌
     test('미발송 편지 보내기를 하면 해당 유저의 모든 미발송 편지를 다시 보냅니다.', async () => {
       // 서버 상태 양호
@@ -305,7 +305,7 @@ describe('serviceTest', () => {
       const trainee = createTrainee({ generation: 862 });
       // 현재 상태: 입대 전
       RokafTime.setMock(trainee.generation, Status.training);
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 저장, 편지쓰기 기간 아니라 그냥 편지만 저장함
       const letter = createLetter();
@@ -336,7 +336,7 @@ describe('serviceTest', () => {
       const trainee = createTrainee({ generation: 862 });
       // 현재 상태: 훈련 주차
       RokafTime.setMock(trainee.generation, Status.training);
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 15개 보내기
       const POST_COUNT = 15;

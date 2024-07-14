@@ -23,14 +23,14 @@ describe('Retry Service Test', () => {
 
   function createTrainee({
     username = 'testUser',
-    password = 'password123',
     name = '홍길동',
     birth = '19900101',
     generation = 857,
     message = '안녕하세요!'
   } = {}): Trainee {
-    return { username, password, name, birth, generation, message, }
+    return { username, name, birth, generation, message, }
   }
+  const dummyPassword = '00000000';
 
   function createLetter({ userId = 1, name = '유찬', relationship = '친구',
     title = '제목', contents = 'contents',
@@ -58,7 +58,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       RokafTime.setMock(trainee.generation, Status.training);
-      const userId = await userService.register(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const post = createLetter({ userId });
@@ -96,7 +96,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       RokafTime.setMock(trainee.generation, Status.training);
-      const userId = await userService.register(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const post = createLetter({ userId });
@@ -135,7 +135,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       RokafTime.setMock(trainee.generation, Status.training);
-      const userId = await userService.register(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 편지 보내기
       const post = createLetter({ userId });
@@ -174,7 +174,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       RokafTime.setMock(trainee.generation, Status.training);
-      const userId = await userService.register(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 15개의 편지 생성
       const posts: any[] = [];
@@ -222,7 +222,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       RokafTime.setMock(trainee.generation, Status.training);
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 인증실패, 큐에 들어있음
       expect(await userQueue.size()).toBe(1);
@@ -271,7 +271,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       RokafTime.setMock(trainee.generation, Status.training);
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       expect(await userQueue.size()).toBe(1);
 
@@ -291,7 +291,7 @@ describe('Retry Service Test', () => {
 
       // 현재 상태: 훈련 주차 -> 회원가입
       RokafTime.setMock(trainee.generation, Status.training);
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       expect(await userQueue.size()).toBe(1);
 

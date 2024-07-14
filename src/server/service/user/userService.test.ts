@@ -26,14 +26,14 @@ describe('User Service Test', () => {
 
   function createTrainee({
     username = 'testUser',
-    password = 'password123',
     name = '홍길동',
     birth = '19900101',
     generation = 857,
     message = '안녕하세요!'
   } = {}): Trainee {
-    return { username, password, name, birth, generation, message, }
+    return { username, name, birth, generation, message, }
   }
+  const dummyPassword = '00000000';
 
   describe('Trainee 회원가입', () => {
     test('회원가입', async () => {
@@ -46,7 +46,7 @@ describe('User Service Test', () => {
       });
 
       const trainee = createTrainee();
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       const registeredTrainee = await userService.getTrainee(userId);
 
@@ -65,12 +65,12 @@ describe('User Service Test', () => {
 
       // 회원가입
       const trainee1 = createTrainee({ username: 'Michael' });
-      await userService.awaitRegister(trainee1);
+      await userService.registerCredential(trainee1, dummyPassword);
 
       // 중복된 아이디
       const trainee2 = createTrainee({ username: 'Michael' });
       // 오류 예상
-      await expect(userService.register(trainee2)).rejects.toThrow(ValidateError);
+      await expect(userService.registerCredential(trainee2, dummyPassword)).rejects.toThrow(ValidateError);
     });
 
 
@@ -92,7 +92,7 @@ describe('User Service Test', () => {
         });
 
         // 회원가입
-        const userId = await userService.awaitRegister(trainee);
+        const userId = await userService.registerCredential(trainee, dummyPassword);
         const registeredTrainee = await userService.getTrainee(userId);
 
         // 프로필 업데이트 여부 검증
@@ -119,7 +119,7 @@ describe('User Service Test', () => {
       });
 
       // 회원가입
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       const registeredTrainee = await userService.getTrainee(userId);
 
@@ -239,7 +239,7 @@ describe('User Service Test', () => {
       RokafTime.setMock(trainee.generation, Status.before);
 
       // 회원가입
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       // 정확한 정보 입력으로 소대번호 가져올 수 있음
       rokafClient.changeGetProfileReturnValue({
@@ -281,7 +281,7 @@ describe('User Service Test', () => {
       RokafTime.setMock(trainee.generation, Status.ending);
 
       // 회원가입
-      const userId = await userService.awaitRegister(trainee);
+      const userId = await userService.registerCredential(trainee, dummyPassword);
 
       const updatedTrainee1 = await userService.getTrainee(userId);
 

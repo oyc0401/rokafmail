@@ -9,7 +9,6 @@ export interface Letter {
 
 export interface Trainee {
   username: string;
-  password: string;
   name: string;
   birth: string;
   generation: number;

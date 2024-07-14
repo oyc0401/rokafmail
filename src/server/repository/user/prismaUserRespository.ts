@@ -2,7 +2,17 @@ import prisma from "src/db/prisma";
 import { EditProfileProps, InputAuth, InputUser, RokafProfile, UserJoinAuth, UserRepository } from "./userRepository";
 
 export class PrismaUserRepository implements UserRepository {
-  insert = async (data: InputUser) => prisma.user.create({ data });
+  insert = async (data: InputUser) =>
+    prisma.user.create({
+      data: {
+        username: data.username,
+        password: '00000000',
+        message: data.message,
+        name: data.name,
+        generation: data.generation,
+        birth: data.birth,
+      }
+    });
 
   createAuth = async (data: InputAuth) =>
     prisma.auth.create({
@@ -37,12 +47,6 @@ export class PrismaUserRepository implements UserRepository {
     });
 
   editPassword = async (id: number, password: string) => {
-    await prisma.user.update({
-      where: { id },
-      data: {
-        password: password,
-      }
-    });
     await prisma.auth.update({
       where: { userId: id },
       data: {

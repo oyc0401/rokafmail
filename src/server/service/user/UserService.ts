@@ -26,7 +26,7 @@ export class UserService {
     return user != null;
   }
 
-  async register(trainee: Trainee) {
+  async registerCredential(trainee: Trainee, password: string, async = false) {
     const logger = labelLogger("Register");
     if (await this.existUsername(trainee.username)) {
       throw new ValidateError('아이디가 중복되었습니다.');
@@ -37,40 +37,21 @@ export class UserService {
     await this.userRepository.createAuth({
       userId: newUser.id,
       provider: 'Credential',
-      password: trainee.password,
+      password: password,
       uid: null
     });
 
-    const { id: userId, username } = newUser
+    const { id: userId, username } = newUser;
 
-    // 빠른 응답을 위해 남은 로직은 비동기에서 진행
-    this.updateRokafProfile(userId, trainee).then((response) =>
-      logger.info(`${username} (${userId}) | ${syncResponseToStr(response)}`));
-
-    return userId;
-  }
-
-  // 테스트용! 나중에 지워라 retry에 있다
-  async awaitRegister(trainee: Trainee) {
-    const logger = labelLogger("AwaitRegister");
-    if (await this.existUsername(trainee.username)) {
-      throw new ValidateError('아이디가 중복되었습니다.');
+    if (async) {
+      // 빠른 응답을 위해 남은 로직은 비동기에서 진행
+      this.updateRokafProfile(userId, trainee).then((response) =>
+        logger.info(`${username} (${userId}) | ${syncResponseToStr(response)}`));
+    } else {
+      // 디폴트: 기훈단 응답 기다리기
+      const response = await this.updateRokafProfile(userId, trainee);
+      logger.info(`${username} (${userId}) | ${syncResponseToStr(response)}`)
     }
-
-    // 유저 생성
-    const newUser = await this.userRepository.insert(trainee);
-    await this.userRepository.createAuth({
-      userId: newUser.id,
-      provider: 'Credential',
-      password: trainee.password,
-      uid: null
-    });
-
-    const { id: userId, username } = newUser
-
-    // 빠른 응답을 위해 남은 로직은 비동기에서 진행
-    const response = await this.updateRokafProfile(userId, trainee);
-    logger.info(`${username} (${userId}) | ${syncResponseToStr(response)}`)
 
     return userId;
   }
@@ -78,13 +59,14 @@ export class UserService {
   async getTrainee(userId: number): Promise<Trainee> {
     const user = await this.userRepository.findById(userId);
     if (!user) throw Error('유저가 없습니다.')
-    const { username, password, name, birth, generation, message,
+    const { username, name, birth, generation, message,
       memberSeq, sodae } = user;
+
     if (memberSeq && sodae) {
-      const trainee: Trainee = { username, password, name, birth, generation, message, memberSeq, sodae };
+      const trainee: Trainee = { username, name, birth, generation, message, memberSeq, sodae };
       return trainee;
     }
-    const trainee: Trainee = { username, password, name, birth, generation, message };
+    const trainee: Trainee = { username, name, birth, generation, message };
     return trainee;
 
   }

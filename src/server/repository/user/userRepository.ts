@@ -33,7 +33,6 @@ export interface Auth {
 export interface User {
   id: number;
   username: string;
-  password: string;
   name: string;
   birth: string;
   generation: number;
@@ -46,7 +45,6 @@ export interface User {
 
 export interface InputUser {
   username: string;
-  password: string;
   name: string;
   birth: string;
   generation: number;

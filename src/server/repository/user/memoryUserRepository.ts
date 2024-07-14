@@ -83,12 +83,6 @@ export class MemoryUserRepository implements UserRepository {
 
   async editPassword(userId: number, password: string) {
     // 유저 ID를 찾아 비밀번호를 수정
-    const userIndex = this.users.findIndex(user => user.id === userId);
-    if (userIndex === -1) {
-      throw new Error('해당 유저가 없습니다.');
-    }
-    this.users[userIndex].password = password;
-
     const authIndex = this.auths.findIndex(auth => auth.userId === userId);
     if (authIndex !== -1) {
       this.auths[authIndex].password = password;
