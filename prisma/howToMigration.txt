@@ -4,7 +4,7 @@
 npx prisma validate
 npx prisma format
 
-2. npx prisma migrate dev --name add_auth_table
+2. npx prisma migrate dev --name add_uid_provider_composite_unique_key
 
 3. npx prisma generate 입력
 

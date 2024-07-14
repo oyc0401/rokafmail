@@ -34,6 +34,8 @@ model Auth {
   password String?
   uid      String?
   user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([uid, provider])
 }
 
 model Post {
