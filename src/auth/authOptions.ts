@@ -12,7 +12,7 @@ declare module "next-auth" {
       /** The user's postal address. */
       username?: string;
       role?: 'admin' | 'trainee';
-      provider?: string;
+      provider?: 'Credential' | 'Google' | null;
     } & DefaultSession["user"]
   }
 }
@@ -48,7 +48,7 @@ export const authOptions = {
     async jwt({ token, user }) {
       return { ...token, ...user };
     },
-    
+
     async session({ session, token, user }) {
       if (session.user && token.username) {
         session.user.username = token.username;
@@ -61,9 +61,9 @@ export const authOptions = {
       }
       return session;
     },
-    
+
     async signIn({ user, account, profile, email, credentials }) {
-      if (account.provider === 'google') {
+      if (account.provider === 'Google') {
         console.log('signin:', user);
 
         const userData = await getUserDataGoogle(user.id);

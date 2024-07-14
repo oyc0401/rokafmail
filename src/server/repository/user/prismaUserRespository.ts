@@ -1,5 +1,5 @@
 import prisma from "src/db/prisma";
-import { EditProfileProps, InputUser, RokafProfile, UserRepository } from "./userRepository";
+import { EditProfileProps, InputUser, RokafProfile, UserJoinAuth, UserRepository } from "./userRepository";
 
 export class PrismaUserRepository implements UserRepository {
   insert = async (data: InputUser) => {
@@ -61,7 +61,7 @@ export class PrismaUserRepository implements UserRepository {
         name: true,
         auth: true,
       }
-    });
+    }) as UserJoinAuth;
     return val;
   }
 

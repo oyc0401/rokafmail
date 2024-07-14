@@ -8,7 +8,7 @@ export interface UserRepository {
   getAuthByUsername: (username: string) => Promise<UserJoinAuth | null>
 }
 
-interface UserJoinAuth {
+export interface UserJoinAuth {
   id: number;
   username: string;
   name: string;
@@ -17,7 +17,7 @@ interface UserJoinAuth {
 
 export interface Auth {
   userId: number;
-  provider: string;
+  provider: 'Credential' | 'Google' | null;
   password: string | null;
   uid: string | null;
 }
