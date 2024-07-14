@@ -1,7 +1,9 @@
-import { User } from "src/db";
+import { bean } from "src/server/bean/bean";
 import { sha256 } from "src/utils/sha256";
+
 export async function login(username, password) {
-  const user = await User.findByUsername(username);
+  const { userRepository } = bean;
+  const user = await userRepository.getAuthByUsername(username);
 
   if (!user) {
     return { message: "아이디가 없습니다.", status: 400 };
@@ -9,7 +11,7 @@ export async function login(username, password) {
 
   const encryptedPassword = sha256(password);
 
-  if (user.password == encryptedPassword) {
+  if (user.auth?.password == encryptedPassword) {
     return {
       message: "로그인 성공",
       status: 200,
@@ -29,9 +31,10 @@ export function saltAndHashPassword(password: string) {
 }
 
 export async function getUserFromDb(username: string, encryptedPassword: string) {
-  const user = await User.findByUsername(username);
+  const { userRepository } = bean;
+  const user = await userRepository.getAuthByUsername(username);
 
-  if (user && user.password == encryptedPassword) {
+  if (user && user.auth?.password == encryptedPassword) {
     let role = 'trainee'
     if (user.username == 'oyc0401') {
       role = 'admin';

@@ -3,7 +3,23 @@ export interface UserRepository {
   findById: (userId: number) => Promise<User | null>;
   findByUsername: (username: string) => Promise<User | null>;
   updateRokafProfile: (userId: number, profile: RokafProfile) => Promise<User>;
-  editProfile: (userId: number, editProps: EditProfileProps) => Promise<User>
+  editProfile: (userId: number, editProps: EditProfileProps) => Promise<User>;
+  editPassword: (userId: number, password: string) => Promise<void>;
+  getAuthByUsername: (username: string) => Promise<UserJoinAuth | null>
+}
+
+interface UserJoinAuth {
+  id: number;
+  username: string;
+  name: string;
+  auth: Auth | null;
+}
+
+export interface Auth {
+  userId: number;
+  provider: string;
+  password: string | null;
+  uid: string | null;
 }
 
 export interface User {
@@ -39,5 +55,4 @@ export interface EditProfileProps {
   birth?: string;
   generation?: number;
   message?: string;
-  password?: string;
 }

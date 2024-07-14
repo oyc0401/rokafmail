@@ -179,7 +179,7 @@ export class UserService {
   async editPassword(userId: number, newPassword: string) {
     const logger = labelLogger("EditPassword");
 
-    await this.userRepository.editProfile(userId, { password: newPassword });
+    await this.userRepository.editPassword(userId, newPassword);
     logger.info(`${userId}`)
   }
 

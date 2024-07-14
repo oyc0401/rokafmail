@@ -1,11 +1,14 @@
 
-import { EditProfileProps, InputUser, RokafProfile, User, UserRepository } from "./userRepository";
+import { Auth, EditProfileProps, InputUser, RokafProfile, User, UserRepository } from "./userRepository";
 
 export class MemoryUserRepository implements UserRepository {
   users: User[];
+  auths: Auth[];
   currentId: number;
+
   constructor() {
     this.users = []; // 데이터 저장을 위한 배열
+    this.auths = []; // 데이터 저장을 위한 배열
     this.currentId = 1; // 간단한 ID 할당을 위한 변수
   }
 
@@ -20,6 +23,15 @@ export class MemoryUserRepository implements UserRepository {
       ...data
     };
     this.users.push(newUser);
+
+    this.auths.push({
+      userId: newUser.id,
+      provider: 'Credential',
+      password: newUser.password,
+      uid: null,
+    });
+
+
     return newUser;
   }
 
@@ -62,4 +74,38 @@ export class MemoryUserRepository implements UserRepository {
     };
     return this.users[userIndex];
   }
+
+  async editPassword(userId: number, password: string) {
+    // 유저 ID를 찾아 비밀번호를 수정
+    const userIndex = this.users.findIndex(user => user.id === userId);
+    if (userIndex === -1) {
+      throw new Error('해당 유저가 없습니다.');
+    }
+    this.users[userIndex].password = password;
+
+    const authIndex = this.auths.findIndex(auth => auth.userId === userId);
+    if (authIndex !== -1) {
+      this.auths[authIndex].password = password;
+    } else {
+      throw new Error('해당 유저의 인증정보가 없습니다.');
+    }
+  }
+
+  async getAuthByUsername(username: string) {
+    // username으로 Auth 정보를 찾아 반환
+    const user = await this.findByUsername(username);
+    if (!user) return null;
+
+    const auth = this.auths.find(auth => auth.userId === user.id);
+    if (!auth) return null;
+
+    const userJoinAuth = {
+      id: user.id,
+      username: user.username,
+      name: user.name,
+      auth: auth,
+    };
+    return userJoinAuth;
+  }
+
 }

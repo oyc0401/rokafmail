@@ -12,6 +12,7 @@ import { auth } from "src/auth";
  * @status `200` `401` `404`
  */
 export async function deleteUser(password: string) {
+  const { userService, userRepository } = bean;
   const logger = labelLogger("DeleteUser");
 
   const session = await auth();
@@ -20,8 +21,8 @@ export async function deleteUser(password: string) {
 
   const username = session.user.username;
 
-  const user = await User.findByUsername(username);
-  if (user?.password == password) {
+  const user = await userRepository.getAuthByUsername(username);
+  if (user?.auth?.password == password) {
     await User.deleteByUsername(username);
     logger.info(`${username} (${user.id})`)
     return ActionResponse.ok("회원탈퇴에 성공했습니다.");
@@ -74,8 +75,8 @@ export async function editPassword(
 
   const username = session.user.username;
 
-  const user = await userRepository.findByUsername(username);
-  if (encryptedOriginPassword != user?.password) {
+  const user = await userRepository.getAuthByUsername(username);
+  if (encryptedOriginPassword != user?.auth?.password) {
     return ActionResponse.notFound("비밀번호를 다시 입력해주세요.");
   }
 
