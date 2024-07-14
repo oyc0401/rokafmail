@@ -1,5 +1,5 @@
 
-import { Auth, EditProfileProps, InputUser, RokafProfile, User, UserRepository } from "./userRepository";
+import { Auth, EditProfileProps, InputAuth, InputUser, RokafProfile, User, UserRepository } from "./userRepository";
 
 export class MemoryUserRepository implements UserRepository {
   users: User[];
@@ -24,16 +24,22 @@ export class MemoryUserRepository implements UserRepository {
     };
     this.users.push(newUser);
 
-    this.auths.push({
-      userId: newUser.id,
-      provider: 'Credential',
-      password: newUser.password,
-      uid: null,
-    });
-
-
     return newUser;
   }
+
+  createAuth = async (data: InputAuth) => {
+    const newAuth = {
+      userId: data.userId,
+      provider: data.provider,
+      password: data.password,
+      uid: data.uid
+    };
+
+    this.auths.push(newAuth);
+
+    return newAuth;
+  };
+
 
   async findById(userId: number) {
     // ID로 유저를 찾아 반환

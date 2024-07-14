@@ -1,19 +1,18 @@
 import prisma from "src/db/prisma";
-import { EditProfileProps, InputUser, RokafProfile, UserJoinAuth, UserRepository } from "./userRepository";
+import { EditProfileProps, InputAuth, InputUser, RokafProfile, UserJoinAuth, UserRepository } from "./userRepository";
 
 export class PrismaUserRepository implements UserRepository {
-  insert = async (data: InputUser) => {
-    const temp = await prisma.user.create({ data });
-    await prisma.auth.create({
+  insert = async (data: InputUser) => prisma.user.create({ data });
+
+  createAuth = async (data: InputAuth) =>
+    prisma.auth.create({
       data: {
-        userId: temp.id,
-        provider: 'Credential',
-        password: temp.password,
+        userId: data.userId,
+        provider: data.provider,
+        password: data.password,
+        uid: data.uid,
       }
     })
-
-    return temp;
-  }
 
   findById = (id: number) =>
     prisma.user.findUnique({ where: { id }, });

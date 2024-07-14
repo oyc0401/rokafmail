@@ -34,6 +34,13 @@ export class UserService {
 
     // 유저 생성
     const newUser = await this.userRepository.insert(trainee);
+    await this.userRepository.createAuth({
+      userId: newUser.id,
+      provider: 'Credential',
+      password: trainee.password,
+      uid: null
+    });
+
     const { id: userId, username } = newUser
 
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
@@ -52,6 +59,13 @@ export class UserService {
 
     // 유저 생성
     const newUser = await this.userRepository.insert(trainee);
+    await this.userRepository.createAuth({
+      userId: newUser.id,
+      provider: 'Credential',
+      password: trainee.password,
+      uid: null
+    });
+
     const { id: userId, username } = newUser
 
     // 빠른 응답을 위해 남은 로직은 비동기에서 진행
