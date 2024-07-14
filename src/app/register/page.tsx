@@ -1,11 +1,16 @@
 import { auth } from "src/auth";
-import CredentialPage from "./credential/CredentialPage";
+import CredentialRegister from "./credential/CredentialRegister";
 
 
 export default async function Register() {
   const session = await auth();
   console.log(session);
-  
 
-  return <CredentialPage></CredentialPage>
+  if (session?.user.provider == 'Google') {
+
+
+  }
+
+
+  return <CredentialRegister></CredentialRegister>
 }

@@ -1,0 +1,65 @@
+
+/* 중복확인 버튼 */
+.dupButton{
+  width:91px;
+  height:32px;
+  border-radius: 100px;
+  border: 1px solid #39F;
+  background: #FFF;
+  color: #39F;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+   cursor: pointer;
+  margin-left:6px;
+  text-align:center;
+}
+.dupButton:active{
+  background:#e3e3e3;
+}
+
+
+ .animation {
+   width: 12px;
+   height: 12px;
+   border-radius: 50%;
+   border: 2px solid #39F;
+   border-top-color: transparent;
+   border-left-color: transparent;
+   animation: Rotate 0.8s infinite linear;
+}
+
+@keyframes Rotate {
+  from {transform: rotate(0deg)}
+  to {transform: rotate(360deg)}
+}
+
+
+/* 설명글 */
+.intro{
+  color: #939393;
+  text-align:left;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.registerLoad{
+  position: fixed  ;
+   display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:rgba(255, 255, 255, 0.3);
+  align-items: center;
+  justify-content: center;
+}
+
+.bigAnimation{
+  width:36px;
+  height:36px;
+   border: 4px solid #39F;
+  border-top-color: transparent;
+   border-left-color: transparent;
+   /* animation: Rotate 0.8s infinite linear; */
+}

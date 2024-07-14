@@ -1,7 +1,24 @@
-import { create } from "zustand";
 import createSelectors from "src/lib/selectors";
+import { create } from "zustand";
 
-export const useStoreBase = create((set) => ({
+interface StoreState {
+  page: number;
+  generation: string;
+  name: string;
+  birth: string;
+  username: string;
+  message: string;
+  reset: () => void;
+  next: () => void;
+  prev: () => void;
+  setGeneration: (text: string) => void;
+  setName: (text: string) => void;
+  setBirth: (text: string) => void;
+  setUsername: (text: string) => void;
+  setMessage: (text: string) => void;
+}
+
+export const useStoreBase = create<StoreState>((set) => ({
   reset: () =>
     set({
       page: 0,
@@ -9,8 +26,6 @@ export const useStoreBase = create((set) => ({
       name: "",
       birth: "",
       username: "",
-      password: "",
-      repassword: "",
       message: "",
     }),
 
@@ -22,16 +37,12 @@ export const useStoreBase = create((set) => ({
   name: "",
   birth: "",
   username: "",
-  password: "",
-  repassword: "",
   message: "",
 
   setGeneration: (text) => set({ generation: text }),
   setName: (text) => set({ name: text }),
   setBirth: (text) => set({ birth: text }),
   setUsername: (text) => set({ username: text }),
-  setPassword: (text) => set({ password: text }),
-  setRepassword: (text) => set({ repassword: text }),
   setMessage: (text) => set({ message: text }),
 }));
 

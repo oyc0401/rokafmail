@@ -1,7 +1,7 @@
 'use client'
 import { dateToStr } from "src/lib/time";
 import { useEffect, useRef } from "react";
-import { PostCard, PostSkeletonCard } from "../card";
+import { LoadingCard, PostCard, PostSkeletonCard } from "../card";
 import { useUnpostedLetters } from "../useLetter";
 
 export function UnpostedLetterPage({ user, initialData }) {

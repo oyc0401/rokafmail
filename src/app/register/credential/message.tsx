@@ -12,78 +12,19 @@ import {
   BasicFooter,
 } from "src/components";
 import { validateMessage } from "src/utils/validate";
-import { action } from "src/lib/actionResponse";
-import { sha256 } from "src/utils/sha256";
+import { SendButton } from "./SendButton";
+
 export default function Message() {
   const {
-    generation,
-    name,
-    birth,
-    username,
-    password,
     message,
     setMessage,
     prev,
   } = useStoreBase();
 
-  const [progress, setProgress] = useState(false);
-
-  const router = useRouter();
-
-
-  async function send() {
-    const encryptedPassword = sha256(password);
-
-    const registerForm = {
-      username: username,
-      password: encryptedPassword,
-      name: name,
-      birth: birth,
-      generation: Number(generation),
-      message: message,
-    }
-
-    try {
-      await action(register(registerForm));
-      window.onbeforeunload = null;
-      router.push(`/register/link/${username}`);
-    } catch (error) {
-      if (error.status == 400) {
-        alert(`회원가입 실패 ${error.message}`);
-      } else {
-        alert(error.message);
-      }
-
-    }
-
-  }
-
-  async function click(event) {
-    event.preventDefault();
-    if (!canSubmit()) return;
-
-    if (canSubmit()) {
-      setProgress(true);
-      await send();
-      setProgress(false);
-    }
-  }
-
   const messageValidation = messageValid(message);
-
-  const canSubmit = () => messageValidation.status == 'valid';
-
 
   return (
     <>
-      <div
-        className={styles.registerLoad}
-        style={{
-          display: progress ? "flex" : "none",
-        }}
-      >
-        <div className={`${styles.animation} ${styles.bigAnimation}`}></div>
-      </div>
       <BasicFormArea>
         <BasicHeader>
           사람들에게 전하고 싶은
@@ -116,18 +57,13 @@ export default function Message() {
           <button className={`submit mini`} onClick={prev} type="button">
             이전
           </button>
-          <button
-            className={canSubmit() ? "submit" : "submit disable"}
-            onClick={click}
-            type="submit"
-          >
-            만들기
-          </button>
+          <SendButton/>
         </BasicFooter>
       </BasicFormArea>
     </>
   );
 }
+
 
 function messageValid(message: string) {
   // 빈칸일 때
