@@ -4,7 +4,7 @@ import Information from "./information";
 import Account from "./account";
 import Message from "./message";
 import { useStore, useStoreBase } from "./model";
-export default function Register() {
+export default function CredentialPage() {
   const { reset } = useStoreBase();
   useEffect(() => {
     // 새로고침 막기(조건 부여 가능)
