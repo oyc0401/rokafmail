@@ -1,7 +1,7 @@
 'use client'
 import { dateToStr } from "src/lib/time";
 import { useEffect, useRef } from "react";
-import { PostCard, PostSkeletonCard } from "../card";
+import { LoadingCard, PostCard, PostSkeletonCard } from "../card";
 import { usePostedLetters } from "../useLetter";
 
 export function PostedLetterPage({ user, initialData }) {
@@ -81,7 +81,7 @@ export function PostedLetterPage({ user, initialData }) {
           </div>
         })}
       </div>
-      {isFetchingNextPage && <PostSkeletonCard/>}
+      {isFetchingNextPage && letters.length >= 10 && <LoadingCard />}
       {!hasNextPage && <p style={{ textAlign: 'center' }}></p>}
     </>
   );

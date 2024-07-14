@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import RokafSmall from 'public/assets/rokaf-small.png';
+import styles from "./card.module.css";
 
 export function PostCard({ id, title, name, rel, time, username, contents, isPublic }) {
   return (
@@ -20,6 +21,13 @@ export function PostCard({ id, title, name, rel, time, username, contents, isPub
           </div>
         </div>
       </Link>
+    </div>
+  );
+}
+export function LoadingCard() {
+  return (
+    <div className='mt-2.5 mx-4 p-2 max-w-3xl'>
+      <div className={`${styles.animation} mx-auto`}></div>
     </div>
   );
 }

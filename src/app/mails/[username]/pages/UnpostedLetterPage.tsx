@@ -79,7 +79,7 @@ export function UnpostedLetterPage({ user, initialData }) {
           </div>
         })}
       </div>
-      {isFetchingNextPage &&<PostSkeletonCard/>}
+      {isFetchingNextPage && letters.length >= 10 && <LoadingCard />}
       {!hasNextPage && <p style={{ textAlign: 'center' }}></p>}
     </>
   );
