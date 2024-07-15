@@ -43,7 +43,7 @@ export async function getUserFromDb(username: string, encryptedPassword: string)
       id: user.id.toString(),
       username: user.username,
       role: role,
-      provider: 'Credential'
+      provider: 'credential'
     }
   }
 

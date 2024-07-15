@@ -12,7 +12,7 @@ declare module "next-auth" {
       /** The user's postal address. */
       username?: string;
       role?: 'admin' | 'trainee';
-      provider?: 'Credential' | 'Google' | null;
+      provider?: 'credential' | 'google' | null;
     } & DefaultSession["user"]
   }
 }
@@ -63,7 +63,8 @@ export const authOptions = {
     },
 
     async signIn({ user, account, profile, email, credentials }) {
-      if (account.provider === 'Google') {
+      if (account.provider === 'google') {
+        user.provider = account.provider;
         console.log('signin:', user);
 
         const userData = await getUserDataGoogle(user.id);
@@ -88,7 +89,7 @@ async function getUserDataGoogle(uid: string) {
     return {
       username: 'demo',
       role: 'trainee',
-      provider: 'Google'
+      provider: 'google'
     }
   }
 }
