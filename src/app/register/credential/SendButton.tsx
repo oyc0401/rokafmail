@@ -33,7 +33,6 @@ export function SendButton() {
 
     const registerForm = {
       username: username,
-      password: encryptedPassword,
       name: name,
       birth: birth,
       generation: Number(generation),
@@ -41,7 +40,7 @@ export function SendButton() {
     }
 
     try {
-      await action(register(registerForm));
+      await action(register(registerForm, encryptedPassword));
       window.onbeforeunload = null;
       router.push(`/register/link/${username}`);
     } catch (error) {

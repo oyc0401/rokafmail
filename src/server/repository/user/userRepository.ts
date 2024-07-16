@@ -18,7 +18,7 @@ export interface UserJoinAuth {
 
 export interface InputAuth {
   userId: number;
-  provider: 'Credential' | 'Google';
+  provider: 'credential' | 'google';
   password: string | null;
   uid: string | null;
 }

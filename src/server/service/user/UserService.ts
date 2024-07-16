@@ -36,7 +36,7 @@ export class UserService {
     const newUser = await this.userRepository.insert(trainee);
     await this.userRepository.createAuth({
       userId: newUser.id,
-      provider: 'Credential',
+      provider: 'credential',
       password: password,
       uid: null
     });
@@ -55,6 +55,38 @@ export class UserService {
 
     return userId;
   }
+
+  async registerGoogle(trainee: Trainee, uid: string, async = false) {
+    const logger = labelLogger("Register");
+    if (await this.existUsername(trainee.username)) {
+      throw new ValidateError('아이디가 중복되었습니다.');
+    }
+
+    // 유저 생성
+    const newUser = await this.userRepository.insert(trainee);
+    await this.userRepository.createAuth({
+      userId: newUser.id,
+      provider: 'google',
+      password: null,
+      uid: uid
+    });
+
+    const { id: userId, username } = newUser;
+
+    if (async) {
+      // 빠른 응답을 위해 남은 로직은 비동기에서 진행
+      this.updateRokafProfile(userId, trainee).then((response) =>
+        logger.info(`${username} (${userId}) | ${syncResponseToStr(response)}`));
+    } else {
+      // 디폴트: 기훈단 응답 기다리기
+      const response = await this.updateRokafProfile(userId, trainee);
+      logger.info(`${username} (${userId}) | ${syncResponseToStr(response)}`)
+    }
+
+    return userId;
+  }
+
+
 
   async getTrainee(userId: number): Promise<Trainee> {
     const user = await this.userRepository.findById(userId);
@@ -198,7 +230,6 @@ export enum syncResponse { before, complete, error, fail }
 
 export interface RegisterProps {
   username: string;
-  password: string;
   name: string;
   birth: string;
   generation: number;

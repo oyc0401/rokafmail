@@ -127,7 +127,27 @@ describe('User Service Test', () => {
       expect(registeredTrainee.memberSeq).toEqual('12341234');
       expect(registeredTrainee.sodae).toEqual('1111');
     });
+
+    test('구글 로그인 회원가입', async () => {
+      rokafClient.changeGetProfileReturnValue({
+        member: {
+          memberSeq: '12341234',
+          sodae: '1111',
+        },
+        serverOn: true,
+      });
+
+      const trainee = createTrainee();
+      const userId = await userService.registerGoogle(trainee, '21321321312');
+
+      const registeredTrainee = await userService.getTrainee(userId);
+
+      const user = await userRepository.findByUsername(registeredTrainee.username);
+      expect(user).not.toBeNull();
+    });
   });
+
+
 
   describe('syncProfile: 유저의 프로필을 불러오고 업데이트한다.', () => {
     test('편지쓰기 기간 이전에 프로필을 불러오지 않습니다.', async () => {

@@ -84,3 +84,32 @@ export async function editPassword(
 
   return ActionResponse.ok("비밀번호 수정에 성공했습니다.");
 }
+
+
+
+/**
+ * `Server Action`
+ * 
+ * 본인 계정을 삭제한다.
+ * @status `200` `401` `404`
+ */
+export async function deleteUserGoogle() {
+  const { userService, userRepository } = bean;
+  const logger = labelLogger("DeleteUser");
+
+  const session = await auth();
+  // 로그인이 되어있지 않으면 unauthorized (401)
+  if (!session?.user.username) return ActionResponse.unauthorized();
+
+  const username = session.user.username;
+
+  const user = await userRepository.getAuthByUsername(username);
+  if (user) {
+    await User.deleteByUsername(username);
+    logger.info(`${username} (${user.id})`)
+    return ActionResponse.ok("회원탈퇴에 성공했습니다.");
+  } else {
+    return ActionResponse.notFound("로그인을 해주세요.");
+  }
+
+}

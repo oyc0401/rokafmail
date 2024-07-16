@@ -28,3 +28,12 @@ export function GoogleButton({ children, className }: Props) {
     </button>
   )
 }
+
+export function UpdateSession() {
+  const { data, status, update } = useSession();
+
+  function click() {
+    update({ username: 'google' });
+  }
+  return <button onClick={click}>업데이트</button>
+}
