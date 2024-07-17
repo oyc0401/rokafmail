@@ -4,7 +4,7 @@ import { NavHeaderHome } from "src/components";
 import styles from "./page.module.css";
 import { IsAuthenticated, IsLoading, IsNotAuthenticated } from "src/components";
 import { BasicButton, BasicLink } from "src/components/BasicButton";
-import { GoogleButton } from "./pageClient";
+import { GoogleButton, RegisterButton } from "./pageClient";
 
 export default function Page() {
   return (
@@ -51,9 +51,7 @@ function TopView() {
         <GoogleButton className="mb-3">
           구글로 계속하기
         </GoogleButton>
-        <BasicLink className="text-white bg-primary" href={{ pathname: "/register" }}>
-          회원가입
-        </BasicLink>
+        <RegisterButton></RegisterButton>
         <div className="pt-4 pb-4 w-full">
           <div className="flex flex-row justify-center"          >
             <IsAuthenticated>

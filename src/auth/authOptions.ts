@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { getUserFromDb, saltAndHashPassword } from "./login";
 import prisma from "src/db/prisma";
+import { findUserByUidUsername, getUserDataGoogle } from "./google";
 
 declare module "next-auth" {
   /**
@@ -27,7 +28,6 @@ export const authOptions = {
         password: {},
       },
       async authorize(credentials, req) {
-        // const { username, password, csrfToken } = credentials;
         // logic to salt and hash password
         const pwHash = saltAndHashPassword(credentials!.password)
 
@@ -49,6 +49,7 @@ export const authOptions = {
   callbacks: {
 
     async signIn({ user, account, profile, email, credentials }) {
+      // 구글 로그인 시 username 세션에 넣기
       if (account.provider === 'google') {
         user.provider = account.provider;
 
@@ -57,21 +58,18 @@ export const authOptions = {
           user.username = userData.username;
           user.role = userData.role;
         }
-        console.log('<signin>');
       }
       return true
     },
-    // signin을 하면 jwt에 토큰, user가 전달됌.
-    // 이때 signin-user = jwt-user
-    //
+
 
     async jwt({ token, session, user, trigger }) {
 
+      // 클라이언트에서 세션을 수정해달라고 할 때 자신의 username으로만 바꿀 수 있어야한다.
       if (trigger == 'update') {
-        console.log('<jwt update>', session, token);
-        const user = await canUpdateSessionData(token.id, session.username);
-        console.log(user);
-        if (user) {
+        const user = await getUserDataGoogle(token.id);
+        // user.username == session.username 이거 필수, 없으면 보안 다 뚫림
+        if (user && user.username == session.username) {
           token.username = user.username;
           token.role = user.role;
         }
@@ -82,11 +80,11 @@ export const authOptions = {
 
     async session({ session, token, user, trigger, newSession }) {
       if (trigger == 'update') {
-        console.log('<session update>', newSession);
         session.user.username = newSession.username;
         session.user.role = newSession.role;
         session.user.provider = newSession.provider;
         session.user.uid = newSession.id;
+        return session;
       }
       if (session.user) {
         session.user.username = token.username;
@@ -103,49 +101,8 @@ export const authOptions = {
   },
 };
 
-async function canUpdateSessionData(uid: string, username: string) {
-  const user = await prisma.auth.findUnique({
-    where: {
-      uid_provider: {
-        uid: uid,
-        provider: 'google',
-      }
-    },
-    include: {
-      user: true,
-    }
-  });
-
-  if (username == user?.user.username) {
-    return {
-      username: user.user.username,
-      role: 'trainee',
-      provider: 'google'
-    }
-  }
-
-}
 
 
-async function getUserDataGoogle(uid: string) {
-  const user = await prisma.auth.findUnique({
-    where: {
-      uid_provider: {
-        uid: uid,
-        provider: 'google',
-      }
-    },
-    include: {
-      user: true,
-    }
-  });
-
-  if (user) {
-    return {
-      username: user.user.username,
-      role: 'trainee',
-      provider: 'google'
-    }
-  }
-
-}
+// signin을 하면 jwt에 토큰, user가 전달됌.
+// 이때 signin-user = jwt-user
+//

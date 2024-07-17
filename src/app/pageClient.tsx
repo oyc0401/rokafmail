@@ -2,16 +2,44 @@
 import GoogleIcon from 'public/icons/google_icon.png';
 import Image from 'next/image';
 import { signIn, useSession } from "next-auth/react";
+import { redirect, useRouter } from 'next/navigation';
+import { BasicLink } from 'src/components/BasicButton';
 
 type Props = { children?; className?: string }
 
+export function RegisterButton() {
+  const { data, status, update } = useSession();
+  if (status == 'authenticated' && data.user.username) {
+    return (
+      <BasicLink className="text-white bg-primary" href={{ pathname: "/register" }}>
+        인편 작성
+      </BasicLink>
+    )
+  }
+  return (
+    <BasicLink className="text-white bg-primary" href={{ pathname: "/register" }}>
+      회원가입
+    </BasicLink>
+  )
+
+}
+
 export function GoogleButton({ children, className }: Props) {
+
+  const router = useRouter();
+  const { data, status, update } = useSession();
+ 
   async function onClick() {
-    const response = await signIn('google', { callbackUrl: '/register' });
+    if (data?.user.provider == 'google') {
+      router.replace(`/register`)
+    } else {
+      await signIn('google', { callbackUrl: '/register' });
+    }
+
+
   }
 
-  const { data, status, update } = useSession();
-  console.log('session:', data);
+
 
   return (
     <button className={`rounded-full bg-primary w-full
