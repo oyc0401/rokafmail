@@ -5,7 +5,7 @@ import MenuIcon from "public/assets/menuIcon.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 export default function DropdownButton({ username, name, birth, memberSeq, connect }) {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -29,6 +29,15 @@ export default function DropdownButton({ username, name, birth, memberSeq, conne
     return <DropdownItem className="p-0"></DropdownItem>
   }
 
+  function signOutDropdownItem() {
+    if (status === "authenticated") {
+      return <DropdownItem className="text-left" key="profile"
+        onClick={() => signOut({ callbackUrl: '/' })}>로그아웃</DropdownItem>
+    }
+
+    return <DropdownItem className="p-0"></DropdownItem>
+  }
+
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -46,12 +55,16 @@ export default function DropdownButton({ username, name, birth, memberSeq, conne
         <DropdownSection showDivider>
           {rokafDropdownItem()}
           <DropdownItem className="text-left" key="image" onClick={() => window.open(`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893231&siteId=last2&menuUIType=sub`)}>훈련병 사진</DropdownItem>
-        </DropdownSection>
+        </DropdownSection >
         <DropdownSection>
           <DropdownItem className="text-left" key="report" onClick={() => router.push(`/report?url=${window.location.href}`)}>문의사항</DropdownItem>
           <DropdownItem className="text-left" key="privacy-policy" onClick={() => router.push(`/privacy-policy`)}>개인정보처리방침</DropdownItem>
           <DropdownItem className="text-left" key="developer" onClick={() => window.open(`https://github.com/oyc0401`)}>개발자 정보</DropdownItem>
         </DropdownSection>
+        <DropdownSection>
+          {signOutDropdownItem()}
+        </DropdownSection>
+
 
       </DropdownMenu>
     </Dropdown>

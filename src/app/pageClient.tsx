@@ -12,7 +12,7 @@ export function RegisterButton() {
   if (status == 'authenticated' && data.user.username) {
     return (
       <BasicLink className="text-white bg-primary" href={{ pathname: `/mail/${data.user.username}` }}>
-        인편 작성하기
+        내 인편함
       </BasicLink>
     )
   }
