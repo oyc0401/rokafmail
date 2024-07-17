@@ -1,5 +1,5 @@
 "use client";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { deleteUser, deleteUserGoogle } from "src/server/apiAction/profile";
 import Link from "next/link";
 import { action } from "src/lib/actionResponse";
@@ -22,7 +22,20 @@ export function SignOut() {
 export function DeleteUser({ username }) {
   const router = useRouter();
 
+  const { data } = useSession();
+
   async function onclickDelete() {
+    if (data?.user.provider == 'credential') {
+      deleteCredentialUser();
+    } else if (data?.user.provider == 'google') {
+      deleteGoogleUser();
+    } else {
+      alert('오류가 발생했습니다. oyc0401@gmail.com으로 문의 남겨주세요.')
+    }
+
+  }
+
+  async function deleteCredentialUser() {
     if (
       confirm("정말로 계정을 삭제하시겠습니까? 작성된 모든 편지가 사라집니다.")
     ) {
@@ -49,19 +62,9 @@ export function DeleteUser({ username }) {
     }
   }
 
-  return (
-    <button className='text-xs underline text-[#B3B3B3]' onClick={onclickDelete}>
-      회원삭제
-    </button>
-  );
-}
-
-export function DeleteUserGoogle({ username }) {
-  const router = useRouter();
-
-  async function onclickDelete() {
+  async function deleteGoogleUser() {
     if (
-      confirm("정말로 계정을 삭제하시겠습니까? 작성된 모든 편지가 사라집니다.")
+      confirm("정말로 계정을 삭제하시겠습니까? 작성된 모든 편지가 사라집니다.\n확인을 누를 시 즉시 계정이 삭제됩니다.")
     ) {
       try {
         await action(deleteUserGoogle());
@@ -82,12 +85,15 @@ export function DeleteUserGoogle({ username }) {
     }
   }
 
+
   return (
     <button className='text-xs underline text-[#B3B3B3]' onClick={onclickDelete}>
-      구글 회원삭제
+      회원삭제
     </button>
   );
 }
+
+
 
 export function Footer({ username }) {
   return (
@@ -98,8 +104,6 @@ export function Footer({ username }) {
           <SignOut />
           <DeleteUser username={username} />
         </div>
-
-        <DeleteUserGoogle username={username}></DeleteUserGoogle>
       </footer>
     </>
   )

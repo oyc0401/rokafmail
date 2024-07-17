@@ -2,9 +2,7 @@ import Link from "next/link";
 import { NavHeaderHome } from "src/components";
 
 import styles from "./page.module.css";
-import { IsAuthenticated, IsLoading, IsNotAuthenticated } from "src/components";
-import { BasicButton, BasicLink } from "src/components/BasicButton";
-import { GoogleButton, RegisterButton } from "./pageClient";
+import { GoogleButton, LoginButton, RegisterButton } from "./pageClient";
 
 export default function Page() {
   return (
@@ -54,17 +52,7 @@ function TopView() {
         <RegisterButton></RegisterButton>
         <div className="pt-4 pb-4 w-full">
           <div className="flex flex-row justify-center"          >
-            <IsAuthenticated>
-              <a href="/profile" className="text-base underline hover:text-darkaccent">내 정보</a>
-            </IsAuthenticated>
-            <IsNotAuthenticated>
-              <span className="pr-2 text-base">이미 가입하셨으면?</span>
-              <a href="/profile" className="text-base underline hover:text-darkaccent">로그인</a>
-            </IsNotAuthenticated>
-            <IsLoading>
-              <span className="pr-2 text-base"> 이미 가입하셨으면?</span>
-              <a href="/profile" className="text-base underline hover:text-darkaccent">로그인</a>
-            </IsLoading>
+            <LoginButton></LoginButton>
           </div>
         </div>
       </div>

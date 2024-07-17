@@ -8,11 +8,11 @@ import { BasicLink } from 'src/components/BasicButton';
 type Props = { children?; className?: string }
 
 export function RegisterButton() {
-  const { data, status, update } = useSession();
+  const { data, status } = useSession();
   if (status == 'authenticated' && data.user.username) {
     return (
-      <BasicLink className="text-white bg-primary" href={{ pathname: "/register" }}>
-        인편 작성
+      <BasicLink className="text-white bg-primary" href={{ pathname: `/mail/${data.user.username}` }}>
+        인편 작성하기
       </BasicLink>
     )
   }
@@ -27,20 +27,15 @@ export function RegisterButton() {
 export function GoogleButton({ children, className }: Props) {
 
   const router = useRouter();
-  const { data, status, update } = useSession();
- 
+  const { data } = useSession();
+
   async function onClick() {
     if (data?.user.provider == 'google') {
       router.replace(`/register`)
     } else {
       await signIn('google', { callbackUrl: '/register' });
     }
-
-
   }
-
-
-
   return (
     <button className={`rounded-full bg-primary w-full
     cursor-pointer active:opacity-75 bg-white border-2 border-[#DEE2E6] px-4 ${className}`}
@@ -56,12 +51,52 @@ export function GoogleButton({ children, className }: Props) {
     </button>
   )
 }
+export function IsAuthenticated({ children }) {
 
-export function UpdateSession() {
-  const { data, status, update } = useSession();
-
-  function click() {
-    update({ username: 'google' });
+  const { data: session, status } = useSession();
+  if (status === "authenticated" && session.user.username != undefined) {
+    return children;
   }
-  return <button onClick={click}>업데이트</button>
+  return undefined;
+}
+
+export function IsLoading({ children }) {
+
+  const { data: session, status } = useSession()
+
+  if (status === "loading") {
+    return children;
+  }
+
+  return undefined;
+}
+
+export function IsNotAuthenticated({ children }) {
+
+  const { data: session, status } = useSession()
+
+  if (status === "unauthenticated") {
+    return children;
+  }
+  if (status === "authenticated" && session.user.username == undefined) {
+    return children;
+  }
+
+  return undefined;
+}
+export function LoginButton() {
+  const { data: session, status } = useSession();
+
+  if (status === "authenticated" && session.user.username != undefined) {
+    return (
+      <a href="/profile" className="text-base underline hover:text-darkaccent">내 정보</a>
+    );
+  }
+
+  return (
+    <>
+      <span className="pr-2 text-base">이미 가입하셨으면?</span>
+      <a href="/profile" className="text-base underline hover:text-darkaccent">로그인</a>
+    </>
+  )
 }
