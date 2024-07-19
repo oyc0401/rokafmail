@@ -1,0 +1,24 @@
+
+/* 입력 폼 */
+.form{
+  border-width: 0 0 1px;
+  background-color: transparent;
+  outline: none;
+  color: var(--font-color);
+  border-color:var(--font-color);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  width: 100%;
+  padding-top:4px;
+  padding-bottom:8px;
+  text-align: left;
+}
+
+.form::placeholder {
+  color: var(--light-font);
+}
+
+.form:focus {
+   border-color: var(--dark-accent);
+}
