@@ -77,7 +77,7 @@ export default async function Page() {
           </div>
 
           <div style={{ flex: 1 }}></div>
-          <Footer username={username} />
+          <Footer username={username} provider={session.user.provider} />
         </div>
 
       </div>

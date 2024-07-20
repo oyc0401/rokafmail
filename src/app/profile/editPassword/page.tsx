@@ -8,12 +8,15 @@ export const metadata = {
 export default async function Page() {
   const session = await auth();
 
-  if (!session || !session.user || !session.user.username)  notFound();
+  if (!session || !session.user || !session.user.username) notFound();
+  if (session.user.provider != 'credential') {
+    notFound();
+  }
 
   const username = session.user.username;
-  
+
   const user = await getUserByUsername(username);
-  if (!user)  notFound();
-  
+  if (!user) notFound();
+
   return <Client username={username}></Client>;
 }

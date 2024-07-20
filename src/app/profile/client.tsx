@@ -95,11 +95,12 @@ export function DeleteUser({ username }) {
 
 
 
-export function Footer({ username }) {
+export function Footer({ username, provider }) {
   return (
     <>
       <footer className="bg-[#F5F5F5] w-full px-4 pt-3 pb-4 flex flex-col items-start">
-        <Link className='text-xs underline' href={"/profile/editPassword"}>비밀번호 변경</Link>
+        {provider == 'credential' && <Link className='text-xs underline' href={"/profile/editPassword"}>비밀번호 변경</Link>}
+
         <div className="flex flex-row w-full justify-between pt-2">
           <SignOut />
           <DeleteUser username={username} />
