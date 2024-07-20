@@ -2,10 +2,10 @@
 .label{
   width: 100%;
   color: var(--font-color);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   text-align: left;
-  padding-bottom:2px;
+  padding-bottom:1px;
 }
 
 /* 화원가입 입력 폼 */
@@ -15,10 +15,9 @@
   outline: none;
   color: var(--font-color);
  border-color:var(--font-color);
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  transition: 0.2s;
   width: 100%;
   text-align: left;
   height:34px;
@@ -40,10 +39,9 @@
     outline: none;
     color: var(--font-color);
    border-color:var(--font-color);
-    font-size: 20px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 400;
-    transition: 0.2s;
     width: 100%;
     text-align: left;
 }

@@ -14,8 +14,8 @@ export function BasicFormArea({ children }) {
 export function BasicHeader({ children }) {
   return (
     <div className="flex flex-col-reverse  px-4" style={{ flex: 8 }}>
-      <div className="pt-24 pb-14 w-full">
-        <h2 className='font-medium text-2xl'>{children}</h2>
+      <div className="pt-20 pb-14 w-full">
+        <h2 className='font-medium text-[22px]'>{children}</h2>
       </div>
     </div>
   );
