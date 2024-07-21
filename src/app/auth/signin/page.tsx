@@ -71,8 +71,9 @@ function Page() {
     <div className="max-w-3xl mx-auto h-full">
       <form className="w-full h-full">
         <div className="px-4 flex flex-col h-full max-w-xl mx-auto">
-          <div className="flex-[2_2_0%] flex flex-col justify-end">
-            <p className={`pt-24 pb-12 ${INKLIPQUID.className}  text-primary text-5xl`}>하늘인편</p>
+          <div className="flex-[2.5_2.5_0%] flex flex-col justify-end">
+            <a className={`pt-24 pb-12 ${INKLIPQUID.className} text-primary text-5xl w-fit mx-auto`} href="/">하늘인편</a>
+
             {/* <h1 className=" font-medium text-primary">하늘인편</h1> */}
           </div>
           <div className="pb-[36px]">
@@ -97,7 +98,7 @@ function Page() {
             <button className={"mb-[18px] bg-primary text-white text-xl rounded-lg py-3 w-full"} type="submit" onClick={click}>
               로그인
             </button>
-            <a className="text-sm text-[#ABABAB]">계정이 없으신가요? 회원가입</a>
+            <a className="text-sm text-[#ABABAB]" href="/register">계정이 없으신가요? 회원가입</a>
           </div>
           <div className="flex-[3_3_0%]">
             <div className="mb-6 bg-[#E5E5E5] h-[1px] w-full"></div>
