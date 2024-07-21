@@ -41,7 +41,7 @@ export function SendButton() {
     }
     const uid = data?.user.uid;
     if (!uid) {
-      alert(`회원가입 실패 userid 가 없습니다.`);
+      alert(`회원가입 실패: userid 가 없습니다. 관리자에게 문의하세요`);
       return;
     }
 

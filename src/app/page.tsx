@@ -2,7 +2,8 @@ import Link from "next/link";
 import { NavHeaderHome } from "src/components";
 
 import styles from "./page.module.css";
-import { GoogleButton, LoginButton, RegisterButton } from "./pageClient";
+import { LoginButton, RegisterButton } from "./pageClient";
+import { GoogleButton } from "src/components/SocialSignIn/GoogleButton";
 
 export default function Page() {
   return (
@@ -46,7 +47,7 @@ function TopView() {
             하늘인편을 통해 편지를 받았습니다!
           </p>
         </div>
-        <GoogleButton className="mb-3">
+        <GoogleButton className="mb-3" callbackUrl='/register' >
           구글로 계속하기
         </GoogleButton>
         <RegisterButton></RegisterButton>

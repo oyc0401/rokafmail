@@ -12,7 +12,7 @@ import {
 } from "src/components";
 import { useRouter } from "next/navigation";
 import { TextArea } from "src/components/rokaf/TextArea";
-import { GoogleButton } from "src/app/pageClient";
+import { GoogleButton } from "src/components/SocialSignIn/GoogleButton";
 import localFont from 'next/font/local'
 
 const INKLIPQUID = localFont({
@@ -101,7 +101,7 @@ function Page() {
           </div>
           <div className="flex-[3_3_0%]">
             <div className="mb-6 bg-[#E5E5E5] h-[1px] w-full"></div>
-            <GoogleButton>구글 계정으로 계속하기</GoogleButton>
+            <GoogleButton callbackUrl={callbackUrl ?? '/'}>구글 계정으로 계속하기</GoogleButton>
           </div>
         </div>
       </form>
