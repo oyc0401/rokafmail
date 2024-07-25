@@ -72,7 +72,7 @@ export default async function Page() {
             <LinkButton url={url}></LinkButton>
           </div>
           <div className="pt-6 px-4">
-            <Link className="w-full inline-block p-3 bg-primary rounded-full text-white text-lg shadow"
+            <Link className="submit shadow w-full"
               href='/profile/mails'>받은 편지 열기</Link>
           </div>
 

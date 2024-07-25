@@ -47,9 +47,6 @@ function TopView() {
             하늘인편을 통해 편지를 받았습니다!
           </p>
         </div>
-        <GoogleButton className="mb-3" callbackUrl='/register' >
-          구글로 계속하기
-        </GoogleButton>
         <RegisterButton></RegisterButton>
         <div className="pt-4 pb-4 w-full">
           <div className="flex flex-row justify-center"          >

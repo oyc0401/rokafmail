@@ -20,7 +20,7 @@ export function GoogleButton({ children, className, callbackUrl }: Props) {
   }
 
   return (
-    <div className={`rounded-full bg-primary w-full
+    <div className={`rounded-xl bg-primary w-full
     cursor-pointer active:opacity-75 bg-white border-2 border-[#DEE2E6] px-4 ${className}`}
       onClick={onClick}
     >

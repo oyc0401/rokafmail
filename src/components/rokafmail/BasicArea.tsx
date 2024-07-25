@@ -34,7 +34,7 @@ export function BasicBody({ children, paddingBottom = true }) {
 export function BasicFooter({ children }) {
   return (
     <div className="pb-8 pt-6 w-full  px-4">
-      <div className="row">{children}</div>
+      <div className="flex flex-row">{children}</div>
     </div>
   );
 }

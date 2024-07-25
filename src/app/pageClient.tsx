@@ -1,21 +1,37 @@
 'use client'
 import { useSession } from "next-auth/react";
-import { BasicLink } from 'src/components/BasicButton';
+import Link from "next/link";
+import { GoogleButton } from "src/components/SocialSignIn/GoogleButton";
 
 
 export function RegisterButton() {
   const { data: session, status } = useSession();
+
+  if (status == 'loading') {
+    return (
+      <Link className="rounded-xl px-8 py-3.5 w-full cursor-pointer active:opacity-75 bg-primary text-white" href={{ pathname: "/register" }}>
+        회원가입
+      </Link>
+    );
+  }
+
   if (status == 'authenticated' && session.user.username) {
     return (
-      <BasicLink className="text-white bg-primary" href={{ pathname: `/mail/${session.user.username}` }}>
+      <Link className="rounded-xl px-8 py-3.5 w-full cursor-pointer active:opacity-75 bg-primary text-white" href={{ pathname: `/mail/${session.user.username}` }}>
         내 인편함
-      </BasicLink>
+      </Link>
     )
   }
   return (
-    <BasicLink className="text-white bg-primary" href={{ pathname: "/register" }}>
-      회원가입
-    </BasicLink>
+    <>
+      <GoogleButton className="mb-3" callbackUrl='/register' >
+        구글로 계속하기
+      </GoogleButton>
+      <Link className="rounded-xl px-8 py-3.5 w-full cursor-pointer active:opacity-75 bg-primary text-white" href={{ pathname: "/register" }}>
+        회원가입
+      </Link>
+    </>
+
   )
 
 }

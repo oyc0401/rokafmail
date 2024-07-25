@@ -98,7 +98,7 @@ function Name() {
 
   return (
     <div className="pb-4">
-      <div className="row">
+      <div className="flex flex-row">
         <h2 className="text-base flex-1 text-right text-[#37271A]">
           From
         </h2>
