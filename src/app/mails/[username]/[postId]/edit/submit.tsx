@@ -67,7 +67,7 @@ export function Submit({ postId, username, posted, url }) {
   return (
     <>
       <footer className="container max-w-3xl mx-auto px-4">
-        <div className="row pt-2 sm:pt-3 pb-8">
+        <div className="flex flex-row pt-2 sm:pt-3 pb-8">
           <button className={`submit mini hidden glxfd:block`} style={{ background: 'red' }} onClick={onDelete}>
             삭제
           </button>

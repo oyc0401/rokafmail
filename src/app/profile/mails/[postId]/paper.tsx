@@ -31,7 +31,7 @@ export function Paper({ post }) {
 
         <div className={styles.formLine}></div>
 
-        <div className="row pt-0.5">
+        <div className="flex flex-row pt-0.5">
           <p className={`text-xs font-fontmedium text-left`}> </p>
           <div style={{ flex: 1 }}></div>
           <p className={`text-xs font-fontmedium text-left`}>{``}</p>

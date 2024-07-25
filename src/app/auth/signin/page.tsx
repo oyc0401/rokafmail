@@ -3,13 +3,6 @@ import React, { useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import {
-  InputField,
-  BasicFormArea,
-  BasicHeader,
-  BasicBody,
-  BasicFooter,
-} from "src/components";
 import { useRouter } from "next/navigation";
 import { TextArea } from "src/components/rokaf/TextArea";
 import { GoogleButton } from "src/components/SocialSignIn/GoogleButton";
@@ -95,7 +88,7 @@ function Page() {
               <p className="warn text-xs text-left">{errorMessage}</p>
 
             </div>
-            <button className={"mb-[18px] bg-primary text-white text-xl rounded-lg py-3 w-full"} type="submit" onClick={click}>
+            <button className={"submit smallText mb-[18px]"} type="submit" onClick={click}>
               로그인
             </button>
             <a className="text-sm text-[#ABABAB]" href="/register">계정이 없으신가요? 회원가입</a>

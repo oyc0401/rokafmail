@@ -82,7 +82,7 @@ function Contents() {
 
       <div className={styles.formLine}></div>
 
-      <div className="row pt-0.5">
+      <div className="flex flex-row pt-0.5">
         <p className={`text-xs font-fontmedium text-left ${validC(contents).color}`}>
           {validC(contents).text}
         </p>

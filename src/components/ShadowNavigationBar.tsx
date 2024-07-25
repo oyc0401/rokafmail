@@ -39,7 +39,7 @@ export function ShadowNavigationBar({ children, elevation = false }) {
           }`}
       >
         <footer className="container max-w-3xl mx-auto px-4">
-          <div className="row pt-3 pb-9">
+          <div className="flex flex-row pt-3 pb-9">
             {children}
           </div></footer>
       </nav>

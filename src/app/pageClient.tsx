@@ -9,7 +9,7 @@ export function RegisterButton() {
 
   if (status == 'loading') {
     return (
-      <Link className="rounded-xl px-8 py-3.5 w-full cursor-pointer active:opacity-75 bg-primary text-white" href={{ pathname: "/register" }}>
+      <Link className="submit smallText" href={{ pathname: "/register" }}>
         회원가입
       </Link>
     );
@@ -17,7 +17,7 @@ export function RegisterButton() {
 
   if (status == 'authenticated' && session.user.username) {
     return (
-      <Link className="rounded-xl px-8 py-3.5 w-full cursor-pointer active:opacity-75 bg-primary text-white" href={{ pathname: `/mail/${session.user.username}` }}>
+      <Link className="submit smallText" href={{ pathname: `/mail/${session.user.username}` }}>
         내 인편함
       </Link>
     )
@@ -27,7 +27,7 @@ export function RegisterButton() {
       <GoogleButton className="mb-3" callbackUrl='/register' >
         구글로 계속하기
       </GoogleButton>
-      <Link className="rounded-xl px-8 py-3.5 w-full cursor-pointer active:opacity-75 bg-primary text-white" href={{ pathname: "/register" }}>
+      <Link className="submit smallText" href={{ pathname: "/register" }}>
         회원가입
       </Link>
     </>

@@ -41,7 +41,7 @@ export default async function Mails({ params, searchParams }) {
       </div>
       <nav className="fixed bottom-0 w-full">
         <footer className="container max-w-3xl mx-auto px-8">
-          <div className="row pt-3 pb-8">
+          <div className="flex flex-row pt-3 pb-8">
             <Link className={"submit shadow-md"} href={`/mail/${user.username}`}>
               편지 작성
             </Link>

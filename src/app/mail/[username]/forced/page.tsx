@@ -44,13 +44,7 @@ async function UserDescription({ user }) {
   const milRank = getMilitaryRank(getEnter(generation));
   return (
     <div role='userDescription' className="pt-3 pb-3.5 w-full px-4">
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "start",
-        }}
-      >
+      <div className="flex flex-row">
         <h2 className={'text-[22px] font-medium text-left'}>
           {milRank} <span className="text-primary">{name}</span>에게
           <br />
@@ -73,7 +67,7 @@ async function UserDescription({ user }) {
 }
 
 
-function getMilitaryRank(date:Dayjs) {
+function getMilitaryRank(date: Dayjs) {
   const now = dayjs();
   const diffMonths = now.diff(date, 'month');
 

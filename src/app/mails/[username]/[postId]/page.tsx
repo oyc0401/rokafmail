@@ -12,22 +12,22 @@ export const metadata = {
 
 async function getMail(postId: number, username: string) {
   // 편지 내용 불러오기, 인증 포함
-  
+
   try {
     const response = await action(getMailById(postId, username));
     return response;
   } catch (error) {
     if (error.status == 401) {
-      
+
       // 편지 내용을 볼 수 없으면 로그인 창으로 이동
       const callbackUrl = `https://${process.env.DOMAIN}/mails/${username}/${postId}`;
       redirect(`/mails/${username}/${postId}/signin?&callbackUrl=${callbackUrl}`)
     }
-    
+
     if (error.status == 404) {
       notFound();
     }
-    
+
     console.error(error.message);
   }
 }
@@ -60,7 +60,7 @@ export default async function Page({ params }) {
       <EditButton></EditButton>
       <div className="flex-1"></div>
       <footer className="container max-w-3xl mx-auto px-4">
-        <div className="row pt-2 sm:pt-3 pb-8">
+        <div className="flex flex-row pt-2 sm:pt-3 pb-8">
           <Link className={"submit"} href={`/mails/${username}`}>
             편지함
           </Link>
@@ -74,13 +74,7 @@ export default async function Page({ params }) {
 async function UserDescription({ name }) {
   return (
     <div role='userDescription' className="pt-3 pb-3.5 w-full px-4">
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "start",
-        }}
-      >
+      <div className="flex flex-row">
         <h2 className={'text-[22px] font-medium text-left'}>
           <span className="text-primary">{name}</span> 훈련병에게
           <br></br>

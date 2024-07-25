@@ -45,7 +45,7 @@ function Card({ username, name, generation, mailCount }) {
     <>
       <div className={styles.card} onClick={click}>
         <h1>{username}</h1>
-        <div style={{ display: "flex", flexDirection: "row" }}>
+        <div className="flex flex-row">
           <h2>
             {name} | {generation}
           </h2>

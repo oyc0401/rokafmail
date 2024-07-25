@@ -88,13 +88,7 @@ async function UserDescription({ user }) {
 
   return (
     <div role='userDescription' className="pt-3 pb-3.5 w-full px-4">
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "start",
-        }}
-      >
+      <div className="flex flex-row">
         <h2 className={'text-[22px] font-medium text-left'}>
           <span className="text-primary">{name}</span> 훈련병에게
           <br />

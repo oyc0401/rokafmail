@@ -14,7 +14,7 @@ export const metadata = {
 export default async function Page({ params }) {
   const postId = Number(params.postId);
   const post = await getPostContent(postId);
-      if (!post) notFound();
+  if (!post) notFound();
 
   // 세션
   const session = await auth();
@@ -33,7 +33,7 @@ export default async function Page({ params }) {
       <Paper post={post}></Paper>
       <div className="flex-1"></div>
       <footer className="container max-w-3xl mx-auto px-4">
-        <div className="row pt-2 sm:pt-3 pb-8">
+        <div className="flex flex-row pt-2 sm:pt-3 pb-8">
           <Link className={"submit"} href={`/profile/mails`}>
             편지함
           </Link>
@@ -49,13 +49,7 @@ async function UserDescription({ writer }) {
 
   return (
     <div role='userDescription' className="pt-3 pb-3.5 w-full px-4">
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "start",
-        }}
-      >
+      <div className="flex flex-row">
         <h2 className={'text-[22px] font-medium text-left'}>
           <span className="text-primary">{writer}</span> 님이
           <br></br>
