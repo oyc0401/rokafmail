@@ -1,4 +1,5 @@
 import "styles/globals.css";
+import "styles/submit.scss";
 import { Noto_Sans_KR } from "next/font/google";
 import Providers from "./provider";
 import { GoogleAnalytics } from '@next/third-parties/google'

@@ -1,0 +1,55 @@
+// 변수 정의
+$primary-color: var(--primary);
+$dark-background: var(--dark-background);
+$light-font: var(--light-font);
+$default-font-size: 1.125rem; // 18px
+$default-line-height: 1.75rem; // 28px
+$small-font-size: 1rem; // 16px
+$small-line-height: 1.5rem; // 24px
+
+// Mixin 정의
+@mixin button-styles($padding, $font-size, $line-height) {
+  padding: $padding;
+  font-size: $font-size;
+  line-height: $line-height;
+  border-radius: 12px;
+  background: $primary-color;
+  width: 100%;
+  color: white;
+  cursor: pointer;
+  font-weight: 400;
+  white-space: nowrap;
+  display: block;
+
+  &:active {
+    opacity: 80%;
+  }
+
+  &.disable {
+    background: $dark-background;
+    color: $light-font;
+  }
+
+  &.mini {
+    width: fit-content;
+    background: #191919;
+    margin-right: 12px;
+  }
+}
+
+// 기본 버튼 스타일
+.submit {
+  @include button-styles(12px 24px, $default-font-size, $default-line-height);
+}
+
+// 작은 글씨 버튼 스타일
+.submit.smallText {
+  @include button-styles(14px 28px, $small-font-size, $small-line-height);
+}
+
+// sm 미디어 쿼리
+@media (min-width: 640px) {
+  .submit {
+    padding: 16px 32px;
+  }
+}

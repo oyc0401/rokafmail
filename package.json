@@ -30,6 +30,7 @@
     "react-query": "^3.39.3",
     "react-textarea-autosize": "^8.5.3",
     "recharts": "^2.12.2",
+    "sass": "^1.77.8",
     "sharp": "^0.33.1",
     "ts-node": "^10.9.2",
     "winston": "^3.11.0",
