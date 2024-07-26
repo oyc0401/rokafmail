@@ -29,7 +29,7 @@ export async function register(registerProps: RegisterProps, password: string) {
     }
 
     const trainee: Trainee = registerProps
-    await userService.registerCredential(trainee, registerProps.password, true);
+    await userService.registerCredential(trainee, password, true);
 
     return ActionResponse.ok("회원가입 성공");
   } catch (error) {
