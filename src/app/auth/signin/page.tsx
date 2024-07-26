@@ -95,7 +95,7 @@ function Page() {
           </div>
           <div className="flex-[3_3_0%]">
             <div className="mb-6 bg-[#E5E5E5] h-[1px] w-full"></div>
-            {/* <GoogleButton callbackUrl={callbackUrl ?? '/'}>구글 계정으로 계속하기</GoogleButton> */}
+            <GoogleButton callbackUrl={callbackUrl ?? '/'}>구글 계정으로 계속하기</GoogleButton>
           </div>
         </div>
       </form>
