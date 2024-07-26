@@ -24,9 +24,9 @@ export function RegisterButton() {
   }
   return (
     <>
-      <GoogleButton className="mb-3" callbackUrl='/register' >
+      {/* <GoogleButton className="mb-3" callbackUrl='/register' >
         구글로 계속하기
-      </GoogleButton>
+      </GoogleButton> */}
       <Link className="submit smallText" href={{ pathname: "/register" }}>
         회원가입
       </Link>
