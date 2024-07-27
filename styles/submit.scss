@@ -22,7 +22,7 @@ $small-line-height: 1.5rem; // 24px
   display: block;
 
   &:active {
-    opacity: 80%;
+    background: #5CADFF;
   }
 
   &.disable {
@@ -34,6 +34,10 @@ $small-line-height: 1.5rem; // 24px
     width: fit-content;
     background: #191919;
     margin-right: 12px;
+  }
+
+  &.mini:active {
+    background: #474747;
   }
 }
 
