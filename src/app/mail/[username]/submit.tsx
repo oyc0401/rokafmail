@@ -43,7 +43,7 @@ export function Submit({ username }) {
       }
 
       await action(sendMail(sendForm));
-      alert('편지 전송 성공!');
+      // alert('편지 전송 성공!');
       router.push(`/mail/${username}/complete`);
     } catch (error) {
       if (error.status == 404) {
