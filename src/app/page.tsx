@@ -73,7 +73,7 @@ function Body() {
               내용은 최대 1200자까지 작성할 수 있으며 작성한 비밀번호를 통해 이후에 수정 및 삭제가 가능합니다.
             </p>
             <p className={styles.content}>
-              입대 전에도 편지를 받을 수 있으며 내 정보에서 받은 편지 내용을 확인할 수 있습니다.
+              입대 전에도 편지를 받을 수 있으며 로그인 후 받은 편지 내용을 확인할 수 있습니다.
             </p>
           </div>
         </div>
@@ -82,19 +82,16 @@ function Body() {
         <div className="max-w-2xl mx-auto">
           <div className="pb-6">
             <h3 className={styles.title} >
-              훈련소 내 편지 발송
+              편지 출력 안내
             </h3>
             <p className={styles.content}>
-              공군 훈련소에서 훈련 3주차부터 수료 전까지 인쇄된 편지를 받을 수 있습니다.
+              2024년 8월 1일부로 공군에서 주말 휴대폰 사용, 네이버 BAND 활성화로 인해 인터넷편지를 출력해주지 않습니다.
             </p>
             <p className={styles.content}>
-              하늘인편에서 훈련 3주차 이전에 작성한 편지는 모아두었다가 이후부터 순차적으로 발송됩니다.
-            </p>
-            <p className={styles.content}>
-              일일 편지 전송 제한으로 인해 일부 편지는 추후에 받아볼 수 있습니다.
+              대신 주말에 받는 휴대폰을 사용해 받은 편지들을 확인할 수 있습니다
             </p>
           </div>
-          <div className="pb-6">
+          {/* <div className="pb-6">
             <h3 className={styles.title} >
               주의사항
             </h3>
@@ -103,12 +100,17 @@ function Body() {
               <br />
               훈련병을 식별할 수 없어 편지 발송이 불가능합니다
             </p>
-          </div>
+          </div> */}
           <div className="pb-6">
             <h3 className={styles.title} >
               Q&A
             </h3>
-            <p className={styles.content}>
+            {/* <p className={`${styles.content} pb-2`}>
+              <strong>훈련소에서 인편 출력해주나요?</strong>
+              <br />
+              2024년 8월 1일부로 공군에서 주말 휴대폰 사용, 네이버 BAND 활성화로 인해 인터넷편지를 출력해주지 않습니다.
+            </p> */}
+             <p className={`${styles.content} pb-2`}>
               <strong>꼭 입대전에 가입해야 하나요?</strong>
               <br />
               아닙니다. 훈련소 내부에서 주말 휴대폰 사용시간을 통해 가입하셔도 되고, 지인에게 대신 부탁해서 가입하셔도 됩니다.

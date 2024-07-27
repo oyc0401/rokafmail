@@ -25,21 +25,6 @@ export default async function Complete({ searchParams, params }) {
     notFound();
   }
 
-  // 전달 성공
-  // 국방서버이슈
-  // 유저x
-  //
-
-  let page = <Good name={user.name}></Good>;
-
-  // 편지 시작 이전에 보냄
-  if (mailStartIsFuture(user.generation)) {
-    const minute = postMailDMinute(user.generation);
-    const strDate = minuteToStr(minute)
-
-    page = <Later day={strDate} name={user.name}></Later>;
-  }
-
   const { name, birth, memberSeq, connect } = user;
   const userForm = { username, name, birth, memberSeq, connect };
 
@@ -48,16 +33,22 @@ export default async function Complete({ searchParams, params }) {
       <NavHeader user={userForm}></NavHeader>
       <div style={{ flex: 130 }}></div>
       <div className="w-full">
-        <Image className='w-[128px] h-[128px] mx-auto' src={CheckCircle} alt="아이콘" />
+        <Image className='w-[98px] h-[98px] mx-auto' src={CheckCircle} alt="아이콘" />
       </div>
 
       <div style={{ height: 28 }}></div>
-      <h2 className="font-bold text-2xl">
-        편지가 <br /> 전송되었습니다!
+      <h2 className="font-medium text-xl">
+        <span className='text-primary'>{name}</span> 훈련병에게
+        <br />
+        편지가 전송되었습니다!
       </h2>
-      <div style={{ flex: 28 }}></div>
-      {page}
       <div style={{ flex: 160 }}></div>
+      <p className='text-left text-[#939393] text-xs px-4'>
+        2024년 8월 1일부로 공군에서 주말 휴대폰 사용, 네이버 BAND 활성화로 인해
+        인터넷편지를 출력해주지 않습니다!
+        <br />
+        대신 훈련병이 휴대폰을 사용해 받은 편지들을 확인할 수 있습니다.
+      </p>
       <BasicFooter>
         <a className={`submit mini`} href={`/mails/${user.username}`}>
           편지함
@@ -70,24 +61,3 @@ export default async function Complete({ searchParams, params }) {
   );
 }
 
-// 여러 텍스트 컴포넌트 만들기
-function Good({ name }) {
-  return (
-    <p className="text-lg">
-      1일 이내에 <span className='text-primary'>{name}</span> 훈련병에게
-      <br />
-      편지가 전달됩니다!
-    </p>
-  );
-}
-
-function Later({ day, name }) {
-  return (
-    <p className="text-lg">
-      {day} 후에 <span className='text-primary'>{name}</span>{" "}
-      훈련병에게
-      <br />
-      편지가 전달됩니다!
-    </p>
-  );
-}
