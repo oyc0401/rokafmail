@@ -99,7 +99,7 @@ async function UserDescription({ user }) {
 }
 
 
-function getMilitaryRank(generation: number) {
+export function getMilitaryRank(generation: number) {
   const status = serveStatus(generation);
 
   switch (status) {

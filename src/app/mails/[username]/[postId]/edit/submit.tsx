@@ -41,19 +41,14 @@ export function Submit({ postId, username, posted, url }) {
     if (password) {
       try {
         await action(deleteMail(postId, password));
-        if (posted) { // 기훈단에 발송 된 편지
-          const isConfirm = confirm("편지가 삭제되었습니다.\n공군 기훈단 사이트에서도 해당 편지를 찾아 삭제해주십시오.\n확인을 누를시 해당 페이지로 이동합니다.");
-          if (isConfirm) window.open(url);
-        } else { // 내 DB에만 있는 편지
-          alert("편지를 삭제했습니다.");
-        }
+         alert("편지를 삭제했습니다.");
         // 삭제 후 메일 화면으로 돌아가기
         router.replace(`/mails/${username}`);
       } catch (error) {
         if (error.status == 401) {
           alert('잘못된 비밀번호 입니다.');
         } else if (error.status == 404) {
-          alert('해당 편지가 없습니다.');
+          alert('해당 편지가 이미 삭제되었습니다.');
         } else {
           alert(error.message);
         }

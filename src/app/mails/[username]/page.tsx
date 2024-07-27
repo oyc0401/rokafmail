@@ -2,41 +2,30 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NavHeader } from "src/components";
 import { minuteToStr, postMailDMinute } from "src/lib/time";
-import { getUnpostedLetters, getPostedLetters } from "src/server/apiAction/mails/server";
+import { getUnpostedLetters, getPostedLetters, getLetters } from "src/server/apiAction/mails/server";
 import { action } from "src/lib/actionResponse";
 import { getUserByUsername } from "src/server/apiSSR/user/server";
 import { TabBar } from "./TabBar";
 import { UnpostedLetterPage } from "./pages/UnpostedLetterPage";
 import { PostedLetterPage } from "./pages/PostedLetterPage";
 import { WaitLetterPage } from "./pages/WaitLetterPage";
+import { getMilitaryRank } from "src/app/mail/[username]/page";
 
 export const metadata = {
   title: "하늘인편 | 받은 편지함",
 };
 
-export default async function Mails({ params, searchParams }) {
+export default async function Mails({ params }) {
   const username = decodeURI(params.username);
 
   const user = await getUserByUsername(username);
   if (!user) notFound();
 
-  const pageState = searchParams.page;
-
-  let content = <></>;
-
-  if (!user.connect) {
-    content = <BeforeLetter user={user} />
-  } else if (pageState == 'wait') {
-    content = <WaitLetter user={user} />
-  } else {
-    content = <CompleteLetter user={user} />
-  }
-
   return (
     <>
       <div className="h-full max-w-3xl mx-auto">
         <NavHeader user={user}></NavHeader>
-        {content}
+        <Letters user={user} />
         <div style={{ height: 108, minHeight: 108, width: 1 }}></div>
       </div>
       <nav className="fixed bottom-0 w-full">
@@ -52,35 +41,12 @@ export default async function Mails({ params, searchParams }) {
   );
 }
 
-
-async function BeforeLetter({ user }) {
-  const letters = await action(getUnpostedLetters(user.username, 1, 10));
+async function Letters({ user }) {
+  const letters = await action(getLetters(user.username, 1, 10));
   return (
     <>
-      <TimeIndicator generation={user.generation} />
-      <UnpostedLetterPage user={user} initialData={letters} />
-    </>
-  )
-}
-
-async function CompleteLetter({ user }) {
-  const letters = await action(getPostedLetters(user.username, 1, 10));
-  return (
-    <>
-      <TabBar username={user.username} active={0}></TabBar>
-      <TimeIndicator generation={user.generation} />
+      {/* <p className="text-xl text-left font-medium pt-5 px-6 pb-2">{user.name} {getMilitaryRank(user.generation)}의 편지</p> */}
       <PostedLetterPage user={user} initialData={letters} />
-    </>
-  );
-}
-
-async function WaitLetter({ user }) {
-  const letters = await action(getUnpostedLetters(user.username, 1, 10));
-  return (
-    <>
-      <TabBar username={user.username} active={1}></TabBar>
-      <TimeIndicator generation={user.generation} />
-      <WaitLetterPage user={user} initialData={letters} />
     </>
   );
 }

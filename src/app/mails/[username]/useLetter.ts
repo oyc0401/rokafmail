@@ -1,8 +1,9 @@
 import { useInfiniteQuery } from "react-query";
-import { LetterItem, getPostedLetters, getUnpostedLetters } from "src/server/apiAction/mails/server"
+import { LetterItem, getLetters, getPostedLetters, getUnpostedLetters } from "src/server/apiAction/mails/server"
 import { action } from "src/lib/actionResponse";
 
 /**
+ *  @deprecated
  * 미발송 편지 불러오는 무한 스크롤 훅
  */
 export const useUnpostedLetters = (username: string, initialData: LetterItem[]) => {
@@ -34,17 +35,17 @@ export const useUnpostedLetters = (username: string, initialData: LetterItem[]) 
 /**
  * 발송된 편지 불러오는 무한 스크롤 훅
  */
-export const usePostedLetters = (username: string, initialData: LetterItem[]) => {
-  const fetchPostedLetters = async ({ pageParam = 1, queryKey }) => {
+export const useLetters = (username: string, initialData: LetterItem[]) => {
+  const fetchLetters = async ({ pageParam = 1, queryKey }) => {
     const [, username] = queryKey;
     const limit = 10; // 한번에 가져올 데이터 수
-    const letters = await action(getPostedLetters(username, pageParam, limit));
+    const letters = await action(getLetters(username, pageParam, limit));
     return { letters, nextPage: pageParam + 1 };
   };
 
   return useInfiniteQuery(
-    ['postedLetters', username],
-    fetchPostedLetters,
+    ['Letters', username],
+    fetchLetters,
     {
       initialData: {
         pages: [{ letters: initialData, nextPage: 2 }],

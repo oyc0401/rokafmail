@@ -4,7 +4,29 @@ import { omit } from "lodash";
 import { ActionResponse } from "src/lib/actionResponse";
 import prisma from "src/db/prisma";
 
+
 /**
+ * `Server Action`
+ * 
+ * 자신의 편지를 가져온다.
+ * @status `200`
+ */
+export async function getLetters(username: string, page: number, limit: number) {
+  const list = await prisma.post.findMany({
+    select: publicSelect,
+    where: { user: { username }},
+    skip: (page - 1) * limit,
+    take: limit,
+    orderBy: { id: 'desc' }
+  });
+
+  const letters = privateLetterFilter(list);
+
+  return ActionResponse.ok(letters);
+}
+
+/**
+ * @deprecated
  * `Server Action`
  * 
  * 안보내진 편지를 모두 가져온다.
@@ -25,6 +47,7 @@ export async function getUnpostedLetters(username: string, page: number, limit: 
 }
 
 /**
+ *  @deprecated
  * `Server Action`
  * 
  * 보내진 편지를 가져온다.

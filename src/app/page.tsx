@@ -84,12 +84,13 @@ function Body() {
             <h3 className={styles.title} >
               편지 출력 안내
             </h3>
-            <p className={styles.content}>
-              2024년 8월 1일부로 공군에서 주말 휴대폰 사용, 네이버 BAND 활성화로 인해 인터넷편지를 출력해주지 않습니다.
+            <p className={`${styles.content} font-bold`}>
+              이제 주말동안 휴대폰을 사용해 받은 편지들을 확인할 수 있습니다
             </p>
             <p className={styles.content}>
-              대신 주말에 받는 휴대폰을 사용해 받은 편지들을 확인할 수 있습니다
+              2024년 8월 1일부로 공군에서 주말 휴대폰 사용, 네이버 BAND 활성화로 인해 인터넷편지를 출력해주지 않습니다!
             </p>
+           
           </div>
           {/* <div className="pb-6">
             <h3 className={styles.title} >
@@ -101,21 +102,17 @@ function Body() {
               훈련병을 식별할 수 없어 편지 발송이 불가능합니다
             </p>
           </div> */}
-          <div className="pb-6">
+          {/* <div className="pb-6">
             <h3 className={styles.title} >
               Q&A
             </h3>
-            {/* <p className={`${styles.content} pb-2`}>
-              <strong>훈련소에서 인편 출력해주나요?</strong>
-              <br />
-              2024년 8월 1일부로 공군에서 주말 휴대폰 사용, 네이버 BAND 활성화로 인해 인터넷편지를 출력해주지 않습니다.
-            </p> */}
-             <p className={`${styles.content} pb-2`}>
+    
+             <p className={`${styles.content}`}>
               <strong>꼭 입대전에 가입해야 하나요?</strong>
               <br />
               아닙니다. 훈련소 내부에서 주말 휴대폰 사용시간을 통해 가입하셔도 되고, 지인에게 대신 부탁해서 가입하셔도 됩니다.
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

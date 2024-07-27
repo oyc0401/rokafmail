@@ -2,7 +2,7 @@
 import { dateToStr } from "src/lib/time";
 import { useEffect, useRef } from "react";
 import { LoadingCard, PostCard, PostSkeletonCard } from "../card";
-import { usePostedLetters } from "../useLetter";
+import { useLetters } from "../useLetter";
 
 export function PostedLetterPage({ user, initialData }) {
   const {
@@ -12,7 +12,7 @@ export function PostedLetterPage({ user, initialData }) {
     isLoading,
     isFetchingNextPage,
     error
-  } = usePostedLetters(user.username, initialData);
+  } = useLetters(user.username, initialData);
 
   const observerRef = useRef<IntersectionObserver>();
   const lastLetterRef = useRef(null);
