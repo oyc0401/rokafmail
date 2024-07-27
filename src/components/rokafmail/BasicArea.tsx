@@ -1,10 +1,10 @@
-import { NavHeaderHome } from "./NavHeaderHome";
+import { NavHeader} from "./NavHeader";
 
 export function BasicFormArea({ children }) {
   return (
     <div className="max-w-3xl mx-auto h-full">
       <form className="w-full h-full flex flex-col">
-        <NavHeaderHome></NavHeaderHome>
+        <NavHeader></NavHeader>
         {children}
       </form>
     </div>

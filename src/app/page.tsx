@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { NavHeaderHome } from "src/components";
+import { NavHeader } from "src/components";
 
 import styles from "./page.module.css";
 import { LoginButton, RegisterButton } from "./pageClient";
-import { GoogleButton } from "src/components/SocialSignIn/GoogleButton";
 
 export default function Page() {
   return (
@@ -18,7 +17,7 @@ export default function Page() {
 function TopView() {
   return (
     <>
-      <NavHeaderHome></NavHeaderHome>
+      <NavHeader></NavHeader>
       <div className="max-w-2xl mx-auto flex flex-col px-4">
         <div className="pt-8 pb-12">
           <h1 className='text-2xl font-bold text-left' >
@@ -90,7 +89,7 @@ function Body() {
             <p className={styles.content}>
               2024년 8월 1일부로 공군에서 주말 휴대폰 사용, 네이버 BAND 활성화로 인해 인터넷편지를 출력해주지 않습니다!
             </p>
-           
+
           </div>
           {/* <div className="pb-6">
             <h3 className={styles.title} >

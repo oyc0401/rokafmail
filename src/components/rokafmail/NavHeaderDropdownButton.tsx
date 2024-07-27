@@ -6,67 +6,70 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { signOut, useSession } from "next-auth/react";
-export default function DropdownButton({ username, name, birth, memberSeq, connect }) {
+
+export default function DropDownButton({ username }: { username?: string }) {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  const rokafUrl = `https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893223&siteId=last2&menuUIType=top&dum=dum&command2=getEmailList&searchName=${name}&searchBirth=${birth}&memberSeq=${memberSeq}`;
-
-  function profileDropdownItem() {
-    if (status === "authenticated") {
-      return <DropdownItem className="text-left" key="profile"
-        onClick={() => router.push(`/profile`)}>내 정보</DropdownItem>
+  function getUserMenu() {
+    if (username) {
+      return (
+        <DropdownSection showDivider>
+          <DropdownItem className="text-left" key="mail" onClick={() => router.push(`/mail/${username}`)}>편지 작성</DropdownItem>
+          <DropdownItem className="text-left" key="mails" onClick={() => router.push(`/mails/${username}`)}>받은 편지함</DropdownItem>
+          <DropdownItem className="text-left" key="image" onClick={() => window.open(`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893231&siteId=last2&menuUIType=sub`)}>훈련병 사진</DropdownItem>
+        </DropdownSection >
+      );
     }
-
-    return <DropdownItem className="text-left" key="profile"
-      onClick={() => router.push(`/auth/signin?callbackUrl=${window.location.href}`)}>로그인</DropdownItem>
+    return (
+      <DropdownSection className="p-0 m-0">
+        <DropdownItem className="p-0 m-0"></DropdownItem>
+      </DropdownSection >
+    );
   }
 
-  function rokafDropdownItem() {
-    if (connect) {
-      return <DropdownItem className="text-left" key="rokaf" onClick={() => window.open(rokafUrl)}>기본군사훈련단</DropdownItem >
+  function profiles() {
+    if (status === "authenticated" && session.user.username) {
+      return (
+        <DropdownSection showDivider>
+          <DropdownItem className="text-left" key="profile"
+            onClick={() => router.push(`/profile`)}>내 정보</DropdownItem>
+          <DropdownItem className="text-left" key="myMail" onClick={() => router.push(`/mail/${session.user.username}`)}>내 편지함</DropdownItem>
+          <DropdownItem className="text-left" key="profile"
+            onClick={() => signOut({ callbackUrl: '/' })}>로그아웃</DropdownItem>
+        </DropdownSection>
+      )
+    } else {
+      return (
+        <DropdownSection showDivider>
+          <DropdownItem className="text-left" key="login"
+            onClick={() => router.push(`/auth/signin?callbackUrl=${window.location.href}`)}>로그인</DropdownItem>
+          <DropdownItem className="text-left" key="register"
+            onClick={() => router.push(`/register`)}>회원가입</DropdownItem>
+        </DropdownSection>
+      )
     }
-    return <DropdownItem className="p-0"></DropdownItem>
   }
 
-  function signOutDropdownItem() {
-    if (status === "authenticated") {
-      return <DropdownItem className="text-left" key="profile"
-        onClick={() => signOut({ callbackUrl: '/' })}>로그아웃</DropdownItem>
-    }
-
-    return <DropdownItem className="p-0"></DropdownItem>
-  }
 
   return (
     <Dropdown>
       <DropdownTrigger>
         <Button isIconOnly size="sm" variant="light">
-          <Image className={''} src={MenuIcon} alt="메뉴" />
-
+          <Image src={MenuIcon} alt="메뉴" />
         </Button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
-        <DropdownSection showDivider>
-          {profileDropdownItem()}
-          <DropdownItem className="text-left" key="mail" onClick={() => router.push(`/mail/${username}`)}>편지 작성</DropdownItem>
-          <DropdownItem className="text-left" key="mails" onClick={() => router.push(`/mails/${username}`)}>받은 편지함</DropdownItem>
-        </DropdownSection>
-        <DropdownSection showDivider>
-          {rokafDropdownItem()}
-          <DropdownItem className="text-left" key="image" onClick={() => window.open(`https://www.airforce.mil.kr/user/indexSub.action?codyMenuSeq=156893231&siteId=last2&menuUIType=sub`)}>훈련병 사진</DropdownItem>
-        </DropdownSection >
+        {getUserMenu()}
+        {profiles()}
         <DropdownSection>
           <DropdownItem className="text-left" key="report" onClick={() => router.push(`/report?url=${window.location.href}`)}>문의사항</DropdownItem>
           <DropdownItem className="text-left" key="privacy-policy" onClick={() => router.push(`/privacy-policy`)}>개인정보처리방침</DropdownItem>
           <DropdownItem className="text-left" key="developer" onClick={() => window.open(`https://github.com/oyc0401`)}>개발자 정보</DropdownItem>
         </DropdownSection>
-        <DropdownSection>
-          {signOutDropdownItem()}
-        </DropdownSection>
-
 
       </DropdownMenu>
+
     </Dropdown>
   );
 }
