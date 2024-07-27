@@ -42,7 +42,7 @@ function TopView() {
         </div>
         <div className="pt-8 pb-6 w-full">
           <p className="font-light text-base">
-            저번 기수인 858기 중 697명이
+            저번 기수인 859기 중 734명이
             <br />
             하늘인편을 통해 편지를 받았습니다!
           </p>

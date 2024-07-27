@@ -54,7 +54,7 @@ export default async function Mail({ params }) {
   return (
     <div className="w-full flex flex-col max-w-3xl mx-auto h-full">
       <NavHeader user={user}></NavHeader>
-      <Banner></Banner>
+      {/* <Banner></Banner> */}
       <UserDescription user={user}></UserDescription>
       <Paper></Paper>
       <Submit username={username}></Submit>
@@ -65,26 +65,13 @@ export default async function Mail({ params }) {
 async function UserDescription({ user }) {
   const { name, message, generation, username } = user;
 
-  const status = serveStatus(generation);
-
   const startDate = getEnter(generation).format("YY.MM.DD");
   const endDate = getDischarge(generation).format("YY.MM.DD");
 
   const domain = process.env.DOMAIN;
   const url = `https://${domain}/mail/${username}`;
 
-  let milRank =
-    getMilitaryRank(getEnter(generation));
-
-
-  switch (status) {
-    case Status.before:
-    case Status.beginning:
-    case Status.training:
-    case Status.ending:
-      milRank = '훈련병';
-  }
-
+  let milRank = getMilitaryRank(generation);
 
 
   return (
@@ -112,7 +99,18 @@ async function UserDescription({ user }) {
 }
 
 
-function getMilitaryRank(date: Dayjs) {
+function getMilitaryRank(generation: number) {
+  const status = serveStatus(generation);
+
+  switch (status) {
+    case Status.before:
+    case Status.beginning:
+    case Status.training:
+    case Status.ending:
+      return '훈련병';
+  }
+
+  const date = getEnter(generation);
   const now = dayjs();
   const diffMonths = now.diff(date, 'month');
 
@@ -128,37 +126,3 @@ function getMilitaryRank(date: Dayjs) {
     return '민간인';
   }
 }
-
-
-// function After({ user }) {
-//   const { name, username } = user;
-//   const callback = `https://${process.env.DOMAIN}/mails/${username}`;
-
-//   return (
-//     <div className="w-full h-full flex flex-col max-w-3xl mx-auto">
-//       <NavHeader user={user}></NavHeader>
-//       <div style={{ flex: 178 }}></div>
-//       <div style={{ paddingBottom: 54 }}>
-//         <h1 style={{ fontSize: 25, fontWeight: 500 }}>
-//           {name}님
-//           <br />
-//           수료를 축하드립니다!
-//         </h1>
-//       </div>
-//       <h2 style={{ fontSize: 18 }}>
-//         훈련소 수료를 축하하는
-//         <br />
-//         메시지를 작성해주세요!
-//       </h2>
-//       <div style={{ flex: 260 }}></div>
-//       <BasicFooter>
-//         <Link className={`submit mini`} href={`/mails/${username}`}>
-//           편지함
-//         </Link>
-//         <Link className={`submit`} href={`/mail/${username}/forced`}>
-//           편지 작성
-//         </Link>
-//       </BasicFooter>
-//     </div>
-//   )
-// }

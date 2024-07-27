@@ -38,11 +38,11 @@ export default async function LinkPage({ params }) {
 
       <div className="flex-4"></div>
       <div style={{ flex: 4 }}></div>
-      <p className=''>
+      {/* <p className=''>
         편지함에서 편지를 작성하면
         <br />
         훈련 3주차부터 편지가 발송됩니다
-      </p>
+      </p> */}
       <BasicFooter>
         <Link className={"submit"} href={`/mail/${username}`}>
           편지함 이동

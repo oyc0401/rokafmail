@@ -81,9 +81,9 @@ export default function Account() {
   return (
     <BasicFormArea>
       <BasicHeader>
-        회원가입을 위해 아이디와
+        아이디와 사람들에게 전하고 싶은
         <br />
-        비밀번호를 입력해주세요
+        한줄 글을 적어주세요
       </BasicHeader>
       <BasicBody paddingBottom={false}>
         <div className="flex flex-col h-full">
@@ -127,11 +127,10 @@ export default function Account() {
           </div>
           <div style={{ flex: 1 }}></div>
           <p className={styles.intro}>
-            편지를 보내면 훈련병에게 실물로 된 편지가 도착합니다.
+            2024년 8월 1일부로 공군에서 주말 휴대폰 사용, 네이버 BAND 활성화 이유로
+            인터넷편지를 출력해주지 않습니다.
             <br />
-            공군 기본군사훈련단은 훈련 3주차부터 인터넷편지 작성을 할 수
-            있습니다. 따라서 이곳에서 보낸 편지들은 3주차 이후에 순차적으로
-            발송됩니다.
+            대신 주말에 휴대폰을 사용해 받은 편지들을 확인할 수 있습니다.
           </p>
         </div>
       </BasicBody>
