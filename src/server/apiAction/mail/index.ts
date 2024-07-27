@@ -8,6 +8,7 @@ import { validateContent, validateMailPassword, validateRelationship, validateTi
 import { validateAttack } from "src/utils/filter/filter";
 import { ActionResponse } from "src/lib/actionResponse";
 import uploadFile from "src/app/mail/[username]/pupload";
+import prisma from "src/db/prisma";
 
 
 function formDataToObj(formData: FormData): {
@@ -88,8 +89,21 @@ export async function sendMail(formData: FormData) {
     const postId = await mailService.sendLetterAwait(user.id, letter);
 
     const imageNames = await uploadFile(mailForm.files);
-    console.log(imageNames);
-    
+
+    for (const name of imageNames) {
+      await prisma.image.create({
+        data: {
+          postId: postId,
+          path: name,
+        }
+      })
+    }
+
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      include: { images: true }
+    });
+    console.log(post)
 
     return ActionResponse.ok("편지 전송 성공!");
   } catch (error) {

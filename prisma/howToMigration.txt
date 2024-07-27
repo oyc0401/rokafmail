@@ -4,7 +4,7 @@
 npx prisma validate
 npx prisma format
 
-2. npx prisma migrate dev --name add_uid_provider_composite_unique_key
+2. npx prisma migrate dev --name create_image_table
 
 3. npx prisma generate 입력
 

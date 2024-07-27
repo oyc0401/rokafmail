@@ -53,8 +53,18 @@ model Post {
   user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   postQueues       PostQueue[]
   unconnectedPosts UnconnectedPost[]
+  images           Image[]
 
   @@index([userId])
+}
+
+model Image {
+  id     Int    @id @default(autoincrement())
+  postId Int
+  path    String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
 }
 
 model UnconnectedPost {
