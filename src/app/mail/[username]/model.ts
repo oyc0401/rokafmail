@@ -12,6 +12,7 @@ interface State {
   contents: string;
   password: string;
   isPublic: boolean;
+  selectedFiles: File[];
 
   setName: (text: string) => void;
   setRelationship: (text: string) => void;
@@ -19,11 +20,12 @@ interface State {
   setContents: (text: string) => void;
   setPassword: (text: string) => void;
   setIsPublic: (text: boolean) => void;
+  setSelectedFiles: (text: File[]) => void;
 }
 
 export const useStore = create<State>((set) => ({
   initial: () =>
-    set({ name: "", relationship: "", title: "", contents: "", password: "", isPublic: false }),
+    set({ name: "", relationship: "", title: "", contents: "", password: "", isPublic: false,selectedFiles: [] }),
 
   click: false,
   setClick: (click) => set({ click: click }),
@@ -34,6 +36,7 @@ export const useStore = create<State>((set) => ({
   contents: "",
   password: "",
   isPublic: false,
+  selectedFiles: [],
 
   setName: (text) => set({ name: text }),
   setRelationship: (text) => set({ relationship: text }),
@@ -41,4 +44,5 @@ export const useStore = create<State>((set) => ({
   setContents: (text) => set({ contents: text }),
   setPassword: (text) => set({ password: text }),
   setIsPublic: (text) => set({ isPublic: text }),
+  setSelectedFiles: (text) => set({ selectedFiles: text }),
 }));

@@ -7,14 +7,10 @@ import { bean } from "src/server/bean/bean";
 import { validateContent, validateMailPassword, validateRelationship, validateTitle, validateWriter } from "src/utils/validate";
 import { validateAttack } from "src/utils/filter/filter";
 import { ActionResponse } from "src/lib/actionResponse";
+import uploadFile from "src/app/mail/[username]/pupload";
 
-/**
- * `Server Action`
- * 
- * 편지를 보낸다.
- * @status `200` `404`
- */
-export async function sendMail(mailForm: {
+
+function formDataToObj(formData: FormData): {
   username: string;
   name: string;
   relationship: string;
@@ -22,7 +18,52 @@ export async function sendMail(mailForm: {
   contents: string;
   password: string;
   isPublic: boolean;
-}) {
+  files: File[];
+} {
+  const mailForm: {
+    username: string;
+    name: string;
+    relationship: string;
+    title: string;
+    contents: string;
+    password: string;
+    isPublic: boolean;
+    files: File[];
+  } = {
+    username: '',
+    name: '',
+    relationship: '',
+    title: '',
+    contents: '',
+    password: '',
+    isPublic: false,
+    files: [],
+  };
+
+  formData.forEach((value, key) => {
+    if (key == 'files') {
+      if (value instanceof File) {
+        mailForm.files.push(value);
+      }
+    } else if (key === 'isPublic') {
+      mailForm[key] = value === 'true'; // 문자열 "true"/"false"를 boolean 값으로 변환
+    } else {
+      mailForm[key] = value as string; // 다른 값들은 문자열로 처리
+    }
+  });
+
+  return mailForm;
+}
+/**
+ * `Server Action`
+ * 
+ * 편지를 보낸다.
+ * @status `200` `404`
+ */
+export async function sendMail(formData: FormData) {
+
+  const mailForm = formDataToObj(formData);
+
   try {
     const { username, name, relationship, title, contents, password, isPublic } =
       mailForm;
@@ -44,7 +85,11 @@ export async function sendMail(mailForm: {
     }
 
     const mailService = new MailService(bean);
-    await mailService.sendLetterAsync(user.id, letter);
+    const postId = await mailService.sendLetterAwait(user.id, letter);
+
+    const imageNames = await uploadFile(mailForm.files);
+    console.log(imageNames);
+    
 
     return ActionResponse.ok("편지 전송 성공!");
   } catch (error) {

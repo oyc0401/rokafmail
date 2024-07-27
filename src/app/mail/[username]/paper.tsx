@@ -8,10 +8,9 @@ import rokafLogo from "public/assets/rokaf.png";
 import styles from "./paper.module.css";
 import { useStore } from "./model";
 import { validC } from "./valid";
-import uploadFile from "./pupload";
 
 export function Paper() {
-  const { initial } = useStore();
+  const { initial,selectedFiles, setSelectedFiles } = useStore();
   useEffect(() => {
     initial();
     return () => {
@@ -19,23 +18,11 @@ export function Paper() {
     };
   }, [initial]);
 
-  const [selectedFiles, setSelectedFiles] = useState([]);
-
   const handleFileChange = (event) => {
-    setSelectedFiles(event.target.files);
+    console.log(event.target.files)
+    const files: File[] = Array.from(event.target.files);
+    setSelectedFiles([...selectedFiles, ...files]);
   };
-
-  const handleUpload = async () => {
-    const formData = new FormData();
-    Array.from(selectedFiles).forEach(file => {
-      formData.append('files', file);
-    
-    });
-
-    await uploadFile(formData);
-  };
-
-
 
   return (
     <div role='paper' className=' px-4 py-2 mx-4 mb-4 bg-[#FFFDF8] shadow-md flex-1 flex-col flex'  >
@@ -53,8 +40,16 @@ export function Paper() {
 
       <Title></Title>
       <Contents></Contents>
-      <input type="file" multiple onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
+      <div className="flex overflow-x-auto mt-4 w-full scrollbar-hide">
+        {selectedFiles.map((file, index) => (
+          <img key={index} src={URL.createObjectURL(file)} alt="Selected" className="h-24 mr-2 rounded " />
+        ))}
+        <label htmlFor="file-input" className="p-8 h-24 bg-gray-400 flex items-center justify-center text-white cursor-pointer">
+          +
+        </label>
+      </div>
+      <input id="file-input" type="file" multiple onChange={handleFileChange} className="hidden" />
+    
       <Name></Name>
       <Password></Password>
 

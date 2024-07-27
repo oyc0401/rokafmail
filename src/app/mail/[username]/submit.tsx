@@ -7,10 +7,11 @@ import styles from "./page.module.css";
 import { useStore } from "./model";
 import { action } from "src/lib/actionResponse";
 import { sendMail } from "src/server/apiAction/mail";
+import uploadFile from "./pupload";
 
 
 export function Submit({ username }) {
-  const { name, relationship, title, contents, password, isPublic } = useStore();
+  const { name, relationship, title, contents, password, isPublic, selectedFiles } = useStore();
 
   const router = useRouter();
 
@@ -31,18 +32,36 @@ export function Submit({ username }) {
 
   async function postMail() {
     setProgress(true);
-    try {
-      const sendForm = {
-        username: username,
-        name: name,
-        relationship: relationship,
-        title: title,
-        contents: contents,
-        password: password,
-        isPublic: isPublic,
-      }
 
-      await action(sendMail(sendForm));
+
+
+
+
+
+    try {
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('name', name);
+      formData.append('relationship', relationship);
+      formData.append('title', title);
+      formData.append('contents', contents);
+      formData.append('password', password);
+      formData.append('isPublic', isPublic.toString());
+      selectedFiles.forEach(file => {
+        formData.append('files', file);
+      });
+      // const sendForm = {
+      //   username: username,
+      //   name: name,
+      //   relationship: relationship,
+      //   title: title,
+      //   contents: contents,
+      //   password: password,
+      //   isPublic: isPublic,
+      // }
+
+      await action(sendMail(formData));
+      handleUpload();
       // alert('편지 전송 성공!');
       router.push(`/mail/${username}/complete`);
     } catch (error) {
@@ -59,6 +78,7 @@ export function Submit({ username }) {
     const canpost = canSubmit();
     if (canpost) {
       postMail()
+
     } else {
       try {
         validateTitle(title);
@@ -85,6 +105,15 @@ export function Submit({ username }) {
       </div>
     );
   }
+
+  const handleUpload = async () => {
+    const formData = new FormData();
+    selectedFiles.forEach(file => {
+      formData.append('files', file);
+    });
+
+    await uploadFile(formData);
+  };
 
   return (
     <>

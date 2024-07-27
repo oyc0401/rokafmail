@@ -1,43 +1,28 @@
-'use server'
+
 import AWS from 'aws-sdk';
 
+export default async function uploadFile(files: File[]) {
 
-export default async function uploadFile(formData: FormData) {
-    console.log(formData);
-    const _formData: { [key: string]: any } = {};
-
-    formData.forEach((value, key) => {
-        if (key == 'files') {
-            if (_formData[key]) {
-                _formData[key].push(value);
-            } else {
-                _formData[key] = [value];
-            }
-        } else {
-            _formData[key] = value;
-        }
-    });
-
-    console.log(_formData);
-
+    const filenames: string[] = [];
 
     // 파일 업로드
-    if (_formData.files) {
-        for (const file of _formData.files) {
-            if (file instanceof File) {
-                // 파일 확장자 추출
-                const fileExtension = file.name.split('.').pop();
-                const newFileName = `uploads/${Date.now()}-${Math.floor(Math.random() * 10000)}.${fileExtension}`;  // 새로운 파일 이름 설정 (임의의 숫자 사용)
-                try {
-                    const result = await uploadToS3(file, newFileName);
-                    console.log(`File uploaded successfully: ${result.Location}`);
-                } catch (error) {
-                    console.error(`Error uploading file: ${file.name}`, error);
-                }
+
+    for (const file of files) {
+        if (file instanceof File) {
+            // 파일 확장자 추출
+            const fileExtension = file.name.split('.').pop();
+            const newFileName = `images/${Date.now()}-${Math.floor(Math.random() * 10000)}.${fileExtension}`;  // 새로운 파일 이름 설정 (임의의 숫자 사용)
+            filenames.push(newFileName);
+            try {
+                const result = await uploadToS3(file, newFileName);
+                console.log(`File uploaded successfully: ${result.Location}`);
+            } catch (error) {
+                console.error(`Error uploading file: ${file.name}`, error);
             }
         }
     }
 
+    return filenames;
 }
 
 const s3 = new AWS.S3({
@@ -75,7 +60,7 @@ export async function uploadToS3(file: File, key: string) {
         ContentType: file.type,
     };
 
-    console.log(params)
+    // console.log(params)
 
     return s3.upload(params).promise();
 }
