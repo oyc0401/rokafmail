@@ -3,12 +3,13 @@ import { notFound } from "next/navigation";
 
 import { BasicFooter } from "src/components";
 import { NavHeader } from 'src/components'
-import { getEnter, getCompletion, canSearch, Status, serveStatus } from "src/lib/time";
+import { getEnter, getCompletion, canSearch, Status, serveStatus, getDischarge } from "src/lib/time";
 import { getUserByUsername } from "src/server/apiSSR/user/server";
 import styles from "./page.module.css";
 import { Submit } from "./submit";
 import { Paper } from "./paper";
 import { ShareButton } from "./copy_button";
+import dayjs, { Dayjs } from "dayjs";
 
 export const metadata = {
   title: "하늘인편 | 편지 작성",
@@ -25,8 +26,6 @@ export default async function Mail({ params }) {
   }
 
   const { generation, connect, name, birth } = user;
-
-  const status = serveStatus(generation);
 
   function Banner() {
     if (canSearch(generation) && !connect) {
@@ -52,45 +51,47 @@ export default async function Mail({ params }) {
     // return <div className="bg-[#F3F3F3] w-full p-6">{""}</div>;
   }
 
-  // 편지쓰는 기간은 입대전부터 수료까지. 수료후에 편지 쓰는건 훈련병 입장에서 안좋을듯
-  switch (status) {
-    case Status.before:
-    case Status.beginning:
-    case Status.training:
-    case Status.ending:
-
-      // case Status.working:
-      // case Status.discharged:
-      return (
-        <div className="w-full flex flex-col max-w-3xl mx-auto h-full">
-          <NavHeader user={user}></NavHeader>
-          <Banner></Banner>
-          <UserDescription user={user}></UserDescription>
-          <Paper></Paper>
-          <Submit username={username}></Submit>
-        </div>
-      );
-
-    case Status.working:
-    case Status.discharged:
-      return <After user={user}></After>
-  }
+  return (
+    <div className="w-full flex flex-col max-w-3xl mx-auto h-full">
+      <NavHeader user={user}></NavHeader>
+      <Banner></Banner>
+      <UserDescription user={user}></UserDescription>
+      <Paper></Paper>
+      <Submit username={username}></Submit>
+    </div>
+  );
 }
 
 async function UserDescription({ user }) {
   const { name, message, generation, username } = user;
 
-  const startTime = getEnter(generation).format("YY.MM.DD");
-  const compTime = getCompletion(generation).format("YY.MM.DD");
+  const status = serveStatus(generation);
+
+  const startDate = getEnter(generation).format("YY.MM.DD");
+  const endDate = getDischarge(generation).format("YY.MM.DD");
 
   const domain = process.env.DOMAIN;
   const url = `https://${domain}/mail/${username}`;
+
+  let milRank =
+    getMilitaryRank(getEnter(generation));
+
+
+  switch (status) {
+    case Status.before:
+    case Status.beginning:
+    case Status.training:
+    case Status.ending:
+      milRank = '훈련병';
+  }
+
+
 
   return (
     <div role='userDescription' className="pt-3 pb-3.5 w-full px-4">
       <div className="flex flex-row">
         <h2 className={'text-[22px] font-medium text-left'}>
-          <span className="text-primary">{name}</span> 훈련병에게
+          {milRank} <span className="text-primary">{name}</span>에게
           <br />
           편지를 보내주세요!
         </h2>
@@ -100,7 +101,7 @@ async function UserDescription({ user }) {
 
       <div className="pt-px w-full">
         <h2 className='text-sm font-medium text-left text-fontlight'>
-          {startTime} ~ {compTime}
+          {startDate} ~ {endDate}
         </h2>
       </div>
       <div className="pt-2 w-full">
@@ -110,35 +111,54 @@ async function UserDescription({ user }) {
   );
 }
 
-function After({ user }) {
-  const { name, username } = user;
-  const callback = `https://${process.env.DOMAIN}/mails/${username}`;
 
-  return (
-    <div className="w-full h-full flex flex-col max-w-3xl mx-auto">
-      <NavHeader user={user}></NavHeader>
-      <div style={{ flex: 178 }}></div>
-      <div style={{ paddingBottom: 54 }}>
-        <h1 style={{ fontSize: 25, fontWeight: 500 }}>
-          {name}님
-          <br />
-          수료를 축하드립니다!
-        </h1>
-      </div>
-      <h2 style={{ fontSize: 18 }}>
-        훈련소 수료를 축하하는
-        <br />
-        메시지를 작성해주세요!
-      </h2>
-      <div style={{ flex: 260 }}></div>
-      <BasicFooter>
-        <Link className={`submit mini`} href={`/mails/${username}`}>
-          편지함
-        </Link>
-        <Link className={`submit`} href={`/mail/${username}/forced`}>
-          편지 작성
-        </Link>
-      </BasicFooter>
-    </div>
-  )
+function getMilitaryRank(date: Dayjs) {
+  const now = dayjs();
+  const diffMonths = now.diff(date, 'month');
+
+  if (diffMonths < 2) {
+    return '이병';
+  } else if (diffMonths < 8) {
+    return '일병';
+  } else if (diffMonths < 14) {
+    return '상병';
+  } else if (diffMonths < 21) {
+    return '병장';
+  } else {
+    return '민간인';
+  }
 }
+
+
+// function After({ user }) {
+//   const { name, username } = user;
+//   const callback = `https://${process.env.DOMAIN}/mails/${username}`;
+
+//   return (
+//     <div className="w-full h-full flex flex-col max-w-3xl mx-auto">
+//       <NavHeader user={user}></NavHeader>
+//       <div style={{ flex: 178 }}></div>
+//       <div style={{ paddingBottom: 54 }}>
+//         <h1 style={{ fontSize: 25, fontWeight: 500 }}>
+//           {name}님
+//           <br />
+//           수료를 축하드립니다!
+//         </h1>
+//       </div>
+//       <h2 style={{ fontSize: 18 }}>
+//         훈련소 수료를 축하하는
+//         <br />
+//         메시지를 작성해주세요!
+//       </h2>
+//       <div style={{ flex: 260 }}></div>
+//       <BasicFooter>
+//         <Link className={`submit mini`} href={`/mails/${username}`}>
+//           편지함
+//         </Link>
+//         <Link className={`submit`} href={`/mail/${username}/forced`}>
+//           편지 작성
+//         </Link>
+//       </BasicFooter>
+//     </div>
+//   )
+// }
