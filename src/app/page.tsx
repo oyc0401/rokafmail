@@ -91,16 +91,15 @@ function Body() {
             </p>
 
           </div>
-          {/* <div className="pb-6">
+          <div className="pb-6">
             <h3 className={styles.title} >
               주의사항
             </h3>
             <p className={styles.content}>
-              <strong> 가입 시 이름 및 생년월일을 정확히 입력해주세요!</strong>
-              <br />
-              훈련병을 식별할 수 없어 편지 발송이 불가능합니다
+              <strong className="pb-6"> 가입 시 이름 및 생년월일을 정확히 입력해주세요!</strong>
             </p>
-          </div> */}
+            <p className={styles.content}>  이름과 생년월일이 잘못되면 훈련병을 식별할 수 없습니다.</p>
+          </div>
           {/* <div className="pb-6">
             <h3 className={styles.title} >
               Q&A
