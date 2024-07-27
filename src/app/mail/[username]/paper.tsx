@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';
 import { Checkbox, Divider } from "@nextui-org/react";
@@ -8,6 +8,7 @@ import rokafLogo from "public/assets/rokaf.png";
 import styles from "./paper.module.css";
 import { useStore } from "./model";
 import { validC } from "./valid";
+import uploadFile from "./pupload";
 
 export function Paper() {
   const { initial } = useStore();
@@ -17,6 +18,23 @@ export function Paper() {
       initial();
     };
   }, [initial]);
+
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const handleFileChange = (event) => {
+    setSelectedFiles(event.target.files);
+  };
+
+  const handleUpload = async () => {
+    const formData = new FormData();
+    Array.from(selectedFiles).forEach(file => {
+      formData.append('files', file);
+    
+    });
+
+    await uploadFile(formData);
+  };
+
 
 
   return (
@@ -35,6 +53,8 @@ export function Paper() {
 
       <Title></Title>
       <Contents></Contents>
+      <input type="file" multiple onChange={handleFileChange} />
+      <button onClick={handleUpload}>Upload</button>
       <Name></Name>
       <Password></Password>
 
