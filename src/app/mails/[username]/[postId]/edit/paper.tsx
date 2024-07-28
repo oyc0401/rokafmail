@@ -10,6 +10,10 @@ import { Checkbox, Divider } from "@nextui-org/react";
 import AddIcon from 'public/icons/add_icon.svg';
 import CloseIcon from 'public/icons/close_icon_black.svg';
 import AddPhotoIcon from 'public/icons/add_a_photo_icon.svg';
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
+
+
 export function Paper({ updateProps }) {
 
   const { title, contents, name, relationship, isPublic, images } = updateProps;
@@ -134,7 +138,11 @@ function AddImage() {
       <div className="flex overflow-x-auto mt-4 mb-4 w-full scrollbar-hide">
         {images.map((image, index) => (
           <div key={index} className="relative flex-none h-[80px] w-[80px] mr-2">
-            <img src={`https://rokafmail.s3.ap-northeast-2.amazonaws.com/${image.path}`} alt="Selected" className="object-cover h-full w-full rounded" />
+            <Zoom>
+              <img src={`https://rokafmail.s3.ap-northeast-2.amazonaws.com/${image.path}`} alt="Selected"
+                className="object-cover h-[80px] w-[80px] rounded" />
+            </Zoom>
+            
             <button
               className="absolute top-0 right-0"
               style={{ width: '24px', height: '20px' }}
@@ -146,7 +154,9 @@ function AddImage() {
         ))}
         {selectedFiles.map((file, index) => (
           <div key={index} className="relative flex-none h-[80px] w-[80px] mr-2">
-            <img src={URL.createObjectURL(file)} alt="Selected" className="object-cover h-full w-full rounded" />
+            <Zoom>
+              <img src={URL.createObjectURL(file)} alt="Selected" className="object-cover h-[80px] w-[80px] rounded" />
+            </Zoom>
             <button
               className="absolute top-0 right-0"
               style={{ width: '24px', height: '20px' }}

@@ -10,7 +10,8 @@ import rokafLogo from "public/assets/rokaf.png";
 import styles from "./paper.module.css";
 import { useStore } from "./model";
 import { validC } from "./valid";
-
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
 export function Paper() {
   const { initial } = useStore();
   useEffect(() => {
@@ -88,10 +89,10 @@ function Contents() {
         }}
       ></TextareaAutosize>
       <div className="flex-1 cursor-text" onClick={handleClick}></div>
-      
+
       <AddImage></AddImage>
       <input id="file-input" type="file" multiple onChange={handleFileChange} className="hidden" />
-     
+
       <div className={styles.formLine}></div>
 
       <div className="flex flex-row pt-0.5">
@@ -129,7 +130,9 @@ function AddImage() {
       <div className="flex overflow-x-auto mt-4 mb-4 w-full scrollbar-hide">
         {selectedFiles.map((file, index) => (
           <div key={index} className="relative flex-none h-[80px] w-[80px] mr-2">
-            <img src={URL.createObjectURL(file)} alt="Selected" className="object-cover h-full w-full rounded" />
+            <Zoom>
+              <img src={URL.createObjectURL(file)} alt="Selected" className="object-cover h-[80px] w-[80px] rounded" />
+            </Zoom>
             <button
               className="absolute top-0 right-0"
               style={{ width: '24px', height: '20px' }}

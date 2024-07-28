@@ -4,9 +4,11 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import rokafLogo from "public/assets/rokaf.png";
 import styles from "./paper.module.css";
-
+import { useState } from "react";
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
 export function Paper({ post }) {
-  const { title, contents, name, relationship, isPublic,images } = post;
+  const { title, contents, name, relationship, isPublic, images } = post;
 
   function Title() {
     return (
@@ -19,8 +21,21 @@ export function Paper({ post }) {
   }
 
   function Contents() {
-    return (
 
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const openModal = (image) => {
+      setSelectedImage(image);
+      setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+      setModalIsOpen(false);
+      setSelectedImage(null);
+    };
+
+    return (<>
       <div className="flex-1 pb-4" >
         <TextareaAutosize
           className={`${styles.form} text-base ${styles.contentForm} min-h-36 resize-none`}
@@ -30,9 +45,14 @@ export function Paper({ post }) {
         ></TextareaAutosize>
         <div className="flex overflow-x-auto mt-4 mb-4 w-full scrollbar-hide">
           {images.map((file, index) => (
-            <div key={index} className="relative flex-none h-[80px] w-[80px] mr-2">
-              <img src={`https://rokafmail.s3.ap-northeast-2.amazonaws.com/${file.path}`} alt="Selected" className="object-cover h-full w-full rounded" />
+
+            <div key={index} className="relative flex-none mr-2">
+              <Zoom>
+                <img src={`https://rokafmail.s3.ap-northeast-2.amazonaws.com/${file.path}`}
+                  alt="Selected" className="object-cover h-[80px] w-[80px] rounded" />
+              </Zoom>
             </div>
+
           ))}
         </div>
         <div className={styles.formLine}></div>
@@ -43,6 +63,9 @@ export function Paper({ post }) {
           <p className={`text-xs font-fontmedium text-left`}>{``}</p>
         </div>
       </div>
+    </>
+
+
     );
   }
 
