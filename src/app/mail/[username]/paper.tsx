@@ -3,14 +3,16 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';
 import { Checkbox, Divider } from "@nextui-org/react";
-
+import AddIcon from 'public/icons/add_icon.svg';
+import CloseIcon from 'public/icons/close_icon_black.svg';
+import AddPhotoIcon from 'public/icons/add_a_photo_icon.svg';
 import rokafLogo from "public/assets/rokaf.png";
 import styles from "./paper.module.css";
 import { useStore } from "./model";
 import { validC } from "./valid";
 
 export function Paper() {
-  const { initial,selectedFiles, setSelectedFiles } = useStore();
+  const { initial, selectedFiles, setSelectedFiles } = useStore();
   useEffect(() => {
     initial();
     return () => {
@@ -18,11 +20,7 @@ export function Paper() {
     };
   }, [initial]);
 
-  const handleFileChange = (event) => {
-    console.log(event.target.files)
-    const files: File[] = Array.from(event.target.files);
-    setSelectedFiles([...selectedFiles, ...files]);
-  };
+
 
   return (
     <div role='paper' className=' px-4 py-2 mx-4 mb-4 bg-[#FFFDF8] shadow-md flex-1 flex-col flex'  >
@@ -40,16 +38,7 @@ export function Paper() {
 
       <Title></Title>
       <Contents></Contents>
-      <div className="flex overflow-x-auto mt-4 w-full scrollbar-hide">
-        {selectedFiles.map((file, index) => (
-          <img key={index} src={URL.createObjectURL(file)} alt="Selected" className="h-24 mr-2 rounded " />
-        ))}
-        <label htmlFor="file-input" className="p-8 h-24 bg-gray-400 flex items-center justify-center text-white cursor-pointer">
-          +
-        </label>
-      </div>
-      <input id="file-input" type="file" multiple onChange={handleFileChange} className="hidden" />
-    
+
       <Name></Name>
       <Password></Password>
 
@@ -75,11 +64,17 @@ function Title() {
 }
 
 function Contents() {
-  const { contents, setContents, setClick } = useStore();
+  const { contents, setContents, setClick, selectedFiles, setSelectedFiles } = useStore();
   const inputRef = useRef<any>(null);
   const handleClick = () => {
     // input 요소에 포커스를 주기
     inputRef.current.focus();
+  };
+
+  const handleFileChange = (event) => {
+    console.log(event.target.files)
+    const files: File[] = Array.from(event.target.files);
+    setSelectedFiles([...selectedFiles, ...files]);
   };
 
   return (
@@ -94,7 +89,9 @@ function Contents() {
         }}
       ></TextareaAutosize>
       <div className="flex-1 cursor-text" onClick={handleClick}></div>
+      <AddImage></AddImage>
 
+      <input id="file-input" type="file" multiple onChange={handleFileChange} className="hidden" />
       <div className={styles.formLine}></div>
 
       <div className="flex flex-row pt-0.5">
@@ -107,6 +104,55 @@ function Contents() {
     </div>
   );
 }
+
+function AddImage() {
+  const { selectedFiles, setSelectedFiles } = useStore();
+  const handleRemoveImage = (index) => {
+    const newFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(newFiles);
+  };
+
+  if (selectedFiles.length == 0) {
+    return (
+      <>
+        <div className="flex flex-row justify-end">
+          <label htmlFor="file-input" className="flex-none pb-2 px-1 cursor-pointer" >
+            <Image className="w-[24px] h-[24px]" src={AddPhotoIcon} alt='사진 추가' ></Image>
+          </label>
+        </div>
+
+      </>
+    );
+  }
+  return (
+    <>
+      <div className="flex overflow-x-auto mt-4 mb-4 w-full scrollbar-hide">
+        {selectedFiles.map((file, index) => (
+          <div key={index} className="relative flex-none h-[80px] w-[80px] mr-2">
+            <img src={URL.createObjectURL(file)} alt="Selected" className="object-cover h-full w-full rounded" />
+            <button
+              className="absolute top-0 right-0"
+              style={{ width: '24px', height: '20px' }}
+              onClick={() => handleRemoveImage(index)}
+            >
+              <Image src={CloseIcon} alt="Remove" className="w-[12px] h-[12px] m-auto" />
+            </button>
+          </div>
+        ))}
+        <label htmlFor="file-input" className="h-[80px] w-[80px] rounded bg-[#C5B8A9] active:bg-[#D8CFC3] flex-none
+          cursor-pointer flex justify-center items-center">
+          <Image className="w-[24px] h-[24px]" src={AddIcon} alt='사진 추가' ></Image>
+        </label>
+      </div>
+
+
+
+    </>
+  )
+}
+
+
+
 
 function Name() {
   const { setName, setRelationship, setClick } = useStore();

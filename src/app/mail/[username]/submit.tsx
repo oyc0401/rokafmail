@@ -61,7 +61,7 @@ export function Submit({ username }) {
       // }
 
       await action(sendMail(formData));
-      handleUpload();
+      // handleUpload();
       // alert('편지 전송 성공!');
       router.push(`/mail/${username}/complete`);
     } catch (error) {
@@ -106,14 +106,14 @@ export function Submit({ username }) {
     );
   }
 
-  const handleUpload = async () => {
-    const formData = new FormData();
-    selectedFiles.forEach(file => {
-      formData.append('files', file);
-    });
+  // const handleUpload = async () => {
+  //   const formData = new FormData();
+  //   selectedFiles.forEach(file => {
+  //     formData.append('files', file);
+  //   });
 
-    await uploadFile(formData);
-  };
+  //   await uploadFile(formData);
+  // };
 
   return (
     <>

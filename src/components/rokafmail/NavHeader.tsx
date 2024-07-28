@@ -22,7 +22,7 @@ export function NavHeader({ user }: { user?: UserProps }) {
   }
   return (
     <>
-      <div className="h-[56px]"></div>
+      <div className="h-[56px] flex-none"></div>
       <nav role="banner" className={'fixed top-0 left-0 bg-white shadow-sm dark:border-b dark:border-gray-800 w-full'}>
         <header className="max-w-3xl mx-auto px-2 ">
           <div className="flex justify-between items-center h-14">
