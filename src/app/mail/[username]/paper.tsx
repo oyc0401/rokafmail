@@ -12,6 +12,10 @@ import { useStore } from "./model";
 import { validC } from "./valid";
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
+
+import imageCompression from 'browser-image-compression';
+
+
 export function Paper() {
   const { initial } = useStore();
   useEffect(() => {
@@ -72,9 +76,41 @@ function Contents() {
     inputRef.current.focus();
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const files: File[] = Array.from(event.target.files);
-    setSelectedFiles([...selectedFiles, ...files]);
+    if (files.length + selectedFiles.length > 10) {
+      alert('최대 10개의 이미지만 업로드 가능합니다.')
+      return;
+    }
+
+    try {
+      const compressedFiles = await Promise.all(
+        files.map(file => compressImage(file))
+      );
+
+      setSelectedFiles([...selectedFiles, ...compressedFiles]);
+    } catch (error) {
+
+    }
+
+  };
+
+  const compressImage = async (file: File) => {
+    const options = {
+      maxSizeMB: 0.3,
+      maxWidthOrHeight: 1440,
+      useWebWorker: true,
+    };
+
+    try {
+      const compressedBlob = await imageCompression(file, options);
+      const compressedFile = new File([compressedBlob], file.name, { type: file.type });
+      return compressedFile;
+      
+    } catch (error) {
+      console.error('Error compressing file:', error);
+      return file;
+    }
   };
 
   return (
@@ -131,7 +167,7 @@ function AddImage() {
         {selectedFiles.map((file, index) => (
           <div key={index} className="relative flex-none h-[80px] w-[80px] mr-2">
             <Zoom>
-              <img src={URL.createObjectURL(file)} alt="Selected" className="object-cover h-[80px] w-[80px] rounded" />
+              <img src={URL.createObjectURL(file)} alt="이미지" className="object-cover h-[80px] w-[80px] rounded" />
             </Zoom>
             <button
               className="absolute top-0 right-0"

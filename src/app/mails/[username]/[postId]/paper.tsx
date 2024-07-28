@@ -49,7 +49,7 @@ export function Paper({ post }) {
             <div key={index} className="relative flex-none mr-2">
               <Zoom>
                 <img src={`https://rokafmail.s3.ap-northeast-2.amazonaws.com/${file.path}`}
-                  alt="Selected" className="object-cover h-[80px] w-[80px] rounded" />
+                  alt="이미지" className="object-cover h-[80px] w-[80px] rounded" />
               </Zoom>
             </div>
 
