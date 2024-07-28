@@ -6,7 +6,7 @@ import rokafLogo from "public/assets/rokaf.png";
 import styles from "./paper.module.css";
 
 export function Paper({ post }) {
-  const { title, contents, name, relationship, isPublic } = post;
+  const { title, contents, name, relationship, isPublic,images } = post;
 
   function Title() {
     return (
@@ -28,7 +28,13 @@ export function Paper({ post }) {
           value={contents}
           readOnly
         ></TextareaAutosize>
-
+        <div className="flex overflow-x-auto mt-4 mb-4 w-full scrollbar-hide">
+          {images.map((file, index) => (
+            <div key={index} className="relative flex-none h-[80px] w-[80px] mr-2">
+              <img src={`https://rokafmail.s3.ap-northeast-2.amazonaws.com/${file.path}`} alt="Selected" className="object-cover h-full w-full rounded" />
+            </div>
+          ))}
+        </div>
         <div className={styles.formLine}></div>
 
         <div className="flex flex-row pt-0.5">
@@ -105,6 +111,35 @@ export function Paper({ post }) {
     </div>
   );
 
+
+  function AddImage() {
+    const { selectedFiles, setSelectedFiles } = useStore();
+    const handleRemoveImage = (index) => {
+      const newFiles = selectedFiles.filter((_, i) => i !== index);
+      setSelectedFiles(newFiles);
+    };
+
+    if (selectedFiles.length == 0) {
+      return (
+        <>
+          <div className="flex flex-row justify-end">
+            <label htmlFor="file-input" className="flex-none pb-2 px-1 cursor-pointer" >
+              <Image className="w-[24px] h-[24px]" src={AddPhotoIcon} alt='사진 추가' ></Image>
+            </label>
+          </div>
+
+        </>
+      );
+    }
+    return (
+      <>
+       
+
+
+
+      </>
+    )
+  }
 
 
 }

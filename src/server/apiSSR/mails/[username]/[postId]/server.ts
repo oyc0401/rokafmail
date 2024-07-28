@@ -24,14 +24,17 @@ export async function getMailById(postId: number, username: string) {
 
   const post = await prisma.post.findUnique({
     where: { id: postId },
+    include: {
+      images: true,
+    }
   });
 
   if (!post) return ActionResponse.notFound();
 
 
-  const { id, title, contents, name, relationship, posted, isPublic, createdAt } = post;
-  const props = { id, title, contents, name, relationship, isPublic, posted, createdAt };
- 
+  const { id, title, contents, name, relationship, posted, isPublic, createdAt, images } = post;
+  const props = { id, title, contents, name, relationship, isPublic, posted, createdAt, images };
+
 
   // 공개글이면 이동
   if (post.isPublic) {
