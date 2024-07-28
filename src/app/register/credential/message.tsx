@@ -45,10 +45,10 @@ export default function Message() {
             </div>
             <div style={{ flex: 1 }}></div>
             <p className={styles.intro}>
-              2024년 8월 1일부로 공군에서 주말 휴대폰 사용, 네이버 BAND 활성화로 인해
-              인터넷편지를 출력해주지 않습니다.
+              이제 훈련병이 휴대폰을 사용해 받은 편지들을 확인할 수 있습니다.
               <br />
-              대신 주말에 휴대폰을 사용해 받은 편지들을 확인할 수 있습니다.
+              2024년 8월 1일부로 공군에서 주말 휴대폰 사용, 네이버 BAND 활성화로 인해
+              인터넷편지를 출력해주지 않습니다
             </p>
           </div>
         </BasicBody>
@@ -56,7 +56,7 @@ export default function Message() {
           <button className={`submit mini`} onClick={prev} type="button">
             이전
           </button>
-          <SendButton/>
+          <SendButton />
         </BasicFooter>
       </BasicFormArea>
     </>
