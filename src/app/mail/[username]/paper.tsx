@@ -12,7 +12,7 @@ import { useStore } from "./model";
 import { validC } from "./valid";
 
 export function Paper() {
-  const { initial, selectedFiles, setSelectedFiles } = useStore();
+  const { initial } = useStore();
   useEffect(() => {
     initial();
     return () => {
@@ -89,9 +89,10 @@ function Contents() {
         }}
       ></TextareaAutosize>
       <div className="flex-1 cursor-text" onClick={handleClick}></div>
+      
       <AddImage></AddImage>
-
       <input id="file-input" type="file" multiple onChange={handleFileChange} className="hidden" />
+     
       <div className={styles.formLine}></div>
 
       <div className="flex flex-row pt-0.5">

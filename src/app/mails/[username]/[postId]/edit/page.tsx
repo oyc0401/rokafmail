@@ -15,8 +15,8 @@ async function getPostAuthCheck(postId) {
   const cookieStore = cookies();
   const pwcookie = cookieStore.get("password");
 
-  const { title, contents, name, relationship, posted, isPublic } = post;
-  const props = { title, contents, name, relationship, isPublic, posted };
+  const { title, contents, name, relationship, posted, isPublic, images } = post;
+  const props = { title, contents, name, relationship, isPublic, posted, images };
 
   if (pwcookie && pwcookie.value == password) {
     return props;

@@ -7,14 +7,16 @@ import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';
 import { Checkbox, Divider } from "@nextui-org/react";
-
+import AddIcon from 'public/icons/add_icon.svg';
+import CloseIcon from 'public/icons/close_icon_black.svg';
+import AddPhotoIcon from 'public/icons/add_a_photo_icon.svg';
 export function Paper({ updateProps }) {
 
-  const { title, contents, name, relationship, isPublic } = updateProps;
+  const { title, contents, name, relationship, isPublic, images } = updateProps;
   const { initial } = useStore();
   useEffect(() => {
-    initial({ name, relationship, title, contents, isPublic });
-    return initial({ name, relationship, title, contents, isPublic });
+    initial({ name, relationship, title, contents, isPublic, images });
+    return initial({ name, relationship, title, contents, isPublic, images });
   }, [initial, name, relationship, title, contents, isPublic]);
 
 
@@ -60,11 +62,17 @@ function Title() {
 }
 
 function Contents() {
-  const { contents, setContents, setClick } = useStore();
+  const { contents, setContents, setClick, selectedFiles, setSelectedFiles } = useStore();
   const inputRef = useRef<any>(null);
   const handleClick = () => {
     // input 요소에 포커스를 주기
     inputRef.current.focus();
+  };
+
+  const handleFileChange = (event) => {
+    console.log(event.target.files)
+    const files: File[] = Array.from(event.target.files);
+    setSelectedFiles([...selectedFiles, ...files]);
   };
 
   return (
@@ -82,6 +90,9 @@ function Contents() {
       ></TextareaAutosize>
       <div className="flex-1 cursor-text" onClick={handleClick}></div>
 
+      <AddImage></AddImage>
+      <input id="file-input" type="file" multiple onChange={handleFileChange} className="hidden" />
+
       <div className={styles.formLine}></div>
 
       <div className="flex flex-row pt-0.5">
@@ -94,6 +105,70 @@ function Contents() {
     </div>
   );
 }
+
+function AddImage() {
+  const { selectedFiles, setSelectedFiles, images, setImages } = useStore();
+  const handleRemoveImage = (index) => {
+    const newFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(newFiles);
+  };
+
+  const handleRemoveOriginalImage = (index) => {
+    const newFiles = images.filter((_, i) => i !== index);
+    setImages(newFiles);
+  };
+
+  if (selectedFiles.length == 0 && images.length == 0) {
+    return (
+      <>
+        <div className="flex flex-row justify-end">
+          <label htmlFor="file-input" className="flex-none pb-2 px-1 cursor-pointer" >
+            <Image className="w-[24px] h-[24px]" src={AddPhotoIcon} alt='사진 추가' ></Image>
+          </label>
+        </div>
+
+      </>
+    );
+  }
+  return (
+    <>
+      <div className="flex overflow-x-auto mt-4 mb-4 w-full scrollbar-hide">
+        {images.map((image, index) => (
+          <div key={index} className="relative flex-none h-[80px] w-[80px] mr-2">
+            <img src={`https://rokafmail.s3.ap-northeast-2.amazonaws.com/${image.path}`} alt="Selected" className="object-cover h-full w-full rounded" />
+            <button
+              className="absolute top-0 right-0"
+              style={{ width: '24px', height: '20px' }}
+              onClick={() => handleRemoveOriginalImage(index)}
+            >
+              <Image src={CloseIcon} alt="Remove" className="w-[12px] h-[12px] m-auto" />
+            </button>
+          </div>
+        ))}
+        {selectedFiles.map((file, index) => (
+          <div key={index} className="relative flex-none h-[80px] w-[80px] mr-2">
+            <img src={URL.createObjectURL(file)} alt="Selected" className="object-cover h-full w-full rounded" />
+            <button
+              className="absolute top-0 right-0"
+              style={{ width: '24px', height: '20px' }}
+              onClick={() => handleRemoveImage(index)}
+            >
+              <Image src={CloseIcon} alt="Remove" className="w-[12px] h-[12px] m-auto" />
+            </button>
+          </div>
+        ))}
+        <label htmlFor="file-input" className="h-[80px] w-[80px] rounded bg-[#C5B8A9] active:bg-[#D8CFC3] flex-none
+          cursor-pointer flex justify-center items-center">
+          <Image className="w-[24px] h-[24px]" src={AddIcon} alt='사진 추가' ></Image>
+        </label>
+      </div>
+
+
+
+    </>
+  )
+}
+
 
 function Name() {
   const { setName, name, relationship, setRelationship, setClick } = useStore();

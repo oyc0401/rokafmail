@@ -1,12 +1,15 @@
 import { create } from "zustand";
 
+interface ImageObj { id, postId, path }
+
 interface State {
-  initial: ({ name, relationship, title, contents,isPublic }: {
+  initial: ({ name, relationship, title, contents, isPublic, images }: {
     name: string;
     relationship: string;
     title: string;
     contents: string;
-    isPublic:boolean
+    isPublic: boolean;
+    images: ImageObj[];
   }) => void;
 
   click: boolean;
@@ -18,6 +21,8 @@ interface State {
   contents: string;
   password: string;
   isPublic: boolean;
+  images: ImageObj[];
+  selectedFiles: File[];
 
   setName: (text: string) => void;
   setRelationship: (text: string) => void;
@@ -25,12 +30,14 @@ interface State {
   setContents: (text: string) => void;
   setPassword: (text: string) => void;
   setIsPublic: (text: boolean) => void;
+  setImages: (text: ImageObj[]) => void;
+  setSelectedFiles: (text: File[]) => void;
 }
 
 export const useStore = create<State>((set) => ({
   // 수정 페이지 초기화
-  initial: ({ name, relationship, title, contents, isPublic }) =>
-    set({ name, relationship, title, contents, password: "", isPublic }),
+  initial: ({ name, relationship, title, contents, isPublic, images }) =>
+    set({ name, relationship, title, contents, password: "", isPublic, images }),
 
   click: false,
   setClick: (click) => set({ click: click }),
@@ -41,6 +48,8 @@ export const useStore = create<State>((set) => ({
   contents: "",
   password: "",
   isPublic: false,
+  images: [],
+  selectedFiles: [],
 
   setName: (text) => set({ name: text }),
   setRelationship: (text) => set({ relationship: text }),
@@ -48,4 +57,6 @@ export const useStore = create<State>((set) => ({
   setContents: (text) => set({ contents: text }),
   setPassword: (text) => set({ password: text }),
   setIsPublic: (text) => set({ isPublic: text }),
+  setImages: (text) => set({ images: text }),
+  setSelectedFiles: (text) => set({ selectedFiles: text }),
 }));

@@ -111,35 +111,4 @@ export function Paper({ post }) {
     </div>
   );
 
-
-  function AddImage() {
-    const { selectedFiles, setSelectedFiles } = useStore();
-    const handleRemoveImage = (index) => {
-      const newFiles = selectedFiles.filter((_, i) => i !== index);
-      setSelectedFiles(newFiles);
-    };
-
-    if (selectedFiles.length == 0) {
-      return (
-        <>
-          <div className="flex flex-row justify-end">
-            <label htmlFor="file-input" className="flex-none pb-2 px-1 cursor-pointer" >
-              <Image className="w-[24px] h-[24px]" src={AddPhotoIcon} alt='사진 추가' ></Image>
-            </label>
-          </div>
-
-        </>
-      );
-    }
-    return (
-      <>
-       
-
-
-
-      </>
-    )
-  }
-
-
 }

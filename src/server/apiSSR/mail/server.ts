@@ -28,6 +28,9 @@ export async function getPostWithUserById(postId: number) {
 export async function getPostEverything(postId: number) {
   const post = await prisma.post.findUnique({
     where: { id: postId },
+    include:{
+      images:true,
+    }
   });
   return post;
 }
