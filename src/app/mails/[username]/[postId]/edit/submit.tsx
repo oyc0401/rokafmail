@@ -7,7 +7,7 @@ import { action } from "src/lib/actionResponse";
 import { editPost } from "src/server/apiAction/mails/edit";
 
 export function Submit({ postId, username, posted, url }) {
-  const { name, relationship, title, contents, password, isPublic } = useStore();
+  const { name, relationship, title, contents, password, isPublic, selectedFiles, images } = useStore();
 
   const router = useRouter();
 
@@ -26,13 +26,32 @@ export function Submit({ postId, username, posted, url }) {
 
 
   async function click() {
-    const result = await editPost({ postId, username, name, relationship, title, contents, password, isPublic });
+
+    const formData = new FormData();
+    formData.append('postId', postId);
+    formData.append('username', username);
+    formData.append('name', name);
+    formData.append('relationship', relationship);
+    formData.append('title', title);
+    formData.append('contents', contents);
+    formData.append('password', password);
+    formData.append('isPublic', isPublic.toString());
+    images.forEach(file => {
+      formData.append('images', file.id);
+    });
+
+    selectedFiles.forEach(file => {
+      formData.append('files', file);
+    });
+
+    const result = await editPost(formData);
 
     if (result == '수정완료') {
       router.replace(`/mails/${username}/${postId}`);
     } else {
       alert(result);
     }
+
   }
 
   async function onDelete() {
@@ -41,7 +60,7 @@ export function Submit({ postId, username, posted, url }) {
     if (password) {
       try {
         await action(deleteMail(postId, password));
-         alert("편지를 삭제했습니다.");
+        alert("편지를 삭제했습니다.");
         // 삭제 후 메일 화면으로 돌아가기
         router.replace(`/mails/${username}`);
       } catch (error) {
