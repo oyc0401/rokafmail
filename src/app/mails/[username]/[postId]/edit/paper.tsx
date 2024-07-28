@@ -12,7 +12,7 @@ import CloseIcon from 'public/icons/close_icon_black.svg';
 import AddPhotoIcon from 'public/icons/add_a_photo_icon.svg';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
-import imageCompression from 'browser-image-compression';
+import { resizeImage } from "src/lib/imageResize/resize";
 
 
 export function Paper({ updateProps }) {
@@ -83,7 +83,7 @@ function Contents() {
 
     try {
       const compressedFiles = await Promise.all(
-        files.map(file => compressImage(file))
+        files.map(file => resizeImage(file))
       );
 
       setSelectedFiles([...selectedFiles, ...compressedFiles]);
@@ -93,23 +93,6 @@ function Contents() {
 
   };
 
-  const compressImage = async (file: File) => {
-    const options = {
-      maxSizeMB: 0.3,
-      maxWidthOrHeight: 1440,
-      useWebWorker: true,
-    };
-
-    try {
-      const compressedBlob = await imageCompression(file, options);
-      const compressedFile = new File([compressedBlob], file.name, { type: file.type });
-      return compressedFile;
-
-    } catch (error) {
-      console.error('Error compressing file:', error);
-      return file;
-    }
-  };
 
 
   return (

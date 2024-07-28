@@ -12,8 +12,7 @@ import { useStore } from "./model";
 import { validC } from "./valid";
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
-
-import imageCompression from 'browser-image-compression';
+import { resizeImage } from "src/lib/imageResize/resize";
 
 
 export function Paper() {
@@ -85,7 +84,7 @@ function Contents() {
 
     try {
       const compressedFiles = await Promise.all(
-        files.map(file => compressImage(file))
+        files.map(file => resizeImage(file))
       );
 
       setSelectedFiles([...selectedFiles, ...compressedFiles]);
@@ -95,23 +94,6 @@ function Contents() {
 
   };
 
-  const compressImage = async (file: File) => {
-    const options = {
-      maxSizeMB: 0.3,
-      maxWidthOrHeight: 1440,
-      useWebWorker: true,
-    };
-
-    try {
-      const compressedBlob = await imageCompression(file, options);
-      const compressedFile = new File([compressedBlob], file.name, { type: file.type });
-      return compressedFile;
-      
-    } catch (error) {
-      console.error('Error compressing file:', error);
-      return file;
-    }
-  };
 
   return (
     <div className="flex-1 pb-2.5 flex flex-col" >
