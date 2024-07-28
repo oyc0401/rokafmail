@@ -13,16 +13,20 @@ export default async function uploadFile(files: File[]) {
             const fileExtension = file.name.split('.').pop();
             const newFileName = `images/${Date.now()}-${Math.floor(Math.random() * 10000)}.${fileExtension}`;  // 새로운 파일 이름 설정 (임의의 숫자 사용)
             filenames.push(newFileName);
-            try {
-                const result = await uploadToS3(file, newFileName);
-                console.log(`File uploaded successfully: ${result.Location}`);
-            } catch (error) {
-                console.error(`Error uploading file: ${file.name}`, error);
-            }
+            asyncUpload(file, newFileName);
         }
     }
 
     return filenames;
+}
+
+async function asyncUpload(file, newFileName) {
+    try {
+        const result = await uploadToS3(file, newFileName);
+        console.log(`File uploaded successfully: ${result.Location}`);
+    } catch (error) {
+        console.error(`Error uploading file: ${file.name}`, error);
+    }
 }
 
 const s3 = new AWS.S3({

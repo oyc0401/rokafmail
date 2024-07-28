@@ -70,7 +70,6 @@ function Contents() {
   };
 
   const handleFileChange = (event) => {
-    console.log(event.target.files)
     const files: File[] = Array.from(event.target.files);
     setSelectedFiles([...selectedFiles, ...files]);
   };

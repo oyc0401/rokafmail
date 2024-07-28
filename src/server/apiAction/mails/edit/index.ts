@@ -73,10 +73,6 @@ export async function editPost(formdata: FormData) {
   const post = await Post.findById(postId);
   if (!post || post.user.username != username) return 'Notfound';
 
-
-  console.log(files);
-  console.log(images);
-
   if (post.password != password) {
     return '비밀번호가 틀렸습니다.'
   }
