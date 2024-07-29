@@ -7,6 +7,7 @@ import styles from "./paper.module.css";
 import { useState } from "react";
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
+
 export function Paper({ post }) {
   const { title, contents, name, relationship, isPublic, images } = post;
 
@@ -21,20 +22,6 @@ export function Paper({ post }) {
   }
 
   function Contents() {
-
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
-
-    const openModal = (image) => {
-      setSelectedImage(image);
-      setModalIsOpen(true);
-    };
-
-    const closeModal = () => {
-      setModalIsOpen(false);
-      setSelectedImage(null);
-    };
-
     return (<>
       <div className="flex-1 pb-4" >
         <TextareaAutosize

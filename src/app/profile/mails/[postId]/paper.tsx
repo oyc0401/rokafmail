@@ -3,10 +3,11 @@ import styles from "./paper.module.css";
 import rokafLogo from "public/assets/rokaf.png";
 import Image from "next/image";
 import TextareaAutosize from 'react-textarea-autosize';
-
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
 
 export function Paper({ post }) {
-  const { title, contents, name, relationship, isPublic } = post;
+  const { title, contents, name, relationship, isPublic,images } = post;
 
   function Title() {
     return (
@@ -28,6 +29,19 @@ export function Paper({ post }) {
           value={contents}
           readOnly
         ></TextareaAutosize>
+
+        <div className="flex overflow-x-auto mt-4 mb-4 w-full scrollbar-hide">
+          {images.map((file, index) => (
+
+            <div key={index} className="relative flex-none mr-2">
+              <Zoom>
+                <img src={`https://rokafmail.s3.ap-northeast-2.amazonaws.com/${file.path}`}
+                  alt="이미지" className="object-cover h-[80px] w-[80px] rounded" />
+              </Zoom>
+            </div>
+
+          ))}
+        </div>
 
         <div className={styles.formLine}></div>
 
