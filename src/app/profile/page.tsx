@@ -45,7 +45,7 @@ export default async function Page() {
   return (
     <>
       <div className={`max-w-3xl mx-auto h-full flex flex-col`}>
-        <NavHeader user={{ username, name, birth, memberSeq, connect }}></NavHeader>
+        <NavHeader user={{ username }}></NavHeader>
         <div className="flex-1 flex flex-col w-full">
           <h1 className="text-2xl font-medium pt-6 pb-8">내 정보</h1>
           <div className="flex flex-col w-full pt-4 px-4">

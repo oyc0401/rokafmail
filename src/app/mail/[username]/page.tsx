@@ -10,6 +10,7 @@ import { Submit } from "./submit";
 import { Paper } from "./paper";
 import { ShareButton } from "./copy_button";
 import dayjs, { Dayjs } from "dayjs";
+import {getMilitaryRank} from './military'
 
 export const metadata = {
   title: "하늘인편 | 편지 작성",
@@ -99,30 +100,4 @@ async function UserDescription({ user }) {
 }
 
 
-export function getMilitaryRank(generation: number) {
-  const status = serveStatus(generation);
 
-  switch (status) {
-    case Status.before:
-    case Status.beginning:
-    case Status.training:
-    case Status.ending:
-      return '훈련병';
-  }
-
-  const date = getEnter(generation);
-  const now = dayjs();
-  const diffMonths = now.diff(date, 'month');
-
-  if (diffMonths < 2) {
-    return '이병';
-  } else if (diffMonths < 8) {
-    return '일병';
-  } else if (diffMonths < 14) {
-    return '상병';
-  } else if (diffMonths < 21) {
-    return '병장';
-  } else {
-    return '민간인';
-  }
-}

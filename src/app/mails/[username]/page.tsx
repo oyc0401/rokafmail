@@ -5,11 +5,7 @@ import { minuteToStr, postMailDMinute } from "src/lib/time";
 import { getUnpostedLetters, getPostedLetters, getLetters } from "src/server/apiAction/mails/server";
 import { action } from "src/lib/actionResponse";
 import { getUserByUsername } from "src/server/apiSSR/user/server";
-import { TabBar } from "./TabBar";
-import { UnpostedLetterPage } from "./pages/UnpostedLetterPage";
 import { PostedLetterPage } from "./pages/PostedLetterPage";
-import { WaitLetterPage } from "./pages/WaitLetterPage";
-import { getMilitaryRank } from "src/app/mail/[username]/page";
 
 export const metadata = {
   title: "하늘인편 | 받은 편지함",
