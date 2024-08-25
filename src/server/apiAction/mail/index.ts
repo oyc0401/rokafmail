@@ -98,7 +98,7 @@ export async function sendMail(formData: FormData) {
         }
       })
     }
-   
+
 
     return ActionResponse.ok("편지 전송 성공!");
   } catch (error) {
