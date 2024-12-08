@@ -41,9 +41,9 @@ function TopView() {
         </div>
         <div className="pt-8 pb-6 w-full">
           <p className="font-light text-base">
-            저번 기수인 859기 중 734명이
+            공군 훈련병 3386명이 가입해
             <br />
-            하늘인편을 통해 편지를 받았습니다!
+            총 76984건의 편지를 받았습니다!
           </p>
         </div>
         <RegisterButton></RegisterButton>
