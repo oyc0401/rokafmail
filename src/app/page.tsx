@@ -81,6 +81,14 @@ function Body() {
         <div className="max-w-2xl mx-auto">
           <div className="pb-6">
             <h3 className={styles.title} >
+              받은 편지 보는 법
+            </h3>
+            <p className={`${styles.content}`}>
+              <strong>로그인 -> 내정보 -> 받은 편지 열기</strong> 에서 받은 편지들을 확인할 수 있습니다.
+            </p>
+          </div>
+          <div className="pb-6">
+            <h3 className={styles.title} >
               편지 출력 안내
             </h3>
             <p className={`${styles.content} font-bold`}>
