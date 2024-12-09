@@ -41,9 +41,9 @@ function TopView() {
         </div>
         <div className="pt-8 pb-6 w-full">
           <p className="font-light text-base">
-            공군 훈련병 3386명이 가입해
+            저번 기수인 859기 중 734명이
             <br />
-            총 76984건의 편지를 받았습니다!
+            하늘인편을 통해 편지를 받았습니다!
           </p>
         </div>
         <RegisterButton></RegisterButton>
@@ -79,14 +79,6 @@ function Body() {
       </div>
       <div className="bg-[#FAFAFA] pb-14 px-4 ">
         <div className="max-w-2xl mx-auto">
-          <div className="pb-6">
-            <h3 className={styles.title} >
-              받은 편지 보는 법
-            </h3>
-            <p className={`${styles.content}`}>
-              <strong>{'로그인 -> 내정보 -> 받은 편지 열기'}</strong> 에서 받은 편지들을 확인할 수 있습니다.
-            </p>
-          </div>
           <div className="pb-6">
             <h3 className={styles.title} >
               편지 출력 안내
