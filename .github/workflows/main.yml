@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build, Release, and Deploy to EC2
 
 on:
   push:
@@ -6,12 +6,12 @@ on:
       - main
 
 jobs:
-  build-and-release:
+  build-release-deploy:
     runs-on: ubuntu-latest
 
     steps:
     # 1. 코드 체크아웃
-    - name: Checkout code
+    - name: Checkout Code
       uses: actions/checkout@v3
 
     # 2. Node.js 설치 및 빌드
@@ -19,12 +19,13 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 18
+    - name: Build Next.js
       run: |
-        npm install
+        npm ci
         npm run build
-        zip -r build.zip .next public package.json package-lock.json
+        zip -r build.zip .next
 
-    # 3. GitHub Release 생성 및 파일 업로드
+    # 3. GitHub Release 생성 및 빌드 파일 업로드
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
