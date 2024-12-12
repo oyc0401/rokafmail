@@ -1,0 +1,33 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. 코드 체크아웃
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Node.js 설치 및 빌드
+    - name: Install dependencies and build
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+      run: |
+        npm install
+        npm run build
+        zip -r build.zip .next public package.json package-lock.json
+
+    # 3. GitHub Release 생성 및 파일 업로드
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: build.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
