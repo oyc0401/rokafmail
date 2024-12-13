@@ -18,58 +18,25 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    # 2. Node.js 설치 및 빌드
-    - name: Install dependencies and build
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    - name: Build Project
-      run: |
-        npm ci
-        npm run build
-        zip -r build.zip .next
 
-    # 3. GitHub Release 생성
-    - name: Create Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: build.zip
-        name: "Release ${{ github.ref_name }}" # 릴리즈 이름에 태그 포함
-        tag_name: ${{ github.ref_name }} # 태그 이름
-        draft: false
-        prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    # 4. EC2에 배포
+    # 4. EC2에서 파일 다운로드
     - name: Create PEM file
       run: echo "${{ secrets.EC2_PRIVATE_KEY }}" > private_key.pem
 
     - name: Set PEM file permissions
       run: chmod 600 private_key.pem
-
+      
     - name: Upload build.zip to EC2
       run: |
-        scp -o StrictHostKeyChecking=no -i private_key.pem build.zip ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/
+        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.EC2_HOST }} << EOF
+          cd /home/ubuntu
+          gh release download ${{ github.ref_name }} --repo oyc0401/rokafmail --pattern "build.zip"
+        EOF
 
-    - name: Deploy to EC2
+    # 5. build.zip을 기반으로 실행
+    - name: Run Project
       run: |
         ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-          cd /home/ubuntu/rokafmail
-          git reset --hard
-
-          # 원격 저장소에서 최신 코드를 가져옵니다
-          git pull origin main
-
-          # .next 폴더를 업데이트합니다
-          unzip -o /home/ubuntu/build.zip ".next/*" -d /home/ubuntu/rokafmail
-
-          # 필요한 의존성을 설치합니다
-          npm install --production
-
-          # 애플리케이션을 PM2로 재시작합니다
-          pm2 restart all
+          bash /home/ubuntu/deploy.sh
         EOF
-        
-    - name: Clean Up
-      run: rm private_key.pem
+
