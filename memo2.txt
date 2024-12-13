@@ -27,3 +27,6 @@ pm2 delete 0
 
 
 git stash && git pull origin main && git stash pop
+
+
+git tag -f "v2.0.2" && git push origin -f "v2.0.2"
