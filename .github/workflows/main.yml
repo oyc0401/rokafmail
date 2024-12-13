@@ -37,7 +37,7 @@ jobs:
           git pull origin main
 
           # .next 폴더를 업데이트합니다
-          unzip -o build.zip ".next/*" -d /home/ubuntu/rokafmail
+          unzip -o /home/ubuntu/build.zip ".next/*" -d /home/ubuntu/rokafmail
 
           # 필요한 의존성을 설치합니다
           npm install --production
