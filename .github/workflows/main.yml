@@ -38,9 +38,7 @@ jobs:
     - name: Run Project
       run: |
         ssh -t -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-          who npm
-          ls -l /home/ubuntu/.nvm/versions/node/v20.11.0/bin/pm2
-
-          /home/ubuntu/.nvm/versions/node/v20.11.0/bin/pm2 restart all
+          source ~/.bashrc # 대화형 환경 설정 파일 로드
+          bash /home/ubuntu/deploy.sh
         EOF
 
