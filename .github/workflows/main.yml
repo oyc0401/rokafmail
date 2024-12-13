@@ -37,7 +37,7 @@ jobs:
     # 5. build.zip을 기반으로 실행
     - name: Run Project
       run: |
-        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+        ssh -t -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
           bash /home/ubuntu/deploy.sh
         EOF
 
