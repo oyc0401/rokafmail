@@ -30,6 +30,7 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.EC2_HOST }} << EOF
           cd /home/ubuntu
+          rm build.zip
           gh release download ${{ github.ref_name }} --repo oyc0401/rokafmail --pattern "build.zip"
         EOF
 
