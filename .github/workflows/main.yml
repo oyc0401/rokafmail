@@ -48,9 +48,6 @@ jobs:
     - name: Set PEM file permissions
       run: chmod 600 private_key.pem
 
-    - name: Upload build.zip to EC2
-      run: |
-        scp -o StrictHostKeyChecking=no -i private_key.pem build.zip ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/
 
     - name: Deploy to EC2
       run: |
@@ -60,9 +57,6 @@ jobs:
 
           # 원격 저장소에서 최신 코드를 가져옵니다
           git pull origin main
-
-          # .next 폴더를 업데이트합니다
-          unzip -o /home/ubuntu/build.zip ".next/*" -d /home/ubuntu/rokafmail
 
           # 필요한 의존성을 설치합니다
           npm install --production
