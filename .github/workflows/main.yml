@@ -61,9 +61,10 @@ jobs:
     - name: Set PEM file permissions
       run: chmod 600 $PEM_FILE
 
-    - name: Deploy build.zip to EC2
+    # 5. EC2에서 프로젝트 다운로드, 실행
+    - name: Deploy and Run Project
       run: |
-        ssh -o StrictHostKeyChecking=no -i $PEM_FILE ubuntu@${{ secrets.EC2_HOST }} << EOF
+        ssh -t -o StrictHostKeyChecking=no -i $PEM_FILE ubuntu@${{ secrets.EC2_HOST }} << EOF
           set -e  # 에러 시 종료
           cd $EC2_PATH
           
@@ -74,13 +75,8 @@ jobs:
 
           # Release에서 최신 build.zip 다운로드
           gh release download ${{ github.ref_name }} --repo oyc0401/rokafmail --pattern "build.zip"
-        EOF
 
-    # 5. EC2에서 프로젝트 실행
-    - name: Run Project on EC2
-      run: |
-        ssh -t -o StrictHostKeyChecking=no -i $PEM_FILE ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-          bash --login $EC2_PATH/deploy.sh
+          bash --login deploy.sh
         EOF
 
     # 6. Clean up
