@@ -42,9 +42,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # 4. EC2에 배포
-    - name: Deploy to EC2
+    - name: Upload build.zip to EC2
       run: |
         scp -o StrictHostKeyChecking=no -i ${{ secrets.EC2_PRIVATE_KEY }} build.zip ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/
+    - name: Deploy to EC2
+      run: |
         ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_PRIVATE_KEY }} ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
           cd /home/ubuntu/rokafmail
           git reset --hard
