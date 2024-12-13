@@ -18,6 +18,29 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
+    # 2. Node.js 설치 및 빌드
+    - name: Install dependencies and build
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - name: Build Project
+      run: |
+        npm ci
+        npm run build
+        zip -r build.zip .next
+
+    # 3. GitHub Release 생성
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: build.zip
+        name: "Release ${{ github.ref_name }}" # 릴리즈 이름에 태그 포함
+        tag_name: ${{ github.ref_name }} # 태그 이름
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     # 4. EC2에 배포
     - name: Create PEM file
       run: echo "${{ secrets.EC2_PRIVATE_KEY }}" > private_key.pem
@@ -25,11 +48,13 @@ jobs:
     - name: Set PEM file permissions
       run: chmod 600 private_key.pem
 
+    - name: Upload build.zip to EC2
+      run: |
+        scp -o StrictHostKeyChecking=no -i private_key.pem build.zip ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/
+
     - name: Deploy to EC2
       run: |
         ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-          curl -L -o build.zip https://github.com/oyc0401/rokafmail/releases/download/${{ github.ref_name }}/build.zip
-          
           cd /home/ubuntu/rokafmail
           git reset --hard
 
