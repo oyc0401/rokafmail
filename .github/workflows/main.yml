@@ -30,8 +30,8 @@ jobs:
     - name: Run Project
       run: |
         ssh -t -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-          source ~/.bashrc # 대화형 환경 설정 파일 로드
-          cat ~/.bashrc
-          bash -l /home/ubuntu/deploy.sh
+          node -v
+          npm -v
+          bash --login /home/ubuntu/deploy.sh
         EOF
 
