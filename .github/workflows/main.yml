@@ -40,3 +40,24 @@ jobs:
         prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 4. EC2에 배포
+      - name: Deploy to EC2
+        run: |
+          scp -o StrictHostKeyChecking=no -i ${{ secrets.EC2_PRIVATE_KEY }} build.zip ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_PRIVATE_KEY }} ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            cd /home/ubuntu/rokafmail
+            git reset --hard
+
+            # 원격 저장소에서 최신 코드를 가져옵니다
+            git pull origin main
+
+            # .next 폴더를 업데이트합니다
+            unzip -o /home/ubuntu/build.zip ".next/*" -d /home/ubuntu/rokafmail
+
+            # 필요한 의존성을 설치합니다
+            npm install --production
+
+            # 애플리케이션을 PM2로 재시작합니다
+            pm2 restart all
+          EOF
