@@ -10,7 +10,6 @@ permissions:
   id-token: write   # id-token 사용 권한 (필요 시)
 
 env:
-  EC2_USER: ubuntu
   EC2_PATH: /home/ubuntu
   PEM_FILE: private_key.pem
 
@@ -28,6 +27,14 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 20
+
+    - name: Cache npm dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm  # npm 캐시 디렉토리
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
 
     - name: Install dependencies and Build
       run: |
@@ -56,7 +63,7 @@ jobs:
 
     - name: Deploy build.zip to EC2
       run: |
-        ssh -o StrictHostKeyChecking=no -i $PEM_FILE $EC2_USER@${{ secrets.EC2_HOST }} << EOF
+        ssh -o StrictHostKeyChecking=no -i $PEM_FILE ubuntu@${{ secrets.EC2_HOST }} << EOF
           set -e  # 에러 시 종료
           cd $EC2_PATH
           
@@ -72,7 +79,7 @@ jobs:
     # 5. EC2에서 프로젝트 실행
     - name: Run Project on EC2
       run: |
-        ssh -t -o StrictHostKeyChecking=no -i $PEM_FILE $EC2_USER@${{ secrets.EC2_HOST }} << 'EOF'
+        ssh -t -o StrictHostKeyChecking=no -i $PEM_FILE ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
           bash --login $EC2_PATH/deploy.sh
         EOF
 
