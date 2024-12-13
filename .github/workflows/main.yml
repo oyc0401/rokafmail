@@ -49,10 +49,16 @@ jobs:
     - name: Set PEM file permissions
       run: chmod 600 private_key.pem
 
-    - name: Upload build.zip to EC2
+    - name: Upload build.zip on EC2
       run: |
         ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.EC2_HOST }} << EOF
           cd /home/ubuntu
+
+          # build.zip이 있으면 삭제
+          if [ -f build.zip ]; then
+            rm build.zip
+          fi
+        
           gh release download ${{ github.ref_name }} --repo oyc0401/rokafmail --pattern "build.zip"
         EOF
 
@@ -63,5 +69,5 @@ jobs:
           bash --login /home/ubuntu/deploy.sh
         EOF
 
-    - name: Clean Up
+    - name: Clean Up Private key
       run: rm private_key.pem
