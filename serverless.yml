@@ -1,0 +1,182 @@
+service: rokafmail-lambda
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-northeast-2  # 서울 리전
+  stage: ${opt:stage, 'dev'}
+  memorySize: 512
+  timeout: 30
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
+    JWT_SECRET: ${env:JWT_SECRET}
+    NEXTAUTH_SECRET: ${env:NEXTAUTH_SECRET}
+    GOOGLE_CLIENT_ID: ${env:GOOGLE_CLIENT_ID}
+    GOOGLE_CLIENT_SECRET: ${env:GOOGLE_CLIENT_SECRET}
+    GOOGLE_REDIRECT_URI: ${env:GOOGLE_REDIRECT_URI}
+    FRONTEND_URL: ${env:FRONTEND_URL}
+    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
+    AWS_S3_BUCKET_NAME: ${env:AWS_S3_BUCKET_NAME}
+    AWS_REGION: ${env:AWS_REGION}
+    GMAIL_EMAIL: ${env:GMAIL_EMAIL}
+    GMAIL_PASSWORD: ${env:GMAIL_PASSWORD}
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+functions:
+  # Authentication
+  credentialLogin:
+    handler: lambda/handlers/auth/credential-login.handler
+    events:
+      - http:
+          path: auth/credential/login
+          method: post
+          cors: true
+
+  googleAuth:
+    handler: lambda/handlers/auth/google.handler
+    events:
+      - http:
+          path: auth/google
+          method: get
+          cors: true
+
+  googleCallback:
+    handler: lambda/handlers/auth/google-callback.handler
+    events:
+      - http:
+          path: auth/google/callback
+          method: get
+          cors: true
+
+  # Register
+  registerCredential:
+    handler: lambda/handlers/register/credential.handler
+    events:
+      - http:
+          path: register/credential
+          method: post
+          cors: true
+
+  registerGoogle:
+    handler: lambda/handlers/register/google.handler
+    events:
+      - http:
+          path: register/google
+          method: post
+          cors: true
+
+  # Mail
+  sendMail:
+    handler: lambda/handlers/mail/send.handler
+    events:
+      - http:
+          path: mail/send
+          method: post
+          cors: true
+
+  editMail:
+    handler: lambda/handlers/mail/edit.handler
+    events:
+      - http:
+          path: mail/edit
+          method: put
+          cors: true
+
+  deleteMail:
+    handler: lambda/handlers/mail/delete.handler
+    events:
+      - http:
+          path: mail/delete
+          method: delete
+          cors: true
+
+  # Profile
+  editProfile:
+    handler: lambda/handlers/profile/edit.handler
+    events:
+      - http:
+          path: profile/edit
+          method: put
+          cors: true
+
+  editPassword:
+    handler: lambda/handlers/profile/password.handler
+    events:
+      - http:
+          path: profile/password
+          method: put
+          cors: true
+
+  deleteProfile:
+    handler: lambda/handlers/profile/delete.handler
+    events:
+      - http:
+          path: profile/delete
+          method: delete
+          cors: true
+
+  # User
+  checkUsername:
+    handler: lambda/handlers/user/exist.handler
+    events:
+      - http:
+          path: user/exist
+          method: get
+          cors: true
+
+  # Report
+  sendReport:
+    handler: lambda/handlers/report/send.handler
+    events:
+      - http:
+          path: report/send
+          method: post
+          cors: true
+
+  # Upload
+  uploadFile:
+    handler: lambda/handlers/upload/file.handler
+    events:
+      - http:
+          path: upload
+          method: post
+          cors: true
+
+  # API - GET endpoints
+  getMail:
+    handler: lambda/handlers/api/mail-get.handler
+    events:
+      - http:
+          path: api/mail
+          method: get
+          cors: true
+
+  getUser:
+    handler: lambda/handlers/api/user-get.handler
+    events:
+      - http:
+          path: api/user
+          method: get
+          cors: true
+
+  getProfileMails:
+    handler: lambda/handlers/api/profile-mails.handler
+    events:
+      - http:
+          path: api/profile/mails
+          method: get
+          cors: true
+
+package:
+  individually: false
+  patterns:
+    - '!node_modules/**'
+    - '!.git/**'
+    - '!.github/**'
+    - '!.next/**'
+    - '!coverage/**'
+    - '!.vscode/**'
