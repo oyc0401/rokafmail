@@ -28,7 +28,7 @@ export class WinstonLogger implements Logger {
      * error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6
      */
 
-    const transports = [];
+    const transports: winston.transport[] = [];
 
     // Vercel 환경에서는 콘솔만 사용
     if (process.env.VERCEL) {
