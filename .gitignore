@@ -19,3 +19,5 @@ logs
 readme_dev.md
 
 admin
+
+postgres.dump
