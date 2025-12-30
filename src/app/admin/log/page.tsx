@@ -5,10 +5,9 @@ import Link from 'next/link';
 import { promisify } from 'util';
 import {LogsContainer} from './LogContainer'
 export default async function Page(){
+  const logDirectory = './logs';
 
-  const logDirectory = './logs'; // 로그 파일이 저장된 디렉토리 경로 지정
-  
-    const files = await getFiles(logDirectory); // 파일 목록 가져오기
+  const files = process.env.VERCEL ? [] : await getFiles(logDirectory);
   const list = groupLogsByDate(files);
 
 

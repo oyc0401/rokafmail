@@ -20,8 +20,8 @@ function extractRegisterInfo(line) {
 }
 
 export default async function Page({params}){
-  const logAddress = `./logs/${params.file}`;
-  const data = await readFileAndDecompress(logAddress);
+  // Vercel 환경에서는 빈 데이터 반환
+  const data = process.env.VERCEL ? '' : await readFileAndDecompress(`./logs/${params.file}`);
 
   const lines = data.split("\n");
   const registerInfos = lines

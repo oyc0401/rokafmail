@@ -36,54 +36,67 @@ const appendTimestamp = winston.format((info, opts) => {
  */
 
 const makeLogger = (lab) => {
+  const transports = [];
+
+  // Vercel 환경에서는 콘솔만 사용
+  if (process.env.VERCEL) {
+    transports.push(
+      new winston.transports.Console({
+        format: winston.format.combine(
+          winston.format.colorize(),
+          notalignColorsAndTime,
+        ),
+      })
+    );
+  } else {
+    // 로컬 환경에서는 파일 + 콘솔 사용
+    transports.push(
+      new winstonDaily({
+        level: "debug",
+        datePattern: "YYYY-MM-DD",
+        dirname: logDir,
+        filename: `%DATE%.debug.log`,
+        maxFiles: 30,
+        zippedArchive: true,
+      }),
+      new winstonDaily({
+        level: "info",
+        datePattern: "YYYY-MM-DD",
+        dirname: logDir,
+        filename: `%DATE%.log`,
+        maxFiles: 30,
+        zippedArchive: true,
+      }),
+      new winstonDaily({
+        level: "error",
+        datePattern: "YYYY-MM-DD",
+        dirname: logDir + "/error",
+        filename: `%DATE%.error.log`,
+        maxFiles: 30,
+        zippedArchive: true,
+      })
+    );
+
+    if (process.env.NODE_ENV !== "production") {
+      transports.push(
+        new winston.transports.Console({
+          format: winston.format.combine(
+            winston.format.colorize(),
+            notalignColorsAndTime,
+          ),
+        })
+      );
+    }
+  }
+
   const lo = winston.createLogger({
     format: combine(
       appendTimestamp({ tz: "Asia/Seoul" }),
       label({ label: lab }),
       logFormat,
     ),
-    transports: [
-      // info 레벨 로그를 저장할 파일 설정
-      new winstonDaily({
-        level: "debug",
-        datePattern: "YYYY-MM-DD",
-        dirname: logDir,
-        filename: `%DATE%.debug.log`,
-        maxFiles: 30, // 30일치 로그 파일 저장
-        zippedArchive: true,
-      }),
-
-      new winstonDaily({
-        level: "info",
-        datePattern: "YYYY-MM-DD",
-        dirname: logDir,
-        filename: `%DATE%.log`,
-        maxFiles: 30, // 30일치 로그 파일 저장
-        zippedArchive: true,
-      }),
-      // error 레벨 로그를 저장할 파일 설정
-      new winstonDaily({
-        level: "error",
-        datePattern: "YYYY-MM-DD",
-        dirname: logDir + "/error", // error.log 파일은 /logs/error 하위에 저장
-        filename: `%DATE%.error.log`,
-        maxFiles: 30,
-        zippedArchive: true,
-      }),
-    ],
+    transports,
   });
-
-  if (process.env.NODE_ENV !== "production") {
-    lo.add(
-      new winston.transports.Console({
-        format: winston.format.combine(
-          winston.format.colorize(), // 색깔 넣어서 출력
-          notalignColorsAndTime,
-          // winston.format.simple(),  // `${info.level}: ${info.message} JSON.stringify({ ...rest })` 포맷으로 출력
-        ),
-      }),
-    );
-  }
 
   return lo;
 };
